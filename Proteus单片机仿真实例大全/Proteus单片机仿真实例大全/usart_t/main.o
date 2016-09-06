@@ -1,0 +1,62 @@
+XL
+H 3 areas 5 global symbols
+M main.c
+S _delay_nms Ref0000
+S _puts Ref0000
+S _putchar Ref0000
+A text size 4C flags 0
+dbfile D:\AVR\ICC\usart_t\main.c
+dbfunc e uart0_init 0 fV
+dbline FFFFFFFF 0
+dbline 11 0
+dbline 12 0
+dbline 13 4
+dbline 14 6
+dbline 15 A
+dbline 16 E
+dbline 17 10
+dbline FFFFFFFE 14
+dbline 0 14
+dbfunc e main 16 fV
+dbsym r i 14 c
+dbline FFFFFFFF 16
+dbline 1B 16
+dbline 1D 16
+dbline 1E 18
+dbline 1F 20
+dbline 20 26
+dbline 22 2E
+dbline 23 2E
+dbline 24 32
+dbline 25 32
+dbline 26 3A
+dbline 27 42
+dbline 23 42
+dbline 23 44
+dbline 28 48
+dbline 21 48
+dbline FFFFFFFE 4A
+dbline 0 4A
+S _main Def0016
+S _uart0_init Def0000
+A data size 14 flags 20
+dbfile D:\AVR\ICC\usart_t\main.c
+A idata size 14 flags 0
+T 00 00 22 24 2A B8 2B B8 86 E8 80 BD 83 E3 89 B9
+R 00 00 00 00
+T 0E 00 20 BC 88 E1 8A B9 08 95
+R 00 00 00 00
+T 16 00 F4 DF 00 E0 10 E0 0E 94
+R 00 00 00 00 20 04 01 00 00 00 40 06 01 00 00 00
+T 1E 00 00 00 0D E0 0E 94 00 00 0A E0 0E 94 00 00
+R 00 00 00 00 12 02 01 00 12 08 02 00 12 0E 02 00
+T 2C 00 0D C0 44 27 09 C0 04 2F 00 5D 0E 94 00 00
+R 00 00 00 00 12 0E 02 00
+T 3A 00 08 EE 13 E0 0E 94 00 00 43 95 44 31 A8 F3
+R 00 00 00 00 12 08 00 00
+T 48 00 F2 CF 08 95
+R 00 00 00 00
+T 00 00 41 54 6D 65 67 61 31 36 20 75 61 72 74 20
+R 00 00 02 00
+T 0E 00 54 65 73 74 21 00
+R 00 00 02 00

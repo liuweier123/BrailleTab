@@ -1,0 +1,95 @@
+C51 COMPILER V8.05a   MAIN                                                                 08/11/2007 16:14:48 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sources\main.c BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\main.lst
+                    -) OBJECT(main.obj)
+
+line level    source
+
+   1          //*************************************************************************************************
+   2          //*************************************************************************************************
+   3          //**<程序名>：模拟串口输出                                                                                                                                               **
+   4          //**<功能>：通过模拟串口来控制LED显示。                                                                                                                  **
+   5          //**<作者>：LastRitter                                                                                                                                                   **
+   6          //**<完成时间>：2007年7月31日                                                                                                                                    **
+   7          //**<联系方式>：E-Mail:superyongzhe@163.com;QQ:314665345。                                                                               **
+   8          //*************************************************************************************************
+   9          //*************************************************************************************************
+  10          #include <at89x51.h>
+  11          
+  12          #define SEND P2_0          //模拟串口的输出口。
+  13          #define CLOCK P2_1         //模拟串口的时钟口。
+  14          
+  15          unsigned  char code uca_LEDCode[]=
+  16                                  {0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90};    //0,1,2,3,4,5,6,7,8,9
+  17          
+  18          
+  19          unsigned char uca_BitPosition[]={0x80,0x40,0x20,0x10,0x08,0x04,0x02,0x01};
+  20          
+  21          
+  22          
+  23          //*************************************************************************************************
+  24          //*                                                                                                                                                                                               *
+  25          //*                     ***************************将8位数据输出给ＬＥＤ*****************************             *
+  26          //*                                                                                                                                                                                               *
+  27          //*************************************************************************************************
+  28          void vShowOneNum(unsigned char ucNumber)
+  29          {
+  30   1              unsigned char ucCount;
+  31   1      
+  32   1              if(ucNumber<10)
+  33   1                      {
+  34   2                      for(ucCount=0;ucCount<8;ucCount++)
+  35   2                              {
+  36   3                              CLOCK=0;
+  37   3      
+  38   3                              if((uca_LEDCode[ucNumber]&uca_BitPosition[ucCount])==0)
+  39   3                                      SEND=0;
+  40   3                              else SEND=1;
+  41   3      
+  42   3                              CLOCK=1;
+  43   3                              }
+  44   2                      }
+  45   1      }
+  46          
+  47          
+  48          
+  49          
+  50          void main()
+  51          {
+  52   1              unsigned int uiCount;
+  53   1              unsigned char ucShowNumber=0;
+  54   1              
+C51 COMPILER V8.05a   MAIN                                                                 08/11/2007 16:14:48 PAGE 2   
+
+  55   1              while(1)
+  56   1              {
+  57   2              vShowOneNum(ucShowNumber);
+  58   2      
+  59   2              if(ucShowNumber==9)
+  60   2                      ucShowNumber=0;
+  61   2              else
+  62   2                      ucShowNumber++;
+  63   2      
+  64   2              for(uiCount=0;uiCount<30000;uiCount++);
+  65   2              }
+  66   1      }
+  67          
+  68          
+  69          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     71    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

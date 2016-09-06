@@ -1,0 +1,954 @@
+,,,ORG   0000H
+0000,02 00 40,,                JMP   START
+,,,                ORG   0040H
+0040,,START,START:
+0040,12 07 52,,                LCALL   ZHUANHUAN
+0043,D2 B0,,        SETB    P3.0
+0045,D2 B1,,        SETB    P3.1
+0047,D2 B2,,        SETB    P3.2
+0049,D2 A0,,        SETB    P2.0
+004B,D2 A1,,        SETB    P2.1
+004D,D2 A2,,        SETB    P2.2
+004F,12 06 6C,,        LCALL   DELAY1
+0052,75 34 05,,        MOV     34H,#05
+0055,75 35 05,,        MOV     35H,#05
+0058,75 28 05,,        MOV     28H,#05
+005B,75 29 05,,        MOV     29H,#05
+005E,,LLL,LLL:
+005E,12 07 52,,                LCALL   ZHUANHUAN
+0061,F5 31,,        MOV     31H,A
+0063,12 06 87,,        LCALL   DELAY4
+0066,12 07 52,,        LCALL   ZHUANHUAN
+0069,F5 32,,        MOV     32H,A
+006B,12 06 87,,        LCALL   DELAY4
+006E,12 07 52,,        LCALL   ZHUANHUAN
+0071,F5 33,,        MOV     33H,A
+0073,12 06 A6,,        LCALL   FILTER
+0076,12 06 90,,        LCALL   CHNTER
+0079,12 05 C1,,        LCALL   SHOW
+007C,20 A4 7E,,        JB      P2.4,KONGZHI1
+007F,,KEY0,KEY0:
+007F,20 A4 DC,,        JB      P2.4,LLL
+0082,12 06 87,,        LCALL   DELAY4
+0085,12 07 52,,        LCALL   ZHUANHUAN
+0088,12 06 90,,        LCALL   CHNTER
+008B,12 05 C1,,        LCALL   SHOW
+008E,12 06 87,,        LCALL   DELAY4
+0091,,KEY1,KEY1:
+0091,20 A5 6C,,            JB      P2.5,KEY51
+0094,12 06 87,,        LCALL   DELAY4
+0097,12 07 52,,        LCALL   ZHUANHUAN
+009A,12 06 90,,        LCALL   CHNTER
+009D,12 05 C1,,        LCALL   SHOW
+00A0,12 06 87,,        LCALL   DELAY4
+00A3,,KEY2,KEY2:
+00A3,20 A7 5D,,        JB      P2.7,KEY3
+00A6,12 06 87,,        LCALL   DELAY4
+00A9,12 07 52,,        LCALL   ZHUANHUAN
+00AC,12 06 90,,        LCALL   CHNTER
+00AF,12 05 C1,,        LCALL   SHOW
+00B2,12 05 C1,,        LCALL   SHOW
+00B5,12 05 C1,,        LCALL   SHOW
+00B8,12 05 C1,,        LCALL   SHOW
+00BB,12 05 C1,,        LCALL   SHOW
+00BE,12 05 C1,,        LCALL   SHOW
+00C1,12 06 87,,        LCALL   DELAY4
+00C4,12 07 52,,        LCALL   ZHUANHUAN
+00C7,12 06 90,,        LCALL   CHNTER
+00CA,12 05 C1,,        LCALL   SHOW
+00CD,12 06 87,,        LCALL   DELAY4
+00D0,12 07 52,,        LCALL   ZHUANHUAN
+00D3,12 06 90,,        LCALL   CHNTER
+00D6,12 05 C1,,        LCALL   SHOW
+00D9,15 34,,        DEC     34H
+00DB,E5 34,,        MOV     A,34H
+00DD,85 34 35,,        MOV     35H,34H
+00E0,B4 FF 0F,,        CJNE    A,#0FFH,KEY22
+00E3,75 34 05,,        MOV     34H,#05H
+00E6,12 07 52,,        LCALL   ZHUANHUAN
+00E9,12 06 90,,        LCALL   CHNTER
+00EC,12 05 C1,,        LCALL   SHOW
+00EF,12 06 87,,        LCALL   DELAY4
+00F2,,KEY22,KEY22:
+00F2,12 07 52,,            LCALL   ZHUANHUAN
+00F5,12 06 90,,        LCALL   CHNTER
+00F8,12 05 C1,,        LCALL   SHOW
+00FB,01 A3,,        AJMP    KEY2
+00FD,,KONGZHI1,KONGZHI1:
+00FD,02 02 26,,            LJMP        KONGZHI
+0100,,KEY51,KEY51:
+0100,02 01 5D,,            LJMP        KEY5
+0103,,KEY3,KEY3:
+0103,20 A6 54,,        JB      P2.6,KEY02
+0106,12 06 87,,        LCALL   DELAY4
+0109,12 07 52,,        LCALL   ZHUANHUAN
+010C,12 06 90,,        LCALL   CHNTER
+010F,12 05 C1,,        LCALL   SHOW
+0112,12 05 C1,,        LCALL   SHOW
+0115,12 05 C1,,        LCALL   SHOW
+0118,12 05 C1,,        LCALL   SHOW
+011B,12 05 C1,,        LCALL   SHOW
+011E,12 05 C1,,        LCALL   SHOW
+0121,12 06 87,,        LCALL   DELAY4
+0124,12 07 52,,        LCALL   ZHUANHUAN
+0127,12 06 90,,        LCALL   CHNTER
+012A,12 05 C1,,        LCALL   SHOW
+012D,12 06 87,,        LCALL   DELAY4
+0130,05 35,,        INC     35H
+0132,E5 35,,        MOV     A,35H
+0134,85 35 34,,        MOV     34H,35H
+0137,12 06 87,,        LCALL   DELAY4
+013A,B4 0A 12,,        CJNE    A,#0AH,KEY33
+013D,12 07 52,,        LCALL   ZHUANHUAN
+0140,12 06 90,,        LCALL   CHNTER
+0143,12 05 C1,,        LCALL   SHOW
+0146,12 06 87,,        LCALL   DELAY4
+0149,75 35 04,,        MOV     35H,#04
+014C,12 06 87,,        LCALL   DELAY4
+014F,,KEY33,KEY33:
+014F,12 07 52,,            LCALL   ZHUANHUAN
+0152,12 06 90,,        LCALL   CHNTER
+0155,12 05 C1,,        LCALL   SHOW
+0158,21 03,,        AJMP    KEY3
+015A,,KEY02,KEY02:
+015A,02 00 7F,,            LJMP        KEY0
+015D,,KEY5,KEY5:
+015D,20 A7 57,,            JB  P2.7,KEY6
+0160,12 06 87,,        LCALL   DELAY4
+0163,12 07 52,,        LCALL   ZHUANHUAN
+0166,12 06 90,,        LCALL   CHNTER
+0169,12 05 C1,,        LCALL   SHOW
+016C,12 05 C1,,        LCALL   SHOW
+016F,12 05 C1,,        LCALL   SHOW
+0172,12 05 C1,,        LCALL   SHOW
+0175,12 05 C1,,        LCALL   SHOW
+0178,12 05 C1,,        LCALL   SHOW
+017B,12 06 87,,        LCALL   DELAY4
+017E,12 07 52,,        LCALL   ZHUANHUAN
+0181,12 06 90,,        LCALL   CHNTER
+0184,12 05 C1,,        LCALL   SHOW
+0187,12 06 87,,        LCALL   DELAY4
+018A,12 07 52,,        LCALL   ZHUANHUAN
+018D,12 06 90,,        LCALL   CHNTER
+0190,12 05 C1,,        LCALL   SHOW
+0193,15 28,,        DEC     28H
+0195,E5 28,,        MOV     A,28H
+0197,85 28 29,,        MOV     29H,28H
+019A,B4 FF 0F,,        CJNE    A,#0FFH,KEY55
+019D,75 28 05,,        MOV     28H,#05
+01A0,12 07 52,,        LCALL   ZHUANHUAN
+01A3,12 06 90,,        LCALL   CHNTER
+01A6,12 05 C1,,        LCALL   SHOW
+01A9,12 06 87,,        LCALL   DELAY4
+01AC,,KEY55,KEY55:
+01AC,12 07 52,,            LCALL   ZHUANHUAN
+01AF,12 06 90,,        LCALL   CHNTER
+01B2,12 05 C1,,        LCALL   SHOW
+01B5,21 5D,,        AJMP    KEY5
+01B7,,KEY6,KEY6:
+01B7,20 A6 69,,        JB      P2.6,KEY01
+01BA,12 06 87,,        LCALL   DELAY4
+01BD,12 07 52,,        LCALL   ZHUANHUAN
+01C0,12 06 90,,        LCALL   CHNTER
+01C3,12 05 C1,,        LCALL   SHOW
+01C6,12 05 C1,,        LCALL   SHOW
+01C9,12 05 C1,,        LCALL   SHOW
+01CC,12 05 C1,,        LCALL   SHOW
+01CF,12 05 C1,,        LCALL   SHOW
+01D2,12 05 C1,,        LCALL   SHOW
+01D5,12 06 87,,        LCALL   DELAY4
+01D8,12 07 52,,        LCALL   ZHUANHUAN
+01DB,12 06 90,,        LCALL   CHNTER
+01DE,12 05 C1,,        LCALL   SHOW
+01E1,12 06 87,,        LCALL   DELAY4
+01E4,12 07 52,,        LCALL   ZHUANHUAN
+01E7,12 06 90,,        LCALL   CHNTER
+01EA,12 05 C1,,        LCALL   SHOW
+01ED,12 06 87,,        LCALL   DELAY4
+01F0,05 29,,        INC     29H
+01F2,E5 29,,        MOV     A,29H
+01F4,85 29 28,,        MOV     28H,29H
+01F7,12 06 87,,        LCALL   DELAY4
+01FA,B4 09 1B,,        CJNE    A,#9,KEY66
+01FD,75 29 04,,        MOV     29H,#04
+0200,12 07 52,,        LCALL   ZHUANHUAN
+0203,12 06 90,,        LCALL   CHNTER
+0206,12 05 C1,,        LCALL   SHOW
+0209,12 06 87,,        LCALL   DELAY4
+020C,12 07 52,,        LCALL   ZHUANHUAN
+020F,12 06 90,,        LCALL   CHNTER
+0212,12 05 C1,,        LCALL   SHOW
+0215,12 06 87,,        LCALL   DELAY4
+0218,,KEY66,KEY66:
+0218,12 07 52,,            LCALL   ZHUANHUAN
+021B,12 06 90,,        LCALL   CHNTER
+021E,12 05 C1,,        LCALL   SHOW
+0221,21 B7,,        AJMP    KEY6
+0223,,KEY01,KEY01:
+0223,02 00 7F,,            LJMP    KEY0
+0226,,KONGZHI,KONGZHI:
+0226,12 07 52,,            LCALL   ZHUANHUAN
+0229,12 06 90,,        LCALL   CHNTER
+022C,12 07 38,,        LCALL   WUCHA
+022F,E5 2E,,        MOV     A,2EH
+0231,F5 39,,        MOV     39H,A
+0233,12 06 CF,,        LCALL   MULT1
+0236,12 06 6C,,        LCALL   DELAY1
+0239,12 06 6C,,        LCALL   DELAY1
+023C,12 05 C1,,        LCALL   SHOW
+023F,12 06 6C,,        LCALL   DELAY1
+0242,12 06 6C,,        LCALL   DELAY1
+0245,12 07 52,,        LCALL   ZHUANHUAN
+0248,12 06 A6,,        LCALL   FILTER
+024B,12 06 90,,        LCALL   CHNTER
+024E,12 07 38,,        LCALL   WUCHA
+0251,F5 3A,,        MOV     3AH,A
+0253,E5 39,,        MOV     A,39H
+0255,85 3A F0,,        MOV     B,3AH
+0258,C3,,        CLR     C
+0259,95 F0,,        SUBB    A,B
+025B,F5 3B,,        MOV     3BH,A
+025D,12 06 F3,,        LCALL   MULT2
+0260,E5 37,ZZP,ZZP:    MOV     A,37H
+0262,64 00,,        XRL     A,#00H
+0264,20 E7 03,,        JB      ACC.7,ZZP1
+0267,02 02 72,,        LJMP    ZZP2
+026A,,ZZP1,ZZP1:
+026A,E5 37,,                MOV     A,37H
+026C,B4 FF 0B,,        CJNE    A,#0FFH,ZZP3
+026F,02 02 7F,,        LJMP    ZZP4
+0272,,ZZP2,ZZP2:
+0272,E5 37,,                MOV     A,37H
+0274,B4 03 12,,        CJNE    A,#03H,ZZP5
+0277,02 02 A8,,        LJMP    ZZP6
+027A,,ZZP3,ZZP3:
+027A,40 36,,                JC      ZZP7
+027C,02 03 B6,,        LJMP    ZZP37
+027F,,ZZP4,ZZP4:
+027F,E5 36,,                MOV     A,36H
+0281,64 00,,        XRL     A,#00H
+0283,20 E7 34,,                JB      ACC.7,ZZP8
+0286,02 02 C2,,                LJMP    ZZP9
+0289,,ZZP5,ZZP5:
+0289,40 3F,,                JC      ZZP10
+028B,02 02 8E,,        LJMP    ZZPP5
+028E,,ZZPP5,ZZPP5:
+028E,E5 36,,                MOV     A,36H
+0290,64 00,,        XRL     A,#00H
+0292,20 E7 03,,        JB      ACC.7,ZZPP51
+0295,02 05 9A,,        LJMP    WU5
+0298,,ZZPP51,ZZPP51:
+0298,E5 36,,                MOV     A,36H
+029A,B4 FE 03,,        CJNE    A,#0FEH,ZZPP52
+029D,02 05 9A,,        LJMP    WU5
+02A0,,ZZPP52,ZZPP52:
+02A0,40 03,,                JC      ZZPP521
+02A2,02 05 9A,,                LJMP    WU5
+02A5,,ZZPP521,ZZPP521:
+02A5,02 04 68,,                LJMP    WU0
+02A8,,ZZP6,ZZP6:
+02A8,E5 36,,                MOV     A,36H
+02AA,64 00,,                XRL     A,#00H
+02AC,20 E7 23,,                JB      ACC.7,ZZP11
+02AF,02 05 9A,,                LJMP    WU5
+02B2,,ZZP7,ZZP7:
+02B2,E5 37,,                MOV     A,37H
+02B4,B4 FE 23,,        CJNE    A,#0FEH,ZZP12
+02B7,02 02 DF,,        LJMP    ZZP13
+02BA,,ZZP8,ZZP8:
+02BA,E5 36,,                MOV     A,36H
+02BC,B4 FB 2A,,        CJNE    A,#0FBH,ZZP14
+02BF,02 05 73,,        LJMP    WU4
+02C2,,ZZP9,ZZP9:
+02C2,E5 36,,                MOV     A,36H
+02C4,B4 00 2A,,        CJNE    A,#00H,ZZP15
+02C7,02 04 8F,,        LJMP    WU1
+02CA,,ZZP10,ZZP10:
+02CA,E5 37,,                MOV     A,37H
+02CC,B4 02 2A,,        CJNE    A,#02H,ZZP16
+02CF,02 02 FE,,        LJMP    ZZP17
+02D2,,ZZP11,ZZP11:
+02D2,E5 36,,                MOV     A,36H
+02D4,B4 F8 41,,        CJNE    A,#0F8H,ZZP18
+02D7,02 04 8F,,        LJMP    WU1
+02DA,,ZZP12,ZZP12:
+02DA,40 44,,                JC      ZZP19
+02DC,02 02 7F,,        LJMP    ZZP4
+02DF,,ZZP13,ZZP13:
+02DF,E5 36,,                MOV     A,36H
+02E1,64 00,,        XRL     A,#00H
+02E3,20 E7 42,,                JB      ACC.7,ZZP20
+02E6,02 03 30,,                LJMP    ZZP21
+02E9,,ZZP14,ZZP14:
+02E9,40 03,,                JC      zzp141
+02EB,02 03 38,,        LJMP    ZZP22
+02EE,,zzp141,zzp141:
+02EE,02 05 73,,                LJMP    WU4
+02F1,,ZZP15,ZZP15:
+02F1,40 03,,                JC      ZZP151
+02F3,02 04 68,,        LJMP    WU0
+02F6,,ZZP151,ZZP151:
+02F6,02 04 8F,,                LJMP    WU1
+02F9,,ZZP16,ZZP16:
+02F9,40 45,,                JC      ZZP23
+02FB,02 02 FE,,        LJMP    ZZP17
+02FE,,ZZP17,ZZP17:
+02FE,E5 36,,                MOV     A,36H
+0300,64 00,,        XRL     A,#00H
+0302,20 E7 43,,                JB      ACC.7,ZZP24
+0305,02 03 08,,        LJMP    ZZPP17
+0308,,ZZPP17,ZZPP17:
+0308,E5 36,,                MOV     A,36H
+030A,B4 01 03,,        CJNE    A,#01H,ZZPP171
+030D,02 05 9A,,        LJMP    WU5
+0310,,ZZPP171,ZZPP171:
+0310,40 03,,                JC      ZZPP1711
+0312,02 05 9A,,                LJMP    WU5
+0315,,ZZPP1711,ZZPP1711:
+0315,02 04 68,,                LJMP    WU0
+0318,,ZZP18,ZZP18:
+0318,40 03,,                JC      ZZP181
+031A,02 04 68,,        LJMP    WU0
+031D,,ZZP181,ZZP181:
+031D,02 04 8F,,                LJMP    WU1
+0320,,ZZP19,ZZP19:
+0320,E5 37,,                MOV     A,37H
+0322,B4 FD 2B,,        CJNE    A,#0FDH,ZZP25
+0325,02 03 55,,        LJMP    ZZP26
+0328,,ZZP20,ZZP20:
+0328,E5 36,,                MOV     A,36H
+032A,B4 FB 32,,        CJNE    A,#0FBH,ZZP27
+032D,02 05 73,,        LJMP    WU4
+0330,,ZZP21,ZZP21:
+0330,E5 36,,                MOV     A,36H
+0332,B4 00 32,,        CJNE    A,#00H,ZZP28
+0335,02 04 D9,,        LJMP    WU2
+0338,,ZZP22,ZZP22:
+0338,E5 36,,                MOV     A,36H
+033A,B4 FF 32,,        CJNE    A,#0FFH,ZZP29
+033D,02 04 D9,,        LJMP    WU2
+0340,,ZZP23,ZZP23:
+0340,E5 37,,                MOV     A,37H
+0342,B4 01 32,,        CJNE    A,#01H,ZZP30
+0345,02 03 7F,,        LJMP    ZZP31
+0348,,ZZP24,ZZP24:
+0348,E5 36,,                MOV     A,36H
+034A,B4 F7 3C,,        CJNE    A,#0F7H,ZZP32
+034D,02 04 8F,,        LJMP    WU1
+0350,,ZZP25,ZZP25:
+0350,40 3F,,                JC      ZZP33
+0352,02 02 DF,,        LJMP    ZZP13
+0355,,ZZP26,ZZP26:
+0355,E5 36,,                MOV     A,36H
+0357,64 00,,        XRL     A,#00H
+0359,20 E7 42,,                JB      ACC.7,ZZP34
+035C,02 03 A6,,                LJMP    ZZP35
+035F,,ZZP27,ZZP27:
+035F,40 03,,                JC      ZZP271
+0361,02 05 29,,        LJMP    WU3
+0364,,ZZP271,ZZP271:
+0364,02 05 73,,                LJMP    WU4
+0367,,ZZP28,ZZP28:
+0367,E5 36,,                MOV     A,36H
+0369,B4 03 42,,        CJNE    A,#03H,ZZP36
+036C,02 04 68,,        LJMP    WU0
+036F,,ZZP29,ZZP29:
+036F,40 03,,                JC      ZZP291
+0371,02 04 8F,,        LJMP    WU1
+0374,,ZZP291,ZZP291:
+0374,02 05 29,,                LJMP    WU3
+0377,,ZZP30,ZZP30:
+0377,50 03,,                JNC     ZZP301
+0379,02 03 B6,,        LJMP    ZZP37
+037C,,ZZP301,ZZP301:
+037C,02 03 7F,,                LJMP    ZZP31
+037F,,ZZP31,ZZP31:
+037F,E5 36,,                MOV     A,36H
+0381,64 00,,        XRL     A,#00H
+0383,20 E7 3A,,                JB      ACC.7,ZZP38
+0386,02 03 C8,,                LJMP    ZZP39
+0389,,ZZP32,ZZP32:
+0389,40 03,,                JC      ZZP321
+038B,02 03 D8,,        LJMP    ZZP40
+038E,,ZZP321,ZZP321:
+038E,02 04 D9,,                LJMP    WU2
+0391,,ZZP33,ZZP33:
+0391,E5 36,,                MOV     A,36H
+0393,64 00,,        XRL     A,#00H
+0395,20 E7 03,,        JB      ACC.7,ZZP331
+0398,02 03 E0,,        LJMP    ZZP41
+039B,,ZZP331,ZZP331:
+039B,02 05 73,,                LJMP    WU4
+039E,,ZZP34,ZZP34:
+039E,E5 36,,                MOV     A,36H
+03A0,B4 FD 45,,        CJNE    A,#0FDH,ZZP42
+03A3,02 05 73,,        LJMP    WU4
+03A6,,ZZP35,ZZP35:
+03A6,E5 36,,                MOV     A,36H
+03A8,B4 00 45,,        CJNE    A,#00H,ZZP43
+03AB,02 04 D9,,        LJMP    WU2
+03AE,,ZZP36,ZZP36:
+03AE,40 03,,                JC      ZZP361
+03B0,02 04 68,,        LJMP    WU0
+03B3,,ZZP361,ZZP361:
+03B3,02 04 8F,,                LJMP    WU1
+03B6,,ZZP37,ZZP37:
+03B6,E5 36,,                MOV     A,36H
+03B8,64 00,,        XRL     A,#00H
+03BA,20 E7 3B,,        JB      ACC.7,ZZP44
+03BD,02 03 C8,,        LJMP    ZZP39
+03C0,,ZZP38,ZZP38:
+03C0,E5 36,,                MOV     A,36H
+03C2,B4 FB 3B,,        CJNE    A,#0FBH,ZZP45
+03C5,02 05 29,,        LJMP    WU3
+03C8,,ZZP39,ZZP39:
+03C8,E5 36,,                MOV     A,36H
+03CA,B4 03 03,,        CJNE    A,#03H,ZZPP39
+03CD,02 05 9A,,        LJMP    WU5
+03D0,,ZZPP39,ZZPP39:
+03D0,40 03,,                JC      ZZP391
+03D2,02 05 9A,,                LJMP    WU5
+03D5,,ZZP391,ZZP391:
+03D5,02 04 68,,                LJMP    WU0
+03D8,,ZZP40,ZZP40:
+03D8,E5 36,,                MOV     A,36H
+03DA,B4 FF 2B,,        CJNE    A,#0FFH,ZZP46
+03DD,02 04 68,,        LJMP    WU0
+03E0,,ZZP41,ZZP41:
+03E0,E5 36,,                MOV     A,36H
+03E2,B4 00 2B,,                CJNE    A,#00H,ZZP47
+03E5,02 05 29,,        LJMP    WU3
+03E8,,ZZP42,ZZP42:
+03E8,40 03,,                JC      ZZP421
+03EA,02 05 29,,        LJMP    WU3
+03ED,,ZZP421,ZZP421:
+03ED,02 05 73,,                LJMP    WU4
+03F0,,ZZP43,ZZP43:
+03F0,E5 36,,                MOV     A,36H
+03F2,B4 05 23,,        CJNE    A,#05H,ZZP48
+03F5,02 04 68,,        LJMP    WU0
+03F8,,ZZP44,ZZP44:
+03F8,E5 36,,                MOV     A,36H
+03FA,B4 FB 23,,        CJNE    A,#0FBH,ZZP49
+03FD,02 05 73,,        LJMP    WU4
+0400,,ZZP45,ZZP45:
+0400,40 03,,                JC      ZZP451
+0402,02 04 28,,        LJMP    ZZP50
+0405,,ZZP451,ZZP451:
+0405,02 05 29,,                LJMP    WU3
+0408,,ZZP46,ZZP46:
+0408,40 03,,                JC      ZZP461
+040A,02 04 68,,        LJMP    WU0
+040D,,ZZP461,ZZP461:
+040D,02 04 8F,,                LJMP    WU1
+0410,,ZZP47,ZZP47:
+0410,E5 36,,                MOV     A,36H
+0412,B4 00 1B,,        CJNE    A,#00H,ZZP51
+0415,02 05 29,,        LJMP    WU3
+0418,,ZZP48,ZZP48:
+0418,40 03,,                JC      ZZP481
+041A,02 04 68,,        LJMP    WU0
+041D,,ZZP481,ZZP481:
+041D,02 04 8F,,                LJMP    WU1
+0420,,ZZP49,ZZP49:
+0420,40 03,,                JC      ZZP491
+0422,02 04 38,,        LJMP    ZZP52
+0425,,ZZP491,ZZP491:
+0425,02 05 73,,                LJMP    WU4
+0428,,ZZP50,ZZP50:
+0428,E5 36,,                MOV     A,36H
+042A,B4 FE 13,,        CJNE    A,#0FEH,ZZP53
+042D,02 04 8F,,        LJMP    WU1
+0430,,ZZP51,ZZP51:
+0430,E5 36,,                MOV     A,36H
+0432,B4 01 13,,        CJNE    A,#01H,ZZP54
+0435,02 04 D9,,        LJMP    WU2
+0438,,ZZP52,ZZP52:
+0438,E5 36,,                MOV     A,36H
+043A,B4 FE 13,,        CJNE    A,#0FEH,ZZP55
+043D,02 04 D9,,        LJMP    WU2
+0440,,ZZP53,ZZP53:
+0440,40 03,,                JC      ZZP531
+0442,02 04 68,,        LJMP    WU0
+0445,,ZZP531,ZZP531:
+0445,02 04 D9,,                LJMP    WU2
+0448,,ZZP54,ZZP54:
+0448,40 03,,                JC      ZZP541
+044A,02 04 58,,        LJMP    ZZP56
+044D,,ZZP541,ZZP541:
+044D,02 04 D9,,                LJMP    WU2
+0450,,ZZP55,ZZP55:
+0450,40 03,,                JC      ZZP551
+0452,12 04 8F,,        LCALL   WU1
+0455,,ZZP551,ZZP551:
+0455,02 05 29,,                LJMP    WU3
+0458,,ZZP56,ZZP56:
+0458,E5 36,,                MOV     A,36H
+045A,B4 05 03,,        CJNE    A,#05H,ZZP57
+045D,02 04 68,,        LJMP    WU0
+0460,,ZZP57,ZZP57:
+0460,40 03,,                JC      ZZP571
+0462,02 04 68,,        LJMP    WU0
+0465,,ZZP571,ZZP571:
+0465,02 04 8F,,                LJMP    WU1
+0468,,WU0,WU0:
+0468,75 89 01,,                MOV     TMOD,#01H
+046B,7A 10,,        MOV     R2,#16
+046D,D2 B4,,        SETB    P3.4
+046F,,LOOP1,LOOP1:
+046F,75 8C EC,,                MOV     TH0,#0ECH
+0472,75 8A 78,,        MOV     TL0,#78H
+0475,D2 8C,,        SETB    TR0
+0477,10 8D 02,LOOP2,LOOP2:  JBC     TF0,LOOP3
+047A,80 FB,,        SJMP    LOOP2
+047C,,LOOP3,LOOP3:
+047C,DA 05,,                DJNZ    R2,LOOPZ1
+047E,D2 B5,,        SETB    P3.5
+0480,02 00 5E,,        LJMP    LLL
+0483,,LOOPZ1,LOOPZ1:
+0483,12 07 52,,                LCALL   ZHUANHUAN
+0486,12 06 90,,        LCALL   CHNTER
+0489,12 05 C1,,        LCALL   SHOW
+048C,02 04 6F,,                LJMP    LOOP1
+048F,,WU1,WU1:
+048F,75 89 11,,                MOV     TMOD,#11H
+0492,7A 04,,        MOV     R2,#4
+0494,7E 0C,,        MOV     R6,#12
+0496,C2 B4,,        CLR     P3.4
+0498,,LOOP11,LOOP11:
+0498,75 8C EC,,                MOV     TH0,#0ECH
+049B,75 8A 78,,        MOV     TL0,#78H
+049E,D2 8C,,        SETB    TR0
+04A0,80 0A,,        SJMP    LOOP31
+04A2,,LOOP21,LOOP21:
+04A2,75 8D EC,,                MOV     TH1,#0ECH
+04A5,75 8B 78,,        MOV     TL1,#78H
+04A8,D2 8E,,        SETB    TR1
+04AA,80 05,,        SJMP    LOOP41
+04AC,,LOOP31,LOOP31:
+04AC,10 8D 07,,                JBC     TF0,LOOP51
+04AF,80 FB,,        SJMP    LOOP31
+04B1,,LOOP41,LOOP41:
+04B1,10 8F 14,,                JBC     TF1,LOOP61
+04B4,80 FB,,        SJMP    LOOP41
+04B6,,LOOP51,LOOP51:
+04B6,DA 04,,                DJNZ    R2,LOOPZ11
+04B8,D2 B4,,        SETB    P3.4
+04BA,80 E6,,        SJMP    LOOP21
+04BC,,LOOPZ11,LOOPZ11:
+04BC,12 07 52,,                LCALL   ZHUANHUAN
+04BF,12 06 90,,        LCALL   CHNTER
+04C2,12 05 C1,,        LCALL   SHOW
+04C5,02 04 98,,        LJMP    LOOP11
+04C8,,LOOP61,LOOP61:
+04C8,DE 03,,                DJNZ    R6,LOOPZ21
+04CA,02 00 5E,,        LJMP    LLL
+04CD,,,LOOPZ21 :
+04CD,12 07 52,,                LCALL   ZHUANHUAN
+04D0,12 06 90,,        LCALL   CHNTER
+04D3,12 05 C1,,        LCALL   SHOW
+04D6,02 04 A2,,        LJMP    LOOP21
+04D9,,WU2,WU2:
+04D9,75 89 11,,                MOV     TMOD,#11H
+04DC,7A 08,,                MOV     R2,#8
+04DE,7E 08,,                MOV     R6,#8
+04E0,C2 B4,,                CLR     P3.4
+04E2,,LOOP12,LOOP12:
+04E2,75 89 11,,                MOV     TMOD,#11H
+04E5,75 8C EC,,        MOV     TH0,#0ECH
+04E8,75 8A 78,,        MOV     TL0,#78H
+04EB,D2 8C,,        SETB    TR0
+04ED,80 0D,,        SJMP    LOOP32
+04EF,,LOOP22,LOOP22:
+04EF,75 89 11,,                MOV     TMOD,#11H
+04F2,75 8D EC,,        MOV     TH1,#0ECH
+04F5,75 8B 78,,        MOV     TL1,#78H
+04F8,D2 8E,,        SETB    TR1
+04FA,80 05,,        SJMP    LOOP42
+04FC,,LOOP32,LOOP32:
+04FC,10 8D 07,,                JBC     TF0,LOOP52
+04FF,80 FB,,        SJMP    LOOP32
+0501,,LOOP42,LOOP42:
+0501,10 8F 14,,                JBC     TF1,LOOP62
+0504,80 FB,,        SJMP    LOOP42
+0506,,LOOP52,LOOP52:
+0506,DA 04,,                DJNZ    R2,LOOPZ12
+0508,D2 B4,,        SETB    P3.4
+050A,80 E3,,        SJMP    LOOP22
+050C,,LOOPZ12,LOOPZ12:
+050C,12 07 52,,                LCALL   ZHUANHUAN
+050F,12 06 90,,        LCALL   CHNTER
+0512,12 05 C1,,        LCALL   SHOW
+0515,02 04 E2,,        LJMP    LOOP12
+0518,,LOOP62,LOOP62:
+0518,DE 03,,                DJNZ    R6,LOOPZ22
+051A,02 00 5E,,        LJMP    LLL
+051D,,LOOPZ22,LOOPZ22:
+051D,12 07 52,,                LCALL   ZHUANHUAN
+0520,12 06 90,,        LCALL   CHNTER
+0523,12 05 C1,,        LCALL   SHOW
+0526,02 04 EF,,                LJMP    LOOP22
+0529,,WU3,WU3:
+0529,75 89 11,,                MOV     TMOD,#11H
+052C,7A 0C,,                MOV     R2,#12
+052E,7E 04,,                MOV     R6,#4
+0530,C2 B4,,                CLR     P3.4
+0532,,LOOP13,LOOP13:
+0532,75 8C EC,,                MOV     TH0,#0ECH
+0535,75 8A 78,,        MOV     TL0,#78H
+0538,D2 8C,,        SETB    TR0
+053A,80 0A,,        SJMP    LOOP33
+053C,,LOOP23,LOOP23:
+053C,75 8D EC,,                MOV     TH1,#0ECH
+053F,75 8B 78,,        MOV     TL1,#78H
+0542,D2 8E,,        SETB    TR1
+0544,80 05,,        SJMP    LOOP43
+0546,,LOOP33,LOOP33:
+0546,10 8D 07,,                JBC     TF0,LOOP53
+0549,80 FB,,        SJMP    LOOP33
+054B,,LOOP43,LOOP43:
+054B,10 8F 14,,                JBC     TF1,LOOP63
+054E,80 FB,,        SJMP    LOOP43
+0550,,LOOP53,LOOP53:
+0550,DA 04,,                DJNZ    R2,LOOPZ13
+0552,D2 B4,,        SETB    P3.4
+0554,80 E6,,        SJMP    LOOP23
+0556,,LOOPZ13,LOOPZ13:
+0556,12 07 52,,                LCALL   ZHUANHUAN
+0559,12 06 90,,        LCALL   CHNTER
+055C,12 05 C1,,        LCALL   SHOW
+055F,02 05 32,,                LJMP    LOOP13
+0562,,LOOP63,LOOP63:
+0562,DE 03,,                DJNZ    R6,LOOPZ23
+0564,02 00 5E,,        LJMP    LLL
+0567,,LOOPZ23,LOOPZ23:
+0567,12 07 52,,                LCALL   ZHUANHUAN
+056A,12 06 90,,        LCALL   CHNTER
+056D,12 05 C1,,        LCALL   SHOW
+0570,02 05 3C,,                LJMP    LOOP23
+0573,,WU4,WU4:
+0573,75 89 01,,                MOV     TMOD,#01H
+0576,7A 10,,        MOV     R2,#16
+0578,C2 B4,,        CLR     P3.4
+057A,,LOOP14,LOOP14:
+057A,75 8C EC,,                MOV     TH0,#0ECH
+057D,75 8A 78,,        MOV     TL0,#78H
+0580,D2 8C,,        SETB    TR0
+0582,,LOOP24,LOOP24:
+0582,10 8D 02,,                JBC     TF0,LOOP34
+0585,80 FB,,        SJMP    LOOP24
+0587,,LOOP34,LOOP34:
+0587,DA 05,,                DJNZ    R2,LOOPZ14
+0589,D2 B4,,        SETB    P3.4
+058B,02 00 5E,,        LJMP    LLL
+058E,,LOOPZ14,LOOPZ14:
+058E,12 07 52,,                LCALL   ZHUANHUAN
+0591,12 06 90,,        LCALL   CHNTER
+0594,12 05 C1,,        LCALL   SHOW
+0597,02 05 7A,,                LJMP    LOOP14
+059A,,WU5,WU5:
+059A,75 89 01,,                MOV     TMOD,#01H
+059D,7A 10,,        MOV     R2,#16
+059F,C2 B5,,        CLR     P3.5
+05A1,,LOOP15,LOOP15:
+05A1,75 8C EC,,                MOV     TH0,#0ECH
+05A4,75 8A 78,,        MOV     TL0,#78H
+05A7,D2 8C,,        SETB    TR0
+05A9,,LOOP25,LOOP25:
+05A9,10 8D 02,,                JBC     TF0,LOOP35
+05AC,80 FB,,        SJMP    LOOP25
+05AE,,LOOP35,LOOP35:
+05AE,DA 05,,                DJNZ    R2,LOOPZ15
+05B0,D2 B5,,        SETB    P3.5
+05B2,02 00 5E,,        LJMP    LLL
+05B5,,LOOPZ15,LOOPZ15:
+05B5,12 07 52,,                LCALL   ZHUANHUAN
+05B8,12 06 90,,        LCALL   CHNTER
+05BB,12 05 C1,,        LCALL   SHOW
+05BE,02 05 A1,,                LJMP    LOOP15
+05C1,,SHOW,SHOW:
+05C1,12 06 46,,                LCALL   SHIFT
+05C4,E7,,        MOV     A,@R1
+05C5,09,,        INC     R1
+05C6,90 06 3B,,        MOV     DPTR,#TAB
+05C9,93,,        MOVC    A,@A+DPTR
+05CA,F5 90,,        MOV     P1,A
+05CC,D2 B0,,        SETB    P3.0
+05CE,12 06 7E,,        LCALL   DELAY3
+05D1,C2 B0,,        CLR     P3.0
+05D3,12 06 7E,,        LCALL   DELAY3
+,,,
+05D6,E7,,        MOV     A,@R1
+05D7,C4,,        SWAP    A
+05D8,54 0F,,        ANL     A,#0FH
+05DA,93,,        MOVC    A,@A+DPTR
+05DB,F5 90,,        MOV     P1,A
+05DD,D2 B1,,        SETB    P3.1
+05DF,12 06 7E,,        LCALL   DELAY3
+05E2,C2 B1,,        CLR     P3.1
+05E4,12 06 7E,,        LCALL   DELAY3
+,,,
+05E7,E7,,        MOV     A,@R1
+05E8,09,,        INC     R1
+05E9,54 0F,,        ANL     A,#0FH
+05EB,93,,        MOVC    A,@A+DPTR
+05EC,F5 90,,        MOV     P1,A
+05EE,D2 B2,,        SETB    P3.2
+05F0,12 06 7E,,        LCALL   DELAY3
+05F3,C2 B2,,        CLR     P3.2
+05F5,12 06 7E,,        LCALL   DELAY3
+,,,
+05F8,E7,,        MOV     A,@R1
+05F9,09,,        INC     R1
+05FA,93,,        MOVC    A,@A+DPTR
+05FB,F5 90,,        MOV     P1,A
+05FD,D2 A3,,        SETB    P2.3
+05FF,12 06 7E,,        LCALL   DELAY3
+0602,C2 A3,,        CLR     P2.3
+0604,12 06 7E,,        LCALL   DELAY3
+,,,
+0607,E7,,        MOV     A,@R1
+0608,C4,,        SWAP    A
+0609,54 0F,,        ANL     A,#0FH
+060B,93,,        MOVC    A,@A+DPTR
+060C,F5 90,,        MOV     P1,A
+060E,D2 A1,,        SETB    P2.1
+0610,12 06 7E,,        LCALL   DELAY3
+0613,C2 A1,,        CLR     P2.1
+0615,12 06 7E,,        LCALL   DELAY3
+,,,
+0618,E7,,        MOV     A,@R1
+0619,54 0F,,        ANL     A,#0FH
+061B,93,,        MOVC    A,@A+DPTR
+061C,F5 90,,        MOV     P1,A
+061E,D2 A2,,        SETB    P2.2
+0620,12 06 7E,,        LCALL   DELAY3
+0623,C2 A2,,        CLR     P2.2
+0625,12 06 7E,,        LCALL   DELAY3
+,,,
+0628,C2 A4,,        CLR    P2.4
+062A,C2 A5,,                CLR    P2.5
+062C,C2 A6,,                CLR    P2.6
+062E,C2 A7,,                CLR    P2.7
+0630,D2 A4,,        SETB   P2.4
+0632,D2 A5,,                SETB   P2.5
+0634,D2 A6,,                SETB   P2.6
+0636,D2 A7,,                SETB   P2.7
+0638,12 06 7E,,        LCALL   DELAY3
+,,,; 数字代码表
+063B,3F 06 5B 4F,TAB,TAB:    DB      3FH,06H,5BH,4FH,66H,6DH,7DH,07H,7FH,6FH
+0645,22,,        RET
+,,,
+0646,,SHIFT,SHIFT:
+0646,79 3D,,                MOV     R1,#3DH
+0648,E5 25,,        MOV     A,25H
+064A,75 F0 64,,        MOV     B,#100
+064D,84,,        DIV     AB
+064E,F7,,        MOV     @R1,A
+064F,09,,        INC     R1
+0650,74 0A,,        MOV     A,#10
+0652,C5 F0,,        XCH     A,B
+0654,84,,        DIV     AB
+0655,C4,,        SWAP    A
+0656,25 F0,,        ADD     A,B
+0658,F7,,        MOV     @R1,A
+0659,09,,        INC     R1
+065A,E5 28,,        MOV     A,28H
+065C,F7,,        MOV     @R1,A
+065D,09,,        INC     R1
+065E,E5 34,,        MOV     A,34H
+0660,75 F0 0A,,        MOV     B,#10
+0663,84,,        DIV     AB
+0664,C4,,        SWAP    A
+0665,25 F0,,        ADD     A,B
+0667,F7,,        MOV     @R1,A
+0668,19,,        DEC     R1
+0669,19,,        DEC     R1
+066A,19,,        DEC     R1
+066B,22,,        RET
+,,,
+066C,,DELAY1,DELAY1:
+066C,7D 0A,,                MOV     R5,#10
+066E,,,DE11 :
+066E,7C 50,,                MOV     R4,#80
+0670,,DE12,DE12:
+0670,DC FE,,                DJNZ    R4,DE12
+0672,DD FA,,        DJNZ    R5,DE11
+0674,22,,        RET
+,,,
+0675,,DELAY2,DELAY2:
+0675,7D 14,,                MOV     R5,#20
+0677,,DE21,DE21:
+0677,7C 50,,                MOV     R4,#80
+0679,,DE22,DE22:
+0679,DC FE,,                DJNZ    R4,DE22
+067B,DD FA,,        DJNZ    R5,DE21
+067D,22,,        RET
+,,,
+067E,,DELAY3,DELAY3:
+067E,7D 1E,,                MOV     R5,#30
+0680,,DE31,DE31:
+0680,7C 1E,,                MOV     R4,#30
+0682,,DE32,DE32:
+0682,DC FE,,                DJNZ    R4,DE32
+0684,DD FA,,        DJNZ    R5,DE31
+0686,22,,        RET
+,,,
+0687,,DELAY4,DELAY4:
+0687,7D 64,,                MOV     R5,#100
+0689,,DE41,DE41:
+0689,7C 3C,,                MOV     R4,#60
+068B,,DE42,DE42:
+068B,DC FE,,                DJNZ    R4,DE42
+068D,DD FA,,        DJNZ    R5,DE41
+068F,22,,        RET
+,,,
+0690,,CHNTER,CHNTER:
+0690,75 21 65,,                MOV     21H,#101
+0693,75 22 00,,        MOV     22H,#0
+0696,E6,,        MOV     A,@R0
+0697,85 21 F0,,        MOV     B,21H
+069A,A4,,        MUL     AB
+069B,25 22,,        ADD     A,22H
+069D,F5 24,,        MOV     24H,A
+069F,E5 F0,,        MOV     A,B
+06A1,35 23,,        ADDC    A,23H
+06A3,F5 25,,        MOV     25H,A
+06A5,22,,        RET
+,,,
+06A6,,FILTER,FILTER:
+06A6,E5 31,,                MOV     A,31H
+06A8,B5 32 02,,        CJNE    A,32H,CMP1
+06AB,C1 B3,,        AJMP    CMP2
+06AD,,CMP1,CMP1:
+06AD,50 04,,                JNC     CMP2
+06AF,C5 32,,        XCH     A,32H
+06B1,C5 31,,        XCH     A,31H
+06B3,,CMP2,CMP2:
+06B3,E5 32,,                MOV     A,32H
+06B5,B5 33 03,,        CJNE    A,33H,CMP3
+06B8,F5 38,,        MOV     38H,A
+06BA,22,,        RET
+06BB,,CMP3,CMP3:
+06BB,40 03,,                JC      CMP4
+06BD,F5 38,,        MOV     38H,A
+06BF,22,,        RET
+06C0,,CMP4,CMP4:
+06C0,E5 33,,                MOV     A,33H
+06C2,B5 31 03,,        CJNE    A,31H,CMP5
+06C5,F5 38,,        MOV     38H,A
+06C7,22,,        RET
+06C8,,CMP5,CMP5:
+06C8,40 02,,                JC      CMP6
+06CA,C5 31,,        XCH     A,31H
+06CC,,CMP6,CMP6:
+06CC,F5 38,,                MOV     38H,A
+06CE,22,,        RET
+,,,
+06CF,,MULT1,MULT1:
+06CF,E5 39,,                MOV     A,39H
+06D1,64 00,,        XRL     A,#00H
+06D3,20 E7 03,,        JB      ACC.7,NEGFU1
+06D6,02 06 EA,,        LJMP    POS1
+06D9,,NEGFU1,NEGFU1:
+06D9,E5 39,,                MOV     A,39H
+06DB,F4,,        CPL     A
+06DC,24 01,,        ADD     A,#01H
+06DE,75 F0 02,,        MOV     B,#02H
+06E1,A4,,        MUL     AB
+06E2,F5 3C,,        MOV     3CH,A
+06E4,F4,,                CPL     A
+06E5,24 01,,        ADD     A,#01H
+06E7,F5 36,,        MOV     36H,A
+06E9,22,,        RET
+06EA,,POS1,POS1:
+06EA,E5 39,,                MOV     A,39H
+06EC,75 F0 02,,        MOV     B,#02H
+06EF,A4,,        MUL     AB
+06F0,F5 36,,        MOV     36H,A
+06F2,22,,        RET
+,,,
+06F3,,MULT2,MULT2:
+06F3,E5 3B,,                MOV     A,3BH
+06F5,64 00,,        XRL     A,#00H
+06F7,20 E7 03,,        JB      ACC.7,NEGFU2
+06FA,02 07 20,,        LJMP    POS2
+06FD,,NEGFU2,NEGFU2:
+06FD,E5 3B,,                MOV     A,3BH
+06FF,F4,,        CPL     A
+0700,24 01,,        ADD     A,#01H
+0702,75 F0 02,,        MOV     B,#2
+0705,A4,,        MUL     AB
+0706,F5 2C,,        MOV     2CH,A
+0708,E5 3B,,        MOV     A,3BH
+070A,F4,,        CPL     A
+070B,24 01,,        ADD     A,#01H
+070D,75 F0 02,,        MOV     B,#2
+0710,84,,                DIV     AB
+0711,F5 2D,,                MOV     2DH,A
+0713,85 2C F0,,                MOV     B,2CH
+0716,25 F0,,                ADD     A,B
+0718,F5 3C,,        MOV     3CH,A
+071A,F4,,        CPL     A
+071B,24 01,,        ADD     A,#01H
+071D,F5 37,,                MOV     37H,A
+071F,22,,        RET
+0720,,POS2,POS2:
+0720,E5 3B,,                MOV     A,3BH
+0722,75 F0 02,,        MOV     B,#2
+0725,A4,,                MUL     AB
+0726,F5 2C,,                MOV     2CH,A
+0728,E5 3B,,                MOV     A,3BH
+072A,75 F0 02,,                MOV     B,#2
+072D,84,,                DIV     AB
+072E,F5 2D,,                MOV     2DH,A
+0730,85 2C F0,,                MOV     B,2CH
+0733,25 F0,,                ADD     A,B
+0735,F5 37,,                MOV     37H,A
+0737,22,,        RET
+,,,
+0738,,WUCHA,WUCHA:
+0738,E5 34,,                MOV     A,34H
+073A,75 F0 0A,,        MOV     B,#10
+073D,A4,,        MUL     AB
+073E,F5 2A,,        MOV     2AH,A
+0740,85 28 F0,,        MOV     B,28H
+0743,25 F0,,        ADD     A,B
+0745,F5 2B,,        MOV     2BH,A
+0747,E5 25,,        MOV     A,25H
+0749,85 2B F0,,        MOV     B,2BH
+074C,C3,,        CLR     C
+074D,95 F0,,        SUBB    A,B
+074F,F5 2E,,        MOV     2EH,A
+0751,22,,        RET
+,,,
+0752,,ZHUANHUAN,ZHUANHUAN:
+0752,D2 B3,,                SETB    P3.3
+0754,00,,                NOP
+0755,00,,                NOP
+0756,C2 B3,,                CLR     P3.3            ; 将地址传送到ADC
+0758,00,,                NOP
+0759,00,,                NOP
+075A,D2 A0,,                SETB    P2.0
+075C,00,,                NOP
+075D,00,,                NOP
+075E,C2 A0,,                CLR     P2.0            ; 启动转换
+0760,00,,                NOP
+0761,00,,                NOP
+0762,,WAIT,WAIT:
+0762,20 B7 02,,                JB      P3.7, MOVD      ; 结束转换
+0765,E1 62,,                AJMP    WAIT            ; 等待转换结束
+0767,,MOVD,MOVD:
+0767,C2 B6,,                CLR     P3.6
+0769,00,,                NOP
+076A,00,,                NOP
+076B,D2 B6,,                SETB    P3.6            ; 在ADC端口输出转换数据
+076D,00,,                NOP
+076E,00,,                NOP
+076F,E5 80,,                MOV     A,P0            ; 将ADC中的数据保存到Acc
+0771,F6,,                MOV     @R0,A           ; 将Acc暂存到R0
+0772,C2 B6,,                CLR     P3.6            ; DAC输出浮点数
+0774,00,,                NOP
+0775,00,,        NOP
+0776,22,,        RET
+000E,,,END

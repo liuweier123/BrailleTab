@@ -1,0 +1,13 @@
+
+void pwm(void) interrupt 3 using 0  //定时器2产生PWM波形
+{
+	TF2=0;					
+						
+	if((count>=pwm_set)&&(count<10))
+		PWM=1;
+	else	PWM=0;	
+	count++;	
+	if(count==10)
+	count=0x00;
+	
+}

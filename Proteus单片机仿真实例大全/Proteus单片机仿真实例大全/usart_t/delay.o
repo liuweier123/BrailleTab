@@ -1,0 +1,69 @@
+XL
+H 1 areas 6 global symbols
+M delay.c
+S push_gset2 Ref0000
+S pop_gset2 Ref0000
+A text size 54 flags 0
+dbfile D:\AVR\ICC\usart_t\delay.c
+dbfunc e delay_1us 0 fV
+dbline FFFFFFFF 0
+dbline 6 0
+dbline 7 0
+dbline FFFFFFFE 2
+dbline 0 2
+dbfunc e delay_nus 4 fV
+dbsym r i 14 i
+dbsym r n 16 i
+dbline FFFFFFFF A
+dbline B A
+dbline C A
+dbline D E
+dbline E 10
+dbline D 12
+dbline D 16
+dbline FFFFFFFE 1C
+dbline 0 20
+dbfunc e delay_1ms 22 fV
+dbsym r i 10 i
+dbline FFFFFFFF 22
+dbline 12 22
+dbline 14 22
+dbline 14 28
+dbline 14 28
+dbline 14 2C
+dbline FFFFFFFE 34
+dbline 0 34
+dbfunc e delay_nms 36 fV
+dbsym r i 14 i
+dbsym r n 16 i
+dbline FFFFFFFF 3C
+dbline 18 3C
+dbline 19 3C
+dbline 1A 40
+dbline 1B 42
+dbline 1A 44
+dbline 1A 48
+dbline FFFFFFFE 4E
+dbline 0 52
+S _delay_nms Def0036
+S _delay_nus Def0004
+S _delay_1ms Def0022
+S _delay_1us Def0000
+T 00 00 00 00 08 95
+R 00 00 00 00
+T 04 00 0E 94 00 00 B8 01 44 27 55 27 03 C0 F7 DF
+R 00 00 00 00 12 04 00 00
+T 12 00 4F 5F 5F 4F 46 17 57 07 D0 F3 0E 94 00 00
+R 00 00 00 00 12 0E 01 00
+T 20 00 08 95
+R 00 00 00 00
+T 22 00 00 27 11 27 02 C0 0F 5F 1F 4F 04 37 E4 E0
+R 00 00 00 00
+T 30 00 1E 07 D0 F3 08 95
+R 00 00 00 00
+T 36 00 0E 94 00 00 B8 01 44 27 55 27 03 C0 EF DF
+R 00 00 00 00 12 04 00 00
+T 44 00 4F 5F 5F 4F 46 17 57 07 D0 F3 0E 94 00 00
+R 00 00 00 00 12 0E 01 00
+T 52 00 08 95
+R 00 00 00 00

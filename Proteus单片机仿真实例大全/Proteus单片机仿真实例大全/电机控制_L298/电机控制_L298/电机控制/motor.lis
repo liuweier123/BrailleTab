@@ -1,0 +1,207 @@
+                        .module motor.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\avr\电机控制\电机控制\motor.c
+ 0000                   .dbfunc e for_ward _for_ward fV
+ 0000           ;          speed -> R16
+                        .even
+ 0000           _for_ward::
+ 0000                   .dbline -1
+ 0000                   .dbline 9
+ 0000           ; /****************************************************************
+ 0000           ; ** 文件名：motor.c   电机驱动函数
+ 0000           ; ****************************************************************/
+ 0000           ; #include "config.h"
+ 0000           ; 
+ 0000           ; /******************************************************************************/
+ 0000           ; //正转，速度
+ 0000           ; void for_ward(uint8 speed)
+ 0000           ; {
+ 0000                   .dbline 10
+ 0000           ;        if(speed!=0)
+ 0000 0023              tst R16
+ 0002 21F0              breq L2
+ 0004           X0:
+ 0004                   .dbline 11
+ 0004           ;         {
+ 0004                   .dbline 12
+ 0004           ;          OCR2 = speed;
+ 0004 03BD              out 0x23,R16
+ 0006           L4:
+ 0006                   .dbline 13
+ 0006           ;          while(ASSR&(1<<TCR2UB)==1) ; //启动TC2 pwm 输出，异步操作需要等待 OCR2写入完毕
+ 0006           L5:
+ 0006                   .dbline 13
+ 0006 22B4              in R2,0x22
+ 0008 20FC              sbrc R2,0
+ 000A FDCF              rjmp L4
+ 000C           X1:
+ 000C                   .dbline 14
+ 000C           ;         }
+ 000C           L2:
+ 000C                   .dbline 15
+ 000C           ;        TC2_EN;   //pwm_start
+ 000C 89B7              in R24,0x39
+ 000E 806C              ori R24,192
+ 0010 89BF              out 0x39,R24
+ 0012                   .dbline 16
+ 0012           ;        moto_en1;
+ 0012 949A              sbi 0x12,4
+ 0014                   .dbline 17
+ 0014           ;        moto_uen2;
+ 0014 9598              cbi 0x12,5
+ 0016                   .dbline -2
+ 0016           L1:
+ 0016                   .dbline 0 ; func end
+ 0016 0895              ret
+ 0018                   .dbsym r speed 16 c
+ 0018                   .dbend
+ 0018                   .dbfunc e back_ward _back_ward fV
+ 0018           ;          speed -> R16
+                        .even
+ 0018           _back_ward::
+ 0018                   .dbline -1
+ 0018                   .dbline 22
+ 0018           ; }
+ 0018           ; /******************************************************************************/
+ 0018           ; //反转，速度
+ 0018           ; void back_ward(uint8 speed)
+ 0018           ; {
+ 0018                   .dbline 23
+ 0018           ;        if(speed!=0)
+ 0018 0023              tst R16
+ 001A 21F0              breq L8
+ 001C           X2:
+ 001C                   .dbline 24
+ 001C           ;       {
+ 001C                   .dbline 25
+ 001C           ;        OCR2 = speed;
+ 001C 03BD              out 0x23,R16
+ 001E           L10:
+ 001E                   .dbline 26
+ 001E           ;          while(ASSR&(1<<TCR2UB)==1) ;// 启动TC2 pwm 输出，异步操作需要等待OCR2写入完毕
+ 001E           L11:
+ 001E                   .dbline 26
+ 001E 22B4              in R2,0x22
+ 0020 20FC              sbrc R2,0
+ 0022 FDCF              rjmp L10
+ 0024           X3:
+ 0024                   .dbline 27
+ 0024           ;     }
+ 0024           L8:
+ 0024                   .dbline 28
+ 0024           ;    TC2_EN;   //pwm start
+ 0024 89B7              in R24,0x39
+ 0026 806C              ori R24,192
+ 0028 89BF              out 0x39,R24
+ 002A                   .dbline 29
+ 002A           ;    moto_uen1;
+ 002A 9498              cbi 0x12,4
+ 002C                   .dbline 30
+ 002C           ;    moto_en2;
+ 002C 959A              sbi 0x12,5
+ 002E                   .dbline -2
+ 002E           L7:
+ 002E                   .dbline 0 ; func end
+ 002E 0895              ret
+ 0030                   .dbsym r speed 16 c
+ 0030                   .dbend
+ 0030                   .dbfunc e motor_stop _motor_stop fV
+                        .even
+ 0030           _motor_stop::
+ 0030                   .dbline -1
+ 0030                   .dbline 35
+ 0030           ; }
+ 0030           ; /******************************************************************************/
+ 0030           ; //停止
+ 0030           ; void motor_stop(void)
+ 0030           ; {
+ 0030                   .dbline 36
+ 0030           ;  moto_en1;   //同时置一停止
+ 0030 949A              sbi 0x12,4
+ 0032                   .dbline 37
+ 0032           ;  moto_en2;
+ 0032 959A              sbi 0x12,5
+ 0034                   .dbline 38
+ 0034           ;  TC2_DIS;    //pwm stop
+ 0034 89B7              in R24,0x39
+ 0036 8F77              andi R24,127
+ 0038 89BF              out 0x39,R24
+ 003A                   .dbline -2
+ 003A           L13:
+ 003A                   .dbline 0 ; func end
+ 003A 0895              ret
+ 003C                   .dbend
+ 003C                   .dbfunc e speed_add _speed_add fV
+ 003C           ;            add -> R16
+                        .even
+ 003C           _speed_add::
+ 003C                   .dbline -1
+ 003C                   .dbline 44
+ 003C           ; }
+ 003C           ; /******************************************************************************/
+ 003C           ; 
+ 003C           ; //加速
+ 003C           ; void speed_add(uint8 add)
+ 003C           ; {
+ 003C                   .dbline 45
+ 003C           ;  if(OCR2 + add < 240) //防止出现极大情况时候跳跃到很小。
+ 003C 83B5              in R24,0x23
+ 003E 800F              add R24,R16
+ 0040 803F              cpi R24,240
+ 0042 18F4              brsh L15
+ 0044           X4:
+ 0044                   .dbline 46
+ 0044           ;  {
+ 0044                   .dbline 47
+ 0044           ;    OCR2 = OCR2 + add;
+ 0044 23B4              in R2,0x23
+ 0046 200E              add R2,R16
+ 0048 23BC              out 0x23,R2
+ 004A                   .dbline 48
+ 004A           ;  }
+ 004A           L15:
+ 004A                   .dbline -2
+ 004A           L14:
+ 004A                   .dbline 0 ; func end
+ 004A 0895              ret
+ 004C                   .dbsym r add 16 c
+ 004C                   .dbend
+ 004C                   .dbfunc e speed_subtract _speed_subtract fV
+ 004C           ;       subtract -> R16
+                        .even
+ 004C           _speed_subtract::
+ 004C                   .dbline -1
+ 004C                   .dbline 54
+ 004C           ; }
+ 004C           ; /******************************************************************************/
+ 004C           ; 
+ 004C           ; //加速
+ 004C           ; void speed_subtract(uint8 subtract)
+ 004C           ; {
+ 004C                   .dbline 55
+ 004C           ;  if(OCR2 - subtract > 10) //防止到很小之后跳跃到很大。
+ 004C 23B4              in R2,0x23
+ 004E 201A              sub R2,R16
+ 0050 8AE0              ldi R24,10
+ 0052 8215              cp R24,R2
+ 0054 18F4              brsh L18
+ 0056           X5:
+ 0056                   .dbline 56
+ 0056           ;  {
+ 0056                   .dbline 57
+ 0056           ;   OCR2 = OCR2 - subtract;
+ 0056 23B4              in R2,0x23
+ 0058 201A              sub R2,R16
+ 005A 23BC              out 0x23,R2
+ 005C                   .dbline 58
+ 005C           ;  }
+ 005C           L18:
+ 005C                   .dbline -2
+ 005C           L17:
+ 005C                   .dbline 0 ; func end
+ 005C 0895              ret
+ 005E                   .dbsym r subtract 16 c
+ 005E                   .dbend
+ 005E           ; }
+ 005E           ; /******************************************************************************/
+ 005E           ; 

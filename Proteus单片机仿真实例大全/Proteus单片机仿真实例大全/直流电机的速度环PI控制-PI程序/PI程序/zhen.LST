@@ -1,0 +1,145 @@
+C51 COMPILER V7.08   ZHEN                                                                  08/24/2007 14:52:41 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE ZHEN
+OBJECT MODULE PLACED IN zhen.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE zhen.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <absacc.h>
+   2          #include <reg51.h>
+   3          #include <stdio.h>
+   4          bit flag=1;
+   5          unsigned char pwm=0;
+   6          sbit P21=P2^1;
+   7          sbit P20=P2^0;
+   8          unsigned char k1;
+   9          unsigned char k2,k3;
+  10          unsigned char BJ; //正负的标志位；
+  11          unsigned char EK_num[3],EK_flag[3]; //误差和符号。
+  12          unsigned char kp,ki,kd;
+  13          unsigned char UK;      //控制输出。
+  14          unsigned char negsum=0,possum=0;    //正数和与负数和。  
+  15          unsigned char temp[3]; //中间变量。
+  16          unsigned int  tmp[3];
+  17          unsigned char Highlevel=0xff;//上限输出。
+  18          unsigned char Lowlevel=0x00; //下限输出。
+  19          unsigned char AD_in=153,AD_out;   //指令和反馈。
+  20          unsigned char a,b;
+  21          unsigned char m=0,n=0;  
+  22          void PWM_generator() interrupt 3 using 0    //定时255us,0.063s。
+  23          {
+  24   1      
+  25   1      if(flag==1)
+  26   1       {a--;
+  27   2        if(a==0)
+  28   2          {flag=0;
+  29   3              a=0xff-UK;
+  30   3              }
+  31   2         else
+  32   2         {P21=0;}
+  33   2       }
+  34   1      if(flag==0)
+  35   1       {b--;
+  36   2        if(b==0)
+  37   2          {flag=1;
+  38   3              b=UK;
+  39   3          } 
+  40   2        else
+  41   2       {P21=1;}
+  42   2       } 
+  43   1      
+  44   1      }
+  45          void PID_generator() interrupt 1 using 0  //PID定时，250us*380~0.1秒。
+  46          { m++;
+  47   1       if(m==10) 
+  48   1         { m=0;     
+  49   2           n++;
+  50   2           
+  51   2                AD_out=P1;
+  52   2                   if( AD_in>AD_out)
+  53   2                   {
+  54   3                       temp[0]=AD_in-AD_out;
+  55   3                        BJ=0; //正负标志位。
+C51 COMPILER V7.08   ZHEN                                                                  08/24/2007 14:52:41 PAGE 2   
+
+  56   3                       }
+  57   2                         
+  58   2             else
+  59   2                {
+  60   3                        temp[0]=AD_out-AD_in;
+  61   3                        BJ=1; //正负标志位。
+  62   3                        }
+  63   2              
+  64   2           }     OV=0;
+  65   1                 k1=temp[0]*kp;
+  66   1                 if(OV==1)
+  67   1                    {OV=0;k1=0xfe;}
+  68   1      }
+  69          void PID_work2()
+  70          {negsum=0;possum=0;
+  71   1       if(BJ==0)
+  72   1        {possum+=k1;
+  73   2         temp[2]=temp[2]+temp[0];}
+  74   1       else
+  75   1        {negsum+=k1;
+  76   2         temp[2]=temp[2]-temp[0];}
+  77   1       k3=temp[2]/10;
+  78   1       if(possum>negsum)
+  79   1        {k2=possum-negsum; //用8位数据存储结果
+  80   2        CY=0;
+  81   2       temp[1]=k3+k1;  //误差积累，
+  82   2       {if(CY==1)  //16位判断。
+  83   3        UK=0xfe;
+  84   3        else
+  85   3        UK=k1+k3;}//
+  86   2       }
+  87   1      else
+  88   1      {
+  89   2      
+  90   2      UK=1;
+  91   2      }P3=UK;
+  92   1      }
+  93          
+  94          
+  95          main()
+  96          {kp=5;
+  97   1      ki=1;
+  98   1      kd=1;
+  99   1      TMOD=0x22;
+ 100   1      TH0=0x06; //对TH0 TL0赋值
+ 101   1      TL0=0x06;
+ 102   1      TH1=0x06; //对TH1 TL1赋值
+ 103   1      TL1=0x06;
+ 104   1      P20=1;
+ 105   1      ET0=1;
+ 106   1      TF0=0;
+ 107   1      ET1=1;
+ 108   1      TF1=0;
+ 109   1      TR1=1;
+ 110   1      TR0=1;
+ 111   1      EA=1;
+ 112   1      while(1)
+ 113   1      {
+ 114   2       
+ 115   2       PID_work2();
+ 116   2      }
+ 117   1      
+C51 COMPILER V7.08   ZHEN                                                                  08/24/2007 14:52:41 PAGE 3   
+
+ 118   1      } 
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    247    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     34    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

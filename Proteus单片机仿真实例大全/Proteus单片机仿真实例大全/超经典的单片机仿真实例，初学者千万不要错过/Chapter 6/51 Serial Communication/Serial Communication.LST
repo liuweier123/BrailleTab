@@ -1,0 +1,51 @@
+A51 MACRO ASSEMBLER  SERIAL_COMMUNICATION                                                 07/31/2006 13:52:30 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.00
+OBJECT MODULE PLACED IN Serial Communication.OBJ
+ASSEMBLER INVOKED BY: e:\Program Files\Keil\C51\BIN\A51.EXE Serial Communication.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0030                   1     ORG     30H
+0030 758160            2     START:  MOV     SP,#60H
+0033 759850            3             MOV     SCON,#01010000B ;设定串行方式：8位异步，允许接收
+0036 758920            4             MOV     TMOD,#20H       ;设定计数器1为模式2
+0039 438780            5             ORL     PCON,#10000000B ;波特率加倍
+003C 758DF3            6             MOV     TH1,#0F3H       ;设定波特率为4800
+003F 758BF3            7             MOV     TL1,#0F3H
+0042 D28E              8     SETB    TR1                     ;计数器1开始计时
+0044 3098FD            9     AGAIN:  JNB     RI,$            ;等待接收
+0047 C298             10             CLR     RI              ;清接收标志
+0049 E599             11             MOV     A,SBUF          ;接受数据缓冲
+004B F599             12             MOV     SBUF,A          ;送发送数据
+004D 3099FD           13             JNB     TI,$            ;等待发送完成
+0050 C299             14             CLR     TI              ;清发送标志
+0052 80F0             15             SJMP    AGAIN
+                      16             END
+A51 MACRO ASSEMBLER  SERIAL_COMMUNICATION                                                 07/31/2006 13:52:30 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AGAIN. . . . . . .  C ADDR   0044H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
+RI . . . . . . . .  B ADDR   0098H.0 A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+START. . . . . . .  C ADDR   0030H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

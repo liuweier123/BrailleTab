@@ -1,0 +1,283 @@
+XL
+H 4 areas 1C global symbols
+M test2.c
+S pop_gset3x Ref0000
+S pop_gset5x Ref0000
+S _OSStart Ref0000
+S _write164 Ref0000
+S _EEPROMwrite Ref0000
+S _putchar Ref0000
+S _OSTickISR Ref0000
+S push_gset3x Ref0000
+S push_gset5x Ref0000
+S _OSInit Ref0000
+S _init164 Ref0000
+S _OSTimeDly Ref0000
+S _EEPROMread Ref0000
+S _OSTaskCreate Ref0000
+S mod8u Ref0000
+S div8u Ref0000
+A text size 260 flags 0
+dbfile D:\job\avrtest\光盘\开发板\iccavr\test\test2.c
+dbfunc e uart0_init 0 fV
+dbline FFFFFFFF 0
+dbline 1D 0
+dbline 1E 0
+dbline 1F 4
+dbline 20 6
+dbline 21 A
+dbline 22 E
+dbline 23 10
+dbline FFFFFFFE 14
+dbline 24 14
+dbline 0 14
+dbfunc e TC2_Init 16 fV
+dbline FFFFFFFF 16
+dbline 2D 16
+dbline 31 16
+dbline 32 1C
+dbline 33 20
+dbline 34 22
+dbline 36 26
+dbline 39 2C
+dbline FFFFFFFE 2E
+dbline 3A 2E
+dbline 0 2E
+dbfunc e main 30 fV
+dbline FFFFFFFF 32
+dbline 46 32
+dbline 47 32
+dbline 48 34
+dbline 4C 4A
+dbline 51 60
+dbline 52 62
+dbline 53 64
+dbline FFFFFFFE 66
+dbline 54 66
+dbline 0 68
+dbfunc e Task1 6A fV
+dbsym r key2 C c
+dbsym r i E c
+dbsym l key1 0 c
+dbsym r data A pV
+dbline FFFFFFFF 70
+dbline 57 70
+dbline 59 70
+dbline 5A 70
+dbline 5B 76
+dbline 5C 7C
+dbline 5D 7E
+dbline 5E 80
+dbline 5F 82
+dbline 60 88
+dbline 60 88
+dbline 62 88
+dbline 63 8E
+dbline 63 92
+dbline 64 92
+dbline 65 94
+dbline 65 9A
+dbline 66 9A
+dbline 67 A6
+dbline 68 A6
+dbline 68 AE
+dbline 69 AE
+dbline 69 B4
+dbline 6A B4
+dbline 6A C4
+dbline 6B CA
+dbline 6C CA
+dbline 6C D0
+dbline 6D D0
+dbline 6D E0
+dbline 6E E6
+dbline 6F E6
+dbline 70 E6
+dbline 71 E8
+dbline 72 E8
+dbline 73 EA
+dbline 74 EA
+dbline 78 EC
+dbline 79 F8
+dbline 7A 104
+dbline 7B 110
+dbline 7C 11C
+dbline 7C 144
+dbline 7D 144
+dbline 7D 156
+dbline 7E 158
+dbline 7E 16A
+dbline 7F 16C
+dbline 7F 17E
+dbline 80 180
+dbline 80 192
+dbline 82 192
+dbline 82 1A0
+dbline 84 1A2
+dbline 85 1A8
+dbline 60 1A8
+dbline 60 1A8
+dbline FFFFFFFE 1AA
+dbline 0 1AE
+dbfunc e Task2 1B0 fV
+dbsym r data A pV
+dbline FFFFFFFF 1B4
+dbline 87 1B4
+dbline 88 1B4
+dbline 89 1B4
+dbline 8A 1BA
+dbline 8B 1C4
+dbline 8C 1CE
+dbline 8C 1CE
+dbline 8D 1CE
+dbline 8D 1D6
+dbline 8E 1D6
+dbline 8E 1E6
+dbline 8F 1E6
+dbline 90 1EC
+dbline 90 1FC
+dbline 91 1FC
+dbline 92 202
+dbline 92 212
+dbline 93 218
+dbline 94 218
+dbline 95 218
+dbline 96 222
+dbline 97 22C
+dbline 98 22C
+dbline 99 230
+dbline 9A 238
+dbline 9B 240
+dbline 9C 244
+dbline 9D 24C
+dbline 9E 254
+dbline 9F 25A
+dbline 8C 25A
+dbline 8C 25A
+dbline FFFFFFFE 25C
+dbline 0 25E
+S _main Def0030
+S _TC2_Init Def0016
+S _Task1 Def006A
+S _Task2 Def01B0
+S _uart0_init Def0000
+A vector size A flags C
+A bss size D1 flags 20
+dbfile D:\job\avrtest\光盘\开发板\iccavr\test\test2.c
+dbsym e Task2Stack 0 A[100:100]c
+dbsym e Task1Stack 64 A[100:100]c
+dbsym e state C8 c
+dbsym e s C9 c
+dbsym e m CA c
+dbsym e h CB c
+dbsym e display CC A[5:5]c
+S _Task1Stack Def0064
+S _Task2Stack Def0000
+S _display Def00CC
+S _state Def00C8
+S _h Def00CB
+S _m Def00CA
+S _s Def00C9
+A func_lit size 4 flags 0
+T 00 00 22 24 2A B8 2B B8 86 E8 80 BD 83 E3 89 B9
+R 00 00 00 00
+T 0E 00 20 BC 88 E0 8A B9 08 95
+R 00 00 00 00
+T 16 00 89 B7 8F 7B 89 BF 22 24 25 BC 24 BC 84 E0
+R 00 00 00 00
+T 24 00 85 BD 89 B7 80 64 89 BF 78 94 08 95
+R 00 00 00 00
+T 08 00 00 C0
+R 00 00 01 00 82 02 06 00
+T 30 00 23 97 00 D0 87 E0 8A 83 80 E0
+R 00 00 00 00 82 04 09 00 20 0A 02 00 C7 00
+T 3A 00 90 E0 88 83 99 83 22 27 33 27 00 E0
+R 00 00 00 00 40 02 02 00 C7 00 20 0C 03 00 02 00
+T 46 00 10 E0 00 D0 88 E0 8A 83
+R 00 00 00 00 40 02 03 00 02 00 82 04 0D 00
+T 4E 00 80 E0 90 E0 88 83 99 83 22 27 33 27
+R 00 00 00 00 20 02 02 00 63 00 40 04 02 00 63 00
+T 5A 00 00 E0 10 E0
+R 00 00 00 00 20 02 03 00 00 00 40 04 03 00 00 00
+T 5E 00 00 D0 DA DF CE DF 00 D0 23 96 08 95
+R 00 00 00 00 82 02 0D 00 82 08 02 00
+T 6A 00 00 D0 58 01 21 97 82 B3 8C 61 82 BB 81 B3
+R 00 00 00 00 82 02 08 00
+T 78 00 83 7E 81 BB 95 9A 8D 9A 00 D0 81 E0 80 93
+R 00 00 00 00 82 0A 0A 00
+T 86 00 C8 00 80 B3 8C 71 88 83 8C 31 59 F5 95 98
+R 00 00 00 00 00 02 02 00
+T 94 00 8C 2D 8C 30 31 F4 81 E0 20 90 C8 00 28 26
+R 00 00 00 00 00 0C 02 00
+T A2 00 20 92 C8 00 20 90 C8 00 22 20 F1 F4 8C 2D
+R 00 00 00 00 00 04 02 00 00 08 02 00
+T B0 00 88 31 59 F4 80 91 C9 00 8F 5F 28 2E 20 92
+R 00 00 00 00 00 08 02 00
+T BE 00 C9 00 8C 33 19 F4 22 24 20 92 C9 00 8C 2D
+R 00 00 00 00 00 02 02 00 00 0C 02 00
+T CC 00 84 31 69 F4 80 91 CA 00 8F 5F 28 2E 20 92
+R 00 00 00 00 00 08 02 00
+T DA 00 CA 00 8C 33 29 F4 22 24 20 92 CA 00 01 C0
+R 00 00 00 00 00 02 02 00 00 0C 02 00
+T E8 00 95 9A C8 80 1A E0 00 91 C9 00 00 D0 00 93
+R 00 00 00 00 00 0A 02 00 82 0C 0E 00
+T F6 00 CC 00 1A E0 00 91 C9 00 00 D0 00 93
+R 00 00 00 00 00 02 02 00 00 08 02 00 82 0A 0F 00
+T 02 01 CD 00 1A E0 00 91 CA 00 00 D0 00 93
+R 00 00 00 00 00 02 02 00 00 08 02 00 82 0A 0E 00
+T 0E 01 CE 00 1A E0 00 91 CA 00 00 D0 00 93
+R 00 00 00 00 00 02 02 00 00 08 02 00 82 0A 0F 00
+T 1A 01 CF 00 AE 2C BB 24 AA 20 11 F4 BB 20 71 F0
+R 00 00 00 00 00 02 02 00
+T 28 01 C5 01 81 30 E0 E0 9E 07 99 F0 82 30 E0 E0
+R 00 00 00 00
+T 36 01 9E 07 C9 F0 83 30 E0 E0 9E 07 F9 F0 27 C0
+R 00 00 00 00
+T 44 01 80 E0 90 E0 EE 2D FF 27 E8 0F F9 1F 00 81
+R 00 00 00 00 20 02 02 00 CC 00 40 04 02 00 CC 00
+T 52 01 00 67 00 D0 1D C0 80 E0
+R 00 00 00 00 82 04 03 00 20 08 02 00 CC 00
+T 5A 01 90 E0 EE 2D FF 27 E8 0F F9 1F 00 81 00 6B
+R 00 00 00 00 40 02 02 00 CC 00
+T 68 01 00 D0 13 C0 80 E0
+R 00 00 00 00 82 02 03 00 20 06 02 00 CC 00
+T 6E 01 90 E0 EE 2D FF 27 E8 0F F9 1F 00 81 00 6D
+R 00 00 00 00 40 02 02 00 CC 00
+T 7C 01 00 D0 09 C0 80 E0
+R 00 00 00 00 82 02 03 00 20 06 02 00 CC 00
+T 82 01 90 E0 EE 2D FF 27 E8 0F F9 1F 00 81 00 6E
+R 00 00 00 00 40 02 02 00 CC 00
+T 90 01 00 D0 8E 2D 8F 5F 28 2E E8 2E 83 E0 82 15
+R 00 00 00 00 82 02 03 00
+T 9E 01 08 F4 EE 24 02 E0 10 E0 00 D0 6F CF 21 96
+R 00 00 00 00 82 0A 0B 00
+T AC 01 00 D0 08 95
+R 00 00 00 00 82 02 01 00
+T B0 01 00 D0 58 01 05 E0 10 E0 00 D0 01 E0 10 E0
+R 00 00 00 00 82 02 07 00 82 0A 0B 00
+T BE 01 00 D0 00 93 C9 00 02 E0 10 E0 00 D0 00 93
+R 00 00 00 00 82 02 0C 00 00 06 02 00 82 0C 0C 00
+T CC 01 CA 00 80 91 C8 00 81 30 59 F5 80 91 C9 00
+R 00 00 00 00 00 02 02 00 00 06 02 00 00 0E 02 00
+T DA 01 8F 5F 28 2E 20 92 C9 00 8C 33 C9 F4 22 24
+R 00 00 00 00 00 08 02 00
+T E8 01 20 92 C9 00 80 91 CA 00 8F 5F 28 2E 20 92
+R 00 00 00 00 00 04 02 00 00 08 02 00
+T F6 01 CA 00 8C 33 71 F4 22 24 20 92 CA 00 80 91
+R 00 00 00 00 00 02 02 00 00 0C 02 00
+T 04 02 CB 00 8F 5F 28 2E 20 92 CB 00 88 31 19 F4
+R 00 00 00 00 00 02 02 00 00 0A 02 00
+T 12 02 22 24 20 92 CB 00 20 91 C9 00 01 E0 10 E0
+R 00 00 00 00 00 06 02 00 00 0A 02 00
+T 20 02 00 D0 20 91 CA 00 02 E0 10 E0 00 D0 0A E0
+R 00 00 00 00 82 02 04 00 00 06 02 00 82 0C 04 00
+T 2E 02 00 D0 00 91 CF 00 00 5D 00 D0 00 91
+R 00 00 00 00 82 02 05 00 00 06 02 00 82 0A 05 00
+T 3A 02 CE 00 00 5D 00 D0 0A E3 00 D0 00 91
+R 00 00 00 00 00 02 02 00 82 06 05 00 82 0A 05 00
+T 46 02 CD 00 00 5D 00 D0 00 91 CC 00 00 5D
+R 00 00 00 00 00 02 02 00 82 06 05 00 00 0A 02 00
+T 52 02 00 D0 04 EF 11 E0 00 D0 B9 CF 00 D0 08 95
+R 00 00 00 00 82 02 05 00 82 08 0B 00 82 0C 00 00
+T 00 00 D8 00 35 00
+R 00 00 03 00 10 02 00 00 10 04 00 00

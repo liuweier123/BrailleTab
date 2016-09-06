@@ -1,0 +1,338 @@
+C51 COMPILER V7.09   HURRICANELAMP                                                         09/17/2005 01:24:53 PAGE 1   
+
+
+C51 COMPILER V7.09, COMPILATION OF MODULE HURRICANELAMP
+OBJECT MODULE PLACED IN HurricaneLamp.OBJ
+COMPILER INVOKED BY: C:\Program Files\Keil\C51\BIN\C51.EXE HurricaneLamp.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <REG52.H>
+   2          
+   3          unsigned char RunMode;
+   4          //**********************************System Fuction*************************************************
+   5          void Delay1ms(unsigned int count)
+   6          {
+   7   1              unsigned int i,j;
+   8   1              for(i=0;i<count;i++)
+   9   1              for(j=0;j<120;j++);
+  10   1      }
+  11          
+  12          unsigned char code LEDDisplayCode[] = { 0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,        //0~7
+  13                                                                  0x80,0x90,0x88,0x83,0xC6,0xA1,0x86,0x8E,0xFF};
+  14          
+  15          void Display(unsigned char Value)
+  16          {
+  17   1              P3 = LEDDisplayCode[Value];
+  18   1      }
+  19          
+  20          void LEDFlash(unsigned char Count)
+  21          {
+  22   1              unsigned char i;
+  23   1              bit Flag;
+  24   1              for(i = 0; i<Count;i++)
+  25   1              {
+  26   2                      Flag = !Flag;
+  27   2                      if(Flag)
+  28   2                              Display(RunMode);
+  29   2                      else
+  30   2                              Display(0x10);
+  31   2                      Delay1ms(100);
+  32   2              }
+  33   1              Display(RunMode);
+  34   1      }
+  35          
+  36          unsigned char GetKey(void)
+  37          {
+  38   1              unsigned char KeyTemp,CheckValue,Key = 0x00;
+  39   1              CheckValue = P2&0x32;
+  40   1              if(CheckValue==0x32)
+  41   1                      return 0x00;
+  42   1              
+  43   1              Delay1ms(10);
+  44   1              KeyTemp = P2&0x32;
+  45   1              if(KeyTemp==CheckValue)
+  46   1                      return 0x00;
+  47   1      
+  48   1              if(!(CheckValue&0x02))
+  49   1                      Key|=0x01;
+  50   1              if(!(CheckValue&0x10))
+  51   1                      Key|=0x02;
+  52   1              if(!(CheckValue&0x20))
+  53   1                      Key|=0x04;
+  54   1              return Key;
+  55   1      }
+C51 COMPILER V7.09   HURRICANELAMP                                                         09/17/2005 01:24:53 PAGE 2   
+
+  56          
+  57          unsigned int TimerCount,SystemSpeed,SystemSpeedIndex;
+  58          void InitialTimer2(void)
+  59          {
+  60   1              T2CON  = 0x00;                  //16 Bit Auto-Reload Mode
+  61   1              TH2 = RCAP2H = 0xFC;    //重装值,初始值 TL2 = RCAP2L = 0x18;
+  62   1              ET2=1;                                  //定时器 2 中断允许
+  63   1              TR2 = 1;                                //定时器 2 启动
+  64   1              EA=1;
+  65   1      }
+  66          
+  67          unsigned int code SpeedCode[]={   1,   2,   3,   5,   8,  10,  14,  17,  20,  30,
+  68                                                                       40,  50,  60,  70,  80,  90, 100, 120, 140, 160,
+  69                                                                          180, 200, 300, 400, 500, 600, 700, 800, 900,1000};//30
+  70          void SetSpeed(unsigned char Speed)
+  71          {
+  72   1              SystemSpeed =SpeedCode[Speed];
+  73   1      }
+  74          
+  75          void LEDShow(unsigned int LEDStatus)
+  76          {
+  77   1              P1 = ~(LEDStatus&0x00FF);
+  78   1              P0 = ~((LEDStatus>>8)&0x00FF);
+  79   1      }
+  80          
+  81          void InitialCPU(void)
+  82          {
+  83   1              RunMode = 0x00;
+  84   1              TimerCount = 0;
+  85   1              SystemSpeedIndex = 10;
+  86   1      
+  87   1              P1 = 0x00;
+  88   1              P0 = 0x00;
+  89   1              P2 = 0xFF;
+  90   1              P3 = 0x00;
+  91   1              Delay1ms(500);
+  92   1              P1 = 0xFF;
+  93   1              P0 = 0xFF;
+  94   1              P2 = 0xFF;
+  95   1              P3 = 0xFF;
+  96   1              SetSpeed(SystemSpeedIndex);
+  97   1              Display(RunMode);
+  98   1      }
+  99          
+ 100          //Mode 0
+ 101          unsigned int LEDIndex = 0;
+ 102          bit LEDDirection = 1,LEDFlag = 1;
+ 103          void Mode_0(void)
+ 104          {
+ 105   1              LEDShow(0x0001<<LEDIndex);
+ 106   1              LEDIndex = (LEDIndex+1)%16;
+ 107   1      }
+ 108          //Mode 1
+ 109          void Mode_1(void)
+ 110          {
+ 111   1              LEDShow(0x8000>>LEDIndex);
+ 112   1              LEDIndex = (LEDIndex+1)%16;
+ 113   1      }
+ 114          //Mode 2
+ 115          void Mode_2(void)
+ 116          {
+ 117   1              if(LEDDirection)
+C51 COMPILER V7.09   HURRICANELAMP                                                         09/17/2005 01:24:53 PAGE 3   
+
+ 118   1                      LEDShow(0x0001<<LEDIndex);
+ 119   1              else
+ 120   1                      LEDShow(0x8000>>LEDIndex);
+ 121   1              if(LEDIndex==15)
+ 122   1                      LEDDirection = !LEDDirection;
+ 123   1         LEDIndex = (LEDIndex+1)%16;
+ 124   1      }
+ 125          //Mode 3
+ 126          void Mode_3(void)
+ 127          {
+ 128   1              if(LEDDirection)
+ 129   1                      LEDShow(~(0x0001<<LEDIndex));
+ 130   1              else
+ 131   1                      LEDShow(~(0x8000>>LEDIndex));
+ 132   1              if(LEDIndex==15)
+ 133   1                      LEDDirection = !LEDDirection;
+ 134   1         LEDIndex = (LEDIndex+1)%16;
+ 135   1      }
+ 136          
+ 137          //Mode 4
+ 138          void Mode_4(void)
+ 139          {
+ 140   1              if(LEDDirection)
+ 141   1              {
+ 142   2                      if(LEDFlag)
+ 143   2                              LEDShow(0xFFFE<<LEDIndex);
+ 144   2                      else
+ 145   2                              LEDShow(~(0x7FFF>>LEDIndex));
+ 146   2              }
+ 147   1              else
+ 148   1              {
+ 149   2                      if(LEDFlag)
+ 150   2                              LEDShow(0x7FFF>>LEDIndex);
+ 151   2                      else
+ 152   2                              LEDShow(~(0xFFFE<<LEDIndex));
+ 153   2              }
+ 154   1              if(LEDIndex==15)
+ 155   1              {
+ 156   2                      LEDDirection = !LEDDirection;
+ 157   2                      if(LEDDirection)        LEDFlag = !LEDFlag;
+ 158   2              }
+ 159   1              LEDIndex = (LEDIndex+1)%16;
+ 160   1      }
+ 161          
+ 162          //Mode 5
+ 163          void Mode_5(void)
+ 164          {
+ 165   1              if(LEDDirection)
+ 166   1                      LEDShow(0x000F<<LEDIndex);
+ 167   1              else
+ 168   1                      LEDShow(0xF000>>LEDIndex);
+ 169   1              if(LEDIndex==15)
+ 170   1                      LEDDirection = !LEDDirection;
+ 171   1          LEDIndex = (LEDIndex+1)%16;
+ 172   1      }
+ 173          
+ 174          //Mode 6
+ 175          void Mode_6(void)
+ 176          {
+ 177   1              if(LEDDirection)
+ 178   1                      LEDShow(~(0x000F<<LEDIndex));
+ 179   1              else
+C51 COMPILER V7.09   HURRICANELAMP                                                         09/17/2005 01:24:53 PAGE 4   
+
+ 180   1                      LEDShow(~(0xF000>>LEDIndex));
+ 181   1              if(LEDIndex==15)
+ 182   1                      LEDDirection = !LEDDirection;
+ 183   1              LEDIndex = (LEDIndex+1)%16;
+ 184   1      }
+ 185          
+ 186          //Mode 7
+ 187          void Mode_7(void)
+ 188          {
+ 189   1              if(LEDDirection)
+ 190   1                      LEDShow(0x003F<<LEDIndex);
+ 191   1              else
+ 192   1                      LEDShow(0xFC00>>LEDIndex);
+ 193   1              if(LEDIndex==9)
+ 194   1                      LEDDirection = !LEDDirection;
+ 195   1          LEDIndex = (LEDIndex+1)%10;
+ 196   1      }
+ 197          
+ 198          //Mode 8
+ 199          void Mode_8(void)
+ 200          {
+ 201   1              LEDShow(++LEDIndex);
+ 202   1      }
+ 203          
+ 204          void TimerEventRun(void)
+ 205          {
+ 206   1              if(RunMode==0x00)
+ 207   1              {
+ 208   2                      Mode_0();       
+ 209   2              }
+ 210   1              else if(RunMode ==0x01)
+ 211   1              {
+ 212   2                      Mode_1();
+ 213   2              }
+ 214   1              else if(RunMode ==0x02)
+ 215   1              {
+ 216   2                      Mode_2();
+ 217   2              }
+ 218   1              else if(RunMode ==0x03)
+ 219   1              {
+ 220   2                      Mode_3();
+ 221   2              }
+ 222   1              else if(RunMode ==0x04)
+ 223   1              {
+ 224   2                      Mode_4();
+ 225   2              }
+ 226   1              else if(RunMode ==0x05)
+ 227   1              {
+ 228   2                      Mode_5();
+ 229   2              }
+ 230   1              else if(RunMode ==0x06)
+ 231   1              {
+ 232   2                      Mode_6();
+ 233   2              }
+ 234   1              else if(RunMode ==0x07)
+ 235   1              {
+ 236   2                      Mode_7();
+ 237   2              }
+ 238   1              else if(RunMode ==0x08)
+ 239   1              {
+ 240   2                      Mode_8();
+ 241   2              }
+C51 COMPILER V7.09   HURRICANELAMP                                                         09/17/2005 01:24:53 PAGE 5   
+
+ 242   1      }
+ 243          
+ 244          void Timer2(void) interrupt 5 using 3
+ 245          {
+ 246   1              TF2 = 0;        //中断标志清除( Timer2 必须软件清标志!)
+ 247   1              if(++TimerCount>=SystemSpeed)
+ 248   1              {
+ 249   2                      TimerCount = 0;
+ 250   2                      TimerEventRun();
+ 251   2              }
+ 252   1      }
+ 253          unsigned char MusicIndex = 0;
+ 254          void KeyDispose(unsigned char Key)
+ 255          {
+ 256   1              if(Key&0x01)
+ 257   1              {
+ 258   2                      LEDDirection = 1;
+ 259   2                      LEDIndex = 0;
+ 260   2                      LEDFlag = 1;
+ 261   2                      RunMode = (RunMode+1)%9;
+ 262   2                      Display(RunMode);
+ 263   2              }
+ 264   1              if(Key&0x02)
+ 265   1              {
+ 266   2                      if(SystemSpeedIndex>0)
+ 267   2                      {
+ 268   3                              --SystemSpeedIndex;
+ 269   3                              SetSpeed(SystemSpeedIndex);
+ 270   3                      }
+ 271   2                      else
+ 272   2                      {
+ 273   3                              LEDFlash(6);
+ 274   3                      }
+ 275   2              }
+ 276   1              if(Key&0x04)
+ 277   1              {
+ 278   2                      if(SystemSpeedIndex<28)
+ 279   2                      {
+ 280   3                              ++SystemSpeedIndex;
+ 281   3                              SetSpeed(SystemSpeedIndex);
+ 282   3                      }
+ 283   2                      else
+ 284   2                      {
+ 285   3                              LEDFlash(6);
+ 286   3                      }
+ 287   2              }       
+ 288   1      }
+ 289          
+ 290          //***********************************************************************************
+ 291          main()
+ 292          {
+ 293   1              unsigned char Key;
+ 294   1              InitialCPU();
+ 295   1              InitialTimer2();
+ 296   1      
+ 297   1              while(1)
+ 298   1              {
+ 299   2                      Key = GetKey();
+ 300   2                      if(Key!=0x00)
+ 301   2                      {
+ 302   3                              KeyDispose(Key);
+ 303   3                      }
+C51 COMPILER V7.09   HURRICANELAMP                                                         09/17/2005 01:24:53 PAGE 6   
+
+ 304   2              }
+ 305   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1006    ----
+   CONSTANT SIZE    =     77    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     10       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

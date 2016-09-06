@@ -1,0 +1,1 @@
+device_init.o: E:\avr\电机控制\电机控制\config.h D:\iccv7avr\include\iom32v.h D:\iccv7avr\include\macros.h E:\avr\电机控制\电机控制\delay.h E:\avr\电机控制\电机控制\device_init.h E:\avr\电机控制\电机控制\motor.h

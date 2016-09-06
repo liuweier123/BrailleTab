@@ -1,0 +1,13 @@
+kp=3;
+ADin=ff,UK=FE,speed=240.加速过程很快，无震荡。
+ADin=f0,UK=FE,但是有震荡为0，speed=235~239。
+ADin=e0,UK=FE,0出现的纪律不低speed=218~225.
+ADin=d0,speed=201~213.
+ADin=c0,speed=188~200.
+ADin=a0,speed=168~171.
+ADin=90,speed=165~170.
+ADin=80,speed=165~169.
+ADin=50,speed=165~169.
+在80以后便无法调速了
+
+

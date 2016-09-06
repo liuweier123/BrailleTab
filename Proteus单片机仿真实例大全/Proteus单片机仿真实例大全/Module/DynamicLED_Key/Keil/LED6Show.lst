@@ -1,0 +1,105 @@
+C51 COMPILER V8.05a   LED6SHOW                                                             08/11/2007 15:13:58 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE LED6SHOW
+OBJECT MODULE PLACED IN LED6Show.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sources\LED6Show.c BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\LED6
+                    -Show.lst) OBJECT(LED6Show.obj)
+
+line level    source
+
+   1          //*************************************************************************************************
+   2          //*************************************************************************************************
+   3          //**<程序名>：LED动态扫描子函数。                                                                                                                                **
+   4          //**<功能>：    unsigned char * pucLedNum(unsigned long ulNumber);                                                       **
+   5          //**                    计算一个在000000到999999之间的数的每位数字并存储在数组中.并返回数组的首地址              **
+   6          //**                    void vShowOneNum(unsigned char ucOneNum,unsigned char ucOrder);                                  **
+   7          //**                    输入一个数字以及所要显示的位置,在LED相应位置上显示相应数字.                                              **      
+   8          //*************************************************************************************************
+   9          //*************************************************************************************************
+  10          
+  11          
+  12          //*************************************************************************************************
+  13          //*                                                                                                                                                                                               *
+  14          //*                      ******************************头文件及宏定义**************************                           *
+  15          //*                                                                                                                                                                                               *
+  16          //*************************************************************************************************
+  17          #include <at89x51.h>
+  18          #define LEDCHAR P1                      //LED 字符I/O 口,P1.0~7对应A~DP
+  19          #define LEDSELECT P0            //LED 选择I/O口，P0.0~5对应LED的1~6
+  20          
+  21          
+  22          //*************************************************************************************************
+  23          //*                                                                                                                                                                                               *
+  24          //*                       ********************************全局变量******************************                          *
+  25          //*                                                                                                                                                                                               *
+  26          //*************************************************************************************************
+  27          unsigned  char code uca_LEDCode[]=
+  28                                  {0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90};
+  29                                                  //0,1,2,3,4,5,6,7,8,9
+  30          
+  31          
+  32          unsigned char code uca_LEDSelect[]={0x01,0x02,0x04,0x08,0x10,0x20};     
+  33                                                  //分别点亮第6，5，4，3，2，1号灯.
+  34          
+  35          unsigned char uca_LedNum[6];                    
+  36                                                  //存放数字的各个位
+  37          
+  38          
+  39          //*************************************************************************************************
+  40          //*                                                                                                                                                                                               *
+  41          //*                       ************************把1个6位数的每个存储在数组中************************            *
+  42          //*                                                                                                                                                                                               *
+  43          //*************************************************************************************************
+  44          unsigned char * pucLedNum(unsigned long ulNumber)
+  45          {
+  46   1              if(ulNumber>999999)
+  47   1                      ulNumber=999999;
+  48   1              if(ulNumber<0)
+  49   1                      ulNumber=0;
+  50   1              uca_LedNum[0] = ulNumber/100000;                                                  //最高位。
+  51   1      
+  52   1              uca_LedNum[1] = (ulNumber-100000*(long)uca_LedNum[0])/10000;
+  53   1      
+  54   1              uca_LedNum[2] = (ulNumber-100000*(long)uca_LedNum[0]-10000*(long)uca_LedNum[1])/1000;
+C51 COMPILER V8.05a   LED6SHOW                                                             08/11/2007 15:13:58 PAGE 2   
+
+  55   1      
+  56   1              uca_LedNum[3] = (ulNumber-100000*(long)uca_LedNum[0]-10000*(long)uca_LedNum[1]
+  57   1                                              -1000*(long)uca_LedNum[2])/100;
+  58   1      
+  59   1              uca_LedNum[4] = (ulNumber-100000*(long)uca_LedNum[0]-10000*(long)uca_LedNum[1]
+  60   1                                              -1000*(long)uca_LedNum[2]-100*(long)uca_LedNum[3])/10;
+  61   1      
+  62   1              uca_LedNum[5] = (ulNumber-100000*(long)uca_LedNum[0]-10000*(long)uca_LedNum[1]
+  63   1                                              -1000*(long)uca_LedNum[2]-100*(long)uca_LedNum[3]-10*(long)uca_LedNum[4]);
+  64   1      
+  65   1              return uca_LedNum;
+  66   1      }
+  67          
+  68          
+  69          //*************************************************************************************************
+  70          //*                                                                                                                                                                                               *
+  71          //*                       ************************在LED的某一位上显示一个数字************************             *
+  72          //*                                                                                                                                                                                               *
+  73          //*************************************************************************************************
+  74          void vShowOneNum(unsigned char ucOneNum,unsigned char ucOrder)
+  75          {
+  76   1              LEDSELECT=0;
+  77   1              LEDCHAR=uca_LEDCode[ucOneNum];
+  78   1              LEDSELECT=uca_LEDSelect[ucOrder];                                  //ucOrder：0～5（对应LED的1～6位）
+  79   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    711    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,71 @@
+C51 COMPILER V7.08   PI_PWM2                                                               08/23/2007 15:45:22 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE PI_PWM2
+OBJECT MODULE PLACED IN PI_PWM2.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE PI_PWM2.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <absacc.h>
+   2          #include <reg51.h>
+   3          #include <stdio.h>
+   4          bit flag=1;
+   5          unsigned char pwm=0;
+   6          unsigned char a,b;
+   7          sbit P21=P2^1;
+   8          sbit P20=P2^0;
+   9          void sdf() interrupt 3 using 0    //定时255us,0.063s
+  10          {
+  11   1      P1=0x00;
+  12   1      if(flag==1)
+  13   1       {a--;
+  14   2        if(a==0)
+  15   2          {flag=0;
+  16   3              a=1;
+  17   3              }
+  18   2         else
+  19   2         {P21=0;}
+  20   2       }
+  21   1      if(flag==0)
+  22   1       {b--;
+  23   2        if(b==0)
+  24   2          {flag=1;
+  25   3              b=253;
+  26   3              }
+  27   2        else
+  28   2       {P21=1;}
+  29   2       }
+  30   1      }
+  31          main()
+  32          {TMOD=0x20;
+  33   1      TH1=0x06; //对TH0 TL0 赋值
+  34   1      TL1=0x06;
+  35   1      P20=1;
+  36   1      ET1=1;
+  37   1      TF1=0;
+  38   1      b=1;
+  39   1      a=253;
+  40   1      TR1=1;
+  41   1      EA=1;
+  42   1      while(1);
+  43   1      
+  44   1      }
+  45          
+  46           
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     60    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V7.08   PI_PWM2                                                               08/23/2007 15:45:22 PAGE 2   
+
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

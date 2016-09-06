@@ -1,0 +1,353 @@
+#include"REG51F.h"
+#include"intrins.h"
+#include"USEH1.h"
+#include"MainMyMedia.h"
+#include"lcd.h"
+#include"Music.h"
+#include"24c02.h"
+#include"PictureCode.h"
+#include"CartoonCode.h"
+#include"MusicCode.h"
+
+//位变量声明===========================================
+bit gf_50Ms = 0;
+bit gf_kLok = 0;
+bit gf_have = 0;
+bit gf_clrScreen = 0; //清屏标志
+
+//全局变量声明=========================================
+uchar g_tim2Ms = 0; 	//time0计数器
+//按键变量
+uchar g_kCou = 0;
+uchar g_kStart = 0;
+uchar g_kLast = 0;
+uchar g_kVal = 0;
+
+uchar g_cnLin=0, g_cnColumn=0, g_cnNum1=0;
+uchar g_bootDly = 0; //文字显完时延时
+uchar g_cnDly = 0;
+uchar g_jdColumn = 16;
+uchar g_jdBootDy = 0;
+uchar g_bootCartoonDly = 0;
+uchar g_cantStup = 0; //动画播放的帧指示
+
+uchar g_showLCD = 0;		//LCD显示界面控制
+uchar g_menu1=25, g_menu2=24, g_menu3=24; //光标指示
+/*e2romData[0]:头码0x55，e2romData[1]:g_menu1，e2romData[2]:g_menu2
+e2romData[3]:g_menu3，e2romData[4]：g_showLCD，e2romData[5]：累加和校验
+*/
+uchar e2romData[6]; //E2ROM缓存
+uchar chkSun;
+
+//函数声明=============================================
+void InitMCU(void);
+void WR_E2rom(void); //写E2ROM函数
+
+//主程序===============================================
+void main(void)
+{
+   InitMCU();
+   ReadDate(0, e2romData, 6); //E2ROM处理
+   chkSun = e2romData[0]+e2romData[1]+e2romData[2]+e2romData[3]+e2romData[4];
+   if((e2romData[0]==0x55)&&(e2romData[4]!=0)&&(e2romData[5]==chkSun))
+   {
+      g_menu1   = e2romData[1];
+      g_menu2   = e2romData[2];
+      g_menu3   = e2romData[3];
+      g_showLCD = e2romData[4];
+      g_cnNum1 = 18;
+      g_bootDly = 0;
+   }
+   InitLCD();
+   for(;;)
+   {
+      if(gf_50Ms)
+      {
+         gf_50Ms = 0;
+         if(g_cnNum1<=17) //上电显示
+         {
+            if(g_cnDly==0)
+            {
+               ShowChina(g_cnLin,g_cnColumn,g_cnNum1);
+               if(++g_cnNum1>=18)
+                  g_cnDly = 0;
+               else
+                  g_cnDly = 4;
+               g_cnColumn += 16;
+               if(g_cnColumn>=112)
+               {
+                  g_cnColumn = 0;
+                  g_cnLin += 2;
+               }
+            }
+            else
+               --g_cnDly;
+         }
+         else if(g_bootDly!=0)
+            --g_bootDly;
+         else  //进入正常工作
+         {
+            if(gf_have) //按键处理
+            {
+               gf_have = 0;
+               if(g_showLCD==0)
+               {
+                  if((g_kVal==KUP)&&(g_menu1!=25)) //向上选择
+                  {
+                     if(g_menu3==25) //铃声→动画
+                     {
+                        g_menu2 = 25;
+                        g_menu1 = g_menu3 = 24;
+                     }
+                     else if(g_menu2==25) //动画→图片
+                     {
+                        g_menu1 = 25;
+                        g_menu2 = g_menu3 = 24;
+                        g_jdBootDy = 30;
+                     }
+                     else { }
+                  }
+                  else if((g_kVal==KDOW)&&(g_menu3!=25)) //向下选择
+                  {
+                     if(g_menu1==25) //图片→动画
+                     {
+                        g_menu2 = 25;
+                        g_menu1 = g_menu3 = 24;
+                        g_jdBootDy = 30;
+                     }
+                     else if(g_menu2==25) //动画→铃声
+                     {
+                        g_menu3 = 25;
+                        g_menu1 = g_menu2 = 24;
+                     }
+                     else { }
+                  }
+                  else if(g_kVal==KENT)
+                  {
+                     gf_clrScreen = 1;
+                     if(g_menu1==25) 	  //选择了图片确认
+                        g_showLCD = 1;
+                     else if(g_menu2==25) //选择了动画确认
+                           g_showLCD = 2;
+                     else		 //选择了铃声确认
+                        g_showLCD = 3;
+                     
+                     
+                     WR_E2rom();
+                  }
+                  else { }
+               }
+               else
+               {
+                  if(g_kVal==KESC)  //按ESC返回菜单选择
+                  {
+                     gf_clrScreen = 1;
+                     g_showLCD = 0;
+                     g_cantStup = 0;
+                     g_jdColumn = 16;
+                     g_jdBootDy = 30;
+                     
+                     WR_E2rom();
+                  }
+               }
+            }
+            if(gf_clrScreen)
+            {
+               gf_clrScreen = 0;
+               ClearScreen(1);
+               ClearScreen(2);
+            }
+//选菜单============================
+            if(g_showLCD==0)
+            {
+               ShowChina(0,16,18); //图片
+               ShowChina(0,32,19);
+               ShowChina(2,16,20); //动画
+               ShowChina(2,32,21);
+               ShowChina(4,16,22); //铃声
+               ShowChina(4,32,23);
+               ShowChina(0,0,g_menu1); //光标
+               ShowChina(2,0,g_menu2);
+               ShowChina(4,0,g_menu3);
+            }
+//显示图片---------------------------
+            else if(g_showLCD==1)
+            {
+               ShowPicture(1, 13, 48, 101, PictureCode);
+            }
+//放动画----------------------------
+            else if(g_showLCD==2)
+            {
+               if(g_jdColumn<=96)
+               {
+                  if(g_cnDly==0)
+                  {
+                     ShowChina(2,0,26); //[ ]
+                     ShowChina(2,112,27);
+                     ShowChina(4,32,29); //请稍候…
+                     ShowChina(4,48,30);
+                     ShowChina(4,64,31);
+                     ShowChina(4,80,32);
+                     if(g_jdBootDy == 0)
+                     {
+                        ShowChina(2,g_jdColumn,28); //■
+                        g_jdColumn += 16;
+                        if(g_jdColumn>=112)
+                           {
+                              g_cnDly = 0;
+                              g_bootCartoonDly = 20;
+                           }
+                        else
+                        g_cnDly = 15;
+                     }
+                     else
+                        --g_jdBootDy;
+                  }
+                  else
+                     --g_cnDly;
+               }
+               else if(g_bootCartoonDly!=0)
+               {
+                  if(--g_bootCartoonDly==0)
+                     gf_clrScreen = 1;
+               }
+               else //进入动画播放
+               {
+                  if(g_cnDly==0)
+                  {
+                     switch(++g_cantStup)
+                     {
+                        case 1:
+                           {
+                              ShowPicture(1, 22, 48, 84, CartoonP1);
+                              g_cnDly = 8;
+                           }
+                           break;
+                        case 2:
+                           {
+                              ShowPicture(1, 22, 48, 84, CartoonP2);
+                              g_cnDly = 12;
+                           }
+                           break;
+                        default:
+                           {
+                              ShowPicture(1, 22, 48, 84, CartoonP3);
+                              g_cantStup = 0;
+                              g_cnDly = 40;
+                           }
+                     }
+                  }
+                  else
+                     --g_cnDly;
+               } //end else 进入动画播放
+            } //end else 放动画
+//放铃声----------------------------
+            else
+            {
+               ShowChina(2,16,33); //∮
+               ShowChina(2,32,34); //两
+               ShowChina(2,48,35); //只
+               ShowChina(2,64,36); //蝴
+               ShowChina(2,80,37); //蝶
+               if(g_cnDly==0)
+               {
+                  InitialSound();
+                  Play(music1,0,3,360);
+                  if(gf_have&&(g_kVal==KESC))
+                  {
+                     gf_have = 0;
+                     gf_clrScreen = 1;
+                     g_showLCD = 0;
+                     ET0 = 0;
+                     ET1 = 0;
+                     //g_cantStup = 0;
+                     //g_jdColumn = 16;
+                     //g_jdBootDy = 30;
+                     BeepIO = 0;
+                     WR_E2rom();
+                  }
+                  else
+                     g_cnDly = 40;
+               }
+               else
+                  --g_cnDly;
+            }
+         } //end else进入正常工作
+      }
+   }
+}
+//定时器2中断，10ms中断一次=========================
+void time2_interrupt(void)interrupt 5
+{
+   TF2 = 0;
+   if(++g_tim2Ms>=5)
+   {
+      g_tim2Ms = 0;
+      gf_50Ms = 01;
+   }
+//按键读取---------------
+   P0 |= 0xf0;
+   _nop_();
+   _nop_();
+   _nop_();
+   _nop_();
+   _nop_();
+   g_kStart = P0 | 0x0f;
+   if(g_cnNum1<=17) { }
+   else if(g_kStart!=g_kLast)
+   {
+      g_kLast = g_kStart;
+      g_kCou = 0;
+   }
+   else
+   {
+      if(++g_kCou>=3)
+      {
+         g_kCou = 0;
+         if(g_kStart==0xff)
+         {
+            gf_kLok = 0;
+         }
+         else if(gf_kLok) { }
+         else
+         {
+            gf_kLok = 1;
+            gf_have = 1;
+            g_kVal = g_kStart;
+         }
+      }
+   }
+}
+//子函数===============================================
+//MCU初始化----------------------
+void InitMCU(void)
+{
+   P0 = 0xff;
+   P1 = 0xff;
+   P2 = 0xff;
+   P3 = 0x7f;
+//定时器2初始化
+   T2MOD = 0xfd;
+   CP_RL2 = 0;
+   TL2 = 0xf0;
+   TH2 = 0xd8;
+   RCAP2L = 0xf0;
+   RCAP2H = 0xd8;
+   C_T2 = 0;
+   TR2 = 1;
+   ET2 = 1;
+   EA = 1;
+   gf_clrScreen = 1;
+   g_bootDly = 40;
+}
+//写E2ROM函数--------------------
+void WR_E2rom(void)
+{
+      e2romData[0] = 0x55;
+      e2romData[1] = g_menu1;
+      e2romData[2] = g_menu2;
+      e2romData[3] = g_menu3;
+      e2romData[4] = g_showLCD;
+      e2romData[5] = e2romData[0]+e2romData[1]+e2romData[2]+e2romData[3]+e2romData[4];
+      WriteDate(0, e2romData, 6);
+}

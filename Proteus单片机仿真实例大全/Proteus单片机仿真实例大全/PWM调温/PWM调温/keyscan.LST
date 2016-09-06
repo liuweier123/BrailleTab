@@ -1,0 +1,123 @@
+C51 COMPILER V7.08   KEYSCAN                                                               05/12/2007 17:30:02 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE KEYSCAN
+OBJECT MODULE PLACED IN keyscan.OBJ
+COMPILER INVOKED BY: D:\工具安装目录二\Keil C51\C51\BIN\C51.EXE keyscan.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>
+   2          //#include <at89x52.h>
+   3          //unsigned char code BCD[]={0x3f,0x06,0x5b,0x4f, //此处是将0-F转换成相应的BCD码
+   4          //                          0x66,0x6d,0x7d,0x07, 
+   5          //                          0x7f,0x6f,0x77,0x7c, 
+   6          //                          0x39,0x5e,0x79,0x71};
+   7          //unsigned char code KEY[]={0x00,0x00,0x01,0x02,0x03,//此处是为使程序通用,当键值不是按
+   8          //                                                         0x04,0x05,0x06,0x07,//这个排列时,把此表更改即可
+   9          //                                                         0x08,0x09,0x0a,0x0b,//最前面的那个0x00是为了查表方便,
+  10          //                                                         0x0c,0x0d,0x0e,0x0f};//因为键值是从1开始的
+  11                                                                  
+  12          sfr key_port=0x90;          //定义P1口为键盘扫描口
+  13          bit key_ok=0;           //有键按下的标志
+  14          
+  15          /*************延时子程序*************
+  16          ****调用一次用时18微秒,t每加1,用时增加6微秒*/
+  17          void delay(unsigned char t)
+  18          {
+  19   1       while(t--);
+  20   1      }
+  21          
+  22          
+  23          unsigned char r_left(unsigned char x)//循环左移一位
+  24          {
+  25   1       x<<=1;
+  26   1       x++;
+  27   1       return(x);
+  28   1      }
+  29          
+  30          /*************粗判有无键按下**********
+  31          ****有键按下则将key_ok置1************/
+  32          void scan_full(void)
+  33          {
+  34   1              unsigned char temp;
+  35   1              key_port=0xf0;          //低半字节为行线,高半字节为列线
+  36   1              temp=P1;
+  37   1              if(temp!=0xf0)
+  38   1              key_ok=1;
+  39   1              else key_ok=0;
+  40   1      }
+  41          /************键盘扫描程序*************************
+  42          ****功能:返回键值,当无键按下时,返回0*************/
+  43           unsigned char key_scan(void)
+  44          {
+  45   1       unsigned char temp,count=0x01,key_value;//按键返回值
+  46   1       unsigned char x_scan=0xfe,y_scan=0xef;//行、列扫描码
+  47   1       unsigned char i,j,y;           //行数和列数
+  48   1       while(1)
+  49   1       {
+  50   2              scan_full();                    //粗判是否有键按下
+  51   2              if(key_ok==1)
+  52   2              {
+  53   3                      key_ok=0;
+  54   3                      delay(200);                     //延时去抖动
+  55   3                      scan_full();                    //再次粗判是否有键按下
+C51 COMPILER V7.08   KEYSCAN                                                               05/12/2007 17:30:02 PAGE 2   
+
+  56   3                      if(key_ok==1)
+  57   3                      {
+  58   4                      for(i=0;i<4;i++)                //扫描4行
+  59   4                      {
+  60   5                                      key_port=x_scan;
+  61   5                              for(j=0;j<4;j++)                //每行4列
+  62   5                              {
+  63   6                                      temp=key_port;
+  64   6                                              temp=temp&0xf0;
+  65   6                                              y=y_scan&0xf0;
+  66   6                                              if(temp==y)
+  67   6                                              {
+  68   7                                                      while(key_ok!=0)//等待按键松开
+  69   7                                                      {
+  70   8                                                              scan_full();
+  71   8                                                      }
+  72   7                                                      key_value=count;                                                                                                
+  73   7                                                      return(key_value);//找到键值,马上返回
+  74   7                                              }
+  75   6                                              else 
+  76   6                                              {
+  77   7                                                      count++;
+  78   7                                                      y_scan=r_left(y_scan);
+  79   7                                              }        
+  80   6                                      }
+  81   5                                      y_scan=0xef;            //扫描完一列,重新对列扫描量赋初值
+  82   5                                      x_scan=r_left(x_scan);//行扫描码左移一位,扫描下一行                                     
+  83   5                              }
+  84   4                      }
+  85   3              } 
+  86   2          return(key_value);//没键按下,返回0
+  87   2       }
+  88   1      }
+  89          
+  90          //unsigned char key(void)
+  91          //{
+  92           // unsigned char x;
+  93           // unsigned char y;
+  94           // x=key_scan();
+  95           // return(x);
+  96            //y=KEY[x];   
+  97            //return y;
+  98          //}
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    114    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

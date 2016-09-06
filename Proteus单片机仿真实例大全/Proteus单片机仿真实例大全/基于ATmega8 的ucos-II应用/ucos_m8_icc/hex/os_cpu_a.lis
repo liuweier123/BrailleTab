@@ -1,0 +1,508 @@
+ 0000           ;*******************************************************************************
+ 0000           ;                                   uC/OS-II
+ 0000           ;                             The Real-Time Kernel
+ 0000           ;
+ 0000           ;                         ATmega103 Specific code
+ 0000           ;                               (ICC V6.21)
+ 0000           ;
+ 0000           ;
+ 0000           ; File:                 OS_CPU_A.S
+ 0000           ; By:                   Ole Saether
+ 0000           ; Modified by:  Joerg Meyer
+ 0000           ; Port Version: V1.00
+ 0000           ;
+ 0000           ;
+ 0000           ;*******************************************************************************
+ 0000           
+ 0000           ;include 
+ 0000           
+ 0000           ;*******************************************************************************
+ 0000           ;                 I/O PORT ADDRESSES
+ 0000           ;*******************************************************************************
+ 0000           
+ 0000           
+ 003F           SREG    = 0x3F
+ 003E           SPH     = 0x3E
+ 003D           SPL     = 0x3D
+ 003B           RAMPZ   = 0x3B
+ 0032           TCNT0   = 0x32
+ 0024           TCNT2   = 0x24
+ 0000           
+ 0000           
+ 0000           ;*******************************************************************************
+ 0000           ;                MACROS
+ 0000           ;*******************************************************************************
+ 0000           
+ 0000           				; Push registers
+ 0000                                           .macro PUSHRS
+ 0000                           ST      -Y,R0   
+ 0000                           ST      -Y,R1
+ 0000                           ST      -Y,R2
+ 0000                           ST      -Y,R3
+ 0000                           ST      -Y,R4
+ 0000                           ST      -Y,R5
+ 0000                           ST      -Y,R6
+ 0000                           ST      -Y,R7
+ 0000                           ST      -Y,R8
+ 0000                           ST      -Y,R9
+ 0000                           ST      -Y,R10
+ 0000                           ST      -Y,R11
+ 0000                           ST      -Y,R12
+ 0000                           ST      -Y,R13
+ 0000                           ST      -Y,R14
+ 0000                           ST      -Y,R15
+ 0000                           ST      -Y,R16
+ 0000                           ST      -Y,R17
+ 0000                           ST      -Y,R18
+ 0000                           ST      -Y,R19
+ 0000                           ST      -Y,R20
+ 0000                           ST      -Y,R21
+ 0000                           ST      -Y,R22
+ 0000                           ST      -Y,R23
+ 0000                           ST      -Y,R24
+ 0000                           ST      -Y,R25
+ 0000                           ST      -Y,R26
+ 0000                           ST      -Y,R27
+ 0000                           ST      -Y,R30
+ 0000                           ST      -Y,R31
+ 0000                           .macro POPRS
+ 0000                           LD      R31,Y+
+ 0000                           LD      R30,Y+
+ 0000                           LD      R27,Y+
+ 0000                           LD      R26,Y+
+ 0000                           LD      R25,Y+
+ 0000                           LD      R24,Y+
+ 0000                           LD      R23,Y+
+ 0000                           LD      R22,Y+
+ 0000                           LD      R21,Y+
+ 0000                           LD      R20,Y+
+ 0000                           LD      R19,Y+
+ 0000                           LD      R18,Y+
+ 0000                           LD      R17,Y+
+ 0000                           LD      R16,Y+
+ 0000                           LD      R15,Y+
+ 0000                           LD      R14,Y+
+ 0000                           LD      R13,Y+
+ 0000                           LD      R12,Y+
+ 0000                           LD      R11,Y+
+ 0000                           LD      R10,Y+
+ 0000                           LD      R9,Y+
+ 0000                           LD      R8,Y+
+ 0000                           LD      R7,Y+
+ 0000                           LD      R6,Y+
+ 0000                           LD      R5,Y+
+ 0000                           LD      R4,Y+
+ 0000                           LD      R3,Y+
+ 0000                           LD      R2,Y+
+ 0000                           LD      R1,Y+
+ 0000                           LD      R0,Y+
+ 0000                           .macro PUSHSP
+ 0000                           IN      R16,SPH
+ 0000                           ST      -Y,R16
+ 0000                           IN      R16,SPL
+ 0000                           ST      -Y,R16
+ 0000                           .macro POPSP
+ 0000                           LD      R16,Y+
+ 0000                           OUT     SPL,R16
+ 0000                           LD      R16,Y+
+ 0000                           OUT     SPH,R16
+ 0000                           .macro PUSHSREG
+ 0000                           IN      R16,SREG
+ 0000                           ST      -Y,R16
+ 0000                           .macro POPSREG
+ 0000                           LD      R16,Y+
+ 0000                           OUT     SREG,R16
+                                .area    text(rel)
+                
+                ;*******************************************************************************
+                ;               START HIGHEST PRIORITY TASK READY-TO-RUN
+                ;
+                ; Description : This function is called by OSStart() to start the highest
+                ; priority task that was created by your application before calling OSStart().
+                ;
+                ; Note(s):
+                ;       1) The (data)stack frame is assumed to look as follows:
+                ;
+                ;               OSTCBHighRdy->OSTCBStkPtr --> LSB of (return) stack pointer (Low memory)
+                ;                                                                               MSB of (return) stack pointer
+                ;                                                                               Flags to load in status register
+                ;                                                                               R31
+                ;                                                                               R30
+                ;                                                                               R7
+                ;                                                                               .
+                ;                                                                               .
+                ;                                                                               .
+                ;                                                                               R0  (High memory)
+                ;
+                ;               where the stack pointer points to the task start address.
+                ;
+                ;
+                ;       2) OSStartHighRdy() MUST:
+                ;               a) Call OSTaskSwHook() then,
+                ;               b) Set OSRunning to TRUE,
+                ;               c) Switch to the highest priority task.
+                ;*******************************************************************************
+                
+ 0000           _OSStartHighRdy:: 
+ 0000 00910000          LDS     R16,_OSRunning          ; Indicate that we are multitasking
+ 0004 0395              INC     R16                                     
+ 0006 00930000          STS     _OSRunning,R16          ;
+ 000A           
+ 000A E0910000          LDS     R30,_OSTCBHighRdy       ; Let Z point to TCB of highest priority task
+ 000E F0910100          LDS     R31,_OSTCBHighRdy+1     ; ready to run
+ 0012 C191              LD      R28,Z+                          ; Load Y (R29:R28) pointer
+ 0014 D191              LD      R29,Z+                          ;
+ 0016           
+ 0016 0991                      LD      R16,Y+
+ 0018 0DBF                      OUT     SPL,R16
+ 001A 0991                      LD      R16,Y+
+ 001C 0EBF                      OUT     SPH,R16
+ 001E 0991                      LD      R16,Y+
+ 0020 0FBF                      OUT     SREG,R16
+ 0022 F991                      LD      R31,Y+
+ 0024 E991                      LD      R30,Y+
+ 0026 B991                      LD      R27,Y+
+ 0028 A991                      LD      R26,Y+
+ 002A 9991                      LD      R25,Y+
+ 002C 8991                      LD      R24,Y+
+ 002E 7991                      LD      R23,Y+
+ 0030 6991                      LD      R22,Y+
+ 0032 5991                      LD      R21,Y+
+ 0034 4991                      LD      R20,Y+
+ 0036 3991                      LD      R19,Y+
+ 0038 2991                      LD      R18,Y+
+ 003A 1991                      LD      R17,Y+
+ 003C 0991                      LD      R16,Y+
+ 003E F990                      LD      R15,Y+
+ 0040 E990                      LD      R14,Y+
+ 0042 D990                      LD      R13,Y+
+ 0044 C990                      LD      R12,Y+
+ 0046 B990                      LD      R11,Y+
+ 0048 A990                      LD      R10,Y+
+ 004A 9990                      LD      R9,Y+
+ 004C 8990                      LD      R8,Y+
+ 004E 7990                      LD      R7,Y+
+ 0050 6990                      LD      R6,Y+
+ 0052 5990                      LD      R5,Y+
+ 0054 4990                      LD      R4,Y+
+ 0056 3990                      LD      R3,Y+
+ 0058 2990                      LD      R2,Y+
+ 005A 1990                      LD      R1,Y+
+ 005C 0990                      LD      R0,Y+
+ 005E 0895              RET                     ; start task
+ 0060           
+ 0060           ;*******************************************************************************
+ 0060           ;                 TASK LEVEL CONTEXT SWITCH
+ 0060           ;
+ 0060           ; Description : This function is called when a task makes a higher priority task
+ 0060           ; ready-to-run.
+ 0060           ;
+ 0060           ; Note(s):
+ 0060           ;       1) Upon entry,
+ 0060           ;               OSTCBCur     points to the OS_TCB of the task to suspend
+ 0060           ;               OSTCBHighRdy points to the OS_TCB of the task to resume
+ 0060           ;
+ 0060           ;       2) The stack frame of the task to suspend looks as follows:
+ 0060           ;
+ 0060           ;               SP      +0 --> LSB of task code address
+ 0060           ;                       +1     MSB of task code address (High memory)
+ 0060           ;
+ 0060           ;       3) The saved context of the task to resume looks as follows:
+ 0060           ;
+ 0060           ;               OSTCBHighRdy->OSTCBStkPtr --> LSB of (return) stack pointer (Low memory)
+ 0060           ;                                     MSB of (return) stack pointer
+ 0060           ;                                     Flags to load in status register
+ 0060           ;                                     R31
+ 0060           ;                                     R30
+ 0060           ;                                     R7
+ 0060           ;                                     .
+ 0060           ;                                     .
+ 0060           ;                                     .
+ 0060           ;                                     R0    (High memory)
+ 0060           ;*******************************************************************************
+ 0060           
+ 0060           _OSCtxSw::
+ 0060 0A92                      ST      -Y,R0   
+ 0062 1A92                      ST      -Y,R1
+ 0064 2A92                      ST      -Y,R2
+ 0066 3A92                      ST      -Y,R3
+ 0068 4A92                      ST      -Y,R4
+ 006A 5A92                      ST      -Y,R5
+ 006C 6A92                      ST      -Y,R6
+ 006E 7A92                      ST      -Y,R7
+ 0070 8A92                      ST      -Y,R8
+ 0072 9A92                      ST      -Y,R9
+ 0074 AA92                      ST      -Y,R10
+ 0076 BA92                      ST      -Y,R11
+ 0078 CA92                      ST      -Y,R12
+ 007A DA92                      ST      -Y,R13
+ 007C EA92                      ST      -Y,R14
+ 007E FA92                      ST      -Y,R15
+ 0080 0A93                      ST      -Y,R16
+ 0082 1A93                      ST      -Y,R17
+ 0084 2A93                      ST      -Y,R18
+ 0086 3A93                      ST      -Y,R19
+ 0088 4A93                      ST      -Y,R20
+ 008A 5A93                      ST      -Y,R21
+ 008C 6A93                      ST      -Y,R22
+ 008E 7A93                      ST      -Y,R23
+ 0090 8A93                      ST      -Y,R24
+ 0092 9A93                      ST      -Y,R25
+ 0094 AA93                      ST      -Y,R26
+ 0096 BA93                      ST      -Y,R27
+ 0098 EA93                      ST      -Y,R30
+ 009A FA93                      ST      -Y,R31
+ 009C 0FB7                      IN      R16,SREG
+ 009E 0A93                      ST      -Y,R16
+ 00A0 0EB7                      IN      R16,SPH
+ 00A2 0A93                      ST      -Y,R16
+ 00A4 0DB7                      IN      R16,SPL
+ 00A6 0A93                      ST      -Y,R16
+ 00A8           
+ 00A8 E0910000                  LDS     R30,_OSTCBCur           ; Z = OSTCBCur->OSTCBStkPtr
+ 00AC F0910100                  LDS     R31,_OSTCBCur+1         ;
+ 00B0 C193                      ST      Z+,R28                          ; Save Y (R29:R28) pointer
+ 00B2 D193                      ST      Z+,R29                          ;
+ 00B4                   
+ 00B4 00910000                  LDS     R16,_OSPrioHighRdy      ; OSPrioCur = OSPrioHighRdy
+ 00B8 00930000                  STS     _OSPrioCur,R16
+ 00BC                   
+ 00BC E0910000                  LDS     R30,_OSTCBHighRdy ; Let Z point to TCB of highest priority task
+ 00C0 F0910100                  LDS     R31,_OSTCBHighRdy+1     ; ready to run
+ 00C4 E0930000                  STS     _OSTCBCur,R30           ; OSTCBCur = OSTCBHighRdy
+ 00C8 F0930100                  STS     _OSTCBCur+1,R31         ;
+ 00CC           
+ 00CC C191                      LD      R28,Z+          ; Restore Y pointer
+ 00CE D191                      LD      R29,Z+          ;
+ 00D0           
+ 00D0 0991                      LD      R16,Y+
+ 00D2 0DBF                      OUT     SPL,R16
+ 00D4 0991                      LD      R16,Y+
+ 00D6 0EBF                      OUT     SPH,R16
+ 00D8 0991                      LD      R16,Y+
+ 00DA 0FBF                      OUT     SREG,R16
+ 00DC F991                      LD      R31,Y+
+ 00DE E991                      LD      R30,Y+
+ 00E0 B991                      LD      R27,Y+
+ 00E2 A991                      LD      R26,Y+
+ 00E4 9991                      LD      R25,Y+
+ 00E6 8991                      LD      R24,Y+
+ 00E8 7991                      LD      R23,Y+
+ 00EA 6991                      LD      R22,Y+
+ 00EC 5991                      LD      R21,Y+
+ 00EE 4991                      LD      R20,Y+
+ 00F0 3991                      LD      R19,Y+
+ 00F2 2991                      LD      R18,Y+
+ 00F4 1991                      LD      R17,Y+
+ 00F6 0991                      LD      R16,Y+
+ 00F8 F990                      LD      R15,Y+
+ 00FA E990                      LD      R14,Y+
+ 00FC D990                      LD      R13,Y+
+ 00FE C990                      LD      R12,Y+
+ 0100 B990                      LD      R11,Y+
+ 0102 A990                      LD      R10,Y+
+ 0104 9990                      LD      R9,Y+
+ 0106 8990                      LD      R8,Y+
+ 0108 7990                      LD      R7,Y+
+ 010A 6990                      LD      R6,Y+
+ 010C 5990                      LD      R5,Y+
+ 010E 4990                      LD      R4,Y+
+ 0110 3990                      LD      R3,Y+
+ 0112 2990                      LD      R2,Y+
+ 0114 1990                      LD      R1,Y+
+ 0116 0990                      LD      R0,Y+
+ 0118 0895                      RET
+ 011A           
+ 011A           
+ 011A           ;*******************************************************************************
+ 011A           ;               INTERRUPT LEVEL CONTEXT SWITCH
+ 011A           ;
+ 011A           ; Description : This function is called by OSIntExit() to perform a context
+ 011A           ; switch to a task that has been made ready-to-run by an ISR.
+ 011A           ;
+ 011A           ; Note(s):
+ 011A           ;       1) Upon entry,
+ 011A           ;               OSTCBCur     points to the OS_TCB of the task to suspend
+ 011A           ;               OSTCBHighRdy points to the OS_TCB of the task to resume
+ 011A           ;
+ 011A           ;       2) The stack frame of the task to suspend looks as follows:
+ 011A           ;
+ 011A           ;               SP      +0 --> LSB of return address of OSIntCtxSw()   (Low memory)
+ 011A           ;                       +1     MSB of return address of OSIntCtxSw()
+ 011A           ;                       +2     LSB of return address of OSIntExit()
+ 011A           ;                       +3     MSB of return address of OSIntExit()
+ 011A           ;                       +4     LSB of task code address
+ 011A           ;                       +5     MSB of task code address         (High memory)
+ 011A           ;
+ 011A           ;       3) The saved context of the task to resume looks as follows:
+ 011A           ;
+ 011A           ;               OSTCBHighRdy->OSTCBStkPtr -->   LSB of (return) stack pointer (Low mem)
+ 011A           ;                                                                               MSB of (return) stack pointer
+ 011A           ;                                                                               Flags to load in status register
+ 011A           ;                                                                               R31
+ 011A           ;                                                                               R30
+ 011A           ;                                                                               R7
+ 011A           ;                                                                               .
+ 011A           ;                                                                               .
+ 011A           ;                                                                               .
+ 011A           ;                                                                               R0              (High memory)
+ 011A           ;*******************************************************************************
+ 011A           
+ 011A           _OSIntCtxSw::
+ 011A EDB7                      IN      R30,SPL                         ; Z = SP
+ 011C FEB7                      IN      R31,SPH
+ 011E                   ;       ADIW    R30,4   ; (Uncomment if OS_CRITICAL_METHOD is 1, see OS_CPU.H)
+ 011E 3596                      ADIW    R30,5                           ; Adjust Z to point to task return address
+ 0120 FA93                      ST      -Y,R31                          ; Save SP
+ 0122 EA93                      ST      -Y,R30                          ;
+ 0124                   
+ 0124 E0910000                  LDS     R30,_OSTCBCur           ; Z = OSTCBCur->OSTCBStkPtr
+ 0128 F0910100                  LDS     R31,_OSTCBCur+1         ;
+ 012C C193                      ST      Z+,R28                          ; Save Y pointer
+ 012E D193                      ST      Z+,R29                          ;
+ 0130           
+ 0130 00910000                  LDS     R16,_OSPrioHighRdy      ; OSPrioCur = OSPrioHighRdy
+ 0134 00930000                  STS     _OSPrioCur,R16  ;
+ 0138           
+ 0138 E0910000                  LDS     R30,_OSTCBHighRdy       ; Z = OSTCBHighRdy->OSTCBStkPtr
+ 013C F0910100                  LDS     R31,_OSTCBHighRdy+1     ;
+ 0140 E0930000                  STS     _OSTCBCur,R30           ; OSTCBCur = OSTCBHighRdy
+ 0144 F0930100                  STS     _OSTCBCur+1,R31         ;
+ 0148           
+ 0148 C191                      LD      R28,Z+                          ; Restore Y pointer
+ 014A D191                      LD      R29,Z+                          ;
+ 014C 0991                      LD      R16,Y+
+ 014E 0DBF                      OUT     SPL,R16
+ 0150 0991                      LD      R16,Y+
+ 0152 0EBF                      OUT     SPH,R16
+ 0154 0991                      LD      R16,Y+
+ 0156 0FBF                      OUT     SREG,R16
+ 0158 F991                      LD      R31,Y+
+ 015A E991                      LD      R30,Y+
+ 015C B991                      LD      R27,Y+
+ 015E A991                      LD      R26,Y+
+ 0160 9991                      LD      R25,Y+
+ 0162 8991                      LD      R24,Y+
+ 0164 7991                      LD      R23,Y+
+ 0166 6991                      LD      R22,Y+
+ 0168 5991                      LD      R21,Y+
+ 016A 4991                      LD      R20,Y+
+ 016C 3991                      LD      R19,Y+
+ 016E 2991                      LD      R18,Y+
+ 0170 1991                      LD      R17,Y+
+ 0172 0991                      LD      R16,Y+
+ 0174 F990                      LD      R15,Y+
+ 0176 E990                      LD      R14,Y+
+ 0178 D990                      LD      R13,Y+
+ 017A C990                      LD      R12,Y+
+ 017C B990                      LD      R11,Y+
+ 017E A990                      LD      R10,Y+
+ 0180 9990                      LD      R9,Y+
+ 0182 8990                      LD      R8,Y+
+ 0184 7990                      LD      R7,Y+
+ 0186 6990                      LD      R6,Y+
+ 0188 5990                      LD      R5,Y+
+ 018A 4990                      LD      R4,Y+
+ 018C 3990                      LD      R3,Y+
+ 018E 2990                      LD      R2,Y+
+ 0190 1990                      LD      R1,Y+
+ 0192 0990                      LD      R0,Y+
+ 0194 0895                      RET
+ 0196           
+ 0196           ;******************************************************************************
+ 0196           ;                          SYSTEM TICK ISR
+ 0196           ;
+ 0196           ; Description: This function is the ISR used to notify uC/OS-II that a system
+ 0196           ; tick has occurred.
+ 0196           ;
+ 0196           ;
+ 0196           ;*******************************************************************************
+ 0196           ; 
+ 0196           _OSTickISR::    
+ 0196 0000              NOP
+ 0198 0A92                      ST      -Y,R0   
+ 019A 1A92                      ST      -Y,R1
+ 019C 2A92                      ST      -Y,R2
+ 019E 3A92                      ST      -Y,R3
+ 01A0 4A92                      ST      -Y,R4
+ 01A2 5A92                      ST      -Y,R5
+ 01A4 6A92                      ST      -Y,R6
+ 01A6 7A92                      ST      -Y,R7
+ 01A8 8A92                      ST      -Y,R8
+ 01AA 9A92                      ST      -Y,R9
+ 01AC AA92                      ST      -Y,R10
+ 01AE BA92                      ST      -Y,R11
+ 01B0 CA92                      ST      -Y,R12
+ 01B2 DA92                      ST      -Y,R13
+ 01B4 EA92                      ST      -Y,R14
+ 01B6 FA92                      ST      -Y,R15
+ 01B8 0A93                      ST      -Y,R16
+ 01BA 1A93                      ST      -Y,R17
+ 01BC 2A93                      ST      -Y,R18
+ 01BE 3A93                      ST      -Y,R19
+ 01C0 4A93                      ST      -Y,R20
+ 01C2 5A93                      ST      -Y,R21
+ 01C4 6A93                      ST      -Y,R22
+ 01C6 7A93                      ST      -Y,R23
+ 01C8 8A93                      ST      -Y,R24
+ 01CA 9A93                      ST      -Y,R25
+ 01CC AA93                      ST      -Y,R26
+ 01CE BA93                      ST      -Y,R27
+ 01D0 EA93                      ST      -Y,R30
+ 01D2 FA93                      ST      -Y,R31
+ 01D4 0FB7                      IN      R16, SREG
+ 01D6 0068                      SBR     R16, 0x80               ; bei Aufruf dieser ISR geloeschtes I-Flag setzen 
+ 01D8 0A93                      ST      -Y, R16
+ 01DA           
+ 01DA                           ; TimerCounter aufrischen
+ 01DA 06E0                      LDI     R16,6; Reload TC_2, 2ms bei 8MHz
+ 01DC 04BD                      OUT     TCNT2,R16
+ 01DE           
+ 01DE 00910000                  LDS     R16,_OSIntNesting           ; Notify uC/OS-II of ISR
+ 01E2 0395                      INC     R16                         ;
+ 01E4 00930000                  STS     _OSIntNesting,R16           ;
+ 01E8           
+ 01E8 0E940000                  CALL    _OSTimeTick             ; Call uC/OS-II's tick updating function
+ 01EC                           ; bearbeitet die tasktimer, wenn 0 --> deren Prio in Aufruftab stellen
+ 01EC           
+ 01EC 0E940000                  CALL    _OSIntExit              ; Notify uC/OS-II about end of ISR
+ 01F0                           ; fuehrt gegebenfalls einen Context-Switch aus
+ 01F0           
+ 01F0 0991                      LD      R16,Y+
+ 01F2 0FBF                      OUT     SREG,R16
+ 01F4 F991                      LD      R31,Y+
+ 01F6 E991                      LD      R30,Y+
+ 01F8 B991                      LD      R27,Y+
+ 01FA A991                      LD      R26,Y+
+ 01FC 9991                      LD      R25,Y+
+ 01FE 8991                      LD      R24,Y+
+ 0200 7991                      LD      R23,Y+
+ 0202 6991                      LD      R22,Y+
+ 0204 5991                      LD      R21,Y+
+ 0206 4991                      LD      R20,Y+
+ 0208 3991                      LD      R19,Y+
+ 020A 2991                      LD      R18,Y+
+ 020C 1991                      LD      R17,Y+
+ 020E 0991                      LD      R16,Y+
+ 0210 F990                      LD      R15,Y+
+ 0212 E990                      LD      R14,Y+
+ 0214 D990                      LD      R13,Y+
+ 0216 C990                      LD      R12,Y+
+ 0218 B990                      LD      R11,Y+
+ 021A A990                      LD      R10,Y+
+ 021C 9990                      LD      R9,Y+
+ 021E 8990                      LD      R8,Y+
+ 0220 7990                      LD      R7,Y+
+ 0222 6990                      LD      R6,Y+
+ 0224 5990                      LD      R5,Y+
+ 0226 4990                      LD      R4,Y+
+ 0228 3990                      LD      R3,Y+
+ 022A 2990                      LD      R2,Y+
+ 022C 1990                      LD      R1,Y+
+ 022E 0990                      LD      R0,Y+
+ 0230 0895                      RET                     ; Note: RET instead of RETI
+ 0232           
+ 0232           ;*******************************************************************************
+ 0232           ;
+ 0232           ;*******************************************************************************
+ 0232           

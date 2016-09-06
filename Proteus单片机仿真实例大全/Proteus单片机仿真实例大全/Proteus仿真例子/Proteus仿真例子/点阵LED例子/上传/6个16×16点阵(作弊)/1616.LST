@@ -1,0 +1,286 @@
+C51 COMPILER V7.50   1616                                                                  04/25/2006 00:53:35 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE 1616
+OBJECT MODULE PLACED IN 1616.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 1616.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <atmel\regx52.h>
+   2          
+   3          #define int8 unsigned char
+   4          #define int16 unsigned int
+   5          #define int32 unsigned long 
+   6          
+   7          #define CTRL_PORT  P2
+   8          #define DATA_PORT  P0
+   9          #define ADDR_PORT  P1
+  10          
+  11          int8 flag;
+  12          int8 n;
+  13          int8 zzz;
+  14          int8 yyy;
+  15          int8 code table[12][32]={
+  16          {0x60,0x02,0x1C,0x0A,0x10,0x12,0x10,0x12,0x10,0x02,0xFF,0x7F,0x10,0x02,0x10,0x12,0x70,0x14,0x1C,0x0C,0x13,
+             -0x04,0x10,0x0A,0x90,0x49,0x10,0x50,0x14,0x60,0x08,0x40},/*"ÎÒ",0*/
+  17          
+  18          {0x00,0x20,0x00,0x20,0x3E,0x21,0x22,0x21,0x22,0x21,0x22,0x21,0x22,0x21,0x22,0x21,0x22,0x39,0xBE,0x27,0x22,
+             -0x21,0x02,0x20,0x00,0x20,0x00,0x20,0x00,0x20,0x00,0x20},/*"½Ð",1*/
+  19          
+  20          {0x88,0x00,0x88,0x00,0x88,0x7F,0x48,0x00,0xDF,0x1F,0xA8,0x10,0x9C,0x12,0xAC,0x14,0xEA,0x7F,0x8A,0x12,0x89,
+             -0x14,0x88,0x10,0x88,0x7F,0x08,0x10,0x08,0x14,0x08,0x08},/*"Ã·",2*/
+  21          
+  22          {0x08,0x20,0x08,0x21,0x08,0x21,0x08,0x21,0x08,0x21,0x08,0x21,0x08,0x21,0x08,0x21,0x08,0x21,0x08,0x21,0x08,
+             -0x21,0x08,0x21,0x08,0x21,0x04,0x21,0x04,0x20,0x02,0x00},/*"´¨",3*/
+  23          
+  24          {0x00,0x04,0x7F,0x04,0x14,0x05,0x14,0x3F,0x7F,0x05,0xD5,0x04,0xD5,0x7F,0x75,0x00,0x43,0x00,0x41,0x3F,0x7F,
+             -0x21,0x41,0x21,0x41,0x21,0x7F,0x3F,0x41,0x21,0x00,0x00},/*"¿á",4*/
+  25          
+  26          {0x00,0x00,0xFC,0x0F,0x00,0x04,0x00,0x02,0x00,0x01,0x80,0x00,0x80,0x00,0x80,0x20,0xFF,0x7F,0x80,0x00,0x80,
+             -0x00,0x80,0x00,0x80,0x00,0x80,0x00,0xA0,0x00,0x40,0x00}/*"×Ó",5*/
+  27          };
+  28          
+  29          int8 select_hc138[][4]={
+  30          {0x20,0x21,0x22,0x23},
+  31          {0x24,0x25,0x26,0x27},
+  32          
+  33          {0x10,0x11,0x12,0x13},
+  34          {0x14,0x15,0x16,0x17},
+  35          {0x18,0x19,0x1a,0x1b},
+  36          {0x1c,0x1d,0x1e,0x1f}
+  37          };
+  38          void delay(void);
+  39          void ldelay(void);
+  40          void main(void){
+  41   1      
+  42   1      int8 i,j,k;
+  43   1      int8 index;
+  44   1      int8 code *p;
+  45   1      
+  46   1      p=table;
+*** WARNING C182 IN LINE 46 OF 1616.C: pointer to different objects
+  47   1      
+  48   1      flag=0x10;
+C51 COMPILER V7.50   1616                                                                  04/25/2006 00:53:35 PAGE 2   
+
+  49   1      n=0;
+  50   1      TMOD=0x01;
+  51   1      TH0=0xb1;
+  52   1      TL0=0xe0;
+  53   1      ET0=1;
+  54   1      EA=1;
+  55   1      //TR0=1;
+  56   1      
+  57   1      
+  58   1      flag=0x10;
+  59   1      
+  60   1      
+  61   1      
+  62   1      yyy=0;
+  63   1      zzz=0;
+  64   1      
+  65   1      //CTRL_PORT=select_hc138[2][0]; 
+  66   1      
+  67   1      while(1)
+  68   1      {
+  69   2          for(k=0;k<6;k++){   
+  70   3                 for(j=0;j<1;j++)
+  71   3                        {             
+  72   4                          for(i=0;i<8;i++)
+  73   4                      {
+  74   5                              CTRL_PORT=select_hc138[k][0]; 
+  75   5                              DATA_PORT=table[k][2*i]; 
+  76   5      
+  77   5                              ADDR_PORT=i;                                      
+  78   5                                      delay();
+  79   5      
+  80   5                                      CTRL_PORT=select_hc138[k][1]; 
+  81   5                              DATA_PORT=table[k][2*i+1];
+  82   5                                      
+  83   5                              ADDR_PORT=i;  
+  84   5                                      delay();
+  85   5                      }                            
+  86   4                      for(i=8;i<16;i++)
+  87   4                      {
+  88   5                              CTRL_PORT=select_hc138[k][2]; 
+  89   5                              DATA_PORT=table[k][2*i]; 
+  90   5      
+  91   5                                      ADDR_PORT=i-8;                                     
+  92   5                                      delay();
+  93   5      
+  94   5                              CTRL_PORT=select_hc138[k][3]; 
+  95   5                              DATA_PORT=table[k][2*i+1];
+  96   5      
+  97   5                              ADDR_PORT=i-8;     
+  98   5                                      delay();
+  99   5                      }         
+ 100   4               }      
+ 101   3      
+ 102   3            
+ 103   3         }                                     
+ 104   2                       
+ 105   2        }
+ 106   1      
+ 107   1      
+ 108   1      }
+*** WARNING C280 IN LINE 43 OF 1616.C: 'index': unreferenced local variable
+ 109          void ldelay(void){
+C51 COMPILER V7.50   1616                                                                  04/25/2006 00:53:35 PAGE 3   
+
+ 110   1      int16 i;
+ 111   1      for(i=0;i<1000;i++);
+ 112   1      
+ 113   1      }
+ 114          void delay(void){
+ 115   1      int16 i;
+ 116   1      for(i=0;i<25;i++);
+ 117   1      
+ 118   1      }
+ 119          void timer0() interrupt 1 using 3
+ 120          {
+ 121   1              TF0=0;
+ 122   1              TH0=0xb1;
+ 123   1              TL0=0xe0;
+ 124   1              if(n<100)
+ 125   1              {
+ 126   2                 n++;
+ 127   2              }
+ 128   1              else
+ 129   1              {
+ 130   2      
+ 131   2                 switch(flag)
+ 132   2                 {
+ 133   3                        case 0x10:
+ 134   3                        {
+ 135   4                                flag=0x11;              
+ 136   4                                break;                  
+ 137   4                        }
+ 138   3                        case 0x11:
+ 139   3                        {
+ 140   4                                flag=0x12;              
+ 141   4                                break;                  
+ 142   4                        }        
+ 143   3                        case 0x12:
+ 144   3                        {
+ 145   4                                flag=0x13;              
+ 146   4                                break;                  
+ 147   4                        }                
+ 148   3                        case 0x13:
+ 149   3                        {
+ 150   4                                flag=0x20;              
+ 151   4                                break;                  
+ 152   4                        }                
+ 153   3                        case 0x20:
+ 154   3                        {
+ 155   4                                flag=0x21;              
+ 156   4                                break;                  
+ 157   4                        }
+ 158   3                        case 0x21:
+ 159   3                        {
+ 160   4                                flag=0x22;              
+ 161   4                                break;                  
+ 162   4                        }        
+ 163   3                        case 0x22:
+ 164   3                        {
+ 165   4                                flag=0x23;              
+ 166   4                                break;                  
+ 167   4                        }                
+ 168   3                        case 0x23:
+ 169   3                        {
+ 170   4                                flag=0x10;              
+ 171   4                                break;                  
+C51 COMPILER V7.50   1616                                                                  04/25/2006 00:53:35 PAGE 4   
+
+ 172   4                        }                
+ 173   3                 }
+ 174   2                 n=0;
+ 175   2                 if(zzz==4)
+ 176   2                  {
+ 177   3                  zzz=0;
+ 178   3                      }
+ 179   2              else
+ 180   2                      {
+ 181   3                   zzz++;
+ 182   3                   yyy+=4;                    
+ 183   3                      }
+ 184   2      
+ 185   2               }
+ 186   1      
+ 187   1      
+ 188   1      }
+ 189          
+ 190          
+ 191          /*
+ 192           for(k=0;k<6;k++){   
+ 193                     for(j=0;j<1;j++)
+ 194                            {             
+ 195                              for(i=0;i<8;i++)
+ 196                          {
+ 197                                  CTRL_PORT=select_hc138[k][0]; 
+ 198                                  DATA_PORT=table[k][2*i]; 
+ 199          
+ 200                                  ADDR_PORT=i;                                      
+ 201                                          delay();
+ 202          
+ 203                                          CTRL_PORT=select_hc138[k][1]; 
+ 204                                  DATA_PORT=table[k][2*i+1];
+ 205                                          
+ 206                                  ADDR_PORT=i;  
+ 207                                          delay();
+ 208                          }                            
+ 209                          for(i=8;i<16;i++)
+ 210                          {
+ 211                                  CTRL_PORT=select_hc138[k][2]; 
+ 212                                  DATA_PORT=table[k][2*i]; 
+ 213          
+ 214                                          ADDR_PORT=i-8;                                     
+ 215                                          delay();
+ 216          
+ 217                                  CTRL_PORT=select_hc138[k][3]; 
+ 218                                  DATA_PORT=table[k][2*i+1];
+ 219          
+ 220                                  ADDR_PORT=i-8;     
+ 221                                          delay();
+ 222                          }         
+ 223                   }      
+ 224          
+ 225          
+ 226          
+ 227          
+ 228          
+ 229          
+ 230          
+ 231          
+ 232          */
+ 233          
+C51 COMPILER V7.50   1616                                                                  04/25/2006 00:53:35 PAGE 5   
+
+ 234          
+ 235          
+ 236          
+ 237          
+ 238          
+ 239          
+ 240          
+ 241          
+ 242          
+ 243          
+ 244          
+ 245          
+ 246          
+ 247          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    405    ----
+   CONSTANT SIZE    =    384    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     28       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

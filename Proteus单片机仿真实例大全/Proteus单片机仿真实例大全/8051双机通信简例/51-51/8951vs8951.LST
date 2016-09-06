@@ -1,0 +1,48 @@
+A51 MACRO ASSEMBLER  8951VS8951                                                           05/13/2006 01:24:15 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.00
+OBJECT MODULE PLACED IN 8951vs8951.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE 8951vs8951.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1              org  0000h
+0000 438780            2     start:orl pcon,#80h
+0003 759890            3           mov scon,#10010000b
+0006 75A0FF            4               mov p2,#0ffh
+0009 E5A0              5     loop: mov a,p2
+000B F599              6           mov sbuf,a
+000D 109805            7     wait: jbc ri,received
+0010 1099F6            8           jbc ti,loop
+0013 80F8              9               jmp wait
+0015 859980           10     received:mov p0,sbuf
+0018 C298             11           clr ri
+001A 80F1             12               jmp wait
+                      13               end
+                             
+A51 MACRO ASSEMBLER  8951VS8951                                                           05/13/2006 01:24:15 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+LOOP . . . . . . .  C ADDR   0009H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
+RECEIVED . . . . .  C ADDR   0015H   A   
+RI . . . . . . . .  B ADDR   0098H.0 A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+START. . . . . . .  C ADDR   0000H   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+WAIT . . . . . . .  C ADDR   000DH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

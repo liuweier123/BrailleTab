@@ -1,0 +1,5 @@
+"main.obj",
+"KeyScan.obj",
+"SMC1602.obj",
+"KeyProcess.obj" 
+TO "LCD_Key" 

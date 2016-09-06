@@ -1,0 +1,126 @@
+                        .module main.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile D:\AVR\ICC\usart_t\main.c
+ 0000                   .dbfunc e uart0_init _uart0_init fV
+                        .even
+ 0000           _uart0_init::
+ 0000                   .dbline -1
+ 0000                   .dbline 17
+ 0000           ; //ICC-AVR application builder : 2005-9-4 20:55:51
+ 0000           ; // Target : M16
+ 0000           ; // Crystal: 8.0000Mhz
+ 0000           ; 
+ 0000           ; #include <iom16v.h>
+ 0000           ; #include <macros.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; 
+ 0000           ; void delay_nms(unsigned int n);
+ 0000           ; 
+ 0000           ; //UART0 initialize
+ 0000           ; // desired baud rate: 9600
+ 0000           ; // actual: baud rate:9615 (0.2%)
+ 0000           ; // char size: 8 bit
+ 0000           ; // parity: Disabled
+ 0000           ; void uart0_init(void)
+ 0000           ; {
+ 0000                   .dbline 18
+ 0000           ;  UCSRB = 0x00; //disable while setting baud rate
+ 0000 2224              clr R2
+ 0002 2AB8              out 0xa,R2
+ 0004                   .dbline 19
+ 0004           ;  UCSRA = 0x00;
+ 0004 2BB8              out 0xb,R2
+ 0006                   .dbline 20
+ 0006           ;  UCSRC = (1<<URSEL)|(1<<UCSZ1)|(1<<UCSZ0);//8位数据+1位STOP位
+ 0006 86E8              ldi R24,134
+ 0008 80BD              out 0x20,R24
+ 000A                   .dbline 21
+ 000A           ;  UBRRL = 0x33; //set baud rate lo
+ 000A 83E3              ldi R24,51
+ 000C 89B9              out 0x9,R24
+ 000E                   .dbline 22
+ 000E           ;  UBRRH = 0x00; //set baud rate hi
+ 000E 20BC              out 0x20,R2
+ 0010                   .dbline 23
+ 0010           ;  UCSRB = (1<<RXEN)|(1<<TXEN);//允许发送和接收
+ 0010 88E1              ldi R24,24
+ 0012 8AB9              out 0xa,R24
+ 0014                   .dbline -2
+ 0014           L1:
+ 0014                   .dbline 0 ; func end
+ 0014 0895              ret
+ 0016                   .dbend
+ 0016                   .dbfunc e main _main fV
+ 0016           ;              i -> R20
+                        .even
+ 0016           _main::
+ 0016                   .dbline -1
+ 0016                   .dbline 27
+ 0016           ; }
+ 0016           ; 
+ 0016           ; void main(void)
+ 0016           ; {
+ 0016                   .dbline 29
+ 0016           ;  unsigned char i;
+ 0016           ;  uart0_init(); 
+ 0016 F4DF              xcall _uart0_init
+ 0018                   .dbline 30
+ 0018           ;  puts("ATmega16 uart Test!");
+ 0018 00E0              ldi R16,<L3
+ 001A 10E0              ldi R17,>L3
+ 001C 0E940000          xcall _puts
+ 0020                   .dbline 31
+ 0020           ;  putchar(0x0d);
+ 0020 0DE0              ldi R16,13
+ 0022 0E940000          xcall _putchar
+ 0026                   .dbline 32
+ 0026           ;  putchar(0x0a);
+ 0026 0AE0              ldi R16,10
+ 0028 0E940000          xcall _putchar
+ 002C 0DC0              xjmp L5
+ 002E           L4:
+ 002E                   .dbline 34
+ 002E           ;  while(1)
+ 002E           ;  {
+ 002E                   .dbline 35
+ 002E           ;       for(i=0;i<20;i++)
+ 002E 4427              clr R20
+ 0030 09C0              xjmp L10
+ 0032           L7:
+ 0032                   .dbline 36
+ 0032                   .dbline 37
+ 0032 042F              mov R16,R20
+ 0034 005D              subi R16,208    ; addi 48
+ 0036 0E940000          xcall _putchar
+ 003A                   .dbline 38
+ 003A 08EE              ldi R16,1000
+ 003C 13E0              ldi R17,3
+ 003E 0E940000          xcall _delay_nms
+ 0042                   .dbline 39
+ 0042           L8:
+ 0042                   .dbline 35
+ 0042 4395              inc R20
+ 0044           L10:
+ 0044                   .dbline 35
+ 0044 4431              cpi R20,20
+ 0046 A8F3              brlo L7
+ 0048                   .dbline 40
+ 0048           L5:
+ 0048                   .dbline 33
+ 0048 F2CF              xjmp L4
+ 004A           X0:
+ 004A                   .dbline -2
+ 004A           L2:
+ 004A                   .dbline 0 ; func end
+ 004A 0895              ret
+ 004C                   .dbsym r i 20 c
+ 004C                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile D:\AVR\ICC\usart_t\main.c
+ 0000           L3:
+ 0000                   .blkb 20
+                        .area idata
+ 0000 41546D65676131362075617274205465  .byte 'A,'T,'m,'e,'g,'a,49,54,32,'u,'a,'r,'t,32,'T,'e
+ 0010 73742100          .byte 's,'t,33,0
+                        .area data(ram, con, rel)
+ 0014                   .dbfile D:\AVR\ICC\usart_t\main.c

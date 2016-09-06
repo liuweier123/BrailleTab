@@ -1,0 +1,129 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        07/27/2008  15:50:17  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE Text.obj TO TEST
+
+
+INPUT MODULES INCLUDED:
+  Text.obj (TEXT)
+
+
+LINK MAP OF MODULE:  TEST (TEXT)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0184H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  TEST (TEXT)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TEXT
+  D:00E0H         SYMBOL        ACC
+  D:0032H         SYMBOL        COUNTER
+  B:00A8H.7       SYMBOL        EA
+  B:00A8H.1       SYMBOL        ET0
+  C:016AH         SYMBOL        INTT0
+  C:0177H         SYMBOL        INTT01
+  C:017FH         SYMBOL        INTT02
+  C:0123H         SYMBOL        K1CHECK
+  C:012FH         SYMBOL        K1H0
+  C:013BH         SYMBOL        K1H1
+  C:0140H         SYMBOL        K1H2
+  C:0128H         SYMBOL        K1HANDLE
+  C:0144H         SYMBOL        K2CHECK
+  C:0150H         SYMBOL        K2H0
+  C:015FH         SYMBOL        K2H1
+  C:0166H         SYMBOL        K2H2
+  C:0149H         SYMBOL        K2HANDLE
+  C:011BH         SYMBOL        KSCAN
+  C:0100H         SYMBOL        MAIN
+  D:0090H         SYMBOL        P1
+  D:00D0H         SYMBOL        PSW
+  D:0031H         SYMBOL        PWM
+  D:0030H         SYMBOL        PWMH
+  D:0081H         SYMBOL        SP
+  D:0033H         SYMBOL        TEMP
+  D:008CH         SYMBOL        TH0
+  D:008AH         SYMBOL        TL0
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  C:0000H         LINE#         7
+BL51 BANKED LINKER/LOCATER V5.03                                                      07/27/2008  15:50:17  PAGE 2
+
+
+  C:000BH         LINE#         9
+  C:0100H         LINE#         13
+  C:0103H         LINE#         14
+  C:0106H         LINE#         15
+  C:0109H         LINE#         16
+  C:010CH         LINE#         17
+  C:010FH         LINE#         18
+  C:0112H         LINE#         19
+  C:0115H         LINE#         20
+  C:0117H         LINE#         21
+  C:0119H         LINE#         22
+  C:011BH         LINE#         24
+  C:011EH         LINE#         25
+  C:0121H         LINE#         26
+  C:0123H         LINE#         29
+  C:0126H         LINE#         30
+  C:0128H         LINE#         32
+  C:012AH         LINE#         33
+  C:012DH         LINE#         34
+  C:012FH         LINE#         36
+  C:0131H         LINE#         37
+  C:0132H         LINE#         38
+  C:0135H         LINE#         39
+  C:0137H         LINE#         40
+  C:0139H         LINE#         41
+  C:013BH         LINE#         43
+  C:013EH         LINE#         44
+  C:0140H         LINE#         46
+  C:0142H         LINE#         47
+  C:0144H         LINE#         50
+  C:0147H         LINE#         51
+  C:0149H         LINE#         53
+  C:014BH         LINE#         54
+  C:014EH         LINE#         55
+  C:0150H         LINE#         57
+  C:0152H         LINE#         58
+  C:0155H         LINE#         59
+  C:0156H         LINE#         60
+  C:0159H         LINE#         61
+  C:015BH         LINE#         62
+  C:015DH         LINE#         63
+  C:015FH         LINE#         65
+  C:0161H         LINE#         66
+  C:0164H         LINE#         67
+  C:0166H         LINE#         69
+  C:0168H         LINE#         70
+  C:016AH         LINE#         74
+  C:016CH         LINE#         75
+  C:016EH         LINE#         76
+  C:0170H         LINE#         77
+  C:0172H         LINE#         78
+  C:0175H         LINE#         79
+  C:0177H         LINE#         80
+  C:017AH         LINE#         81
+  C:017DH         LINE#         82
+  C:017FH         LINE#         83
+  C:0181H         LINE#         84
+BL51 BANKED LINKER/LOCATER V5.03                                                      07/27/2008  15:50:17  PAGE 3
+
+
+  C:0183H         LINE#         85
+  -------         ENDMOD        TEXT
+
+Program Size: data=8.0 xdata=0 code=388
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

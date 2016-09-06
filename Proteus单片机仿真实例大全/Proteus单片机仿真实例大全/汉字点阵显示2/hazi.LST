@@ -1,0 +1,104 @@
+C51 COMPILER V7.01  HAZI                                                                   03/21/2007 16:24:50 PAGE 1   
+
+
+C51 COMPILER V7.01, COMPILATION OF MODULE HAZI
+OBJECT MODULE PLACED IN hazi.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE hazi.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include <REGX51.H>
+   2          #include <INIT.H>
+   3          
+   4          /************ºº×ÖµãÕó*************/
+   5          uchar code      hanzi[4][32] =                                  //Ò»¸öºº×Ö·ÖÁ½ÐÐ£¬ËùÒÔÊý×é¶þÎ¬ÊýÎª×ÖÊýµÄÁ½±¶
+   6          {0x02,0x00,0x01,0x00,0x01,0x00,0xff,0xfe,0x08,0x20,0x08,0x20,0x08,0x20,0x04,0x40, 
+   7          0x04,0x40,0x02,0x80,0x01,0x00,0x02,0x80,0x04,0x60,0x18,0x1e,0xe0,0x08,0x00,0x00 
+   8          },                                                                                //"ÎÄ",0
+   9          
+  10          {0x08,0x80,0x0c,0xc0,0x09,0x88,0x12,0x3c,0x17,0xe6,0x31,0x14,0x52,0x08,0x95,0x04, 
+*** ERROR C141 IN LINE 10 OF HAZI.C: syntax error near '{'
+  11          0x19,0xf8,0x11,0x10,0x12,0x90,0x14,0xa0,0x10,0x60,0x11,0x98,0x16,0x06,0x00,0x00 
+  12          },                                                                               //"¿¡",1
+  13          
+  14          {00x24,0x04,0x34,0x04,0x24,0x24,0x3f,0xa4,0x44,0x24,0x04,0x24,0x7f,0xa4,0x04,0x24, 
+  15          0x3f,0xa4,0x24,0xa4,0x24,0xa4,0x24,0xa4,0x24,0x84,0x27,0x84,0x05,0x14,0x04,0x08 
+  16          },                                                                               //"ÖÆ",2
+  17          
+  18          {0x08,0x80,0x0c,0x80,0x09,0x00,0x13,0xfe,0x12,0x80,0x34,0x88,0x50,0xfc,0x90,0x80, 
+  19          0x10,0x80,0x10,0x84,0x10,0xfe,0x10,0x80,0x10,0x80,0x10,0x80,0x10,0x80,0x10,0x80 
+  20          }                                                                                //"×÷",3
+  21          
+  22          };
+  23          
+  24          
+  25          
+  26          
+  27          
+  28          
+  29          
+  30          /************Î»¶¨Òå**************/
+  31          sbit STTP = P2^7;
+*** ERROR C247 IN LINE 31 OF HAZI.C: non-address/-constant initializer
+  32          
+  33          /************±äÁ¿ÉùÃ÷***********/
+  34          uint n,i,j;                     //delay()ÑÓÊ±º¯Êý¼ÆÊý±äÁ¿
+  35          uint x,y,z;                     //out_hanzi()
+  36          
+  37          /************º¯ÊýÉùÃ÷***********/
+  38          void    delay(uint n);                  //ÑÓÊ±º¯Êý
+  39          void    out_rxd(uchar *d);                              //ºº×ÖÊä³ö
+  40          
+  41          
+  42          
+  43          
+  44          /************Ö÷º¯Êý**************/
+  45          
+  46          void main()
+  47          {
+  48   1              SCON = 0x00;
+  49   1              while(1)
+  50   1              {       
+  51   2                      P1 = 0;
+  52   2                      for( x = 0; x < 32; x+=2)
+  53   2                      {       
+C51 COMPILER V7.01  HAZI                                                                   03/21/2007 16:24:50 PAGE 2   
+
+  54   3                              STTP = 0;
+  55   3                              out_rxd(&hanzi[3][x+1]);
+  56   3                              out_rxd(&hanzi[3][x]);
+  57   3                              out_rxd(&hanzi[2][x+1]);
+  58   3                              out_rxd(&hanzi[2][x]);
+  59   3                              out_rxd(&hanzi[1][x+1]);
+  60   3                              out_rxd(&hanzi[1][x]);
+  61   3                              out_rxd(&hanzi[0][x+1]);
+  62   3                              out_rxd(&hanzi[0][x]);
+  63   3                              STTP = 1;
+  64   3                              P1 = x/2;
+  65   3                      }
+  66   2              }
+  67   1      }
+  68          
+  69          /************×Óº¯Êý¶¨Òå÷*********/
+  70          
+  71          void delay(uint n)
+  72          {
+  73   1      
+  74   1                      for( ; n > 0 ; n--)
+  75   1                      {
+  76   2                              for( j = 0; j < 10; j++)
+  77   2                              {;}
+  78   2                      }
+  79   1      
+  80   1      }
+  81          
+  82          void out_rxd(uchar *d)
+  83          {
+  84   1              SBUF = *d;                      //Æô¶¯´®ÐÐ¿Ú´«ËÍ
+  85   1              while(TI == 0);                 //µÈ´ý´®¿Ú´«ËÍ½áÊø
+  86   1              TI = 0;                         //½«´®¿ÚÖÐ¶Ï±êÖ¾Î»ÖÃ0
+  87   1      }
+  88          
+  89          
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  2 ERROR(S)

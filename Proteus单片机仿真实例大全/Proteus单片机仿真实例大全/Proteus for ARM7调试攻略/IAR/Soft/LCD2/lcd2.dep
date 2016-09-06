@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <configuration>
+    <name>Debug</name>
+    <outputs>
+      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\Vectors.r79</file>
+      <file>$PROJ_DIR$\LPC2106.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\Startup.r79</file>
+      <file>$PROJ_DIR$\Vectors.s</file>
+      <file>$PROJ_DIR$\Debug\Obj\lcd2.pbd</file>
+      <file>$PROJ_DIR$\Debug\Obj\IRQ.r79</file>
+      <file>$PROJ_DIR$\Init.s</file>
+      <file>$TOOLKIT_DIR$\lib\dl4tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\Init.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Debug\Exe\lcd2.d79</file>
+      <file>$PROJ_DIR$\Debug\Obj\target.r79</file>
+      <file>$PROJ_DIR$\..\LPC2106_JLink.xcl</file>
+      <file>$PROJ_DIR$\Debug\Obj\target.pbi</file>
+      <file>$PROJ_DIR$\IRQ.s</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\config.h</file>
+      <file>$PROJ_DIR$\Startup.s</file>
+      <file>$PROJ_DIR$\target.c</file>
+      <file>$PROJ_DIR$\target.h</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\Vectors.s</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 1</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Obj\lcd2.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 11 15</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Init.s</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 9</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 12</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\lcd2.d79</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 14 6 3 10 13 8</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\IRQ.s</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 6</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 11</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 18 2 21 0</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18 2 21 0</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Startup.s</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 3</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\target.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 15</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 18 2 21</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18 2 21</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+

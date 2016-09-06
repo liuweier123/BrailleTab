@@ -1,0 +1,555 @@
+C51 COMPILER V8.02   KEY                                                                   10/13/2008 11:41:33 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE KEY
+OBJECT MODULE PLACED IN key.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE key.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>
+   2          #include"main.h"
+   3          #include"lcd.h"
+   4          #include"key.h"
+   5          #include"IIC.h"
+   6          
+   7          sbit   Key_Down=P1^5;
+   8          sbit   Key_Up  =P1^6;
+   9          sbit   Key_Sel =P1^7;
+  10          
+  11          
+  12          extern uint idata time;
+  13          extern uchar m_count;
+  14          extern uchar disp_count;
+  15          extern bit key_flag;
+  16          uchar idata stor_buffer[64];
+  17          
+  18          uchar code zk[]={
+  19          /*  信号0   0 */
+  20          0x00,0x00,0x02,0x06,0x0A,0x12,0x22,0xC2,0x22,0x12,0x0A,0x06,0x02,0x00,0x00,0x00,
+  21          0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x3F,0x00,0x00,0x30,0x00,0x38,0x00,0x3C,0x00,
+  22          
+  23          
+  24          /*信号1   2*/
+  25          0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+  26          0x3E,0x00,0x3F,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+  27          
+  28          
+  29          /*中   4 CD6D0 */
+  30          0x00,0x00,0xFC,0x08,0x08,0x08,0x08,0xFF,0x08,0x08,0x08,0x08,0xFC,0x08,0x00,0x00,
+  31          0x00,0x00,0x07,0x02,0x02,0x02,0x02,0xFF,0x02,0x02,0x02,0x02,0x07,0x00,0x00,0x00,
+  32          
+  33          /*国   6 CB9FA */
+  34          0x00,0xFE,0x02,0x0A,0x8A,0x8A,0x8A,0xFA,0x8A,0x8A,0x8A,0x0A,0x02,0xFE,0x00,0x00,
+  35          0x00,0xFF,0x40,0x48,0x48,0x48,0x48,0x4F,0x48,0x49,0x4E,0x48,0x40,0xFF,0x00,0x00,
+  36          
+  37          /*移   8 CD2C6 */
+  38          0x10,0x92,0x72,0xFE,0x91,0x19,0x90,0x88,0x44,0x53,0xA2,0x52,0x0A,0x06,0x00,0x00,
+  39          0x02,0x01,0x00,0xFF,0x00,0x81,0x88,0x44,0x46,0x29,0x11,0x09,0x05,0x03,0x01,0x00,
+  40          
+  41          /*动   10 CB6AF */
+  42          0x20,0x24,0x24,0xE4,0x24,0x24,0x24,0x20,0x10,0x10,0xFF,0x10,0x10,0xF0,0x00,0x00,
+  43          0x08,0x1C,0x0B,0x08,0x0C,0x05,0x4E,0x24,0x10,0x0C,0x03,0x20,0x40,0x3F,0x00,0x00,
+  44          /*收   12 CCAD5 */
+  45          0x00,0xF8,0x00,0x00,0xFF,0x00,0x40,0x30,0xDF,0x10,0x10,0x10,0xF0,0x10,0x10,0x00,
+  46          0x00,0x0F,0x04,0x02,0xFF,0x40,0x40,0x20,0x21,0x16,0x08,0x16,0x21,0x60,0x20,0x00,
+  47          
+  48          /*到   14 CB5BD */
+  49          0x00,0x22,0x72,0x2A,0x26,0xE2,0x2A,0x72,0x22,0x00,0xF8,0x00,0x00,0xFF,0x00,0x00,
+  50          0x00,0x42,0xC2,0x42,0x22,0x3F,0x22,0x12,0x12,0x00,0x0F,0x40,0x80,0x7F,0x00,0x00,
+  51          
+  52          /*新   16 CD0C2 */
+  53          0x20,0x24,0x2C,0x35,0xE6,0x34,0x2C,0x24,0x00,0xFC,0x24,0x24,0xE2,0x22,0x22,0x00,
+  54          0x21,0x11,0x4D,0x81,0x7F,0x05,0x59,0x21,0x18,0x07,0x00,0x00,0xFF,0x00,0x00,0x00,
+  55          
+C51 COMPILER V8.02   KEY                                                                   10/13/2008 11:41:33 PAGE 2   
+
+  56          /*信   18 CD0C5 */
+  57          0x80,0x40,0x30,0xFC,0x07,0x0A,0xA8,0xA8,0xA9,0xAE,0xAA,0xA8,0xA8,0x08,0x08,0x00,
+  58          0x00,0x00,0x00,0x7F,0x00,0x00,0x7E,0x22,0x22,0x22,0x22,0x22,0x7E,0x00,0x00,0x00,
+  59          
+  60          /*息   20 CCFA2 */
+  61          0x00,0x00,0x00,0xFC,0x54,0x54,0x56,0x55,0x54,0x54,0x54,0xFC,0x00,0x00,0x00,0x00,
+  62          0x00,0x20,0x38,0x01,0x3D,0x41,0x41,0x45,0x59,0x41,0x41,0x71,0x00,0x08,0x30,0x00,
+  63          /*无   22 CCEDE */
+  64          0x00,0x40,0x42,0x42,0x42,0x42,0x42,0xFE,0xC2,0x42,0x42,0x42,0x42,0x42,0x40,0x00,
+  65          0x40,0x40,0x20,0x10,0x08,0x04,0x03,0x00,0x3F,0x40,0x40,0x40,0x40,0x40,0x70,0x00,
+  66          
+  67          /*有   24 CD3D0 */
+  68          0x00,0x04,0x84,0x44,0xE4,0x34,0x2C,0x27,0x24,0x24,0x24,0xE4,0x04,0x04,0x04,0x00,
+  69          0x02,0x01,0x00,0x00,0xFF,0x09,0x09,0x09,0x29,0x49,0xC9,0x7F,0x00,0x00,0x00,0x00,
+  70          /*   0x00   26  */
+  71          0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+  72          0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+  73          /* message    28*/
+  74          0x00,0xFC,0x0C,0x14,0x24,0x44,0x84,0x84,0x84,0x84,0x44,0x24,0x14,0x0C,0xFC,0x00,
+  75          0x00,0x1F,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x1F,0x00,
+  76          /*阅      30  CD4C4 */
+  77          0x00,0xFC,0x01,0x06,0xE0,0x28,0x32,0x22,0x22,0x32,0xEA,0x02,0x02,0xFE,0x00,0x00,
+  78          0x00,0xFF,0x00,0x10,0x11,0x09,0x07,0x01,0x0F,0x11,0x11,0x5C,0x80,0x7F,0x00,0x00,
+  79          
+  80          /*读      32  CB6C1 */
+  81          0x40,0x42,0xCC,0x04,0x00,0x50,0x94,0x34,0xD4,0x1F,0xD4,0x14,0x54,0x34,0x10,0x00,
+  82          0x00,0x00,0x7F,0x20,0x10,0x82,0x43,0x22,0x12,0x0A,0x07,0x0A,0x12,0xE2,0x42,0x00,
+  83          
+  84          /*菜    34      CB2CB */
+  85          0x02,0x02,0x32,0x52,0x92,0x1F,0x32,0x52,0x12,0x1F,0x92,0x52,0x32,0x02,0x02,0x00,
+  86          0x00,0x42,0x42,0x22,0x12,0x0A,0x06,0xFF,0x06,0x0A,0x12,0x32,0x62,0x22,0x02,0x00,
+  87          
+  88          /*单    36      CB5A5 */
+  89          0x00,0x00,0xF8,0x28,0x29,0x2E,0x2A,0xF8,0x28,0x2C,0x2B,0x2A,0xF8,0x00,0x00,0x00,
+  90          0x08,0x08,0x0B,0x09,0x09,0x09,0x09,0xFF,0x09,0x09,0x09,0x09,0x0B,0x08,0x08,0x00,
+  91          /*功   38       CB9A6 */
+  92          0x00,0x04,0x04,0x04,0xFC,0x04,0x14,0x14,0x10,0x90,0x7F,0x10,0x10,0xF0,0x00,0x00,
+  93          0x04,0x0C,0x04,0x04,0x03,0x42,0x22,0x11,0x0C,0x23,0x20,0x60,0x20,0x1F,0x00,0x00,
+  94          
+  95          /*能    40      CC4DC */
+  96          0x10,0xB8,0x97,0x92,0x90,0x94,0xB8,0x10,0x00,0x7F,0x48,0x48,0x44,0x74,0x20,0x00,
+  97          0x00,0xFF,0x0A,0x0A,0x4A,0x8A,0x7F,0x00,0x00,0x3F,0x44,0x44,0x42,0x72,0x20,0x00,
+  98          
+  99          /*一   CD2BB */
+ 100          0x00,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0xC0,0x80,0x00,
+ 101          0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+ 102          
+ 103          /*二   CB6FE */
+ 104          0x00,0x00,0x04,0x04,0x04,0x04,0x04,0x04,0x04,0x04,0x04,0x06,0x04,0x00,0x00,0x00,
+ 105          0x00,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x18,0x10,0x00,
+ 106          
+ 107          /*三   CC8FD */
+ 108          0x00,0x04,0x84,0x84,0x84,0x84,0x84,0x84,0x84,0x84,0x84,0x84,0x84,0x04,0x00,0x00,
+ 109          0x00,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x00,
+ 110          
+ 111          /*四   CCBC4 */
+ 112          0x00,0xFE,0x02,0x02,0x02,0xFE,0x02,0x02,0xFE,0x02,0x02,0x02,0x02,0xFE,0x00,0x00,
+ 113          0x00,0x7F,0x28,0x24,0x23,0x20,0x20,0x20,0x21,0x22,0x22,0x22,0x22,0x7F,0x00,0x00,
+ 114          
+ 115          /*五   CCEE5 */
+ 116          0x00,0x02,0x82,0x82,0x82,0x82,0xFE,0x82,0x82,0x82,0xC2,0x82,0x02,0x00,0x00,0x00,
+ 117          0x20,0x20,0x20,0x20,0x20,0x3F,0x20,0x20,0x20,0x20,0x3F,0x20,0x20,0x30,0x20,0x00,
+C51 COMPILER V8.02   KEY                                                                   10/13/2008 11:41:33 PAGE 3   
+
+ 118          
+ 119          /*六   CC1F9 */
+ 120          0x10,0x10,0x10,0x10,0x10,0x91,0x12,0x1E,0x94,0x10,0x10,0x10,0x10,0x10,0x10,0x00,
+ 121          0x00,0x40,0x20,0x10,0x0C,0x03,0x01,0x00,0x00,0x01,0x02,0x0C,0x78,0x30,0x00,0x00,
+ 122          
+ 123          /*七   CC6DF */
+ 124          0x00,0x40,0x40,0x40,0x40,0x40,0x40,0xFE,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x00,
+ 125          0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x3F,0x40,0x40,0x40,0x40,0x40,0x38,0x00,0x00,
+ 126          
+ 127          /*八   CB0CB */
+ 128          0x00,0x00,0x00,0x00,0x80,0x7C,0x08,0x00,0x00,0x7E,0x84,0x00,0x00,0x00,0x00,0x00,
+ 129          0x20,0x10,0x08,0x06,0x01,0x00,0x00,0x00,0x00,0x00,0x01,0x06,0x18,0x30,0x10,0x00,
+ 130          
+ 131          /*九   CBEC5 */
+ 132          0x00,0x10,0x10,0x10,0x10,0x90,0x7F,0x10,0x10,0x10,0xF8,0x10,0x00,0x00,0x00,0x00,
+ 133          0x00,0x40,0x20,0x10,0x0C,0x03,0x00,0x00,0x00,0x00,0x7F,0x40,0x40,0x78,0x20,0x00,
+ 134          
+ 135          /*十   CCAAE */
+ 136          0x40,0x40,0x40,0x40,0x40,0x40,0x40,0xFF,0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x00,
+ 137          0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x7F,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+ 138          };
+ 139          
+ 140          uchar  ScanKey(void)
+ 141          {
+ 142   1         uchar  mTemp[3],key=0,i;
+ 143   1      
+ 144   1             mTemp[0]=Key_Down;
+ 145   1             mTemp[1]=Key_Up;
+ 146   1             mTemp[2]=Key_Sel;
+ 147   1             //mTemp[3]=Key_Menu;
+ 148   1      
+ 149   1            for(i=0;i<3;i++)
+ 150   1             {
+ 151   2                mTemp[i]=~mTemp[i];
+ 152   2                mTemp[i]&=0x01;
+ 153   2             }
+ 154   1            key|=(mTemp[0]);
+ 155   1            key|=(mTemp[1]<<1);
+ 156   1            key|=(mTemp[2]<<2);
+ 157   1            //key|=(mTemp[3]<<5);
+ 158   1      
+ 159   1                return key;
+ 160   1      }
+ 161          /////////////////////////////////////////////////////
+ 162          //得到按键
+ 163          uchar  GetKey(void)
+ 164          {
+ 165   1           uchar key[2];
+ 166   1           key[0]=ScanKey();
+ 167   1           if(key[0]!=0)
+ 168   1               {
+ 169   2               //DelayXms(50);
+ 170   2                       mDelay(60);
+ 171   2                       key[1]=ScanKey();
+ 172   2                   return (key[0]==key[1]) ? key[0] : 0;
+ 173   2                       //return       key[0];
+ 174   2               }
+ 175   1               else
+ 176   1                  return 0;
+ 177   1      
+ 178   1      }
+ 179          void  key_handle(void)
+C51 COMPILER V8.02   KEY                                                                   10/13/2008 11:41:33 PAGE 4   
+
+ 180          {
+ 181   1          uchar mKey=0;
+ 182   1              //uchar count;
+ 183   1              uchar temp[1];
+ 184   1      //      uchar tempt[1];
+ 185   1      //      uchar tempt1[1];
+ 186   1          mKey=GetKey();
+ 187   1      
+ 188   1              if(mKey!=0)
+ 189   1              {
+ 190   2              time=3301;
+ 191   2                      switch(mKey)
+ 192   2                  {
+ 193   3                    case  0x01:
+ 194   3                        RdFromROM(temp,2000,1);
+ 195   3                        mDelay(50);
+ 196   3                        m_count=temp[0];
+ 197   3                        if(disp_count<m_count+1)
+ 198   3                        disp_count++;
+ 199   3                        
+ 200   3                        if(key_flag==0)
+ 201   3                        {
+ 202   4                                //count++;
+ 203   4                                key_flag=1;
+ 204   4                                
+ 205   4                                if(m_count==0)
+ 206   4                                {
+ 207   5                                      time=3301;
+ 208   5                                      disp_string("                    没有信息                                    ");
+ 209   5                                }
+ 210   4                                else if(m_count==1)
+ 211   4                                {
+ 212   5                                      time=3301;
+ 213   5                                      disp_string("                                                                 ");
+ 214   5                                      CS1=0;CS2=1;
+ 215   5                                      hz_disp(0,0,18, zk,0);
+ 216   5                                      hz_disp(0,16,20, zk,0);
+ 217   5                                      hz_disp(0,32,42, zk,0);
+ 218   5                                }
+ 219   4                                else if(m_count==2)
+ 220   4                                {
+ 221   5                                      time=3301;
+ 222   5                                      disp_string("                                                                 ");
+ 223   5                                      CS1=0;CS2=1;
+ 224   5                                      hz_disp(0,0,18, zk,0);
+ 225   5                                      hz_disp(0,16,20, zk,0);
+ 226   5                                      hz_disp(0,32,42, zk,0);
+ 227   5                                      hz_disp(2,0,18, zk,0);
+ 228   5                                      hz_disp(2,16,20, zk,0);
+ 229   5                                      hz_disp(2,32,44, zk,0);
+ 230   5                                }
+ 231   4                                else if(m_count==3)
+ 232   4                                {
+ 233   5                                      time=3301;
+ 234   5                                      disp_string("                                                                 ");
+ 235   5                                      CS1=0;CS2=1;
+ 236   5                                      hz_disp(0,0,18, zk,0);
+ 237   5                                      hz_disp(0,16,20, zk,0);
+ 238   5                                      hz_disp(0,32,42, zk,0);
+ 239   5                                      hz_disp(2,0,18, zk,0);
+ 240   5                                      hz_disp(2,16,20, zk,0);
+ 241   5                                      hz_disp(2,32,44, zk,0);
+C51 COMPILER V8.02   KEY                                                                   10/13/2008 11:41:33 PAGE 5   
+
+ 242   5                                      hz_disp(4,0,18, zk,0);
+ 243   5                                      hz_disp(4,16,20, zk,0);
+ 244   5                                      hz_disp(4,32,46, zk,0);
+ 245   5                                }
+ 246   4                                else if(m_count==4)
+ 247   4                                {
+ 248   5                                      time=3301;
+ 249   5                                      disp_string("                                                                 ");
+ 250   5                                      CS1=0;CS2=1;
+ 251   5                                      hz_disp(0,0,18, zk,0);
+ 252   5                                      hz_disp(0,16,20, zk,0);
+ 253   5                                      hz_disp(0,32,42, zk,0);
+ 254   5                                      hz_disp(2,0,18, zk,0);
+ 255   5                                      hz_disp(2,16,20, zk,0);
+ 256   5                                      hz_disp(2,32,44, zk,0);
+ 257   5                                      hz_disp(4,0,18, zk,0);
+ 258   5                                      hz_disp(4,16,20, zk,0);
+ 259   5                                      hz_disp(4,32,46, zk,0);
+ 260   5                                      hz_disp(6,0,18, zk,0);
+ 261   5                                      hz_disp(6,16,20, zk,0);
+ 262   5                                      hz_disp(6,32,48, zk,0);
+ 263   5                                }
+ 264   4                                else if(m_count==5)
+ 265   4                                {
+ 266   5                                      time=3301;
+ 267   5                                      disp_string("                                                                 ");
+ 268   5                                      CS1=0;CS2=1;
+ 269   5                                      hz_disp(0,0,18, zk,0);
+ 270   5                                      hz_disp(0,16,20, zk,0);
+ 271   5                                      hz_disp(0,32,42, zk,0);
+ 272   5                                      hz_disp(2,0,18, zk,0);
+ 273   5                                      hz_disp(2,16,20, zk,0);
+ 274   5                                      hz_disp(2,32,44, zk,0);
+ 275   5                                      hz_disp(4,0,18, zk,0);
+ 276   5                                      hz_disp(4,16,20, zk,0);
+ 277   5                                      hz_disp(4,32,46, zk,0);
+ 278   5                                      hz_disp(6,0,18, zk,0);
+ 279   5                                      hz_disp(6,16,20, zk,0);
+ 280   5                                      hz_disp(6,32,48, zk,0);
+ 281   5                                      CS1=1;CS2=0;
+ 282   5                                      hz_disp(0,0,18, zk,0);
+ 283   5                                      hz_disp(0,16,20, zk,0);
+ 284   5                                      hz_disp(0,32,50, zk,0);
+ 285   5                                }
+ 286   4                                else if(m_count==6)
+ 287   4                                {
+ 288   5                                      time=3301;
+ 289   5                                      disp_string("                                                                 ");
+ 290   5                                      CS1=0;CS2=1;
+ 291   5                                      hz_disp(0,0,18, zk,0);
+ 292   5                                      hz_disp(0,16,20, zk,0);
+ 293   5                                      hz_disp(0,32,42, zk,0);
+ 294   5                                      hz_disp(2,0,18, zk,0);
+ 295   5                                      hz_disp(2,16,20, zk,0);
+ 296   5                                      hz_disp(2,32,44, zk,0);
+ 297   5                                      hz_disp(4,0,18, zk,0);
+ 298   5                                      hz_disp(4,16,20, zk,0);
+ 299   5                                      hz_disp(4,32,46, zk,0);
+ 300   5                                      hz_disp(6,0,18, zk,0);
+ 301   5                                      hz_disp(6,16,20, zk,0);
+ 302   5                                      hz_disp(6,32,48, zk,0);
+ 303   5                                      CS1=1;CS2=0;
+C51 COMPILER V8.02   KEY                                                                   10/13/2008 11:41:33 PAGE 6   
+
+ 304   5                                      hz_disp(0,0,18, zk,0);
+ 305   5                                      hz_disp(0,16,20, zk,0);
+ 306   5                                      hz_disp(0,32,50, zk,0);
+ 307   5                                      hz_disp(2,0,18, zk,0);
+ 308   5                                      hz_disp(2,16,20, zk,0);
+ 309   5                                      hz_disp(2,32,52, zk,0);
+ 310   5                                }
+ 311   4                        }
+ 312   3                        mDelay(500);
+ 313   3                        //else//(key_flag==1)
+ 314   3                        //if(key_flag!=2)
+ 315   3                        {
+ 316   4                                //time=3301;
+ 317   4                                //count++;
+ 318   4                                if(m_count==0)
+ 319   4                                {
+ 320   5                                      disp_string("                    没有信息                                    ");
+ 321   5                                }
+ 322   4                                else
+ 323   4                                      disp_string("                                                                 ");
+ 324   4                                if(disp_count>m_count)
+ 325   4                                {
+ 326   5                                      //disp_count=m_count;
+ 327   5                                      disp_count=1;
+ 328   5                                      //CS1=1;CS2=0;
+ 329   5                                      //hz_disp(0,0,18, zk,0);
+ 330   5                                      //hz_disp(0,16,20, zk,0);
+ 331   5                                      //hz_disp(0,32,50, zk,0);
+ 332   5                                      //hz_disp(2,0,18, zk,0);
+ 333   5                                      //hz_disp(2,16,20, zk,0);
+ 334   5                                      //hz_disp(2,32,52, zk,0);
+ 335   5                                }                       
+ 336   4                                if((disp_count==1)&&(disp_count<=m_count))
+ 337   4                                {
+ 338   5                                      CS1=0;CS2=1;
+ 339   5                                      hz_disp(0,0,18, zk,1);
+ 340   5                                      hz_disp(0,16,20, zk,1);
+ 341   5                                      hz_disp(0,32,42, zk,1);
+ 342   5                                }
+ 343   4                                else if((disp_count==2)&&(disp_count<=m_count))
+ 344   4                                {
+ 345   5                                      CS1=0;CS2=1;
+ 346   5                                      hz_disp(0,0,18, zk,0);
+ 347   5                                      hz_disp(0,16,20, zk,0);
+ 348   5                                      hz_disp(0,32,42, zk,0);
+ 349   5                                      hz_disp(2,0,18, zk,1);
+ 350   5                                      hz_disp(2,16,20, zk,1);
+ 351   5                                      hz_disp(2,32,44, zk,1);
+ 352   5                                }
+ 353   4                                else if((disp_count==3)&&(disp_count<=m_count))
+ 354   4                                {
+ 355   5                                      CS1=0;CS2=1;
+ 356   5                                      hz_disp(0,0,18, zk,0);
+ 357   5                                      hz_disp(0,16,20, zk,0);
+ 358   5                                      hz_disp(0,32,42, zk,0);
+ 359   5                                      hz_disp(2,0,18, zk,0);
+ 360   5                                      hz_disp(2,16,20, zk,0);
+ 361   5                                      hz_disp(2,32,44, zk,0);
+ 362   5                                      hz_disp(4,0,18, zk,1);
+ 363   5                                      hz_disp(4,16,20, zk,1);
+ 364   5                                      hz_disp(4,32,46, zk,1);
+ 365   5                                }
+C51 COMPILER V8.02   KEY                                                                   10/13/2008 11:41:33 PAGE 7   
+
+ 366   4                                else if((disp_count==4)&&(disp_count<=m_count))
+ 367   4                                {
+ 368   5                                      CS1=0;CS2=1;
+ 369   5                                      hz_disp(0,0,18, zk,0);
+ 370   5                                      hz_disp(0,16,20, zk,0);
+ 371   5                                      hz_disp(0,32,42, zk,0);
+ 372   5                                      hz_disp(2,0,18, zk,0);
+ 373   5                                      hz_disp(2,16,20, zk,0);
+ 374   5                                      hz_disp(2,32,44, zk,0);
+ 375   5                                      hz_disp(4,0,18, zk,0);
+ 376   5                                      hz_disp(4,16,20, zk,0);
+ 377   5                                      hz_disp(4,32,46, zk,0);
+ 378   5                                      hz_disp(6,0,18, zk,1);
+ 379   5                                      hz_disp(6,16,20, zk,1);
+ 380   5                                      hz_disp(6,32,48, zk,1);
+ 381   5                                }
+ 382   4                                else if((disp_count==5)&&(disp_count<=m_count))
+ 383   4                                {
+ 384   5                                      CS1=0;CS2=1;
+ 385   5                                      hz_disp(0,0,18, zk,0);
+ 386   5                                      hz_disp(0,16,20, zk,0);
+ 387   5                                      hz_disp(0,32,42, zk,0);
+ 388   5                                      hz_disp(2,0,18, zk,0);
+ 389   5                                      hz_disp(2,16,20, zk,0);
+ 390   5                                      hz_disp(2,32,44, zk,0);
+ 391   5                                      hz_disp(4,0,18, zk,0);
+ 392   5                                      hz_disp(4,16,20, zk,0);
+ 393   5                                      hz_disp(4,32,46, zk,0);
+ 394   5                                      hz_disp(6,0,18, zk,0);
+ 395   5                                      hz_disp(6,16,20, zk,0);
+ 396   5                                      hz_disp(6,32,48, zk,0);
+ 397   5                                      CS1=1;CS2=0;
+ 398   5                                      hz_disp(0,0,18, zk,1);
+ 399   5                                      hz_disp(0,16,20, zk,1);
+ 400   5                                      hz_disp(0,32,50, zk,1);
+ 401   5                                }
+ 402   4                                else if((disp_count==6)&&(disp_count<=m_count))
+ 403   4                                {
+ 404   5                                      CS1=0;CS2=1;
+ 405   5                                      hz_disp(0,0,18, zk,0);
+ 406   5                                      hz_disp(0,16,20, zk,0);
+ 407   5                                      hz_disp(0,32,42, zk,0);
+ 408   5                                      hz_disp(2,0,18, zk,0);
+ 409   5                                      hz_disp(2,16,20, zk,0);
+ 410   5                                      hz_disp(2,32,44, zk,0);
+ 411   5                                      hz_disp(4,0,18, zk,0);
+ 412   5                                      hz_disp(4,16,20, zk,0);
+ 413   5                                      hz_disp(4,32,46, zk,0);
+ 414   5                                      hz_disp(6,0,18, zk,0);
+ 415   5                                      hz_disp(6,16,20, zk,0);
+ 416   5                                      hz_disp(6,32,48, zk,0);
+ 417   5                                      CS1=1;CS2=0;
+ 418   5                                      hz_disp(0,0,18, zk,0);
+ 419   5                                      hz_disp(0,16,20, zk,0);
+ 420   5                                      hz_disp(0,32,50, zk,0);
+ 421   5                                      hz_disp(2,0,18, zk,1);
+ 422   5                                      hz_disp(2,16,20, zk,1);
+ 423   5                                      hz_disp(2,32,52, zk,1);
+ 424   5                                }
+ 425   4                                
+ 426   4                        }
+ 427   3                //disp_string("欢迎使用字库程序，中英文字基本上支持,字库的原因有些字可能不支持上0123");
+C51 COMPILER V8.02   KEY                                                                   10/13/2008 11:41:33 PAGE 8   
+
+ 428   3                              break;
+ 429   3                        case  0x02:
+ 430   3                        //if((key_flag==1)&&(m_count>0))
+ 431   3                        if(key_flag==1)
+ 432   3                        {
+ 433   4                              //key_flag=2;
+ 434   4                              time=7301;
+ 435   4                              if(disp_count==1)
+ 436   4                              {
+ 437   5                                      RdFromROM(stor_buffer,0,64);
+ 438   5                                      disp_string(stor_buffer);
+ 439   5                              }
+ 440   4                              else if(disp_count==2)
+ 441   4                              {
+ 442   5                                      RdFromROM(stor_buffer,64,64);
+ 443   5                                      disp_string(stor_buffer);
+ 444   5                              }
+ 445   4                              else if(disp_count==3)
+ 446   4                              {
+ 447   5                                      RdFromROM(stor_buffer,128,64);
+ 448   5                                      disp_string(stor_buffer);
+ 449   5                              }
+ 450   4                              else if(disp_count==4)
+ 451   4                              {
+ 452   5                                      RdFromROM(stor_buffer,192,64);
+ 453   5                                      disp_string(stor_buffer);
+ 454   5                              }
+ 455   4                              else if(disp_count==5)
+ 456   4                              {
+ 457   5                                      RdFromROM(stor_buffer,256,64);
+ 458   5                                      disp_string(stor_buffer);
+ 459   5                              }
+ 460   4                              else if(disp_count==6)
+ 461   4                              {
+ 462   5                                      RdFromROM(stor_buffer,320,64);
+ 463   5                                      disp_string(stor_buffer);
+ 464   5                              }
+ 465   4                              //RdFromROM(stor_buffer,0,64);
+ 466   4                              //disp_string(stor_buffer);
+ 467   4                      //disp_string("程序，中英文字基本上支持,字库的原因有些字可能不支持上0123"); 
+ 468   4                        }     
+ 469   3                              break; 
+ 470   3                        case  0x04:
+ 471   3                        //if(key_flag==1)
+ 472   3                        {
+ 473   4                      //time=9301;
+ 474   4                              //disp_string("英文字基本上支持,字库的原因有些字可能不支持上0123");
+ 475   4                              //RdFromROM(tempt,2000,1);
+ 476   4                              //tempt1[0]=tempt[0]+0x30; 
+ 477   4                              //disp_string("                                                                 ");
+ 478   4                              //disp_string(tempt1);  
+ 479   4                        }  
+ 480   3                              break;
+ 481   3                        
+ 482   3                        default:
+ 483   3                        
+ 484   3                              break;
+ 485   3                 }
+ 486   2         }
+ 487   1         
+ 488   1      }
+ 489          
+C51 COMPILER V8.02   KEY                                                                   10/13/2008 11:41:33 PAGE 9   
+
+ 490          void disp_init_string()
+ 491          {
+ 492   1              if(time==0)
+ 493   1              {                       
+ 494   2                      key_flag=0;
+ 495   2                      disp_count=0;
+ 496   2                      CS1=0;CS2=1;
+ 497   2                      hz_disp(0,0,0, zk,0);
+ 498   2                      hz_disp(0,16,2, zk,0);          
+ 499   2                      hz_disp(3,32,4, zk,0);
+ 500   2                      hz_disp(3,48,6, zk,0);
+ 501   2                      CS1=1;CS2=0;
+ 502   2                      hz_disp(3,0,8, zk,0);
+ 503   2                      hz_disp(3,16,10, zk,0);
+ 504   2                      hz_disp(0,48,28, zk,0);
+ 505   2                      CS1=0;CS2=1;
+ 506   2                      hz_disp(6,0,18, zk,1);
+ 507   2                      hz_disp(6,16,20, zk,1);
+ 508   2                      CS1=1;CS2=0;
+ 509   2                      hz_disp(6,32,38, zk,0);
+ 510   2                      hz_disp(6,48,40, zk,0);         
+ 511   2              }
+ 512   1              else if(time==1)
+ 513   1              {
+ 514   2                      disp_string("                                                                 ");
+ 515   2              }
+ 516   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   2998    ----
+   CONSTANT SIZE    =   1123    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       6
+   IDATA SIZE       =     64    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

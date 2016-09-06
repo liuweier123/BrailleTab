@@ -1,0 +1,122 @@
+C51 COMPILER V7.50   TEXT1                                                                 01/27/2007 21:19:18 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE TEXT1
+OBJECT MODULE PLACED IN Text1.OBJ
+COMPILER INVOKED BY: g:\Keil\C51\BIN\C51.EXE Text1.c DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.h>
+   2          #include <intrins.h>
+   3          
+   4          unsigned char key_s, key_v, tmp;
+   5          char code str[] = "I love zhu xiao ying--CUMT \n\r";
+   6          
+   7          void send_int(void);
+   8          void send_str();
+   9          bit     scan_key();
+  10          void proc_key();
+  11          void delayms(unsigned char ms);
+  12          void send_char(unsigned char txd);
+  13          
+  14          sbit    K1 = P1^4;
+  15          
+  16          main()
+  17          {
+  18   1          send_int();
+  19   1              TR1 = 1;                                        // 启动定时器1
+  20   1              while(1)
+  21   1              {
+  22   2                      if(scan_key())                  // 扫描按键
+  23   2                      {
+  24   3                              delayms(10);                    // 延时去抖动
+  25   3                              if(scan_key())                  // 再次扫描
+  26   3                              {
+  27   4                                      key_v = key_s;          // 保存键值
+  28   4                                      proc_key();                     // 键处理
+  29   4                              }
+  30   3                      }
+  31   2                      if(RI)                                          // 是否有数据到来
+  32   2                      {
+  33   3                              RI = 0;
+  34   3                              tmp = SBUF;                             // 暂存接收到的数据
+  35   3                              P0 = tmp;                               // 数据传送到P0口
+  36   3                              send_char(tmp);                 // 回传接收到的数据
+  37   3                      }       
+  38   2              }
+  39   1      
+  40   1      }
+  41          void send_int(void)
+  42          {     TMOD = 0x20;                      // 定时器1工作于8位自动重载模式, 用于产生波特率
+  43   1              TH1 = 0xF3;                             // 波特率2400
+  44   1              TL1 = 0xF3;
+  45   1              SCON = 0x50;                    // 设定串行口工作方式
+  46   1              PCON&= 0xef;                    // 波特率不倍增
+  47   1                      
+  48   1      
+  49   1              IE = 0x0;                               // 禁止任何中断
+  50   1      }
+  51          bit scan_key()  
+  52          // 扫描按键                               
+  53          {
+  54   1              key_s = 0x00;
+  55   1              key_s |= K1;
+C51 COMPILER V7.50   TEXT1                                                                 01/27/2007 21:19:18 PAGE 2   
+
+  56   1              return(key_s ^ key_v);  
+  57   1      }
+  58          
+  59          void proc_key()
+  60          // 键处理
+  61          {
+  62   1              if((key_v & 0x01) == 0)
+  63   1              {                       // K1按下
+  64   2                      send_str();                             // 传送字串
+  65   2              }
+  66   1      }
+  67          
+  68          void send_char(unsigned char txd)
+  69          // 传送一个字符
+  70          {
+  71   1              SBUF = txd;
+  72   1              while(!TI);                             // 等特数据传送
+  73   1              TI = 0;                                 // 清除数据传送标志
+  74   1      }
+  75          
+  76          void send_str()
+  77          // 传送字串
+  78          {
+  79   1              unsigned char i = 0;
+  80   1              while(str[i] != '\0')
+  81   1              {
+  82   2                      SBUF = str[i];
+  83   2                      while(!TI);                             // 等特数据传送
+  84   2                      TI = 0;                                 // 清除数据传送标志
+  85   2                      i++;                                    // 下一个字符
+  86   2              }       
+  87   1      }
+  88          
+  89          void delayms(unsigned char ms)  
+  90          // 延时子程序
+  91          {                                               
+  92   1              unsigned char i;
+  93   1              while(ms--)
+  94   1              {
+  95   2                      for(i = 0; i < 120; i++);
+  96   2              }
+  97   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    133    ----
+   CONSTANT SIZE    =     30    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

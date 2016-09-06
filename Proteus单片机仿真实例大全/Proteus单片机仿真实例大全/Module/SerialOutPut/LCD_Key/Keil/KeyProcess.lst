@@ -1,0 +1,61 @@
+C51 COMPILER V8.05a   KEYPROCESS                                                           08/11/2007 12:25:48 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE KEYPROCESS
+OBJECT MODULE PLACED IN KeyProcess.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE source\KeyProcess.c BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\Key
+                    -Process.lst) OBJECT(KeyProcess.obj)
+
+line level    source
+
+   1          //*************************************************************************************************
+   2          //*                                                                                                                                                                                               *
+   3          //*                      ******************************¼üÂë´¦Àí³ÌÐò**************************                             *
+   4          //*                                                                                                                                                                                               *
+   5          //*************************************************************************************************
+   6          
+   7          #include "SMC1602.h"
+   8          
+   9          void vKeyProcess(unsigned char ucKeyCode)
+  10          {
+  11   1              vWriteCMD(0xC7);        
+  12   1      
+  13   1              switch(ucKeyCode)
+  14   1                      {
+  15   2                      case 11:vShowOneChar('7');break;                                                          //'7'
+  16   2                      case 12:vShowOneChar('8');break;                                                          //'8'
+  17   2                      case 13:vShowOneChar('9');break;                                                          //'9'
+  18   2                      case 21:vShowOneChar('4');break;                                                          //'4'
+  19   2                      case 22:vShowOneChar('5');break;                                                          //'5'
+  20   2                      case 23:vShowOneChar('6');break;                                                          //'6'
+  21   2                      case 31:vShowOneChar('1');break;                                                          //'1'
+  22   2                      case 32:vShowOneChar('2');break;                                                          //'2'
+  23   2                      case 33:vShowOneChar('3');break;                                                          //'3'
+  24   2                      case 42:vShowOneChar('0');break;                                                          //'0'
+  25   2      
+  26   2                      case 14:vShowOneChar('/');break;                                                          //'/'
+  27   2                      case 24:vShowOneChar('*');break;                                                          //'*'
+  28   2                      case 34:vShowOneChar('-');break;                                                          //'-'
+  29   2                      case 44:vShowOneChar('+');break;                                                          //'+'
+  30   2                                                                
+  31   2                      case 43:vShowOneChar('=');break;                                                          //'='
+  32   2      
+  33   2                      case 41:vShowOneChar('C');break;                                                          //'ON/C'
+  34   2      
+  35   2                      default:break;
+  36   2                      }
+  37   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    130    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

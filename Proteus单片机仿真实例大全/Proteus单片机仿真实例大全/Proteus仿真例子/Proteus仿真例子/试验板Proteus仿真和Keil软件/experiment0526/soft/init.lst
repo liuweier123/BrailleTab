@@ -1,0 +1,301 @@
+C51 COMPILER V7.50   INIT                                                                  05/26/2006 08:29:43 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE INIT
+OBJECT MODULE PLACED IN init.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE src\init.c BROWSE DEBUG OBJECTEXTEND PRINT(.\init.lst) OBJECT(init.obj)
+
+line level    source
+
+   1          #include "at89x52.H"
+   2          #include "experiment.h"
+   3          #include "init.H"
+   4          
+   5          /*************************************************************
+   6          *  FUNCTION NAME:void MCUInit(void)
+   7          *  PARAMETERS:
+   8          *  DESCRIPTION:intialize the SFR of MCU
+   9          *  RETURNS:
+  10          *  CREATED: XiongHui 2005-12-16 
+  11          *  HISTORY OF CHANGE: 
+  12          *************************************************************/
+  13          void MCUInit(void)
+  14          {
+  15   1              TMOD = 0x21;            //timer control mode
+  16   1              TH0 = 0xF6;             //2.5ms for AT89S52, system clock is 11.092MHz
+  17   1              TL0 = 0x00;
+  18   1              TH1 = 0xFD;             // 9600 Bds at 11.059MHz */
+  19   1              TL1 = 0xFD;             // 9600 Bds at 11.059MHz */
+  20   1              PCON = 0x00;
+  21   1              SCON = 0x50;            //serial communication control
+  22   1              IP   = 0x00;
+  23   1              TCON = 0x50;
+  24   1              TI   = 0;
+  25   1              RI   = 0;
+  26   1              REN  = 1;                       //enable serial uart's interruption
+  27   1              IE   = 0x12;
+  28   1              ES = 1;                         // Enable serial interrupt*/
+  29   1              TR1 = 1;                        // Timer 1 run */
+  30   1      }
+  31          /*************************************************************
+  32          *  FUNCTION NAME:void MCUInit(void)
+  33          *  PARAMETERS:
+  34          *  DESCRIPTION:intialize the SFR of MCU
+  35          *  RETURNS:
+  36          *  CREATED: XiongHui 2005-12-16 
+  37          *  HISTORY OF CHANGE: 
+  38          *************************************************************/
+  39          void SYSInit(void)
+  40          {
+  41   1              unsigned char i;
+  42   1              Timer10msFlag = FALSEFLAG;
+  43   1              Keyontimer = 0x0;
+  44   1              Keyofftimer = 0x0;
+  45   1              FormerKey = KEYNULL;
+  46   1              Keystatus = KEYOFF;
+  47   1              Key = KEYNULL;
+  48   1              Keyflag = FALSEFLAG;
+  49   1              for(i=0;i<LEDLEN;i++)
+  50   1              {
+  51   2                  Leddata[i] = i;
+  52   2               }
+  53   1      
+  54   1      }
+  55          /*************************************************************
+C51 COMPILER V7.50   INIT                                                                  05/26/2006 08:29:43 PAGE 2   
+
+  56          *  FUNCTION NAME:void Timer25msISR(void) interrupt  1
+  57          *  PARAMETERS:
+  58          *  DESCRIPTION:ISR of 2.5ms MCU timer0's interruption
+  59          *  RETURNS:
+  60          *  CREATED: XiongHui 2005-12-16 
+  61          *  HISTORY OF CHANGE: 
+  62          *************************************************************/
+  63          void Timer25msISR(void)  interrupt 1 using 2
+  64          {
+  65   1              //unsigned char data i,mdata;
+  66   1              TH0 = 0xF6;                                             //2.5ms for AT89S52, system clock is 11.092MHz
+  67   1              TL0 = 0x00;
+  68   1              if(++Timer >= 4)                                        //timing for 10ms
+  69   1              {
+  70   2                      Timer = 0;                                              //reset the value to zero
+  71   2                      Timer10msFlag = TRUEFLAG;
+  72   2                      /*
+  73   2                      if(++RollTimer >= 25)
+  74   2                      {
+  75   2                              mdata = Leddata[0];
+  76   2                              for(i=0;i<LEDLEN-1;i++)
+  77   2                              {
+  78   2                                      Leddata[i] =  Leddata[i+1];
+  79   2                              }
+  80   2                              Leddata[LEDLEN-1] = mdata;
+  81   2                              RollTimer = 0x00;
+  82   2                      } */
+  83   2              }
+  84   1              switch(Ledstatus)
+  85   1              {
+  86   2                      case DISP1:
+  87   2                              P2 = LEDSEG1;
+  88   2                              P0 = ChangeDisp(Leddata[0]);
+  89   2                              Ledstatus = DISP2;
+  90   2                              break;
+  91   2                      case DISP2:
+  92   2                              P2 = LEDSEG2;
+  93   2                              P0 = ChangeDisp(Leddata[1]);
+  94   2                              Ledstatus = DISP3;
+  95   2                              break;
+  96   2                      case DISP3:
+  97   2                              P2 = LEDSEG3;
+  98   2                              P0 = ChangeDisp(Leddata[2]);
+  99   2                              Ledstatus = DISP4;
+ 100   2                              break;
+ 101   2                      case DISP4:
+ 102   2                              P2 = LEDSEG4;
+ 103   2                              P0 = ChangeDisp(Leddata[3]);
+ 104   2                              Ledstatus = DISP5;
+ 105   2                              break;
+ 106   2                      case DISP5:
+ 107   2                              P2 = LEDSEG5;
+ 108   2                              P0 = ChangeDisp(Leddata[4]);
+ 109   2                              Ledstatus = DISP6;
+ 110   2                              break;
+ 111   2                      case DISP6:
+ 112   2                              P2 = LEDSEG6;
+ 113   2                              P0 = ChangeDisp(Leddata[5]);
+ 114   2                              Ledstatus = DISP1;
+ 115   2                              break;
+ 116   2                      default:
+ 117   2                              Ledstatus = DISP1;
+C51 COMPILER V7.50   INIT                                                                  05/26/2006 08:29:43 PAGE 3   
+
+ 118   2                              break;
+ 119   2              
+ 120   2              }
+ 121   1              
+ 122   1              Key = P1 & 0x0F;
+ 123   1              if(Key == 0x0F)
+ 124   1              {
+ 125   2                      Key = KEYNULL;
+ 126   2              }
+ 127   1              else if(Key == 0x07 || Key == 0x0B || Key == 0x0D || Key == 0x0E)
+ 128   1              {
+ 129   2              
+ 130   2              }
+ 131   1              else
+ 132   1              {
+ 133   2                      Key = KEYERR;
+ 134   2              }
+ 135   1              switch(Keystatus)
+ 136   1              {
+ 137   2                      case KEYON:                                     //the status of key is "pushed"
+ 138   2                              if(Key == KEYNULL)
+ 139   2                              {
+ 140   3                                      if(++Keyontimer >= 20)
+ 141   3                                      {
+ 142   4                                              Keystatus = KEYOFF;
+ 143   4                                              Keyontimer = 0x0;
+ 144   4                                              Keyofftimer = 0x0;
+ 145   4                                      }
+ 146   3                              }
+ 147   2                              else
+ 148   2                              {
+ 149   3                                      Keyontimer = 0x0;       
+ 150   3                              }
+ 151   2                              break;
+ 152   2                      case KEYOFF:                            //the status of key is "poped"
+ 153   2                              if(Key == FormerKey && Key != KEYNULL)
+ 154   2                              {
+ 155   3                                      if(++Keyofftimer >= 20)
+ 156   3                                      {
+ 157   4                                              Keystatus = KEYON;
+ 158   4                                              Keyontimer = 0x0;
+ 159   4                                              Keyofftimer = 0x0;
+ 160   4                                              Keyflag = TRUEFLAG;
+ 161   4                                              //Key   = Key;
+ 162   4                                      }
+ 163   3                              }
+ 164   2                              else
+ 165   2                              {
+ 166   3                                      FormerKey = Key;
+ 167   3                                      Keyofftimer = 0x0;
+ 168   3                              }       
+ 169   2                              break;
+ 170   2                      default:
+ 171   2                              ;
+ 172   2              
+ 173   2              }
+ 174   1      }
+ 175          /*************************************************************
+ 176          *  FUNCTION NAME:void ChangeDisp(void) 
+ 177          *  PARAMETERS:
+ 178          *  DESCRIPTION:ISR of 2.5ms MCU timer0's interruption
+ 179          *  RETURNS:
+C51 COMPILER V7.50   INIT                                                                  05/26/2006 08:29:43 PAGE 4   
+
+ 180          *  CREATED: XiongHui 2005-12-16 
+ 181          *  HISTORY OF CHANGE: 
+ 182          *************************************************************/
+ 183          unsigned char ChangeDisp(unsigned char data leddata) using 2
+ 184          {
+ 185   1              unsigned char data m;
+ 186   1              switch(leddata)
+ 187   1              {
+ 188   2                      case 0:
+ 189   2                              m =  LED0;
+ 190   2                              break;
+ 191   2                      case 1:
+ 192   2                              m = LED1;
+ 193   2                              break;
+ 194   2                      case 2:
+ 195   2                              m = LED2;
+ 196   2                              break;
+ 197   2                      case 3:
+ 198   2                              m = LED3;
+ 199   2                              break;
+ 200   2                      case 4:
+ 201   2                              m = LED4;
+ 202   2                              break;
+ 203   2                      case 5:
+ 204   2                              m = LED5;
+ 205   2                              break;
+ 206   2                      case 6:
+ 207   2                              m = LED6;
+ 208   2                              break;
+ 209   2                      case 7:
+ 210   2                              m = LED7;
+ 211   2                              break;
+ 212   2                      case 8:
+ 213   2                              m = LED8;
+ 214   2                              break;
+ 215   2                      case 9:
+ 216   2                              m = LED9;
+ 217   2                              break;
+ 218   2                      default:
+ 219   2                              m = LEDERR;
+ 220   2                              break;
+ 221   2              }
+ 222   1              return m;
+ 223   1      }
+ 224          /*************************************************************
+ 225          *  FUNCTION NAME:void UartISR(void) interrupt  4
+ 226          *  PARAMETERS:
+ 227          *  DESCRIPTION:ISR of MCU's Uart with external PC through RS485
+ 228          *  RETURNS:
+ 229          *  CREATED: XiongHui 2005-12-16 
+ 230          *  HISTORY OF CHANGE: 
+ 231          *************************************************************/
+ 232          void UartISR(void) interrupt  4
+ 233          {
+ 234   1              unsigned char data mdata;
+ 235   1              if(RI == 1)                                           //here means that serial port received a byte
+ 236   1              {
+ 237   2              RI = 0;                       //clear the status flag
+ 238   2                      mdata = SBUF;
+ 239   2                      SBUF = mdata;
+ 240   2                      UartReceBuf[UartRecePtr++] = mdata;
+ 241   2                      if(mdata == '\n' || UartReceBuf[UartRecePtr-1]=='\r')         //if received the end flag
+C51 COMPILER V7.50   INIT                                                                  05/26/2006 08:29:43 PAGE 5   
+
+ 242   2                      {
+ 243   3                              UartReceFlag = TRUEFLAG;        //set the flag, then process the data frame reveived in the main loop program
+ 244   3                      }
+ 245   2                      else if(mdata == '\b')
+ 246   2                      {
+ 247   3                              UartRecePtr--;
+ 248   3                              UartReceBuf[UartRecePtr--] = 0x00;      
+ 249   3                      }
+ 250   2      
+ 251   2              }
+ 252   1          if(TI == 1)                                                         //ISR for sending interruption
+ 253   1          {
+ 254   2              TI=0;                           //clear the flag
+ 255   2                      if(UartSendFlag == TRUEFLAG)                        //sending flag
+ 256   2                      {
+ 257   3                              if(UartSendBuf[UartSendTempPtr-2]=='\r' || UartSendBuf[UartSendTempPtr-1] == '\n')      //compare the sendin
+             -g pointer and the temp pointer to judge whether the data have been sent over
+ 258   3                              {
+ 259   4                                      UartSendTempPtr = 0;                            //
+ 260   4                      UartSendPtr = 0;
+ 261   4                      UartSendFlag = FALSEFLAG;
+ 262   4                              }
+ 263   3                              else
+ 264   3                              {
+ 265   4                                      SBUF = UartSendBuf[UartSendTempPtr++];          //send the data left
+ 266   4                              }
+ 267   3                       }
+ 268   2          }
+ 269   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    563    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     96    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

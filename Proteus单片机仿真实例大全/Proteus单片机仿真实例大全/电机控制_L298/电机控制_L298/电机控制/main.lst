@@ -1,0 +1,402 @@
+__text_start:
+__start:
+      2A E5CF      LDI	R28,0x5F
+      2B E0D8      LDI	R29,0x8
+      2C BFCD      OUT	0x3D,R28
+      2D BFDE      OUT	0x3E,R29
+      2E 51C0      SUBI	R28,0x10
+      2F 40D0      SBCI	R29,0
+      30 EA0A      LDI	R16,0xAA
+      31 8308      STD	Y+0,R16
+      32 2400      CLR	R0
+      33 E6E0      LDI	R30,0x60
+      34 E0F0      LDI	R31,0
+      35 E010      LDI	R17,0
+      36 36E0      CPI	R30,0x60
+      37 07F1      CPC	R31,R17
+      38 F011      BEQ	0x003B
+      39 9201      ST	R0,Z+
+      3A CFFB      RJMP	0x0036
+      3B 8300      STD	Z+0,R16
+      3C E5E4      LDI	R30,0x54
+      3D E0F0      LDI	R31,0
+      3E E6A0      LDI	R26,0x60
+      3F E0B0      LDI	R27,0
+      40 E010      LDI	R17,0
+      41 E000      LDI	R16,0
+      42 BF0B      OUT	0x3B,R16
+      43 35E4      CPI	R30,0x54
+      44 07F1      CPC	R31,R17
+      45 F021      BEQ	0x004A
+      46 95C8      LPM
+      47 9631      ADIW	R30,1
+      48 920D      ST	R0,X+
+      49 CFF9      RJMP	0x0043
+      4A 940E 00C6 CALL	_main
+_exit:
+      4C CFFF      RJMP	_exit
+FILE: E:\avr\电机控制\电机控制\motor.c
+(0001) /****************************************************************
+(0002) ** 文件名：motor.c   电机驱动函数
+(0003) ****************************************************************/
+(0004) #include "config.h"
+(0005) 
+(0006) /******************************************************************************/
+(0007) //正转，速度
+(0008) void for_ward(uint8 speed)
+(0009) {
+(0010)  	 if(speed!=0)
+_for_ward:
+  speed                --> R16
+      4D 2300      TST	R16
+      4E F021      BEQ	0x0053
+(0011)  	  {
+(0012)   	   OCR2 = speed;
+      4F BD03      OUT	0x23,R16
+(0013)   	   while(ASSR&(1<<TCR2UB)==1) ; //启动TC2 pwm 输出，异步操作需要等待 OCR2写入完毕
+      50 B422      IN	R2,0x22
+      51 FC20      SBRC	R2,0
+      52 CFFD      RJMP	0x0050
+(0014)   	  }
+(0015)  	 TC2_EN;   //pwm_start
+      53 B789      IN	R24,0x39
+      54 6C80      ORI	R24,0xC0
+      55 BF89      OUT	0x39,R24
+(0016)  	 moto_en1;
+      56 9A94      SBI	0x12,4
+(0017)  	 moto_uen2;
+      57 9895      CBI	0x12,5
+      58 9508      RET
+(0018) }
+(0019) /******************************************************************************/
+(0020) //反转，速度
+(0021) void back_ward(uint8 speed)
+(0022) {
+(0023)  	 if(speed!=0)
+_back_ward:
+  speed                --> R16
+      59 2300      TST	R16
+      5A F021      BEQ	0x005F
+(0024)   	{
+(0025)        OCR2 = speed;
+      5B BD03      OUT	0x23,R16
+(0026)   	   while(ASSR&(1<<TCR2UB)==1) ;// 启动TC2 pwm 输出，异步操作需要等待OCR2写入完毕
+      5C B422      IN	R2,0x22
+      5D FC20      SBRC	R2,0
+      5E CFFD      RJMP	0x005C
+(0027)     }
+(0028)    TC2_EN;   //pwm start
+      5F B789      IN	R24,0x39
+      60 6C80      ORI	R24,0xC0
+      61 BF89      OUT	0x39,R24
+(0029)    moto_uen1;
+      62 9894      CBI	0x12,4
+(0030)    moto_en2;
+      63 9A95      SBI	0x12,5
+      64 9508      RET
+(0031) }
+(0032) /******************************************************************************/
+(0033) //停止
+(0034) void motor_stop(void)
+(0035) {
+(0036)  moto_en1;   //同时置一停止
+_motor_stop:
+      65 9A94      SBI	0x12,4
+(0037)  moto_en2;
+      66 9A95      SBI	0x12,5
+(0038)  TC2_DIS;    //pwm stop
+      67 B789      IN	R24,0x39
+      68 778F      ANDI	R24,0x7F
+      69 BF89      OUT	0x39,R24
+      6A 9508      RET
+(0039) }
+(0040) /******************************************************************************/
+(0041) 
+(0042) //加速
+(0043) void speed_add(uint8 add)
+(0044) {
+(0045)  if(OCR2 + add < 240) //防止出现极大情况时候跳跃到很小。
+_speed_add:
+  add                  --> R16
+      6B B583      IN	R24,0x23
+      6C 0F80      ADD	R24,R16
+      6D 3F80      CPI	R24,0xF0
+      6E F418      BCC	0x0072
+(0046)  {
+(0047)    OCR2 = OCR2 + add;
+      6F B423      IN	R2,0x23
+      70 0E20      ADD	R2,R16
+      71 BC23      OUT	0x23,R2
+(0048)  }
+      72 9508      RET
+(0049) }
+(0050) /******************************************************************************/
+(0051) 
+(0052) //加速
+(0053) void speed_subtract(uint8 subtract)
+(0054) {
+(0055)  if(OCR2 - subtract > 10) //防止到很小之后跳跃到很大。
+_speed_subtract:
+  subtract             --> R16
+      73 B423      IN	R2,0x23
+      74 1A20      SUB	R2,R16
+      75 E08A      LDI	R24,0xA
+      76 1582      CP	R24,R2
+      77 F418      BCC	0x007B
+(0056)  {
+(0057)   OCR2 = OCR2 - subtract;
+      78 B423      IN	R2,0x23
+      79 1A20      SUB	R2,R16
+      7A BC23      OUT	0x23,R2
+(0058)  }
+      7B 9508      RET
+FILE: E:\avr\电机控制\电机控制\device_init.c
+(0001) //ICC-AVR application builder : 2006-11-1 0:27:10
+(0002) // Target : M32
+(0003) // Crystal: 7.3728Mhz
+(0004) //文件名：device_init.c 各种参数初始化
+(0005) #include "config.h"
+(0006) 
+(0007) void port_init(void)
+(0008) {
+(0009)  PORTA = 0x00;
+_port_init:
+      7C 2422      CLR	R2
+      7D BA2B      OUT	0x1B,R2
+(0010)  DDRA  = 0x00; 
+      7E BA2A      OUT	0x1A,R2
+(0011)  PORTB = 0x00;
+      7F BA28      OUT	0x18,R2
+(0012)  DDRB  = 0x00; 
+      80 BA27      OUT	0x17,R2
+(0013)  PORTC = 0x00; 
+      81 BA25      OUT	0x15,R2
+(0014)  DDRC  = 0x00;
+      82 BA24      OUT	0x14,R2
+(0015)  PORTD = 0x00;
+      83 BA22      OUT	0x12,R2
+(0016)  DDRD  = 0xB0; // D7 PWM   //参考芯片手册
+      84 EB80      LDI	R24,0xB0
+      85 BB81      OUT	0x11,R24
+      86 9508      RET
+(0017) }
+(0018) 
+(0019) /**************************采用timer2 产生波形***********************/
+(0020) // PWM频率 = 系统时钟频率/（分频系数*2*计数器上限值）） 
+(0021) void timer2_init(void)
+(0022) {
+(0023)  TCCR2 = 0x00;  //stop
+_timer2_init:
+      87 2422      CLR	R2
+      88 BC25      OUT	0x25,R2
+(0024)  TCNT2= 0x01;  //set count
+      89 E081      LDI	R24,1
+      8A BD84      OUT	0x24,R24
+(0025)  OCR2 = 0x66;  //set compare
+      8B E686      LDI	R24,0x66
+      8C BD83      OUT	0x23,R24
+(0026)  TCCR2 = (1<<WGM20)|(1<<WGM21)|(1<<COM21)|0x06; //  start timer 快速pwm模式，匹配清零，溢出置位 256分频
+      8D E68E      LDI	R24,0x6E
+      8E BD85      OUT	0x25,R24
+      8F 9508      RET
+(0027) //占空比＝高比低为：(OCR2-0X01)/(0XFF-OCR2)    OX01++++++(OCR2)__________OXFF (+表示输出高，_表示输出低)
+(0028) //即OCR2越大，输出越大
+(0029) }
+(0030) 
+(0031) //call this routine to initialize all peripherals
+(0032) void init_devices(void)
+(0033) {
+(0034)  //stop errant interrupts until set up
+(0035)  CLI(); //disable all interrupts
+_init_devices:
+      90 94F8      BCLR	7
+(0036)  port_init();
+      91 DFEA      RCALL	_port_init
+(0037)  timer2_init();
+      92 DFF4      RCALL	_timer2_init
+(0038)  TIMSK = 0x00; //timer interrupt sources
+      93 2422      CLR	R2
+      94 BE29      OUT	0x39,R2
+(0039)  SEI(); //re-enable interrupts
+      95 9478      BSET	7
+      96 9508      RET
+_Delay100us:
+  i                    --> R20
+  x                    --> R16
+      97 934A      ST	R20,-Y
+FILE: E:\avr\电机控制\电机控制\delay.c
+(0001) // 文件名 delay.c 延时
+(0002) 
+(0003) #include "config.h"
+(0004) /***************************************************************************
+(0005) 延时 M32 7.3728M 粗略计算
+(0006) */
+(0007) void Delay100us(uint8 x)
+(0008) {
+(0009) 	uint8 i;          //4clock                   
+(0010) 	for(i=147;x!=0;x--)	
+      98 E943      LDI	R20,0x93
+      99 C006      RJMP	0x00A0
+(0011) 	while(--i);      //5 * i clock
+      9A 2F84      MOV	R24,R20
+      9B 5081      SUBI	R24,1
+      9C 2F48      MOV	R20,R24
+      9D 2388      TST	R24
+      9E F7D9      BNE	0x009A
+      9F 950A      DEC	R16
+      A0 2300      TST	R16
+      A1 F7C1      BNE	0x009A
+      A2 9149      LD	R20,Y+
+      A3 9508      RET
+_Delay1ms:
+  n                    --> R20
+      A4 934A      ST	R20,-Y
+      A5 935A      ST	R21,-Y
+      A6 01A8      MOVW	R20,R16
+(0012) }
+(0013) void Delay1ms(uint16 n)
+(0014) {        
+(0015) 	for (;n!=0;n--){
+      A7 C004      RJMP	0x00AC
+(0016) 		Delay100us(10);
+      A8 E00A      LDI	R16,0xA
+      A9 DFED      RCALL	_Delay100us
+      AA 5041      SUBI	R20,1
+      AB 4050      SBCI	R21,0
+      AC 3040      CPI	R20,0
+      AD 0745      CPC	R20,R21
+      AE F7C9      BNE	0x00A8
+      AF 9159      LD	R21,Y+
+      B0 9149      LD	R20,Y+
+      B1 9508      RET
+_Delay1s:
+  m                    --> R20
+      B2 934A      ST	R20,-Y
+      B3 935A      ST	R21,-Y
+      B4 01A8      MOVW	R20,R16
+(0017) 	}
+(0018) }
+(0019) void Delay1s(uint16 m)         //  m <= 6 ,when m==7, it is 1. 
+(0020) {
+(0021) 	m=m*40;                
+      B5 E208      LDI	R16,0x28
+      B6 E010      LDI	R17,0
+      B7 019A      MOVW	R18,R20
+      B8 940E 00F7 CALL	empy16s
+      BA 01A8      MOVW	R20,R16
+(0022) 	for (;m!=0;m--){
+      BB C004      RJMP	0x00C0
+(0023) 		Delay100us(250);
+      BC EF0A      LDI	R16,0xFA
+      BD DFD9      RCALL	_Delay100us
+      BE 5041      SUBI	R20,1
+      BF 4050      SBCI	R21,0
+      C0 3040      CPI	R20,0
+      C1 0745      CPC	R20,R21
+      C2 F7C9      BNE	0x00BC
+      C3 9159      LD	R21,Y+
+      C4 9149      LD	R20,Y+
+      C5 9508      RET
+FILE: E:\avr\电机控制\电机控制\main.c
+(0001) //文件名 main.c 工程主文件
+(0002) 
+(0003) #include "config.h"
+(0004) 
+(0005) 
+(0006) void main(void)
+(0007) {
+(0008) 
+(0009) /******************************************************************************/
+(0010) //初始工作
+(0011) /******************************************************************************/
+(0012)   init_devices();
+_main:
+      C6 940E 0090 CALL	_init_devices
+      C8 C022      RJMP	0x00EB
+(0013)   
+(0014)   while(1)
+(0015)   {
+(0016)    for_ward(0);	 			//默认速度运转 正
+      C9 2700      CLR	R16
+      CA 940E 004D CALL	_for_ward
+(0017)    Delay1s(5); 				//延时5s
+      CC E005      LDI	R16,5
+      CD E010      LDI	R17,0
+      CE 940E 00B2 CALL	_Delay1s
+(0018)    motor_stop(); 			//停止
+      D0 940E 0065 CALL	_motor_stop
+(0019)    Delay1s(5); 				//延时5s
+      D2 E005      LDI	R16,5
+      D3 E010      LDI	R17,0
+      D4 940E 00B2 CALL	_Delay1s
+(0020)    back_ward(0);			//默认速度运转 反
+      D6 2700      CLR	R16
+      D7 940E 0059 CALL	_back_ward
+(0021)    Delay1s(5); 				//延时5s
+      D9 E005      LDI	R16,5
+      DA E010      LDI	R17,0
+      DB 940E 00B2 CALL	_Delay1s
+(0022)    speed_add(20);			//加速
+      DD E104      LDI	R16,0x14
+      DE 940E 006B CALL	_speed_add
+(0023)    Delay1s(5); 				//延时5s
+      E0 E005      LDI	R16,5
+      E1 E010      LDI	R17,0
+      E2 940E 00B2 CALL	_Delay1s
+(0024)    speed_subtract(20);		//减速
+      E4 E104      LDI	R16,0x14
+      E5 940E 0073 CALL	_speed_subtract
+(0025)    Delay1s(5); 				//延时5s
+      E7 E005      LDI	R16,5
+      E8 E010      LDI	R17,0
+      E9 940E 00B2 CALL	_Delay1s
+      EB CFDD      RJMP	0x00C9
+      EC 9508      RET
+(0026)   }
+(0027)     
+(0028) }
+(0029) 
+(0030) /******************************************************************************/
+(0031) // T2 控制PWM输出
+(0032) // timer2_comp_isr不需要用，但是必须允许中断，在中断时有信号输出变化
+(0033) /******************************************************************************/
+(0034) 
+(0035) #pragma interrupt_handler timer2_comp_isr:5
+(0036) void timer2_comp_isr(void)
+(0037) {
+_timer2_comp_isr:
+      ED 9518      RETI
+_timer2_ovf_isr:
+      EE 938A      ST	R24,-Y
+      EF B78F      IN	R24,0x3F
+      F0 938A      ST	R24,-Y
+(0038)    //compare occured TCNT0=OCR0
+(0039) }
+(0040) #pragma interrupt_handler timer2_ovf_isr:6
+(0041) void timer2_ovf_isr(void)
+(0042) {
+(0043)  TCNT2 = 0x01;//reload counter value
+FILE: <library>
+      F1 E081      LDI	R24,1
+      F2 BD84      OUT	0x24,R24
+      F3 9189      LD	R24,Y+
+      F4 BF8F      OUT	0x3F,R24
+      F5 9189      LD	R24,Y+
+      F6 9518      RETI
+empy16s:
+      F7 920A      ST	R0,-Y
+      F8 921A      ST	R1,-Y
+      F9 938A      ST	R24,-Y
+      FA 939A      ST	R25,-Y
+      FB 9F02      MUL	R16,R18
+      FC 01C0      MOVW	R24,R0
+      FD 9F12      MUL	R17,R18
+      FE 0D90      ADD	R25,R0
+      FF 9F03      MUL	R16,R19
+     100 0D90      ADD	R25,R0
+     101 018C      MOVW	R16,R24
+     102 9199      LD	R25,Y+
+     103 9189      LD	R24,Y+
+     104 9019      LD	R1,Y+
+     105 9009      LD	R0,Y+
+     106 9508      RET

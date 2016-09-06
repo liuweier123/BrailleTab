@@ -1,0 +1,281 @@
+
+ASEM-51 V1.2                                         Copyright (c) 1996 by W.W. Heinz                                         PAGE 1
+
+
+
+
+
+       MCS-51 Family Cross Assembler   A S E M - 5 1   V 1.2
+       =====================================================
+
+
+
+	Source File:	SPEAKER.ASM
+	Object File:	SPEAKER.HEX
+	List File:	SPEAKER.LST
+
+
+
+ Line  I  Addr  Code            Source
+
+    1:				;========================================================
+    2:				;网友熟鱼片全新奉献 八月桂花香 12M晶振
+    3:				;========================================================
+    4:
+    5:		N      0000	ORG     0000H
+    6:	  0000	02 00 14	        LJMP    START
+    7:		N      000B	        ORG     000BH
+    8:	  000B	05 20		        INC     20H             ;中断服务,中断计数器加1
+    9:	  000D	75 8C D8	        MOV     TH0,#0D8H
+   10:	  0010	75 8A EF	        MOV     TL0,#0EFH       ;12M晶振，形成10毫秒中断
+   11:
+   12:
+   13:	  0013	32		        RETI
+   14:	  0014			START:
+   15:	  0014	75 81 50	        MOV     SP,#50H
+   16:	  0017	75 8C FF	        MOV     TH0,#0FFH
+   17:	  001A	75 8A FF	        MOV     TL0,#0FFH
+   18:	  001D	75 89 01	        MOV     TMOD,#01H
+   19:	  0020	75 A8 82	        MOV     IE,#82H
+   20:	  0023			MUSIC0:
+   21:	  0023	00		        NOP
+   22:	  0024	90 00 7D	        MOV     DPTR,#DAT       ;表头地址送DPTR
+   23:	  0027	75 20 00	        MOV     20H,#00H        ;中断计数器清0
+   24:	  002A	75 F0 00	        MOV     B,#00H          ;表序号清0
+   25:	  002D			MUSIC1:
+   26:	  002D	00		        NOP
+   27:	  002E	E4		        CLR     A
+   28:	  002F	93		        MOVC    A,@A+DPTR       ;查表取代码
+   29:	  0030	60 33		        JZ      END0            ;是00H,则结束
+   30:	  0032	B4 FF 03	        CJNE    A,#0FFH,MUSIC5
+   31:	  0035	02 00 54	        LJMP    MUSIC3
+   32:	  0038			MUSIC5:
+   33:	  0038	00		        NOP
+   34:	  0039	FE		        MOV     R6,A
+   35:	  003A	A3		        INC     DPTR
+   36:	  003B	E5 F0		        MOV     A,B
+   37:	  003D	93		        MOVC    A,@A+DPTR       ;取节拍代码送R7
+   38:	  003E	FF		        MOV     R7,A
+   39:	  003F	D2 8C		        SETB    TR0             ;启动计数
+   40:	  0041			MUSIC2:
+   41:	  0041	00		        NOP
+   42:	  0042	B2 92		        CPL     P1.2
+   43:	  0044	EE		        MOV     A,R6
+
+ASEM-51 V1.2                                         Copyright (c) 1996 by W.W. Heinz                                         PAGE 2
+
+
+
+ Line  I  Addr  Code            Source
+
+   44:	  0045	FB		        MOV     R3,A
+   45:	  0046	12 00 72	        LCALL   DEL
+   46:	  0049	EF		        MOV     A,R7
+   47:	  004A	B5 20 F4	        CJNE    A,20H,MUSIC2    ;中断计数器(20H)=R7否?
+   48:				                                ;不等,则继续循环
+   49:	  004D	75 20 00	        MOV     20H,#00H        ;等于,则取下一代码
+   50:	  0050	A3		        INC     DPTR
+   51:				;       INC     B
+   52:	  0051	02 00 2D	        LJMP    MUSIC1
+   53:	  0054			MUSIC3:
+   54:	  0054	00		        NOP
+   55:	  0055	C2 8C		        CLR     TR0             ;休止100毫秒
+   56:	  0057	7A 0D		        MOV     R2,#0DH
+   57:	  0059			MUSIC4:
+   58:	  0059	00		        NOP
+   59:	  005A	7B FF		        MOV     R3,#0FFH
+   60:	  005C	12 00 72	        LCALL   DEL
+   61:	  005F	DA F8		        DJNZ    R2,MUSIC4
+   62:	  0061	A3		        INC     DPTR
+   63:	  0062	02 00 2D	        LJMP    MUSIC1
+   64:	  0065			END0:
+   65:	  0065	00		        NOP
+   66:	  0066	7A 64		        MOV     R2,#64H        ;歌曲结束,延时1秒后继续
+   67:	  0068			MUSIC6:
+   68:	  0068	7B 00		        MOV     R3,#00H
+   69:	  006A	12 00 72	        LCALL   DEL
+   70:	  006D	DA F9		        DJNZ    R2,MUSIC6
+   71:	  006F	02 00 23	        LJMP    MUSIC0
+   72:	  0072			DEL:
+   73:	  0072	00		        NOP
+   74:	  0073			DEL3:
+   75:	  0073	7C 02		        MOV     R4,#02H
+   76:	  0075			DEL4:
+   77:	  0075	00		        NOP
+   78:	  0076	DC FD		        DJNZ    R4,DEL4
+   79:	  0078	00		        NOP
+   80:	  0079	DB F8		        DJNZ    R3,DEL3
+   81:	  007B	22		        RET
+   82:	  007C	00		        NOP
+   83:	  007D			DAT:
+   84:	  007D	18 30 1C 10	        DB      18H,     30H,     1CH,     10H
+   85:	  0081	20 40 1C 10	        DB      20H,     40H,     1CH,     10H
+   86:	  0085	18 10 20 10	        DB      18H,     10H,     20H,     10H
+   87:	  0089	1C 10 18 40	        DB      1CH,     10H,     18H,     40H
+   88:	  008D	1C 20 20 20	        DB      1CH,     20H,     20H,     20H
+   89:	  0091	1C 20 18 20	        DB      1CH,     20H,     18H,     20H
+   90:	  0095	20 80 FF 20	        DB      20H,     80H,    0FFH,     20H
+   91:	  0099	30 1C 10 18	        DB      30H,     1CH,     10H,     18H
+   92:	  009D	20 15 20 1C	        DB      20H,     15H,     20H,     1CH
+   93:	  00A1	20 20 20 26	        DB      20H,     20H,     20H,     26H
+   94:	  00A5	40 20 20 2B	        DB      40H,     20H,     20H,     2BH
+   95:	  00A9	20 26 20 20	        DB      20H,     26H,     20H,     20H
+   96:	  00AD	20 30 80 FF	        DB      20H,     30H,     80H,    0FFH
+   97:	  00B1	20 20 1C 10	        DB      20H,     20H,     1CH,     10H
+   98:	  00B5	18 10 20 20	        DB      18H,     10H,     20H,     20H
+   99:	  00B9	26 20 2B 20	        DB      26H,     20H,     2BH,     20H
+
+ASEM-51 V1.2                                         Copyright (c) 1996 by W.W. Heinz                                         PAGE 3
+
+
+
+ Line  I  Addr  Code            Source
+
+  100:	  00BD	30 20 2B 40	        DB      30H,     20H,     2BH,     40H
+  101:	  00C1	20 20 1C 10	        DB      20H,     20H,     1CH,     10H
+  102:	  00C5	18 10 20 20	        DB      18H,     10H,     20H,     20H
+  103:	  00C9	26 20 2B 20	        DB      26H,     20H,     2BH,     20H
+  104:	  00CD	30 20 2B 40	        DB      30H,     20H,     2BH,     40H
+  105:	  00D1	20 30 1C 10	        DB      20H,     30H,     1CH,     10H
+  106:	  00D5	18 20 15 20	        DB      18H,     20H,     15H,     20H
+  107:	  00D9	1C 20 20 20	        DB      1CH,     20H,     20H,     20H
+  108:	  00DD	26 40 20 20	        DB      26H,     40H,     20H,     20H
+  109:	  00E1	2B 20 26 20	        DB      2BH,     20H,     26H,     20H
+  110:	  00E5	20 20 30 80	        DB      20H,     20H,     30H,     80H
+  111:	  00E9	20 30 1C 10	        DB      20H,     30H,     1CH,     10H
+  112:	  00ED	20 10 1C 10	        DB      20H,     10H,     1CH,     10H
+  113:	  00F1	20 20 26 20	        DB      20H,     20H,     26H,     20H
+  114:	  00F5	2B 20 30 20	        DB      2BH,     20H,     30H,     20H
+  115:	  00F9	2B 40 20 15	        DB      2BH,     40H,     20H,     15H
+  116:	  00FD	1F 05 20 10	        DB      1FH,     05H,     20H,     10H
+  117:	  0101	1C 10 20 20	        DB      1CH,     10H,     20H,     20H
+  118:	  0105	26 20 2B 20	        DB      26H,     20H,     2BH,     20H
+  119:	  0109	30 20 2B 40	        DB      30H,     20H,     2BH,     40H
+  120:	  010D	20 30 1C 10	        DB      20H,     30H,     1CH,     10H
+  121:	  0111	18 20 15 20	        DB      18H,     20H,     15H,     20H
+  122:	  0115	1C 20 20 20	        DB      1CH,     20H,     20H,     20H
+  123:	  0119	26 40 20 20	        DB      26H,     40H,     20H,     20H
+  124:	  011D	2B 20 26 20	        DB      2BH,     20H,     26H,     20H
+  125:	  0121	20 20 30 30	        DB      20H,     20H,     30H,     30H
+  126:	  0125	20 30 1C 10	        DB      20H,     30H,     1CH,     10H
+  127:	  0129	18 40 1C 20	        DB      18H,     40H,     1CH,     20H
+  128:	  012D	20 20 26 40	        DB      20H,     20H,     26H,     40H
+  129:	  0131	13 60 18 20	        DB      13H,     60H,     18H,     20H
+  130:	  0135	15 40 13 40	        DB      15H,     40H,     13H,     40H
+  131:	  0139	18 80 00	        DB      18H,     80H,     00H
+  132:				end
+  133:
+  134:
+
+
+
+
+
+                     register banks used:  ---
+
+                     no errors
+
+
+
+
+ASEM-51 V1.2                                         Copyright (c) 1996 by W.W. Heinz                                         PAGE 4
+
+
+
+
+
+	       L I S T   O F   S Y M B O L S
+	       =============================
+
+
+SYMBOL				  TYPE     VALUE	LINE
+------------------------------------------------------------
+AC				  BIT	      D6
+ACC				  DATA	      E0
+B				  DATA	      F0
+CY				  BIT	      D7
+DAT				  CODE	    007D	  83
+DEL				  CODE	    0072	  72
+DEL3				  CODE	    0073	  74
+DEL4				  CODE	    0075	  76
+DPH				  DATA	      83
+DPL				  DATA	      82
+EA				  BIT	      AF
+END0				  CODE	    0065	  64
+ES				  BIT	      AC
+ET0				  BIT	      A9
+ET1				  BIT	      AB
+EX0				  BIT	      A8
+EX1				  BIT	      AA
+EXTI0				  CODE	    0003
+EXTI1				  CODE	    0013
+F0				  BIT	      D5
+IE				  DATA	      A8
+IE0				  BIT	      89
+IE1				  BIT	      8B
+INT0				  BIT	      B2
+INT1				  BIT	      B3
+IP				  DATA	      B8
+IT0				  BIT	      88
+IT1				  BIT	      8A
+MUSIC0				  CODE	    0023	  20
+MUSIC1				  CODE	    002D	  25
+MUSIC2				  CODE	    0041	  40
+MUSIC3				  CODE	    0054	  53
+MUSIC4				  CODE	    0059	  57
+MUSIC5				  CODE	    0038	  32
+MUSIC6				  CODE	    0068	  67
+OV				  BIT	      D2
+P				  BIT	      D0
+P0				  DATA	      80
+P1				  DATA	      90
+P2				  DATA	      A0
+P3				  DATA	      B0
+PCON				  DATA	      87
+PS				  BIT	      BC
+PSW				  DATA	      D0
+PT0				  BIT	      B9
+PT1				  BIT	      BB
+PX0				  BIT	      B8
+PX1				  BIT	      BA
+RB8				  BIT	      9A
+RD				  BIT	      B7
+
+ASEM-51 V1.2                                         Copyright (c) 1996 by W.W. Heinz                                         PAGE 5
+
+
+
+SYMBOL				  TYPE     VALUE	LINE
+------------------------------------------------------------
+REN				  BIT	      9C
+RESET				  CODE	    0000
+RI				  BIT	      98
+RS0				  BIT	      D3
+RS1				  BIT	      D4
+RXD				  BIT	      B0
+SBUF				  DATA	      99
+SCON				  DATA	      98
+SINT				  CODE	    0023
+SM0				  BIT	      9F
+SM1				  BIT	      9E
+SM2				  BIT	      9D
+SP				  DATA	      81
+START				  CODE	    0014	  14
+T0				  BIT	      B4
+T1				  BIT	      B5
+TB8				  BIT	      9B
+TCON				  DATA	      88
+TF0				  BIT	      8D
+TF1				  BIT	      8F
+TH0				  DATA	      8C
+TH1				  DATA	      8D
+TI				  BIT	      99
+TIMER0				  CODE	    000B
+TIMER1				  CODE	    001B
+TL0				  DATA	      8A
+TL1				  DATA	      8B
+TMOD				  DATA	      89
+TR0				  BIT	      8C
+TR1				  BIT	      8E
+TXD				  BIT	      B1
+WR				  BIT	      B6

@@ -1,0 +1,378 @@
+A51 MACRO ASSEMBLER  5KEY_VOLUME_CON                                                      08/24/2006 21:35:16 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.10
+OBJECT MODULE PLACED IN 5key_volume_con.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE 5key_volume_con.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;*******************************************************************************
+                       2     ;*ÎÄ¼þ: 5key_volume_con.asm                                                    *
+                       3     ;*×÷Õß: ÕÅÉÜ±ó  2006/8/24                                                      *
+                       4     ;*°æ±¾: ver1.0                                                                 *
+                       5     ;*¹¦ÄÜÃèÊö: »ìºÏ¼üÅÌÄ£ÄâÒôÁ¿ÊÂë¹ÜÏÔÊ¾                                         *
+                       6     ;*          ÉÏÁ½¼ü:×ó¼üÒôÁ¿-,ÓÒ¼üÒôÁ¿+                                         *
+                       7     ;*          ÏÂÈ¼ü:×ó¼üÒôÁ¿24¼¶,ÖÐ¼üÒôÁ¿32¼¶,ÓÒ¼üÒôÁ¿05¼¶                      *
+                       8     ;*±¸×¢:                                                                        *
+                       9     ;*Èí¼þ·ÂÕæ: PROTEUS 6                                                          *
+                      10     ;*******************************************************************************
+  0000                11         KEY_OK      BIT     00H
+  0022                12         VOLNUMB     EQU     22H     
+  0021                13         PHONE       EQU     21H
+  0023                14         COUNTER     EQU     23H     ;ÓÃÓÚÏÔÊ¾µÄ¼ÆÊÆ÷
+  0025                15         KEYVAL      EQU     25H
+  005E                16         DISPBUF     EQU     5EH
+  00A7                17         FIRST       BIT     P2.7    ;µÚÒ»Î»ÊÂë¹ÜµÄÎ»¿ØÖÆ
+  00A6                18         SECOND      BIT     P2.6    ;µÚ¶þÎ»ÊÂë¹ÜµÄÎ»¿ØÖÆ
+  EACE                19         TMRVAR      EQU     60110   ;65536-5000*12/11.0592  ¶¨Ê±Æ÷³õÖµ5ºÁÃë
+                      20     ;===============================================================================        
+0000                  21         ORG     0000H   
+0000 8022             22         JMP     START
+0003                  23         ORG     0*8+3               ;INT0ÖÐ¶ÏÈë¿Ú
+0003 32               24         RETI
+000B                  25         ORG     1*8+3               ;TIMER0ÖÐ¶ÏÈë¿Ú
+000B 2170             26         JMP     INT_T0              ;×ªÈ¥¶¨Ê±Æ÷0ÖÐ¶Ï·þÎñ³ÌÐòÈë¿Ú
+0013                  27         ORG     2*8+3               ;INT1ÖÐ¶ÏÈë¿Ú
+0013 32               28         RETI
+001B                  29         ORG     3*8+3               ;TIMER1ÖÐ¶ÏÈë¿Ú
+001B 32               30         RETI
+0023                  31         ORG     4*8+3               ;´®ÐÐÖÐ¶ÏÈë¿Ú
+0023 32               32         RETI
+                      33     ;===============================================================================
+0024                  34     START:
+0024 75815F           35         mov     sp,#5fh
+0027 7590FF           36         mov     p1,#0ffh
+002A 75B0FF           37         mov     p3,#0ffh         
+002D 752240           38         mov     volnumb,#40h
+0030 3162             39         call    init_t0
+0032 D2AF             40         setb    ea
+                      41     ;===============================================================================
+0034                  42     LOOP:;Ö÷³Ì
+0034 1161             43         ACALL KEY
+0036 200012           44         JB KEY_OK,KEYPROC
+0039 113D             45         ACALL DISP_VOL
+003B 0134             46         AJMP LOOP         
+                      47     ;===============================================================================  
+003D                  48     disp_vol:;ÏÔÊ¾´¦Àí
+003D E522             49             mov a,volnumb
+003F C4               50             swap a
+0040 540F             51             anl a,#0fh
+0042 F55E             52             mov dispbuf,a;Ê®Î»µ½DISPBUF
+0044 E522             53             mov a,volnumb
+0046 540F             54             anl a,#0fh
+0048 F55F             55             mov dispbuf+1,a;¸öÎ»µ½DISPBUF+1
+004A 22               56             ret
+                      57     ;==============================================================================
+004B                  58     keyproc:;¼ü´¦ÀíÉ¢×ª
+A51 MACRO ASSEMBLER  5KEY_VOLUME_CON                                                      08/24/2006 21:35:16 PAGE     2
+
+004B E525             59         mov a,keyval
+004D 752500           60         mov keyval,#00h
+0050 23               61         rl a
+0051 900055           62         mov dptr,#tab_key
+0054 73               63         jmp @a+dptr
+0055                  64     tab_key:
+0055 0134             65         ajmp loop
+0057 01F5             66         ajmp volup
+0059 210A             67         ajmp voldw
+005B 211D             68         ajmp volrsum
+005D 2122             69         ajmp vol24
+005F 2127             70         ajmp vol05
+                      71     ;===============================================================================
+0061                  72     KEY:;¼üÅÌ³ÌÐò
+0061 C200             73              clr key_ok;Çå¼ü°´ÏÂ±êÖ¾
+0063 43B0C0           74              orl p3,#11000000b;ÏÂÃæÈ¼üÅÐ¶Ï
+0066 C200             75              clr key_ok
+0068 E5B0             76              mov a,p3
+006A 443F             77              orl a,#00111111b
+006C F4               78              cpl a
+006D 6033             79              jz key_1
+006F 11E6             80              acall delay
+0071 11E6             81              acall delay
+0073 E5B0             82              mov a,p3
+0075 443F             83              orl a,#00111111b
+0077 6029             84              jz key_1
+0079 00               85              nop
+007A 30E713           86              jnb acc.7,keydw1
+007D 00               87              nop
+007E 20E60E           88              jb acc.6,key_ret
+0081 D200             89              setb key_ok
+0083 752503           90              mov keyval,#3
+0086 E5B0             91     key_ret1:mov a,p3
+0088 443F             92              orl a,#00111111b
+008A F4               93              cpl a
+008B 70F9             94              jnz key_ret1;¼üËÉ¿ª·ñ
+008D 018F             95              ajmp key_ret
+008F 22               96     key_ret:ret
+                      97     
+0090                  98     keydw1:  
+0090 00               99              nop
+0091 30E607          100              jnb acc.6,keydw2
+0094 D200            101              setb key_ok
+0096 752504          102              mov keyval,#4
+0099 80EB            103              jmp key_ret1
+009B D200            104     keydw2:  setb key_ok
+009D 752505          105              mov keyval,#5
+00A0 80E4            106              jmp key_ret1  
+                     107     
+00A2                 108     key_1:   
+00A2 D2B6            109              setb p3.6
+00A4 C2B7            110              clr p3.7 ;vol+°´ÏÂ
+00A6 00              111              nop
+00A7 00              112              nop
+00A8 30B60B          113              jnb p3.6,key01
+                     114        
+00AB C2B6            115              clr  p3.6;vol-°´ÏÂ
+00AD D2B7            116              setb p3.7
+00AF 00              117              nop
+00B0 00              118              nop
+00B1 30B71A          119              jnb  p3.7,key02
+                     120              
+00B4 018F            121     keyexit: ajmp key_ret
+                     122     
+00B6                 123     key01: 
+00B6 11E6            124              acall delay
+A51 MACRO ASSEMBLER  5KEY_VOLUME_CON                                                      08/24/2006 21:35:16 PAGE     3
+
+00B8 11E6            125              acall delay
+00BA 00              126              nop
+00BB 00              127              nop
+00BC 20B60A          128              jb p3.6,key01_ret
+00BF D200            129              setb key_ok
+00C1 752501          130              mov keyval,#1
+00C4 00              131              nop
+00C5 11E6            132              acall delay
+00C7 11E6            133              acall delay
+00C9 30B6FD          134     key01_ret:jnb p3.6,$
+00CC 01B4            135              ajmp keyexit
+00CE                 136     key02:
+00CE 11E6            137              acall delay
+00D0 11E6            138              acall delay
+00D2 00              139              nop
+00D3 00              140              nop
+00D4 20B70A          141              jb p3.7,key02_ret
+00D7 D200            142              setb key_ok
+00D9 752502          143              mov keyval,#2
+00DC 00              144              nop
+00DD 11E6            145              acall delay
+00DF 11E6            146              acall delay
+00E1 30B7FD          147     key02_ret:jnb p3.7,$
+00E4 01B4            148              ajmp keyexit
+00E6                 149     delay:;                È¥¼ü¶¶ÑÓÊ±
+00E6 C0D0            150              push psw
+00E8 D2D3            151              setb rs0
+00EA 7F32            152              mov  r7,#50
+00EC 7E32            153          d1: mov  r6,#50
+00EE DEFE            154          d2: djnz r6,d2
+00F0 DFFA            155              djnz r7,d1
+00F2 D0D0            156              pop  psw
+00F4 22              157              ret
+                     158     ;===============================================================================   
+00F5                 159     volup:;¼üÅÌÒôÁ¿+
+00F5 852221          160             mov phone,volnumb
+00F8 E521            161             mov a,phone
+00FA 6470            162             xrl a,#70h
+00FC 6007            163             jz volup1
+00FE 312C            164             acall uaa
+0100 852122          165             mov volnumb,phone
+0103 0134            166             jmp loop
+0105 752270          167     volup1: mov volnumb,#70h
+0108 0134            168             jmp loop
+                     169     ;===============================================================================
+010A                 170     voldw:;¼üÅÌÒôÁ¿-
+010A 852221          171             mov phone,volnumb
+010D E521            172             mov a,phone
+010F 6007            173             jz voldw1
+0111 3148            174             acall daa
+0113 852122          175             mov volnumb,phone
+0116 0134            176             jmp loop
+0118 752200          177     voldw1: mov volnumb,#00h
+011B 0134            178             jmp loop
+                     179     ;===============================================================================
+011D                 180     volrsum:;32¼¶
+011D 752232          181             mov volnumb,#32h
+0120 0134            182             ajmp loop
+                     183     
+0122                 184     vol24:;24¼¶
+0122 752224          185            mov volnumb,#24h
+0125 0134            186            ajmp loop
+                     187     
+0127                 188     vol05:;05¼¶
+0127 752205          189            mov volnumb,#05h
+012A 0134            190            ajmp loop
+A51 MACRO ASSEMBLER  5KEY_VOLUME_CON                                                      08/24/2006 21:35:16 PAGE     4
+
+                     191     
+                     192     ;===============================================================================
+012C                 193     uaa:;µÝÔö1
+012C E521            194             mov a,phone
+012E C4              195             swap a
+012F 540F            196             anl a,#0fh
+0131 FD              197             mov r5,a
+0132 E521            198             mov a,phone
+0134 540F            199             anl a,#0fh
+0136 00              200             nop
+0137 B40906          201             cjne a,#09h,uaa_1
+013A 00              202             nop
+013B 7C00            203             mov r4,#00h
+013D 0D              204             inc r5
+013E 2142            205             ajmp uaa_2
+0140                 206     uaa_1:
+0140 04              207             inc a
+0141 FC              208             mov r4,a
+0142                 209     uaa_2:
+0142 ED              210             mov a,r5
+0143 C4              211             swap a
+0144 2C              212             add a,r4
+0145 F521            213             mov phone,a
+0147 22              214             ret
+                     215     ;===============================================================================
+0148                 216     daa:;µÝ¼õ1
+0148 E521            217             mov a,phone
+014A C4              218             swap a
+014B 540F            219             anl a,#0fh
+014D FD              220             mov r5,a
+014E E521            221             mov a,phone;
+0150 540F            222             anl a,#0fh
+0152 7006            223             jnz daa_1
+0154 7C09            224             mov r4,#09h
+0156 1D              225             dec r5
+0157 00              226             nop
+0158 8002            227             sjmp daa_2
+015A                 228       daa_1:
+015A 14              229             dec a
+015B FC              230             mov r4,a
+015C                 231       daa_2:
+015C ED              232             mov a,r5;
+015D C4              233             swap a
+015E 2C              234             add a,r4
+015F F521            235             mov phone,a
+0161 22              236             ret
+                     237     ;===============================================================================    
+0162                 238     INIT_T0:                ;³õÊ¼»¯T0Îª5ºÁÃëµÄ¶¨Ê±Æ÷
+0162 758901          239         MOV     TMOD,#01H
+0165 758CEA          240         MOV     TH0,#HIGH(TMRVAR)
+0168 758ACE          241         MOV     TL0,#LOW(TMRVAR)
+016B D2A9            242         SETB    ET0         ;¿ªT0ÖÐ¶Ï
+016D D28C            243         SETB    TR0         ;¶¨Ê±Æ÷0¿ªÊ¼ÔËÐÐ
+016F 22              244         RET                 ;·µ»Ø
+                     245     ;===============================================================================
+                     246     ;ÒÔÏÂÊÇÖÐ¶Ï³ÌÐò£¬ÊµÏÖÊÂë¹ÜÏÔÊ¾
+0170                 247     INT_T0:                 ;¶¨Ê±Æ÷T0µÄÖÐ¶ÏÏìÓ¦³ÌÐò
+0170 C0E0            248         PUSH    ACC         ;ACCÈëÕ»
+0172 C0D0            249         PUSH    PSW         ;PSWÈëÕ»
+0174 758CEA          250         MOV TH0,#HIGH(TMRVAR)
+0177 758ACE          251         MOV TL0,#LOW(TMRVAR)
+017A D2A7            252         SETB    FIRST
+017C D2A6            253         SETB    SECOND      ;¹ØÏÔÊ¾
+017E 745E            254         MOV     A,#DISPBUF  ;ÏÔÊ¾»º³åÇøÊ×µØÖ·
+0180 2523            255         ADD     A,Counter 
+0182 F8              256         MOV     R0,A
+A51 MACRO ASSEMBLER  5KEY_VOLUME_CON                                                      08/24/2006 21:35:16 PAGE     5
+
+0183 E6              257         MOV     A,@R0       ;¸ù¾Ý¼ÆÊÆ÷µÄÖµÈ¡ÏàÓ¦µÄÏÔÊ¾»º³åÇøµÄÖµ
+0184 9001A6          258         MOV     DPTR,#DISPTAB   ;×ÖÐÎ±íÊ×µØÖ·
+0187 93              259         MOVC    A,@A+DPTR   ;È¡×ÖÐÎÂë
+0188 F580            260         MOV     P0,A        ;½«×ÖÐÎÂëËÍP0Î»£¨¶Î¿Ú£©
+018A E523            261         MOV     A,Counter   ;È¡¼ÆÊÆ÷µÄÖµ
+018C 6004            262         JZ      DISPFIRST   ;Èç¹ûÊÇ0ÔòÏÔÊ¾µÚÒ»Î»
+018E C2A6            263         CLR     SECOND      ;·ñÔòÏÔÊ¾µÚ¶þÎ»
+0190 2194            264         AJMP    DISPNEXT
+0192                 265     DISPFIRST:
+0192 C2A7            266         CLR     FIRST       ;ÏÔÊ¾µÚÒ»Î» 
+0194                 267     DISPNEXT:
+0194 0523            268         INC     Counter     ;¼ÆÊÆ÷¼Ó1
+0196 E523            269         MOV     A,Counter
+0198 14              270         DEC     A           ;Èç¹û¼ÆÊÆ÷¼Æµ½2,ÔòÈÃËü»Ø0
+0199 14              271         DEC     A 
+019A 6002            272         JZ      RSTCOUNT 
+019C 21A1            273         AJMP    DISPEXIT
+019E                 274     RSTCOUNT:
+019E 752300          275         MOV     Counter,#0  ;¼ÆÊÆ÷µÄÖµÖ»ÄÜÊÇ0»ò1
+01A1                 276     DISPEXIT:   
+01A1 D0D0            277         POP     PSW
+01A3 D0E0            278         POP     ACC
+01A5 32              279         RETI
+01A6 287EA464        280     DISPTAB:    DB 28H,7EH,0a4H,64H,72H,61H,21H,7CH,20H,60H 
+01AA 7261217C                
+01AE 2060                    
+                     281         END
+A51 MACRO ASSEMBLER  5KEY_VOLUME_CON                                                      08/24/2006 21:35:16 PAGE     6
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+COUNTER. . . . . .  N NUMB   0023H   A   
+D1 . . . . . . . .  C ADDR   00ECH   A   
+D2 . . . . . . . .  C ADDR   00EEH   A   
+DAA. . . . . . . .  C ADDR   0148H   A   
+DAA_1. . . . . . .  C ADDR   015AH   A   
+DAA_2. . . . . . .  C ADDR   015CH   A   
+DELAY. . . . . . .  C ADDR   00E6H   A   
+DISPBUF. . . . . .  N NUMB   005EH   A   
+DISPEXIT . . . . .  C ADDR   01A1H   A   
+DISPFIRST. . . . .  C ADDR   0192H   A   
+DISPNEXT . . . . .  C ADDR   0194H   A   
+DISPTAB. . . . . .  C ADDR   01A6H   A   
+DISP_VOL . . . . .  C ADDR   003DH   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+FIRST. . . . . . .  B ADDR   00A0H.7 A   
+INIT_T0. . . . . .  C ADDR   0162H   A   
+INT_T0 . . . . . .  C ADDR   0170H   A   
+KEY. . . . . . . .  C ADDR   0061H   A   
+KEY01. . . . . . .  C ADDR   00B6H   A   
+KEY01_RET. . . . .  C ADDR   00C9H   A   
+KEY02. . . . . . .  C ADDR   00CEH   A   
+KEY02_RET. . . . .  C ADDR   00E1H   A   
+KEYDW1 . . . . . .  C ADDR   0090H   A   
+KEYDW2 . . . . . .  C ADDR   009BH   A   
+KEYEXIT. . . . . .  C ADDR   00B4H   A   
+KEYPROC. . . . . .  C ADDR   004BH   A   
+KEYVAL . . . . . .  N NUMB   0025H   A   
+KEY_1. . . . . . .  C ADDR   00A2H   A   
+KEY_OK . . . . . .  B ADDR   0020H.0 A   
+KEY_RET. . . . . .  C ADDR   008FH   A   
+KEY_RET1 . . . . .  C ADDR   0086H   A   
+LOOP . . . . . . .  C ADDR   0034H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+PHONE. . . . . . .  N NUMB   0021H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+RS0. . . . . . . .  B ADDR   00D0H.3 A   
+RSTCOUNT . . . . .  C ADDR   019EH   A   
+SECOND . . . . . .  B ADDR   00A0H.6 A   
+SP . . . . . . . .  D ADDR   0081H   A   
+START. . . . . . .  C ADDR   0024H   A   
+TAB_KEY. . . . . .  C ADDR   0055H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TMRVAR . . . . . .  N NUMB   EACEH   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+UAA. . . . . . . .  C ADDR   012CH   A   
+UAA_1. . . . . . .  C ADDR   0140H   A   
+UAA_2. . . . . . .  C ADDR   0142H   A   
+VOL05. . . . . . .  C ADDR   0127H   A   
+VOL24. . . . . . .  C ADDR   0122H   A   
+VOLDW. . . . . . .  C ADDR   010AH   A   
+VOLDW1 . . . . . .  C ADDR   0118H   A   
+VOLNUMB. . . . . .  N NUMB   0022H   A   
+VOLRSUM. . . . . .  C ADDR   011DH   A   
+A51 MACRO ASSEMBLER  5KEY_VOLUME_CON                                                      08/24/2006 21:35:16 PAGE     7
+
+VOLUP. . . . . . .  C ADDR   00F5H   A   
+VOLUP1 . . . . . .  C ADDR   0105H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

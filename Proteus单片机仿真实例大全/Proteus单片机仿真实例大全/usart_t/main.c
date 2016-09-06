@@ -1,0 +1,41 @@
+//ICC-AVR application builder : 2005-9-4 20:55:51
+// Target : M16
+// Crystal: 8.0000Mhz
+
+#include <iom16v.h>
+#include <macros.h>
+#include <stdio.h>
+
+void delay_nms(unsigned int n);
+
+//UART0 initialize
+// desired baud rate: 9600
+// actual: baud rate:9615 (0.2%)
+// char size: 8 bit
+// parity: Disabled
+void uart0_init(void)
+{
+ UCSRB = 0x00; //disable while setting baud rate
+ UCSRA = 0x00;
+ UCSRC = (1<<URSEL)|(1<<UCSZ1)|(1<<UCSZ0);//8位数据+1位STOP位
+ UBRRL = 0x33; //set baud rate lo
+ UBRRH = 0x00; //set baud rate hi
+ UCSRB = (1<<RXEN)|(1<<TXEN);//允许发送和接收
+}
+
+void main(void)
+{
+ unsigned char i;
+ uart0_init(); 
+ puts("ATmega16 uart Test!");//使用icc的库函数
+ putchar(0x0d);
+ putchar(0x0a);
+ while(1)
+ {
+	for(i=0;i<20;i++)
+    {  
+	  putchar(i+0x30);
+	  delay_nms(1000);	
+	}
+ }
+}

@@ -1,0 +1,2 @@
+test2.o: F:\ICC\project\ucos_m8_icc\test/includes.h D:/icc/include/iom8v.h F:\ICC\project\ucos_m8_icc\test/OS_CPU.H D:/icc/include/macros.h F:\ICC\project\ucos_m8_icc\test/OS_CFG.H F:/ICC/project/ucos_m8_icc/source/UCOS_II.H D:/icc/include/eeprom.h\
+ D:/icc/include/iom8v.h D:/icc/include/macros.h D:/icc/include/stdio.h D:/icc/include/stdarg.h D:/icc/include/_const.h

@@ -1,0 +1,184 @@
+C51 COMPILER V7.50   LCD                                                                   06/01/2006 20:18:56 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE LCD
+OBJECT MODULE PLACED IN LCD.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE LCD.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <absacc.h>
+   2          #include <intrins.h>
+   3          #include <reg51.h>
+   4          
+   5          //#include "adc0831.h"
+   6          #include "lcd1602.h"
+   7          sbit adcdo=P1^0;
+   8          sbit adcclk=P1^1;
+   9          sbit adccs=P1^2;
+  10          #define uchar unsigned char 
+  11          
+  12          uchar bdata ch;
+  13          uchar a,b1,b2,b3;
+  14          uchar time0_count;      //time0计数器
+  15          
+  16          sbit ch_0 = ch^0;
+  17          
+  18          void delay1(uchar x)
+  19          {
+  20   1              uchar i;
+  21   1              for(i=0;i<x;i++); 
+  22   1      }
+  23          
+  24          void adcck(void) 
+  25          { 
+  26   1              adcclk=1; 
+  27   1              delay1(1); 
+  28   1              adcclk=0; 
+  29   1              delay1(1); 
+  30   1      }
+  31          
+  32          uchar readadc(void)
+  33          { 
+  34   1          uchar i;
+  35   1              ch=0;
+  36   1          adccs=0;
+  37   1          adcck();
+  38   1          while(adcdo); 
+  39   1          for (i=0; i<8; i++) 
+  40   1          { 
+  41   2               adcck();
+  42   2               ch <<= 1;
+  43   2                       ch_0 = adcdo;
+  44   2          }
+  45   1          adccs=1;
+  46   1          return(ch);
+  47   1      }
+  48          
+  49          
+  50          //time0初始化
+  51          void time0_init(void)
+  52          {
+  53   1              EA = 1;
+  54   1              ET0 = 1;
+  55   1      //      TMOD = 0x01;
+C51 COMPILER V7.50   LCD                                                                   06/01/2006 20:18:56 PAGE 2   
+
+  56   1              PT0 = 1;
+  57   1              TH0 = 0x3C;
+  58   1              TL0 = 0xB0;
+  59   1              TR0 = 1;
+  60   1              SM0=0;
+  61   1              SM1=1;//方式1，10位UAR
+  62   1              REN=1;//允许接收
+  63   1              TI=0;//发送中断标志
+  64   1              RI=0;//接收中断标志位
+  65   1              PCON=0;//电源控制位。
+  66   1              TH1=0xF3;
+  67   1              TL1=0XF3;//给初值，计算出波特；
+  68   1              TMOD=0X21;//方式2,定时器0工作方式1 ；
+  69   1              EA=1;//中断总允许位
+  70   1              ET1=0;//T1中断允许位
+  71   1              ES=1;//串行中断允许位
+  72   1              TR1=1;//开启定时器
+  73   1      }
+  74          
+  75          //void csh()
+  76          //      {
+  77          
+  78          //      }
+  79          
+  80          
+  81          unsigned char TempBuffer[10];
+  82          void IntToStr(unsigned int t, unsigned char *str, unsigned char n) 
+  83          {
+  84   1              unsigned char a[5]; char i, j;                                  
+  85   1              a[0]=(t/10000)%10;         //取得整数值到数组           
+  86   1              a[1]=(t/1000)%10;                                       
+  87   1              a[2]=(t/100)%10;                                        
+  88   1              a[3]=(t/10)%10;                                         
+  89   1              a[4]=(t/1)%10;                                          
+  90   1                                                            
+  91   1              for(i=0; i<5; i++)         //转成ASCII码                
+  92   1                      a[i]=a[i]+'0';                                          
+  93   1              for(i=0; a[i]=='0' && i<=3; i++);                       
+  94   1              for(j=5-n; j<i; j++)       //填充空格                   
+  95   1                      { *str=' ';  str++; }                                   
+  96   1              for(; i<5; i++)                                         
+  97   1                      { *str=a[i]; str++; }  //加入有效的数字                 
+  98   1              *str='\0'; 
+  99   1      } 
+ 100          
+ 101          void Delay1ms(unsigned int count)
+ 102          {
+ 103   1              unsigned int i,j;
+ 104   1              for(i=0;i<count;i++)
+ 105   1              for(j=0;j<120;j++);
+ 106   1      }
+ 107          
+ 108          
+ 109          void main(void)
+ 110          {
+ 111   1              
+ 112   1              time0_init();
+ 113   1              LCD_Initial();
+ 114   1              GotoXY(0,0);
+ 115   1              Print("SP: 80.c");
+ 116   1              GotoXY(0,1);
+ 117   1              Print("PV:");
+C51 COMPILER V7.50   LCD                                                                   06/01/2006 20:18:56 PAGE 3   
+
+ 118   1      
+ 119   1              while(1)
+ 120   1              {
+ 121   2              TI=0;
+ 122   2                      SBUF=a;
+ 123   2                      P2 = 100;   //进行数模转换
+ 124   2                      while(!TI);
+ 125   2                      TI=0;
+ 126   2                  IntToStr(a,&TempBuffer[0],5);
+ 127   2                      GotoXY(3,1);
+ 128   2                      Print(&TempBuffer[0]);
+ 129   2                      Print("of 255");
+ 130   2                      Delay1ms(100);
+ 131   2              }
+ 132   1                      
+ 133   1      }
+ 134          void time0_interrupt(void)interrupt 1
+ 135          {
+ 136   1              TH0 = 0x3c;
+ 137   1              TL0 = 0xb0;
+ 138   1              time0_count++;
+ 139   1              if(time0_count==20)
+ 140   1              {
+ 141   2                      time0_count=0;
+ 142   2      //              show_date_time();
+ 143   2                      a = readadc();
+ 144   2                      b1 = a/100;
+ 145   2                      b2 = (a%100)/10;
+ 146   2                      b3 = (a%100)%10;
+ 147   2      //              show_ad();
+ 148   2              }
+ 149   1      }
+ 150          
+ 151          void intrr() interrupt 4
+ 152                  {
+ 153   1              char temp;
+ 154   1              temp=SBUF;
+ 155   1      //      P2=temp;
+ 156   1              RI=0;
+ 157   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    685    ----
+   CONSTANT SIZE    =     20    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     16      13
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,115 @@
+A51 MACRO ASSEMBLER  TEXT3                                                                04/17/2007 16:43:25 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.00c
+OBJECT MODULE PLACED IN Text3.OBJ
+ASSEMBLER INVOKED BY: E:\PROGRA~1\KEIL\C51\BIN\KE51.EXE Text3.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1               org    0000h
+                       2           
+0000 7B01              3     main:  mov r3,#01h 
+0002 7C00              4            mov r4,#00h
+0004 7D10              5                mov r5,#10h
+0006 120053            6           lcall  display
+                       7     
+0009 7B03              8                mov r3,#03h
+000B 7C00              9            mov r4,#00h
+000D 7D20             10                mov r5,#20h
+000F 120053           11           lcall  display
+                      12     
+0012 7B05             13                 mov r3,#05h
+0014 7C00             14            mov r4,#00h
+0016 7D20             15                mov r5,#20h
+0018 120053           16           lcall  display
+                      17     
+001B 7B0F             18               mov r3,#0fh
+001D 7C00             19            mov r4,#00h
+001F 7D30             20                mov r5,#30h
+0021 120053           21           lcall  display
+                      22     
+0024 7B00             23                     mov r3,#00h
+0026 7C00             24            mov r4,#00h
+0028 7D02             25                mov r5,#02h
+002A 120053           26           lcall  display
+                      27     
+002D 7BFF             28               mov r3,#0ffh
+002F 7CFF             29            mov r4,#0ffh
+0031 7D30             30                mov r5,#30h
+0033 120053           31                lcall  display
+                      32               
+0036 7B00             33                mov r3,#00h
+0038 7C00             34            mov r4,#00h
+003A 7D02             35                mov r5,#02h
+003C 120053           36            lcall  display
+                      37     
+003F 7BFF             38                mov r3,#0ffh
+0041 7CFF             39            mov r4,#0ffh
+0043 7D40             40                mov r5,#40h
+0045 120053           41                lcall  display
+                      42     
+0048 7B00             43                mov r3,#00h
+004A 7C00             44            mov r4,#00h
+004C 7D04             45                mov r5,#04h
+004E 120053           46            lcall  display
+                      47           
+0051 0100             48               ajmp  main
+                      49     
+0053 C3               50     display: clr c
+0054 EB               51      go:mov a,r3
+0055 33               52             rlc a
+0056 FB               53                     mov r3,a
+0057 EC               54                     mov a,r4
+0058 33               55                     rlc a
+0059 FC               56                     mov r4,a
+005A 8B90             57             mov p1,r3
+005C 8CA0             58             mov p2,r4
+A51 MACRO ASSEMBLER  TEXT3                                                                04/17/2007 16:43:25 PAGE     2
+
+005E 120064           59                     lcall delay
+0061 DDF1             60             djnz  r5,go
+0063 22               61                     ret
+0064 79FF             62     delay:mov r1,#0ffh
+0066 7AFF             63     temp1:mov r2,#0ffh
+0068 DAFE             64           djnz r2,
+006A D9FA             65               djnz r1,temp1
+006C 22               66               ret
+                      67     
+                      68     
+                +1    69     
+                +1    72     
+                      73     
+                      74     
+                      75     END
+A51 MACRO ASSEMBLER  TEXT3                                                                04/17/2007 16:43:25 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY. . . . . . .  C ADDR   0064H   A   
+DISPLAY. . . . . .  C ADDR   0053H   A   
+GO . . . . . . . .  C ADDR   0054H   A   
+MAIN . . . . . . .  C ADDR   0000H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+TEMP1. . . . . . .  C ADDR   0066H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
+
+  PA51 中文汇编系统
+Version 7.0 (C) Copyright 2007.1
+E:\PROGRA~1\KEIL\C51\BIN\A51.EXE @Text3._ia N=2
+格式:4
+D:\DOCUME~1\BOSS\桌面\听力\心 + Text3 = D:\DOCUME~1\BOSS\桌面\听力\心\Text3.asm
+保护 D:\DOCUME~1\BOSS\桌面\听力\心\Text3.asm f=0 k=1
+存盘:D:\DOCUME~1\BOSS\桌面\听力\心\Text3.asm E:\PROGRA~1\KEIL\C51\BIN\PINC\BAK\BAK007.ASM
+编译: E:\PROGRA~1\KEIL\C51\BIN\KE51.exe @Text3._ia 586
+保护 D:\DOCUME~1\BOSS\桌面\听力\心\Text3.asm f=1 k=2

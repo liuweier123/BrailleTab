@@ -1,0 +1,53 @@
+A51 MACRO ASSEMBLER  PARALLEL_TO_SERIAL                                                   07/31/2006 10:03:52 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.00
+OBJECT MODULE PLACED IN Parallel to Serial.OBJ
+ASSEMBLER INVOKED BY: e:\Program Files\Keil\C51\BIN\A51.EXE Parallel to Serial.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG     0
+  0090                 2             PL      BIT     P1.0
+0000 C290              3     START:  CLR     PL
+0002 D290              4             SETB    PL
+0004 759810            5             MOV     SCON,#10H
+0007 3098FD            6     WAIT:   JNB     RI,WAIT
+000A E599              7             MOV     A,SBUF   
+000C C298              8             CLR     RI
+000E F580              9             MOV     P0,A
+0010 1114             10             ACALL   DELAY
+0012 80EC             11             SJMP    START
+0014 7CFF             12     DELAY:  MOV     R4,#0FFH
+0016 7DFF             13     AA1:    MOV     R5,#0FFH
+0018 00               14     AA:     NOP
+0019 00               15             NOP   
+001A DDFC             16             DJNZ    R5,AA
+001C DCF8             17             DJNZ    R4,AA1
+001E 22               18             RET
+                      19             END
+A51 MACRO ASSEMBLER  PARALLEL_TO_SERIAL                                                   07/31/2006 10:03:52 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AA . . . . . . . .  C ADDR   0018H   A   
+AA1. . . . . . . .  C ADDR   0016H   A   
+DELAY. . . . . . .  C ADDR   0014H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PL . . . . . . . .  B ADDR   0090H.0 A   
+RI . . . . . . . .  B ADDR   0098H.0 A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+START. . . . . . .  C ADDR   0000H   A   
+WAIT . . . . . . .  C ADDR   0007H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

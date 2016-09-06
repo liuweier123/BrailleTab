@@ -1,0 +1,575 @@
+   1               		.file	"onewire.c"
+   2               		.arch atmega32
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  17               	.Ltext0:
+  18               	.global	ow_reset
+  20               	ow_reset:
+  21               	.LFB8:
+  22               	.LM1:
+  23               	/* prologue: frame size=0 */
+  24               	/* prologue end (size=0) */
+  25               	.LM2:
+  26 0000 E091 0000 		lds r30,OW_OUT
+  27 0004 F091 0000 		lds r31,(OW_OUT)+1
+  28 0008 9091 0000 		lds r25,OW_PIN_MASK
+  29 000c 9095      		com r25
+  30 000e 8081      		ld r24,Z
+  31 0010 8923      		and r24,r25
+  32 0012 8083      		st Z,r24
+  33               	.LM3:
+  34 0014 E091 0000 		lds r30,OW_DDR
+  35 0018 F091 0000 		lds r31,(OW_DDR)+1
+  36 001c 8081      		ld r24,Z
+  37 001e 9091 0000 		lds r25,OW_PIN_MASK
+  38 0022 892B      		or r24,r25
+  39 0024 8083      		st Z,r24
+  40               	.LBB2:
+  41               	.LM4:
+  42 0026 8FEB      		ldi r24,lo8(959)
+  43 0028 93E0      		ldi r25,hi8(959)
+  44               	.LBB3:
+  45               	/* #APP */
+  46 002a 8115      		cp  r24,__zero_reg__ 
+  47 002c 9105      		cpc r25,__zero_reg__ 
+  48 002e 11F0      		breq L_Exit_23       
+  49               		L_LOOP_23:           
+  50 0030 0197      		sbiw r24,1            
+  51 0032 F1F7      		brne L_LOOP_23       
+  52               		L_Exit_23:           
+  53               		
+  54               	/* #NOAPP */
+  55               	.LBE3:
+  56               	.LBE2:
+  57               	.LM5:
+  58 0034 3FB7      		in r19,95-0x20
+  59               	.LM6:
+  60               	/* #APP */
+  61 0036 F894      		cli
+  62               	.LM7:
+  63               	/* #NOAPP */
+  64 0038 E091 0000 		lds r30,OW_DDR
+  65 003c F091 0000 		lds r31,(OW_DDR)+1
+  66 0040 9091 0000 		lds r25,OW_PIN_MASK
+  67 0044 9095      		com r25
+  68 0046 8081      		ld r24,Z
+  69 0048 8923      		and r24,r25
+  70 004a 8083      		st Z,r24
+  71               	.LBB4:
+  72               	.LM8:
+  73 004c 83E8      		ldi r24,lo8(131)
+  74 004e 90E0      		ldi r25,hi8(131)
+  75               	.LBB5:
+  76               	/* #APP */
+  77 0050 8115      		cp  r24,__zero_reg__ 
+  78 0052 9105      		cpc r25,__zero_reg__ 
+  79 0054 11F0      		breq L_Exit_42       
+  80               		L_LOOP_42:           
+  81 0056 0197      		sbiw r24,1            
+  82 0058 F1F7      		brne L_LOOP_42       
+  83               		L_Exit_42:           
+  84               		
+  85               	/* #NOAPP */
+  86               	.LBE5:
+  87               	.LBE4:
+  88               	.LM9:
+  89 005a E091 0000 		lds r30,OW_IN
+  90 005e F091 0000 		lds r31,(OW_IN)+1
+  91 0062 4081      		ld r20,Z
+  92 0064 2091 0000 		lds r18,OW_PIN_MASK
+  93 0068 4223      		and r20,r18
+  94               	.LM10:
+  95 006a 3FBF      		out 95-0x20,r19
+  96               	.LBB6:
+  97               	.LM11:
+  98 006c 8BE3      		ldi r24,lo8(827)
+  99 006e 93E0      		ldi r25,hi8(827)
+ 100               	.LBB7:
+ 101               	/* #APP */
+ 102 0070 8115      		cp  r24,__zero_reg__ 
+ 103 0072 9105      		cpc r25,__zero_reg__ 
+ 104 0074 11F0      		breq L_Exit_57       
+ 105               		L_LOOP_57:           
+ 106 0076 0197      		sbiw r24,1            
+ 107 0078 F1F7      		brne L_LOOP_57       
+ 108               		L_Exit_57:           
+ 109               		
+ 110               	/* #NOAPP */
+ 111               	.LBE7:
+ 112               	.LBE6:
+ 113               	.LM12:
+ 114 007a 8081      		ld r24,Z
+ 115 007c 8223      		and r24,r18
+ 116 007e 09F4      		brne .L5
+ 117               	.LM13:
+ 118 0080 41E0      		ldi r20,lo8(1)
+ 119               	.L5:
+ 120               	.LM14:
+ 121 0082 842F      		mov r24,r20
+ 122 0084 9927      		clr r25
+ 123               	/* epilogue: frame size=0 */
+ 124 0086 0895      		ret
+ 125               	/* epilogue end (size=1) */
+ 126               	/* function ow_reset size 103 (102) */
+ 127               	.LFE8:
+ 129               	.global	ow_set_bus
+ 131               	ow_set_bus:
+ 132               	.LFB4:
+ 133               	.LM15:
+ 134               	/* prologue: frame size=0 */
+ 135               	/* prologue end (size=0) */
+ 136 0088 5093 0000 		sts (OW_DDR)+1,r21
+ 137 008c 4093 0000 		sts OW_DDR,r20
+ 138               	.LM16:
+ 139 0090 7093 0000 		sts (OW_OUT)+1,r23
+ 140 0094 6093 0000 		sts OW_OUT,r22
+ 141               	.LM17:
+ 142 0098 9093 0000 		sts (OW_IN)+1,r25
+ 143 009c 8093 0000 		sts OW_IN,r24
+ 144               	.LM18:
+ 145 00a0 81E0      		ldi r24,lo8(1)
+ 146 00a2 90E0      		ldi r25,hi8(1)
+ 147 00a4 02C0      		rjmp 2f
+ 148 00a6 880F      	1:	lsl r24
+ 149 00a8 991F      		rol r25
+ 150 00aa 2A95      	2:	dec r18
+ 151 00ac E2F7      		brpl 1b
+ 152 00ae 8093 0000 		sts OW_PIN_MASK,r24
+ 153               	.LM19:
+ 154 00b2 0E94 0000 		call ow_reset
+ 155               	/* epilogue: frame size=0 */
+ 156 00b6 0895      		ret
+ 157               	/* epilogue end (size=1) */
+ 158               	/* function ow_set_bus size 25 (24) */
+ 159               	.LFE4:
+ 161               	.global	ow_input_pin_state
+ 163               	ow_input_pin_state:
+ 164               	.LFB5:
+ 165               	.LM20:
+ 166               	/* prologue: frame size=0 */
+ 167               	/* prologue end (size=0) */
+ 168 00b8 E091 0000 		lds r30,OW_IN
+ 169 00bc F091 0000 		lds r31,(OW_IN)+1
+ 170 00c0 8081      		ld r24,Z
+ 171 00c2 9091 0000 		lds r25,OW_PIN_MASK
+ 172 00c6 8923      		and r24,r25
+ 173               	.LM21:
+ 174 00c8 9927      		clr r25
+ 175               	/* epilogue: frame size=0 */
+ 176 00ca 0895      		ret
+ 177               	/* epilogue end (size=1) */
+ 178               	/* function ow_input_pin_state size 10 (9) */
+ 179               	.LFE5:
+ 181               	.global	ow_parasite_enable
+ 183               	ow_parasite_enable:
+ 184               	.LFB6:
+ 185               	.LM22:
+ 186               	/* prologue: frame size=0 */
+ 187               	/* prologue end (size=0) */
+ 188 00cc E091 0000 		lds r30,OW_OUT
+ 189 00d0 F091 0000 		lds r31,(OW_OUT)+1
+ 190 00d4 8081      		ld r24,Z
+ 191 00d6 9091 0000 		lds r25,OW_PIN_MASK
+ 192 00da 892B      		or r24,r25
+ 193 00dc 8083      		st Z,r24
+ 194               	.LM23:
+ 195 00de E091 0000 		lds r30,OW_DDR
+ 196 00e2 F091 0000 		lds r31,(OW_DDR)+1
+ 197 00e6 8081      		ld r24,Z
+ 198 00e8 9091 0000 		lds r25,OW_PIN_MASK
+ 199 00ec 892B      		or r24,r25
+ 200 00ee 8083      		st Z,r24
+ 201               	/* epilogue: frame size=0 */
+ 202 00f0 0895      		ret
+ 203               	/* epilogue end (size=1) */
+ 204               	/* function ow_parasite_enable size 19 (18) */
+ 205               	.LFE6:
+ 207               	.global	ow_parasite_disable
+ 209               	ow_parasite_disable:
+ 210               	.LFB7:
+ 211               	.LM24:
+ 212               	/* prologue: frame size=0 */
+ 213               	/* prologue end (size=0) */
+ 214 00f2 E091 0000 		lds r30,OW_OUT
+ 215 00f6 F091 0000 		lds r31,(OW_OUT)+1
+ 216 00fa 9091 0000 		lds r25,OW_PIN_MASK
+ 217 00fe 9095      		com r25
+ 218 0100 8081      		ld r24,Z
+ 219 0102 8923      		and r24,r25
+ 220 0104 8083      		st Z,r24
+ 221               	.LM25:
+ 222 0106 E091 0000 		lds r30,OW_DDR
+ 223 010a F091 0000 		lds r31,(OW_DDR)+1
+ 224 010e 9091 0000 		lds r25,OW_PIN_MASK
+ 225 0112 9095      		com r25
+ 226 0114 8081      		ld r24,Z
+ 227 0116 8923      		and r24,r25
+ 228 0118 8083      		st Z,r24
+ 229               	/* epilogue: frame size=0 */
+ 230 011a 0895      		ret
+ 231               	/* epilogue end (size=1) */
+ 232               	/* function ow_parasite_disable size 21 (20) */
+ 233               	.LFE7:
+ 235               	.global	ow_bit_io
+ 237               	ow_bit_io:
+ 238               	.LFB9:
+ 239               	.LM26:
+ 240               	/* prologue: frame size=0 */
+ 241               	/* prologue end (size=0) */
+ 242 011c 382F      		mov r19,r24
+ 243               	.LM27:
+ 244 011e 4FB7      		in r20,95-0x20
+ 245               	.LM28:
+ 246               	/* #APP */
+ 247 0120 F894      		cli
+ 248               	.LM29:
+ 249               	/* #NOAPP */
+ 250 0122 E091 0000 		lds r30,OW_DDR
+ 251 0126 F091 0000 		lds r31,(OW_DDR)+1
+ 252 012a 8081      		ld r24,Z
+ 253 012c 9091 0000 		lds r25,OW_PIN_MASK
+ 254 0130 892B      		or r24,r25
+ 255 0132 8083      		st Z,r24
+ 256               	.LBB8:
+ 257               	.LM30:
+ 258 0134 81E0      		ldi r24,lo8(1)
+ 259 0136 90E0      		ldi r25,hi8(1)
+ 260               	.LBB9:
+ 261               	/* #APP */
+ 262 0138 8115      		cp  r24,__zero_reg__ 
+ 263 013a 9105      		cpc r25,__zero_reg__ 
+ 264 013c 11F0      		breq L_Exit_155       
+ 265               		L_LOOP_155:           
+ 266 013e 0197      		sbiw r24,1            
+ 267 0140 F1F7      		brne L_LOOP_155       
+ 268               		L_Exit_155:           
+ 269               		
+ 270               	/* #NOAPP */
+ 271               	.LBE9:
+ 272               	.LBE8:
+ 273               	.LM31:
+ 274 0142 3323      		tst r19
+ 275 0144 51F0      		breq .L12
+ 276               	.LM32:
+ 277 0146 E091 0000 		lds r30,OW_DDR
+ 278 014a F091 0000 		lds r31,(OW_DDR)+1
+ 279 014e 9091 0000 		lds r25,OW_PIN_MASK
+ 280 0152 9095      		com r25
+ 281 0154 8081      		ld r24,Z
+ 282 0156 8923      		and r24,r25
+ 283 0158 8083      		st Z,r24
+ 284               	.L12:
+ 285               	.LBB10:
+ 286               	.LM33:
+ 287 015a 89E1      		ldi r24,lo8(25)
+ 288 015c 90E0      		ldi r25,hi8(25)
+ 289               	.LBB11:
+ 290               	/* #APP */
+ 291 015e 8115      		cp  r24,__zero_reg__ 
+ 292 0160 9105      		cpc r25,__zero_reg__ 
+ 293 0162 11F0      		breq L_Exit_175       
+ 294               		L_LOOP_175:           
+ 295 0164 0197      		sbiw r24,1            
+ 296 0166 F1F7      		brne L_LOOP_175       
+ 297               		L_Exit_175:           
+ 298               		
+ 299               	/* #NOAPP */
+ 300               	.LBE11:
+ 301               	.LBE10:
+ 302               	.LM34:
+ 303 0168 E091 0000 		lds r30,OW_IN
+ 304 016c F091 0000 		lds r31,(OW_IN)+1
+ 305 0170 E081      		ld r30,Z
+ 306 0172 2091 0000 		lds r18,OW_PIN_MASK
+ 307 0176 E223      		and r30,r18
+ 308 0178 09F4      		brne .L14
+ 309 017a 3E2F      		mov r19,r30
+ 310               	.L14:
+ 311               	.LBB12:
+ 312               	.LM35:
+ 313 017c 89E5      		ldi r24,lo8(89)
+ 314 017e 90E0      		ldi r25,hi8(89)
+ 315               	.LBB13:
+ 316               	/* #APP */
+ 317 0180 8115      		cp  r24,__zero_reg__ 
+ 318 0182 9105      		cpc r25,__zero_reg__ 
+ 319 0184 11F0      		breq L_Exit_194       
+ 320               		L_LOOP_194:           
+ 321 0186 0197      		sbiw r24,1            
+ 322 0188 F1F7      		brne L_LOOP_194       
+ 323               		L_Exit_194:           
+ 324               		
+ 325               	/* #NOAPP */
+ 326               	.LBE13:
+ 327               	.LBE12:
+ 328               	.LM36:
+ 329 018a E091 0000 		lds r30,OW_DDR
+ 330 018e F091 0000 		lds r31,(OW_DDR)+1
+ 331 0192 2095      		com r18
+ 332 0194 8081      		ld r24,Z
+ 333 0196 8223      		and r24,r18
+ 334 0198 8083      		st Z,r24
+ 335               	.LM37:
+ 336 019a 4FBF      		out 95-0x20,r20
+ 337               	.LM38:
+ 338 019c 832F      		mov r24,r19
+ 339 019e 9927      		clr r25
+ 340               	/* epilogue: frame size=0 */
+ 341 01a0 0895      		ret
+ 342               	/* epilogue end (size=1) */
+ 343               	/* function ow_bit_io size 102 (101) */
+ 344               	.LFE9:
+ 346               	.global	ow_byte_wr
+ 348               	ow_byte_wr:
+ 349               	.LFB10:
+ 350               	.LM39:
+ 351               	/* prologue: frame size=0 */
+ 352 01a2 1F93      		push r17
+ 353 01a4 CF93      		push r28
+ 354               	/* prologue end (size=2) */
+ 355 01a6 C82F      		mov r28,r24
+ 356 01a8 18E0      		ldi r17,lo8(8)
+ 357               	.L17:
+ 358               	.LM40:
+ 359 01aa 8C2F      		mov r24,r28
+ 360 01ac 8170      		andi r24,lo8(1)
+ 361 01ae 0E94 0000 		call ow_bit_io
+ 362               	.LM41:
+ 363 01b2 C695      		lsr r28
+ 364               	.LM42:
+ 365 01b4 8111      		cpse r24,__zero_reg__
+ 366 01b6 C068      		ori r28,lo8(-128)
+ 367               	.L19:
+ 368               	.LM43:
+ 369 01b8 1150      		subi r17,lo8(-(-1))
+ 370 01ba B9F7      		brne .L17
+ 371               	.LM44:
+ 372 01bc 8C2F      		mov r24,r28
+ 373 01be 9927      		clr r25
+ 374               	/* epilogue: frame size=0 */
+ 375 01c0 CF91      		pop r28
+ 376 01c2 1F91      		pop r17
+ 377 01c4 0895      		ret
+ 378               	/* epilogue end (size=3) */
+ 379               	/* function ow_byte_wr size 20 (15) */
+ 380               	.LFE10:
+ 382               	.global	ow_byte_rd
+ 384               	ow_byte_rd:
+ 385               	.LFB11:
+ 386               	.LM45:
+ 387               	/* prologue: frame size=0 */
+ 388               	/* prologue end (size=0) */
+ 389               	.LM46:
+ 390 01c6 8FEF      		ldi r24,lo8(-1)
+ 391 01c8 0E94 0000 		call ow_byte_wr
+ 392               	.LM47:
+ 393 01cc 9927      		clr r25
+ 394               	/* epilogue: frame size=0 */
+ 395 01ce 0895      		ret
+ 396               	/* epilogue end (size=1) */
+ 397               	/* function ow_byte_rd size 5 (4) */
+ 398               	.LFE11:
+ 400               	.global	ow_rom_search
+ 402               	ow_rom_search:
+ 403               	.LFB12:
+ 404               	.LM48:
+ 405               	/* prologue: frame size=0 */
+ 406 01d0 DF92      		push r13
+ 407 01d2 EF92      		push r14
+ 408 01d4 FF92      		push r15
+ 409 01d6 0F93      		push r16
+ 410 01d8 1F93      		push r17
+ 411 01da CF93      		push r28
+ 412 01dc DF93      		push r29
+ 413               	/* prologue end (size=7) */
+ 414 01de E82E      		mov r14,r24
+ 415 01e0 EB01      		movw r28,r22
+ 416               	.LM49:
+ 417 01e2 0E94 0000 		call ow_reset
+ 418 01e6 182F      		mov r17,r24
+ 419 01e8 8823      		tst r24
+ 420 01ea 19F0      		breq .L23
+ 421               	.LM50:
+ 422 01ec 8FEF      		ldi r24,lo8(255)
+ 423 01ee 90E0      		ldi r25,hi8(255)
+ 424 01f0 32C0      		rjmp .L22
+ 425               	.L23:
+ 426               	.LM51:
+ 427 01f2 80EF      		ldi r24,lo8(-16)
+ 428 01f4 0E94 0000 		call ow_byte_wr
+ 429               	.LM52:
+ 430 01f8 D12E      		mov r13,r17
+ 431               	.LM53:
+ 432 01fa 00E4      		ldi r16,lo8(64)
+ 433               	.L24:
+ 434               	.LM54:
+ 435 01fc 88E0      		ldi r24,lo8(8)
+ 436 01fe F82E      		mov r15,r24
+ 437               	.L27:
+ 438               	.LM55:
+ 439 0200 81E0      		ldi r24,lo8(1)
+ 440 0202 0E94 0000 		call ow_bit_io
+ 441 0206 182F      		mov r17,r24
+ 442               	.LM56:
+ 443 0208 81E0      		ldi r24,lo8(1)
+ 444 020a 0E94 0000 		call ow_bit_io
+ 445 020e 8823      		tst r24
+ 446 0210 29F0      		breq .L30
+ 447               	.LM57:
+ 448 0212 1123      		tst r17
+ 449 0214 71F0      		breq .L32
+ 450               	.LM58:
+ 451 0216 8EEF      		ldi r24,lo8(254)
+ 452 0218 90E0      		ldi r25,hi8(254)
+ 453 021a 1DC0      		rjmp .L22
+ 454               	.L30:
+ 455               	.LM59:
+ 456 021c 1123      		tst r17
+ 457 021e 49F4      		brne .L32
+ 458               	.LM60:
+ 459 0220 0E15      		cp r16,r14
+ 460 0222 28F0      		brlo .L35
+ 461 0224 8881      		ld r24,Y
+ 462 0226 80FF      		sbrs r24,0
+ 463 0228 04C0      		rjmp .L32
+ 464 022a E016      		cp r14,r16
+ 465 022c 11F0      		breq .L32
+ 466               	.L35:
+ 467               	.LM61:
+ 468 022e 11E0      		ldi r17,lo8(1)
+ 469               	.LM62:
+ 470 0230 D02E      		mov r13,r16
+ 471               	.L32:
+ 472               	.LM63:
+ 473 0232 812F      		mov r24,r17
+ 474 0234 0E94 0000 		call ow_bit_io
+ 475               	.LM64:
+ 476 0238 8881      		ld r24,Y
+ 477 023a 8695      		lsr r24
+ 478 023c 8883      		st Y,r24
+ 479               	.LM65:
+ 480 023e 1123      		tst r17
+ 481 0240 11F0      		breq .L36
+ 482 0242 8068      		ori r24,lo8(-128)
+ 483 0244 8883      		st Y,r24
+ 484               	.L36:
+ 485               	.LM66:
+ 486 0246 0150      		subi r16,lo8(-(-1))
+ 487               	.LM67:
+ 488 0248 FA94      		dec r15
+ 489 024a D1F6      		brne .L27
+ 490               	.LM68:
+ 491 024c 2196      		adiw r28,1
+ 492               	.LM69:
+ 493 024e 0023      		tst r16
+ 494 0250 A9F6      		brne .L24
+ 495               	.LM70:
+ 496 0252 8D2D      		mov r24,r13
+ 497 0254 9927      		clr r25
+ 498               	.L22:
+ 499               	/* epilogue: frame size=0 */
+ 500 0256 DF91      		pop r29
+ 501 0258 CF91      		pop r28
+ 502 025a 1F91      		pop r17
+ 503 025c 0F91      		pop r16
+ 504 025e FF90      		pop r15
+ 505 0260 EF90      		pop r14
+ 506 0262 DF90      		pop r13
+ 507 0264 0895      		ret
+ 508               	/* epilogue end (size=8) */
+ 509               	/* function ow_rom_search size 76 (61) */
+ 510               	.LFE12:
+ 512               	.global	ow_command
+ 514               	ow_command:
+ 515               	.LFB13:
+ 516               	.LM71:
+ 517               	/* prologue: frame size=0 */
+ 518 0266 0F93      		push r16
+ 519 0268 1F93      		push r17
+ 520 026a CF93      		push r28
+ 521 026c DF93      		push r29
+ 522               	/* prologue end (size=4) */
+ 523 026e 082F      		mov r16,r24
+ 524 0270 EB01      		movw r28,r22
+ 525               	.LM72:
+ 526 0272 0E94 0000 		call ow_reset
+ 527               	.LM73:
+ 528 0276 2097      		sbiw r28,0
+ 529 0278 51F0      		breq .L38
+ 530               	.LM74:
+ 531 027a 85E5      		ldi r24,lo8(85)
+ 532 027c 0E94 0000 		call ow_byte_wr
+ 533               	.LM75:
+ 534 0280 18E0      		ldi r17,lo8(8)
+ 535               	.L39:
+ 536               	.LM76:
+ 537 0282 8991      		ld r24,Y+
+ 538 0284 0E94 0000 		call ow_byte_wr
+ 539               	.LM77:
+ 540 0288 1150      		subi r17,lo8(-(-1))
+ 541 028a D9F7      		brne .L39
+ 542 028c 03C0      		rjmp .L42
+ 543               	.L38:
+ 544               	.LM78:
+ 545 028e 8CEC      		ldi r24,lo8(-52)
+ 546 0290 0E94 0000 		call ow_byte_wr
+ 547               	.L42:
+ 548               	.LM79:
+ 549 0294 802F      		mov r24,r16
+ 550 0296 0E94 0000 		call ow_byte_wr
+ 551               	/* epilogue: frame size=0 */
+ 552 029a DF91      		pop r29
+ 553 029c CF91      		pop r28
+ 554 029e 1F91      		pop r17
+ 555 02a0 0F91      		pop r16
+ 556 02a2 0895      		ret
+ 557               	/* epilogue end (size=5) */
+ 558               	/* function ow_command size 32 (23) */
+ 559               	.LFE13:
+ 561               		.comm OW_PIN_MASK,1,1
+ 562               		.comm OW_IN,2,1
+ 563               		.comm OW_OUT,2,1
+ 564               		.comm OW_DDR,2,1
+ 565               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 onewire.c
+                            *ABS*:0000003f __SREG__
+                            *ABS*:0000003e __SP_H__
+                            *ABS*:0000003d __SP_L__
+                            *ABS*:00000000 __tmp_reg__
+                            *ABS*:00000001 __zero_reg__
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:20     .text:00000000 ow_reset
+                            *COM*:00000002 OW_OUT
+                            *COM*:00000001 OW_PIN_MASK
+                            *COM*:00000002 OW_DDR
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:52     .text:00000034 L_Exit_23
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:49     .text:00000030 L_LOOP_23
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:83     .text:0000005a L_Exit_42
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:80     .text:00000056 L_LOOP_42
+                            *COM*:00000002 OW_IN
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:108    .text:0000007a L_Exit_57
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:105    .text:00000076 L_LOOP_57
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:131    .text:00000088 ow_set_bus
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:163    .text:000000b8 ow_input_pin_state
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:183    .text:000000cc ow_parasite_enable
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:209    .text:000000f2 ow_parasite_disable
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:237    .text:0000011c ow_bit_io
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:268    .text:00000142 L_Exit_155
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:265    .text:0000013e L_LOOP_155
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:297    .text:00000168 L_Exit_175
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:294    .text:00000164 L_LOOP_175
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:323    .text:0000018a L_Exit_194
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:320    .text:00000186 L_LOOP_194
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:348    .text:000001a2 ow_byte_wr
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:384    .text:000001c6 ow_byte_rd
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:402    .text:000001d0 ow_rom_search
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/cce6aaaa.s:514    .text:00000266 ow_command
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

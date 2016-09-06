@@ -1,0 +1,89 @@
+C51 COMPILER V7.50   88                                                                    04/23/2006 14:43:24 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE 88
+OBJECT MODULE PLACED IN 88.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 88.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <atmel\regx52.h>
+   2          
+   3          #define int8 unsigned char
+   4          #define int16 unsigned int
+   5          #define int32 unsigned long 
+   6          
+   7          
+   8          int8 code num_tab[][8]={
+   9          /*--8*8--阴码--逐行扫描--逆向（低位在前）--*/
+  10          {0x00,0x00,0x02,0x05,0x05,0x05,0x02,0x00},/*"0",0*/
+  11          
+  12          {0x00,0x00,0x00,0x06,0x04,0x04,0x0E,0x00},/*"1",1*/
+  13          
+  14          {0x00,0x00,0x07,0x05,0x02,0x01,0x07,0x00},/*"2",2*/
+  15          
+  16          {0x00,0x00,0x07,0x03,0x04,0x05,0x07,0x00},/*"3",3*/
+  17          
+  18          {0x00,0x00,0x04,0x06,0x05,0x06,0x04,0x00},/*"4",4*/
+  19          
+  20          {0x00,0x00,0x07,0x01,0x07,0x05,0x07,0x00},/*"5",5*/
+  21          
+  22          {0x00,0x00,0x06,0x01,0x0F,0x09,0x0E,0x00},/*"6",6*/
+  23          
+  24          {0x00,0x00,0x0E,0x04,0x04,0x04,0x04,0x00},/*"7",7*/
+  25          
+  26          {0x00,0x00,0x07,0x05,0x02,0x05,0x07,0x00},/*"8",8*/
+  27          
+  28          {0x00,0x00,0x07,0x05,0x07,0x04,0x02,0x00},/*"9",9*/
+  29          
+  30          {0x00,0x00,0x02,0x05,0x05,0x05,0x02,0x00}/*"0",10*/
+  31          
+  32          
+  33          
+  34          };
+  35          
+  36          void delay(void);
+  37          void main(void){
+  38   1      
+  39   1      
+  40   1      int8 i;
+  41   1      int8 j;
+  42   1      
+  43   1      
+  44   1      
+  45   1      
+  46   1      while(1)
+  47   1      {
+  48   2      
+  49   2                      for(i=0;i<8;i++){
+  50   3                          delay();
+  51   3                              P0=num_tab[1][i];
+  52   3                      P2=i|0x18;
+  53   3                      }
+  54   2                       
+  55   2      }
+C51 COMPILER V7.50   88                                                                    04/23/2006 14:43:24 PAGE 2   
+
+  56   1      
+  57   1      
+  58   1      }
+*** WARNING C280 IN LINE 41 OF 88.C: 'j': unreferenced local variable
+  59          void delay(void){
+  60   1      int16 i;
+  61   1      for(i=0;i<500;i++);
+  62   1      
+  63   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     46    ----
+   CONSTANT SIZE    =     88    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

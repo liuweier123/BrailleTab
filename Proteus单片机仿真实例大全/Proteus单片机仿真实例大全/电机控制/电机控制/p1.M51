@@ -1,0 +1,229 @@
+BL51 BANKED LINKER/LOCATER V6.11                                                        06/05/2008  11:31:12  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.11, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE Text1.obj TO p1 RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  Text1.obj (TEXT1)
+
+
+LINK MAP OF MODULE:  p1 (TEXT1)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0217H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  p1 (TEXT1)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TEXT1
+  N:0034H         SYMBOL        COT0
+  N:0035H         SYMBOL        COT1
+  B:00A0H.7       SYMBOL        DJ
+  B:00A0H.6       SYMBOL        DJ0
+  C:01FEH         SYMBOL        DLAY11
+  C:0200H         SYMBOL        DLAY12
+  C:0207H         SYMBOL        DLAY31
+  C:0209H         SYMBOL        DLAY32
+  C:0210H         SYMBOL        DLAY61
+  C:0212H         SYMBOL        DLAY62
+  B:00A8H.1       SYMBOL        ET0
+  B:00A8H.0       SYMBOL        EX0
+  B:00A8H.2       SYMBOL        EX1
+  B:00D0H.5       SYMBOL        F0
+  C:01BEH         SYMBOL        FANHUI
+  C:01C0H         SYMBOL        FANHUI11
+  C:01F9H         SYMBOL        FANHUI2
+  C:01C7H         SYMBOL        FANX
+  C:01E7H         SYMBOL        HD
+  C:01CDH         SYMBOL        HD0
+  N:0030H         SYMBOL        HDIAN0
+  N:0032H         SYMBOL        HDIAN1
+  D:00A8H         SYMBOL        IE
+  C:01C1H         SYMBOL        IN0
+  B:0088H.0       SYMBOL        IT0
+  C:0181H         SYMBOL        JIANSU
+  C:01A0H         SYMBOL        JIASU
+  B:0090H.0       SYMBOL        K1
+  C:0152H         SYMBOL        K11
+  B:0090H.1       SYMBOL        K2
+BL51 BANKED LINKER/LOCATER V6.11                                                      06/05/2008  11:31:12  PAGE 2
+
+
+  C:016FH         SYMBOL        K21
+  B:0090H.2       SYMBOL        K3
+  C:0178H         SYMBOL        K33
+  B:0090H.3       SYMBOL        K4
+  C:014FH         SYMBOL        K41
+  C:01F1H         SYMBOL        LD
+  C:01D7H         SYMBOL        LD0
+  N:0031H         SYMBOL        LDIAN0
+  N:0033H         SYMBOL        LDIAN1
+  C:0100H         SYMBOL        MAIN
+  C:012DH         SYMBOL        NEXT1
+  D:0080H         SYMBOL        P0
+  D:0090H         SYMBOL        P1
+  D:00A0H         SYMBOL        P2
+  D:0081H         SYMBOL        SP
+  C:0128H         SYMBOL        STAR
+  C:0169H         SYMBOL        STAR1
+  C:0161H         SYMBOL        STOP0
+  D:008CH         SYMBOL        TH0
+  D:008AH         SYMBOL        TL0
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  N:0036H         SYMBOL        WAY
+  C:013BH         SYMBOL        XINT0
+  C:01FCH         SYMBOL        YAN_1MS
+  C:0205H         SYMBOL        YAN_3MS
+  C:020EH         SYMBOL        YAN_6MS
+  C:01E1H         SYMBOL        ZHENGX
+  C:0000H         LINE#         16
+  C:0003H         LINE#         18
+  C:000BH         LINE#         20
+  C:0100H         LINE#         22
+  C:0103H         LINE#         24
+  C:0106H         LINE#         25
+  C:0109H         LINE#         26
+  C:010CH         LINE#         27
+  C:010FH         LINE#         28
+  C:0112H         LINE#         29
+  C:0115H         LINE#         30
+  C:0118H         LINE#         31
+  C:011BH         LINE#         32
+  C:011EH         LINE#         33
+  C:0121H         LINE#         34
+  C:0124H         LINE#         35
+  C:0126H         LINE#         36
+  C:0128H         LINE#         37
+  C:012BH         LINE#         38
+  C:012DH         LINE#         39
+  C:0130H         LINE#         40
+  C:0133H         LINE#         41
+  C:0135H         LINE#         42
+  C:0137H         LINE#         43
+  C:0139H         LINE#         44
+  C:013BH         LINE#         45
+  C:013DH         LINE#         46
+  C:0140H         LINE#         47
+  C:0143H         LINE#         48
+BL51 BANKED LINKER/LOCATER V6.11                                                      06/05/2008  11:31:12  PAGE 3
+
+
+  C:0146H         LINE#         49
+  C:0148H         LINE#         50
+  C:014AH         LINE#         51
+  C:014DH         LINE#         52
+  C:014FH         LINE#         53
+  C:0152H         LINE#         54
+  C:0155H         LINE#         55
+  C:0158H         LINE#         56
+  C:015BH         LINE#         57
+  C:015EH         LINE#         58
+  C:0161H         LINE#         59
+  C:0163H         LINE#         60
+  C:0165H         LINE#         61
+  C:0167H         LINE#         62
+  C:0169H         LINE#         63
+  C:016BH         LINE#         64
+  C:016DH         LINE#         65
+  C:016FH         LINE#         66
+  C:0172H         LINE#         67
+  C:0175H         LINE#         68
+  C:0178H         LINE#         69
+  C:017BH         LINE#         70
+  C:017EH         LINE#         71
+  C:0181H         LINE#         78
+  C:0183H         LINE#         79
+  C:0184H         LINE#         80
+  C:0186H         LINE#         81
+  C:0188H         LINE#         82
+  C:018AH         LINE#         83
+  C:018CH         LINE#         84
+  C:018EH         LINE#         88
+  C:0190H         LINE#         89
+  C:0192H         LINE#         90
+  C:0194H         LINE#         91
+  C:0196H         LINE#         92
+  C:0198H         LINE#         93
+  C:019AH         LINE#         94
+  C:019CH         LINE#         95
+  C:019EH         LINE#         96
+  C:01A0H         LINE#         103
+  C:01A2H         LINE#         104
+  C:01A4H         LINE#         105
+  C:01A6H         LINE#         106
+  C:01A8H         LINE#         107
+  C:01AAH         LINE#         108
+  C:01ACH         LINE#         109
+  C:01AEH         LINE#         110
+  C:01AFH         LINE#         111
+  C:01B1H         LINE#         112
+  C:01B3H         LINE#         113
+  C:01B5H         LINE#         114
+  C:01B7H         LINE#         115
+  C:01B9H         LINE#         116
+  C:01BBH         LINE#         117
+  C:01BCH         LINE#         118
+  C:01BEH         LINE#         119
+  C:01C0H         LINE#         120
+BL51 BANKED LINKER/LOCATER V6.11                                                      06/05/2008  11:31:12  PAGE 4
+
+
+  C:01C1H         LINE#         123
+  C:01C3H         LINE#         124
+  C:01C5H         LINE#         125
+  C:01C7H         LINE#         126
+  C:01C9H         LINE#         127
+  C:01CBH         LINE#         128
+  C:01CDH         LINE#         129
+  C:01D0H         LINE#         130
+  C:01D3H         LINE#         131
+  C:01D5H         LINE#         132
+  C:01D7H         LINE#         133
+  C:01DAH         LINE#         134
+  C:01DDH         LINE#         135
+  C:01DFH         LINE#         136
+  C:01E1H         LINE#         137
+  C:01E3H         LINE#         138
+  C:01E5H         LINE#         139
+  C:01E7H         LINE#         140
+  C:01EAH         LINE#         141
+  C:01EDH         LINE#         142
+  C:01EFH         LINE#         143
+  C:01F1H         LINE#         144
+  C:01F4H         LINE#         145
+  C:01F7H         LINE#         146
+  C:01F9H         LINE#         147
+  C:01FBH         LINE#         148
+  C:01FCH         LINE#         149
+  C:01FEH         LINE#         150
+  C:0200H         LINE#         151
+  C:0202H         LINE#         152
+  C:0204H         LINE#         153
+  C:0205H         LINE#         154
+  C:0207H         LINE#         155
+  C:0209H         LINE#         156
+  C:020BH         LINE#         157
+  C:020DH         LINE#         158
+  C:020EH         LINE#         159
+  C:0210H         LINE#         160
+  C:0212H         LINE#         161
+  C:0214H         LINE#         162
+  C:0216H         LINE#         163
+  -------         ENDMOD        TEXT1
+
+Program Size: data=8.0 xdata=0 code=535
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,2 @@
+Ucos_ii.o: F:/ICC/project/ucos_m8_icc/test/includes.h D:/icc/include/iom8v.h F:/ICC/project/ucos_m8_icc/test/OS_CPU.H D:/icc/include/macros.h F:/ICC/project/ucos_m8_icc/test/OS_CFG.H F:\ICC\project\ucos_m8_icc\source/UCOS_II.H D:/icc/include/eeprom.h\
+ F:\ICC\project\ucos_m8_icc\source/os_core.c F:\ICC\project\ucos_m8_icc\source/os_task.c F:\ICC\project\ucos_m8_icc\source/os_time.c F:\ICC\project\ucos_m8_icc\source/74164.c

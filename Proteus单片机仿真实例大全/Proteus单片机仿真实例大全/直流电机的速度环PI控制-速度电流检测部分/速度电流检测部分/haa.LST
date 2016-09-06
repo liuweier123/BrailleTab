@@ -1,0 +1,135 @@
+C51 COMPILER V7.08   HAA                                                                   08/21/2007 18:03:57 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE HAA
+OBJECT MODULE PLACED IN haa.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE haa.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <absacc.h>
+   2          #include <reg51.h>
+   3          #define IN0 XBYTE[0x7ff8]
+   4          unsigned char   disbit[]={0xfe,0xfd,0xfb,0xf7};
+   5          unsigned char code discode[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};
+   6          unsigned int   disbuf[4]={0,0,0,0};
+   7          unsigned int  ad=100;
+   8          unsigned char q=0;
+   9          unsigned char *Adr;
+  10          unsigned char count,miaoshu;
+  11          unsigned char sec,tcnt;
+  12          sbit p26=P2^6;
+  13          void delay(unsigned char N)
+  14          {
+  15   1         unsigned char i;
+  16   1         for(i=0;i<N;i++);
+  17   1      }
+  18          void display(unsigned char ch)
+  19          {  
+  20   1         unsigned char k;   //显示，常用的一种程序，可以把disbuf数组变成一个暂时变量输出
+  21   1         disbuf[0]=ch%10;
+  22   1         disbuf[1]=(ch%100)/10;
+  23   1         disbuf[2]=ch/100%10;
+  24   1         disbuf[3]=1;
+  25   1         for(k=0;k<4;k++)
+  26   1                {
+  27   2                  P2=0xff; // p2作为输出，必须先置高电平
+  28   2                  P1=discode[disbuf[k]];
+  29   2                  P2=disbit[k];
+  30   2                }
+  31   1      }
+  32             
+  33          void read_ch(void) interrupt 0 using 0
+  34          {  
+  35   1         
+  36   1         ad=*Adr;
+  37   1         
+  38   1      }
+  39          
+  40          void t0(void) interrupt 1 using 0 //定时T0中断服务函数
+  41          {
+  42   1              tcnt++; //每过250ust tcnt 加一
+  43   1              if(tcnt==40) //计满40 次（1/100 秒）时
+  44   1              {               
+  45   2                      tcnt=0; //重新再计
+  46   2                      sec++;
+  47   2                      if(sec==10) //定时0.1 秒，在从零开始计时
+  48   2                      {
+  49   3                              sec=0;
+  50   3                      TH0=0x06; //对TH0 TL0 赋值
+  51   3                      TL0=0x06;
+  52   3                              miaoshu=count;
+  53   3                      count=0;
+  54   3                      }
+  55   2              }
+C51 COMPILER V7.08   HAA                                                                   08/21/2007 18:03:57 PAGE 2   
+
+  56   1      }
+  57          
+  58          void sdf(void) interrupt 2 using 0 //计数T1中断服务函数
+  59          {   
+  60   1              count=count+1;
+  61   1          
+  62   1              
+  63   1      }
+  64          main()
+  65          {
+  66   1        unsigned int m;
+  67   1        unsigned char s1=0x44;
+  68   1        EX0=1;
+  69   1        IT1=1;
+  70   1        Adr=&IN0;
+  71   1        TMOD=0x02; //定时器T0工作在方式2 自动重装方式,计数器T1工作在方式2 自动重装方式
+  72   1              TH0=0x06; //对TH0 TL0 赋值
+  73   1              TL0=0x06;
+  74   1              TR0=1; //开始定时
+  75   1              ET0=1; //允许T0 产生中断
+  76   1              EA=1;
+  77   1              EX1=1;
+  78   1              TR1=1;
+  79   1              IT1=1;
+  80   1          EA=1;
+  81   1              sec=0;
+  82   1              SCON=0x90; //MODER1,REN=1;
+  83   1              PCON=0x00;
+  84   1              miaoshu=0;tcnt=0;count=0;
+  85   1       while(1)
+  86   1        { 
+  87   2              *Adr=0; 
+  88   2          for(m=0;m<5000;m++)
+  89   2             {  
+  90   3                    if(p26==1)
+  91   3                    {display(ad);
+  92   4                 }         
+  93   3              else
+  94   3                         { display(miaoshu);
+  95   4                         }
+  96   3             }
+  97   2          do{   
+  98   3              SBUF=0xff;
+  99   3              while(TI==0);TI=0;
+ 100   3               
+ 101   3               while(RI==0);RI=0;
+ 102   3               }while(SBUF!=0xbb);
+ 103   2              
+ 104   2               SBUF=ad;
+ 105   2               while(TI==0);TI=0;
+ 106   2               
+ 107   2         }
+ 108   1       }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    286    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     22       1
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V7.08   HAA                                                                   08/21/2007 18:03:57 PAGE 3   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

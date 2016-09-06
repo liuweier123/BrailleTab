@@ -1,0 +1,660 @@
+                        .module test2.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile F:\ICC\project\ucos_m8_icc\test\test2.c
+ 0000                   .dbfunc e uart0_init _uart0_init fV
+                        .even
+ 0000           _uart0_init::
+ 0000                   .dbline -1
+ 0000                   .dbline 29
+ 0000           ; 
+ 0000           ; #define Test1_GLOBALS
+ 0000           ; #include "includes.h"
+ 0000           ; 
+ 0000           ; //******************************************************************************
+ 0000           ; // Constants
+ 0000           ; #define TaskStartPrio 10              // Task-Prioritaeten
+ 0000           ; //*****************************************************************************
+ 0000           ; // Variablen
+ 0000           ; INT8U    display[5];
+ 0000           ; INT8U    h,m,s,state;
+ 0000           ; OS_STK        Task1Stack[OS_TASK_DEF_STK_SIZE];               // startup task stack
+ 0000           ; OS_STK        Task2Stack[OS_TASK_DEF_STK_SIZE];
+ 0000           ; //ICC-AVR application builder : 2003-12-28 21:52:56
+ 0000           ; // Target : M8
+ 0000           ; // Crystal: 8.0000Mhz
+ 0000           ; 
+ 0000           ; #include <iom8v.h>
+ 0000           ; #include <macros.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; 
+ 0000           ; 
+ 0000           ; //UART0 initialisation
+ 0000           ; // desired baud rate: 9600
+ 0000           ; // actual: baud rate:9615 (0.2%)
+ 0000           ; // char size: 8 bit
+ 0000           ; // parity: Disabled
+ 0000           ; void uart0_init(void)
+ 0000           ; {
+ 0000                   .dbline 30
+ 0000           ;  UCSRB = 0x00; //disable while setting baud rate
+ 0000 2224              clr R2
+ 0002 2AB8              out 0xa,R2
+ 0004                   .dbline 31
+ 0004           ;  UCSRA = 0x00;
+ 0004 2BB8              out 0xb,R2
+ 0006                   .dbline 32
+ 0006           ;  UCSRC = 0x86;
+ 0006 86E8              ldi R24,134
+ 0008 80BD              out 0x20,R24
+ 000A                   .dbline 33
+ 000A           ;  UBRRL = 0x33; //set baud rate lo
+ 000A 83E3              ldi R24,51
+ 000C 89B9              out 0x9,R24
+ 000E                   .dbline 34
+ 000E           ;  UBRRH = 0x00; //set baud rate hi
+ 000E 20BC              out 0x20,R2
+ 0010                   .dbline 35
+ 0010           ;  UCSRB = 0x08;
+ 0010 88E0              ldi R24,8
+ 0012 8AB9              out 0xa,R24
+ 0014                   .dbline -2
+ 0014                   .dbline 36
+ 0014           ; }
+ 0014           L2:
+ 0014                   .dbline 0 ; func end
+ 0014 0895              ret
+ 0016                   .dbend
+ 0016                   .dbfunc e TC2_Init _TC2_Init fV
+                        .even
+ 0016           _TC2_Init::
+ 0016                   .dbline -1
+ 0016                   .dbline 45
+ 0016           ; 
+ 0016           ; //*****************************************************************************
+ 0016           ; // Prototypes
+ 0016           ; 
+ 0016           ; //*****************************************************************************
+ 0016           ; //                    TickISR
+ 0016           ; //*****************************************************************************
+ 0016           ; // Init Timer/Counter2 fuer Takterzeugung
+ 0016           ; void TC2_Init (void){ 
+ 0016                   .dbline 49
+ 0016           ;       /* Only uses TIMER2 overflow for tick interrupt. Timer compare
+ 0016           ;      * can also be used.
+ 0016           ;      */
+ 0016           ;       TIMSK &= ~(BIT(TOIE2)/* | BIT(OCIE2) */);       //disable TC2 interrupts
+ 0016 89B7              in R24,0x39
+ 0018 8F7B              andi R24,191
+ 001A 89BF              out 0x39,R24
+ 001C                   .dbline 50
+ 001C           ;       TCCR2 = 0x00;           // interner Takt, /1024
+ 001C 2224              clr R2
+ 001E 25BC              out 0x25,R2
+ 0020                   .dbline 51
+ 0020           ;       TCNT2 = 0;      // Counter ruecksetzen, 2ms @ 8MHz
+ 0020 24BC              out 0x24,R2
+ 0022                   .dbline 52
+ 0022           ;     TCCR2 = 0x04;   // 64
+ 0022 84E0              ldi R24,4
+ 0024 85BD              out 0x25,R24
+ 0026                   .dbline 54
+ 0026           ;       // OCR2 = 180;                  // OutputCompareRegister
+ 0026           ;       TIMSK |= BIT(TOIE2);    // enable OVF-interrupt
+ 0026 89B7              in R24,0x39
+ 0028 8064              ori R24,64
+ 002A 89BF              out 0x39,R24
+ 002C                   .dbline 57
+ 002C           ;                                                                                                                                       //TIMSK |= OCIE2;               // enable COMP-interrupt
+ 002C           ;       
+ 002C           ;     SEI();    // enable global interrupt     
+ 002C 7894              sei
+ 002E                   .dbline -2
+ 002E                   .dbline 58
+ 002E           ; }
+ 002E           L3:
+ 002E                   .dbline 0 ; func end
+ 002E 0895              ret
+ 0030                   .dbend
+                        .area vector(rom, abs)
+                        .org 8
+ 0008 00C0              rjmp _OSTickISR
+                        .area text(rom, con, rel)
+ 0030                   .dbfile F:\ICC\project\ucos_m8_icc\test\test2.c
+ 0030                   .dbfunc e main _main fV
+                        .even
+ 0030           _main::
+ 0030 2397              sbiw R28,3
+ 0032                   .dbline -1
+ 0032                   .dbline 70
+ 0032           ; 
+ 0032           ; //*****************************************************************************
+ 0032           ; // Interrupt Timer/Counter0 Overflow
+ 0032           ; // OVF_Takt:  4MHz / 1024 / 39 = 10ms
+ 0032           ; #pragma interrupt_handler OSTickISR:5
+ 0032           ; 
+ 0032           ; void Task1(void *pdata);
+ 0032           ; void Task2(void *pdata);
+ 0032           ; 
+ 0032           ; //*****************************************************************************
+ 0032           ; // Start
+ 0032           ; void main(void){      
+ 0032                   .dbline 71
+ 0032           ;       OSInit();               // OS init
+ 0032 00D0              rcall _OSInit
+ 0034                   .dbline 72
+ 0034           ;       uart0_init();
+ 0034 E5DF              rcall _uart0_init
+ 0036                   .dbline 73
+ 0036           ;       puts("ATmega8 uc/os-II Test!");
+ 0036 00E0              ldi R16,<L5
+ 0038 10E0              ldi R17,>L5
+ 003A 00D0              rcall _puts
+ 003C                   .dbline 74
+ 003C           ;       putchar(0x0d);
+ 003C 0DE0              ldi R16,13
+ 003E 00D0              rcall _putchar
+ 0040                   .dbline 75
+ 0040           ;       putchar(0x0a);
+ 0040 0AE0              ldi R16,10
+ 0042 00D0              rcall _putchar
+ 0044                   .dbline 77
+ 0044           ;       
+ 0044           ;       OSTaskCreate(Task1,     (void *)0, &Task1Stack[OS_TASK_DEF_STK_SIZE-1], 7);
+ 0044 87E0              ldi R24,7
+ 0046 8A83              std y+2,R24
+ 0048 80E0              ldi R24,<_Task1Stack+99
+ 004A 90E0              ldi R25,>_Task1Stack+99
+ 004C 9983              std y+1,R25
+ 004E 8883              std y+0,R24
+ 0050 2227              clr R18
+ 0052 3327              clr R19
+ 0054 00E0              ldi R16,<PL_Task1
+ 0056 10E0              ldi R17,>PL_Task1
+ 0058 00D0              rcall _OSTaskCreate
+ 005A                   .dbline 79
+ 005A           ;       
+ 005A           ;       OSTaskCreate(Task2,     (void *)0, &Task2Stack[OS_TASK_DEF_STK_SIZE-1], 8); 
+ 005A 88E0              ldi R24,8
+ 005C 8A83              std y+2,R24
+ 005E 80E0              ldi R24,<_Task2Stack+99
+ 0060 90E0              ldi R25,>_Task2Stack+99
+ 0062 9983              std y+1,R25
+ 0064 8883              std y+0,R24
+ 0066 2227              clr R18
+ 0068 3327              clr R19
+ 006A 00E0              ldi R16,<PL_Task2
+ 006C 10E0              ldi R17,>PL_Task2
+ 006E 00D0              rcall _OSTaskCreate
+ 0070                   .dbline 81
+ 0070           ;       // init und start tick
+ 0070           ;     TC2_Init();                       // Timer/Counter#2 Overflow and Comp init   
+ 0070 D2DF              rcall _TC2_Init
+ 0072                   .dbline 82
+ 0072           ;     OSStart();                // start multitasking
+ 0072 00D0              rcall _OSStart
+ 0074                   .dbline -2
+ 0074                   .dbline 83
+ 0074           ; }
+ 0074           L4:
+ 0074 2396              adiw R28,3
+ 0076                   .dbline 0 ; func end
+ 0076 0895              ret
+ 0078                   .dbend
+ 0078                   .dbfunc e Task1 _Task1 fV
+ 0078           ;           key2 -> R12
+ 0078           ;              i -> R14
+ 0078           ;           key1 -> y+0
+ 0078           ;           data -> R10,R11
+                        .even
+ 0078           _Task1::
+ 0078 00D0              rcall push_gset5x
+ 007A 5801              movw R10,R16
+ 007C 2197              sbiw R28,1
+ 007E                   .dbline -1
+ 007E                   .dbline 86
+ 007E           ; 
+ 007E           ; //*****************************************************************************
+ 007E           ; void Task1(void *data){
+ 007E                   .dbline 88
+ 007E           ;     unsigned char i,key1,key2;
+ 007E           ;       data = data;
+ 007E                   .dbline 89
+ 007E           ;       PORTD |= 0x1C;    //  key
+ 007E 82B3              in R24,0x12
+ 0080 8C61              ori R24,28
+ 0082 82BB              out 0x12,R24
+ 0084                   .dbline 90
+ 0084           ;       DDRD  &= ~0x1C;
+ 0084 81B3              in R24,0x11
+ 0086 837E              andi R24,227
+ 0088 81BB              out 0x11,R24
+ 008A                   .dbline 91
+ 008A           ;       PORTD |= 0x20;    //  bell
+ 008A 959A              sbi 0x12,5
+ 008C                   .dbline 92
+ 008C           ;       DDRD  |= 0x20;
+ 008C 8D9A              sbi 0x11,5
+ 008E                   .dbline 93
+ 008E           ;       init164();        //  œ‘ æ  ≥ı ºªØ
+ 008E 00D0              rcall _init164
+ 0090                   .dbline 94
+ 0090           ;       state = 1;
+ 0090 81E0              ldi R24,1
+ 0092 8093C800          sts _state,R24
+ 0096                   .dbline 95
+ 0096           L9:
+ 0096                   .dbline 95
+ 0096           ;       for (;;){
+ 0096                   .dbline 97
+ 0096           ; //  key
+ 0096           ;         key1 = PIND & 0x1C;
+ 0096 80B3              in R24,0x10
+ 0098 8C71              andi R24,28
+ 009A 8883              std y+0,R24
+ 009C                   .dbline 98
+ 009C           ;               if(key1 == 0x1C){
+ 009C 8C31              cpi R24,28
+ 009E 59F5              brne L13
+ 00A0                   .dbline 98
+ 00A0                   .dbline 99
+ 00A0           ;                   PORTD &= ~0x20;
+ 00A0 9598              cbi 0x12,5
+ 00A2                   .dbline 100
+ 00A2           ;                       if(key2 == 0x0C){
+ 00A2 8C2D              mov R24,R12
+ 00A4 8C30              cpi R24,12
+ 00A6 31F4              brne L15
+ 00A8                   .dbline 100
+ 00A8                   .dbline 101
+ 00A8           ;                               state ^= 0x01;
+ 00A8 81E0              ldi R24,1
+ 00AA 2090C800          lds R2,_state
+ 00AE 2826              eor R2,R24
+ 00B0 2092C800          sts _state,R2
+ 00B4                   .dbline 102
+ 00B4           ;                       }
+ 00B4           L15:
+ 00B4                   .dbline 103
+ 00B4           ;                       if(state == 0){
+ 00B4 2090C800          lds R2,_state
+ 00B8 2220              tst R2
+ 00BA F1F4              brne L14
+ 00BC                   .dbline 103
+ 00BC                   .dbline 104
+ 00BC           ;                           if(key2 == 0x18){
+ 00BC 8C2D              mov R24,R12
+ 00BE 8831              cpi R24,24
+ 00C0 59F4              brne L19
+ 00C2                   .dbline 104
+ 00C2                   .dbline 105
+ 00C2           ;                               if(++s == 60) s = 0;
+ 00C2 8091C900          lds R24,_s
+ 00C6 8F5F              subi R24,255    ; addi 1
+ 00C8 282E              mov R2,R24
+ 00CA 2092C900          sts _s,R2
+ 00CE 8C33              cpi R24,60
+ 00D0 19F4              brne L21
+ 00D2                   .dbline 105
+ 00D2 2224              clr R2
+ 00D4 2092C900          sts _s,R2
+ 00D8           L21:
+ 00D8                   .dbline 106
+ 00D8           ;                           }
+ 00D8           L19:
+ 00D8                   .dbline 107
+ 00D8           ;                           if(key2 == 0x14){
+ 00D8 8C2D              mov R24,R12
+ 00DA 8431              cpi R24,20
+ 00DC 69F4              brne L14
+ 00DE                   .dbline 107
+ 00DE                   .dbline 108
+ 00DE           ;                                   if(++m == 60) m = 0;
+ 00DE 8091CA00          lds R24,_m
+ 00E2 8F5F              subi R24,255    ; addi 1
+ 00E4 282E              mov R2,R24
+ 00E6 2092CA00          sts _m,R2
+ 00EA 8C33              cpi R24,60
+ 00EC 29F4              brne L14
+ 00EE                   .dbline 108
+ 00EE 2224              clr R2
+ 00F0 2092CA00          sts _m,R2
+ 00F4                   .dbline 109
+ 00F4           ;                           }
+ 00F4                   .dbline 110
+ 00F4           ;                       }
+ 00F4                   .dbline 111
+ 00F4           ;               }
+ 00F4 01C0              rjmp L14
+ 00F6           L13:
+ 00F6                   .dbline 112
+ 00F6           ;               else{
+ 00F6                   .dbline 113
+ 00F6           ;                       PORTD |= 0x20;
+ 00F6 959A              sbi 0x12,5
+ 00F8                   .dbline 114
+ 00F8           ;               }
+ 00F8           L14:
+ 00F8                   .dbline 115
+ 00F8           ;               key2 = key1;
+ 00F8 C880              ldd R12,y+0
+ 00FA                   .dbline 119
+ 00FA           ; //  end  key
+ 00FA           ; 
+ 00FA           ; //  display
+ 00FA           ;         display[0] = s%10;
+ 00FA 1AE0              ldi R17,10
+ 00FC 0091C900          lds R16,_s
+ 0100 00D0              rcall mod8u
+ 0102 0093CC00          sts _display,R16
+ 0106                   .dbline 120
+ 0106           ;               display[1] = s/10;
+ 0106 1AE0              ldi R17,10
+ 0108 0091C900          lds R16,_s
+ 010C 00D0              rcall div8u
+ 010E 0093CD00          sts _display+1,R16
+ 0112                   .dbline 121
+ 0112           ;               display[2] = m%10;
+ 0112 1AE0              ldi R17,10
+ 0114 0091CA00          lds R16,_m
+ 0118 00D0              rcall mod8u
+ 011A 0093CE00          sts _display+2,R16
+ 011E                   .dbline 122
+ 011E           ;               display[3] = m/10;
+ 011E 1AE0              ldi R17,10
+ 0120 0091CA00          lds R16,_m
+ 0124 00D0              rcall div8u
+ 0126 0093CF00          sts _display+3,R16
+ 012A                   .dbline 123
+ 012A AE2C              mov R10,R14
+ 012C BB24              clr R11
+ 012E AA20              tst R10
+ 0130 11F4              brne X0
+ 0132 BB20              tst R11
+ 0134 71F0              breq L33
+ 0136           X0:
+ 0136 C501              movw R24,R10
+ 0138 8130              cpi R24,1
+ 013A E0E0              ldi R30,0
+ 013C 9E07              cpc R25,R30
+ 013E 99F0              breq L34
+ 0140 8230              cpi R24,2
+ 0142 E0E0              ldi R30,0
+ 0144 9E07              cpc R25,R30
+ 0146 C9F0              breq L35
+ 0148 8330              cpi R24,3
+ 014A E0E0              ldi R30,0
+ 014C 9E07              cpc R25,R30
+ 014E F9F0              breq L36
+ 0150 27C0              rjmp L30
+ 0152           X1:
+ 0152                   .dbline 123
+ 0152           ;               switch(i){
+ 0152           L33:
+ 0152                   .dbline 124
+ 0152           ;                   case  0:  write164(display[i] | 0x70);  break;
+ 0152 80E0              ldi R24,<_display
+ 0154 90E0              ldi R25,>_display
+ 0156 EE2D              mov R30,R14
+ 0158 FF27              clr R31
+ 015A E80F              add R30,R24
+ 015C F91F              adc R31,R25
+ 015E 0081              ldd R16,z+0
+ 0160 0067              ori R16,112
+ 0162 00D0              rcall _write164
+ 0164                   .dbline 124
+ 0164 1DC0              rjmp L31
+ 0166           L34:
+ 0166                   .dbline 125
+ 0166           ;                   case  1:  write164(display[i] | 0xB0);  break;
+ 0166 80E0              ldi R24,<_display
+ 0168 90E0              ldi R25,>_display
+ 016A EE2D              mov R30,R14
+ 016C FF27              clr R31
+ 016E E80F              add R30,R24
+ 0170 F91F              adc R31,R25
+ 0172 0081              ldd R16,z+0
+ 0174 006B              ori R16,176
+ 0176 00D0              rcall _write164
+ 0178                   .dbline 125
+ 0178 13C0              rjmp L31
+ 017A           L35:
+ 017A                   .dbline 126
+ 017A           ;                   case  2:  write164(display[i] | 0xD0);  break;
+ 017A 80E0              ldi R24,<_display
+ 017C 90E0              ldi R25,>_display
+ 017E EE2D              mov R30,R14
+ 0180 FF27              clr R31
+ 0182 E80F              add R30,R24
+ 0184 F91F              adc R31,R25
+ 0186 0081              ldd R16,z+0
+ 0188 006D              ori R16,208
+ 018A 00D0              rcall _write164
+ 018C                   .dbline 126
+ 018C 09C0              rjmp L31
+ 018E           L36:
+ 018E                   .dbline 127
+ 018E           ;                   case  3:  write164(display[i] | 0xE0);  break;
+ 018E 80E0              ldi R24,<_display
+ 0190 90E0              ldi R25,>_display
+ 0192 EE2D              mov R30,R14
+ 0194 FF27              clr R31
+ 0196 E80F              add R30,R24
+ 0198 F91F              adc R31,R25
+ 019A 0081              ldd R16,z+0
+ 019C 006E              ori R16,224
+ 019E 00D0              rcall _write164
+ 01A0                   .dbline 127
+ 01A0           L30:
+ 01A0           L31:
+ 01A0                   .dbline 129
+ 01A0           ;               }
+ 01A0           ;               if(++i > 3) i = 0;
+ 01A0 8E2D              mov R24,R14
+ 01A2 8F5F              subi R24,255    ; addi 1
+ 01A4 E82E              mov R14,R24
+ 01A6 83E0              ldi R24,3
+ 01A8 8E15              cp R24,R14
+ 01AA 08F4              brsh L37
+ 01AC                   .dbline 129
+ 01AC EE24              clr R14
+ 01AE           L37:
+ 01AE                   .dbline 131
+ 01AE 02E0              ldi R16,2
+ 01B0 10E0              ldi R17,0
+ 01B2 00D0              rcall _OSTimeDly
+ 01B4                   .dbline 132
+ 01B4                   .dbline 95
+ 01B4                   .dbline 95
+ 01B4 70CF              rjmp L9
+ 01B6           X2:
+ 01B6                   .dbline -2
+ 01B6           L8:
+ 01B6 2196              adiw R28,1
+ 01B8 00D0              rcall pop_gset5x
+ 01BA                   .dbline 0 ; func end
+ 01BA 0895              ret
+ 01BC                   .dbsym r key2 12 c
+ 01BC                   .dbsym r i 14 c
+ 01BC                   .dbsym l key1 0 c
+ 01BC                   .dbsym r data 10 pV
+ 01BC                   .dbend
+ 01BC                   .dbfunc e Task2 _Task2 fV
+ 01BC           ;           data -> R10,R11
+                        .even
+ 01BC           _Task2::
+ 01BC 00D0              rcall push_gset3x
+ 01BE 5801              movw R10,R16
+ 01C0                   .dbline -1
+ 01C0                   .dbline 134
+ 01C0           ; //end  display                
+ 01C0           ;               OSTimeDly (2);
+ 01C0           ;       }
+ 01C0           ; }
+ 01C0           ; void Task2(void *data){
+ 01C0                   .dbline 135
+ 01C0           ;     data = data;
+ 01C0                   .dbline 136
+ 01C0           ;       OSTimeDly(5);
+ 01C0 05E0              ldi R16,5
+ 01C2 10E0              ldi R17,0
+ 01C4 00D0              rcall _OSTimeDly
+ 01C6                   .dbline 137
+ 01C6           ;       s = EEPROMread(1);
+ 01C6 01E0              ldi R16,1
+ 01C8 10E0              ldi R17,0
+ 01CA 00D0              rcall _EEPROMread
+ 01CC 0093C900          sts _s,R16
+ 01D0                   .dbline 138
+ 01D0           ;       m = EEPROMread(2);
+ 01D0 02E0              ldi R16,2
+ 01D2 10E0              ldi R17,0
+ 01D4 00D0              rcall _EEPROMread
+ 01D6 0093CA00          sts _m,R16
+ 01DA                   .dbline 139
+ 01DA           L40:
+ 01DA                   .dbline 139
+ 01DA           ;       for (;;){
+ 01DA                   .dbline 140
+ 01DA           ;           if(state == 1){
+ 01DA 8091C800          lds R24,_state
+ 01DE 8130              cpi R24,1
+ 01E0 59F5              brne L44
+ 01E2                   .dbline 140
+ 01E2                   .dbline 141
+ 01E2           ;               if(++s == 60){
+ 01E2 8091C900          lds R24,_s
+ 01E6 8F5F              subi R24,255    ; addi 1
+ 01E8 282E              mov R2,R24
+ 01EA 2092C900          sts _s,R2
+ 01EE 8C33              cpi R24,60
+ 01F0 C9F4              brne L46
+ 01F2                   .dbline 141
+ 01F2                   .dbline 142
+ 01F2           ;                       s = 0;
+ 01F2 2224              clr R2
+ 01F4 2092C900          sts _s,R2
+ 01F8                   .dbline 143
+ 01F8           ;                           if(++m == 60){
+ 01F8 8091CA00          lds R24,_m
+ 01FC 8F5F              subi R24,255    ; addi 1
+ 01FE 282E              mov R2,R24
+ 0200 2092CA00          sts _m,R2
+ 0204 8C33              cpi R24,60
+ 0206 71F4              brne L48
+ 0208                   .dbline 143
+ 0208                   .dbline 144
+ 0208           ;                               m = 0;
+ 0208 2224              clr R2
+ 020A 2092CA00          sts _m,R2
+ 020E                   .dbline 145
+ 020E           ;                                   if(++h == 24) h=0;
+ 020E 8091CB00          lds R24,_h
+ 0212 8F5F              subi R24,255    ; addi 1
+ 0214 282E              mov R2,R24
+ 0216 2092CB00          sts _h,R2
+ 021A 8831              cpi R24,24
+ 021C 19F4              brne L50
+ 021E                   .dbline 145
+ 021E 2224              clr R2
+ 0220 2092CB00          sts _h,R2
+ 0224           L50:
+ 0224                   .dbline 146
+ 0224           ;                           }
+ 0224           L48:
+ 0224                   .dbline 147
+ 0224           ;                   }
+ 0224           L46:
+ 0224                   .dbline 148
+ 0224           ;                       EEPROMwrite(1,s);
+ 0224 2091C900          lds R18,_s
+ 0228 01E0              ldi R16,1
+ 022A 10E0              ldi R17,0
+ 022C 00D0              rcall _EEPROMwrite
+ 022E                   .dbline 149
+ 022E           ;                       EEPROMwrite(2,m);
+ 022E 2091CA00          lds R18,_m
+ 0232 02E0              ldi R16,2
+ 0234 10E0              ldi R17,0
+ 0236 00D0              rcall _EEPROMwrite
+ 0238                   .dbline 150
+ 0238           ;               }
+ 0238           L44:
+ 0238                   .dbline 151
+ 0238 0AE0              ldi R16,10
+ 023A 00D0              rcall _putchar
+ 023C                   .dbline 152
+ 023C 0091CF00          lds R16,_display+3
+ 0240 005D              subi R16,208    ; addi 48
+ 0242 00D0              rcall _putchar
+ 0244                   .dbline 153
+ 0244 0091CE00          lds R16,_display+2
+ 0248 005D              subi R16,208    ; addi 48
+ 024A 00D0              rcall _putchar
+ 024C                   .dbline 154
+ 024C 0AE3              ldi R16,58
+ 024E 00D0              rcall _putchar
+ 0250                   .dbline 155
+ 0250 0091CD00          lds R16,_display+1
+ 0254 005D              subi R16,208    ; addi 48
+ 0256 00D0              rcall _putchar
+ 0258                   .dbline 156
+ 0258 0091CC00          lds R16,_display
+ 025C 005D              subi R16,208    ; addi 48
+ 025E 00D0              rcall _putchar
+ 0260                   .dbline 157
+ 0260 0DE0              ldi R16,13
+ 0262 00D0              rcall _putchar
+ 0264                   .dbline 158
+ 0264 0AE0              ldi R16,10
+ 0266 00D0              rcall _putchar
+ 0268                   .dbline 159
+ 0268 04EF              ldi R16,500
+ 026A 11E0              ldi R17,1
+ 026C 00D0              rcall _OSTimeDly
+ 026E                   .dbline 160
+ 026E                   .dbline 139
+ 026E                   .dbline 139
+ 026E B5CF              rjmp L40
+ 0270           X3:
+ 0270                   .dbline -2
+ 0270           L39:
+ 0270 00D0              rcall pop_gset3x
+ 0272                   .dbline 0 ; func end
+ 0272 0895              ret
+ 0274                   .dbsym r data 10 pV
+ 0274                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile F:\ICC\project\ucos_m8_icc\test\test2.c
+ 0000           _Task2Stack::
+ 0000                   .blkb 100
+ 0064                   .dbsym e Task2Stack _Task2Stack A[100:100]c
+ 0064           _Task1Stack::
+ 0064                   .blkb 100
+ 00C8                   .dbsym e Task1Stack _Task1Stack A[100:100]c
+ 00C8           _state::
+ 00C8                   .blkb 1
+ 00C9                   .dbsym e state _state c
+ 00C9           _s::
+ 00C9                   .blkb 1
+ 00CA                   .dbsym e s _s c
+ 00CA           _m::
+ 00CA                   .blkb 1
+ 00CB                   .dbsym e m _m c
+ 00CB           _h::
+ 00CB                   .blkb 1
+ 00CC                   .dbsym e h _h c
+ 00CC           _display::
+ 00CC                   .blkb 5
+ 00D1                   .dbsym e display _display A[5:5]c
+                        .area data(ram, con, rel)
+ 0000                   .dbfile F:\ICC\project\ucos_m8_icc\test\test2.c
+ 0000           L5:
+ 0000                   .blkb 23
+                        .area idata
+ 0000 41546D656761382075632F6F732D4949  .byte 'A,'T,'m,'e,'g,'a,56,32,'u,'c,47,'o,'s,45,'I,'I
+ 0010 20546573742100    .byte 32,'T,'e,'s,'t,33,0
+                        .area data(ram, con, rel)
+ 0017                   .dbfile F:\ICC\project\ucos_m8_icc\test\test2.c
+                        .area func_lit
+ 0000 DE00      PL_Task2:       .word `_Task2
+ 0002 3C00      PL_Task1:       .word `_Task1

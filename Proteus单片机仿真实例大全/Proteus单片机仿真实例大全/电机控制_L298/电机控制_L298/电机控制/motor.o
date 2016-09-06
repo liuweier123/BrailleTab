@@ -1,0 +1,86 @@
+XL
+H 1 areas 5 global symbols
+M motor.c
+A text size 5E flags 0
+dbfile E:\avr\电机控制\电机控制\motor.c
+dbfunc e for_ward 0 fV
+dbsym r speed 10 c
+dbline FFFFFFFF 0
+dbline 9 0
+dbline A 0
+dbline B 4
+dbline C 4
+dbline D 6
+dbline D 6
+dbline E C
+dbline F C
+dbline 10 12
+dbline 11 14
+dbline FFFFFFFE 16
+dbline 0 16
+dbfunc e back_ward 18 fV
+dbsym r speed 10 c
+dbline FFFFFFFF 18
+dbline 16 18
+dbline 17 18
+dbline 18 1C
+dbline 19 1C
+dbline 1A 1E
+dbline 1A 1E
+dbline 1B 24
+dbline 1C 24
+dbline 1D 2A
+dbline 1E 2C
+dbline FFFFFFFE 2E
+dbline 0 2E
+dbfunc e motor_stop 30 fV
+dbline FFFFFFFF 30
+dbline 23 30
+dbline 24 30
+dbline 25 32
+dbline 26 34
+dbline FFFFFFFE 3A
+dbline 0 3A
+dbfunc e speed_add 3C fV
+dbsym r add 10 c
+dbline FFFFFFFF 3C
+dbline 2C 3C
+dbline 2D 3C
+dbline 2E 44
+dbline 2F 44
+dbline 30 4A
+dbline FFFFFFFE 4A
+dbline 0 4A
+dbfunc e speed_subtract 4C fV
+dbsym r subtract 10 c
+dbline FFFFFFFF 4C
+dbline 36 4C
+dbline 37 4C
+dbline 38 56
+dbline 39 56
+dbline 3A 5C
+dbline FFFFFFFE 5C
+dbline 0 5C
+S _speed_subtract Def004C
+S _for_ward Def0000
+S _motor_stop Def0030
+S _speed_add Def003C
+S _back_ward Def0018
+T 00 00 00 23 21 F0 03 BD 22 B4 20 FC FD CF 89 B7
+R 00 00 00 00
+T 0E 00 80 6C 89 BF 94 9A 95 98 08 95
+R 00 00 00 00
+T 18 00 00 23 21 F0 03 BD 22 B4 20 FC FD CF 89 B7
+R 00 00 00 00
+T 26 00 80 6C 89 BF 94 98 95 9A 08 95
+R 00 00 00 00
+T 30 00 94 9A 95 9A 89 B7 8F 77 89 BF 08 95
+R 00 00 00 00
+T 3C 00 83 B5 80 0F 80 3F 18 F4 23 B4 20 0E 23 BC
+R 00 00 00 00
+T 4A 00 08 95
+R 00 00 00 00
+T 4C 00 23 B4 20 1A 8A E0 82 15 18 F4 23 B4 20 1A
+R 00 00 00 00
+T 5A 00 23 BC 08 95
+R 00 00 00 00

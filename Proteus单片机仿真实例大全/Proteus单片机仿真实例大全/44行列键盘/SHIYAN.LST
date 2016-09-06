@@ -1,0 +1,96 @@
+C51 COMPILER V7.09   SHIYAN                                                                12/22/2005 15:36:25 PAGE 1   
+
+
+C51 COMPILER V7.09, COMPILATION OF MODULE SHIYAN
+OBJECT MODULE PLACED IN SHIYAN.OBJ
+COMPILER INVOKED BY: D:\Program Files\C51\BIN\C51.EXE SHIYAN.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include"reg51.h"
+   2          #include"LCD1602.h"
+   3          
+   4          #include"hardware.h"
+   5          
+   6          char code tab[4][4]={           {'1','4','7','#'},
+   7                                                  {'2','5','8','0'},
+   8                                                  {'3','6','9','*'},
+   9                                                  {'A','B','C','D'}};       //0µΩFµƒ16∏ˆº¸÷≤
+  10          
+  11          void delay(unsigned char a)
+  12                  {
+  13   1              unsigned char i;
+  14   1              while(a--)
+  15   1                      for(i=100;i>0;i--)
+  16   1                              ;
+  17   1              }
+  18          
+  19          char kbscan()          //º¸≈Ã…®√Ë
+  20                  {
+  21   1              unsigned char hang,lie,key;
+  22   1              if(P3!=0x0f)
+  23   1              delay(5);
+  24   1              if(P3!=0x0f)
+  25   1                      {
+  26   2                      switch(P3&0x0f)
+  27   2                                      {
+  28   3                                      case 0x0e:lie=0;break;
+  29   3                                      case 0x0d:lie=1;break;
+  30   3                                      case 0x0b:lie=2;break;
+  31   3                                      case 7:lie=3;break;
+  32   3                                      }
+  33   2                      P3=0xf0;
+  34   2                      P3=0xf0;
+  35   2                      switch(P3&0xf0)
+  36   2                                      {
+  37   3                                      case 0xe0:hang=0;break;
+  38   3                                      case 0xd0:hang=1;break;
+  39   3                                      case 0xb0:hang=2;break;
+  40   3                                      case 0x70:hang=3;break;
+  41   3                                      }
+  42   2                      P3=0x0f;
+  43   2                      while(P3!=0x0f);
+  44   2                      key=tab[hang][lie];
+  45   2                      }
+  46   1              else
+  47   1                      key=0;
+  48   1              return (key);
+  49   1              }
+  50          
+  51          void main()
+  52                  {
+  53   1              unsigned char temp;
+  54   1              LCD_initial();
+  55   1              LCD_prints("piaoling");
+C51 COMPILER V7.09   SHIYAN                                                                12/22/2005 15:36:25 PAGE 2   
+
+  56   1              P3=0x0f;
+  57   1              P0=0xff;
+  58   1              while(1)
+  59   1                      {
+  60   2                      temp=kbscan();
+  61   2                      if(temp!=0)
+  62   2                              {
+  63   3                              P0=temp;
+  64   3                              LCD_set_position(0x40);
+  65   3                              LCD_printc(temp);
+  66   3                              }
+  67   2                      }
+  68   1              }
+  69          
+  70          
+  71          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    203    ----
+   CONSTANT SIZE    =     25    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

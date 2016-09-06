@@ -1,0 +1,117 @@
+C51 COMPILER V7.07   ZQYY_COUNTER                                                          12/05/2003 18:29:28 PAGE 1   
+
+
+C51 COMPILER V7.07, COMPILATION OF MODULE ZQYY_COUNTER
+OBJECT MODULE PLACED IN zqyy_counter.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE zqyy_counter.C ROM(SMALL) BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          /////////////////////////////////////////////////
+   2          /////加减记数器源程序counter.c
+   3          /////
+   4          /////////////////////////////////////////////////
+   5          
+   6          
+   7          #include "stdio.h"
+   8          #include "reg51.h"
+   9          
+  10          
+  11          // 共阳 0 - 9 的编码 12MHz
+  12          unsigned char code table[] = { 0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90,0xFF };
+  13          //第1-- 6 位的片选线
+  14          unsigned char code dig[]   = { 0x21,0x11,0x09,0x05,0x03,0x08};//= { 0x80,0x03,0x05,0x09,0x11,0x21};
+  15                                     
+  16          unsigned char buffer[8];
+  17          unsigned char scan,i,ch,KeyVal;
+  18          bit           fKey,Key1,Key2,Key3,OldKey1,OldKey2,OldKey3,fBI;
+  19          
+  20          unsigned long int counter,tmp;
+  21          
+  22          
+  23          void counter_display(void)
+  24          {
+  25   1              buffer[5]=counter/100000;
+  26   1              buffer[4]=counter/10000-buffer[5]*10;
+  27   1              buffer[3]=counter/1000 -buffer[5]*100   -buffer[4]*10;
+  28   1              buffer[2]=counter/100  -buffer[5]*1000  -buffer[4]*100  -buffer[3]*10;
+  29   1              buffer[1]=counter/10   -buffer[5]*10000 -buffer[4]*1000 -buffer[3]*100 -buffer[2]*10;
+  30   1              buffer[0]=counter/1    -buffer[5]*100000-buffer[4]*10000-buffer[3]*1000-buffer[2]*100-buffer[1]*10;
+  31   1      
+  32   1      }
+  33          void delay(void)
+  34          {
+  35   1              int i;
+  36   1              for(i=0;i<500;i++)
+  37   1              {
+  38   2                      ;
+  39   2              }
+  40   1      }
+  41          
+  42          void main(void)
+  43          {
+  44   1              unsigned int i;
+  45   1              
+  46   1              P3=dig[1];
+  47   1              P1=table[1];
+  48   1              TCON &= 0xCF;               // 初始化Timer0
+  49   1              TMOD &= 0xF0;
+  50   1              TMOD |= 0x01;
+  51   1              TL0   = 0xff;           
+  52   1              TH0   = 0xff;
+  53   1              EA    = 1;
+  54   1              ET0   = 1;
+  55   1              TR0   = 1;
+C51 COMPILER V7.07   ZQYY_COUNTER                                                          12/05/2003 18:29:28 PAGE 2   
+
+  56   1              counter=0;
+  57   1              while(1){
+  58   2                      for(i=0;i<1;i++){
+  59   3                      delay();
+  60   3                      }
+  61   2                  counter++;          
+  62   2              }
+  63   1      }
+  64          
+  65          
+  66          void timerint () interrupt 1 
+  67          {
+  68   1                      unsigned int i,j;
+  69   1                      unsigned char n;
+  70   1                      EA=0;
+  71   1                      
+  72   1              
+  73   1              counter_display();
+  74   1                      for(i=0,n=0;i<=5;i++){
+  75   2                              if(buffer[5-i]!=0){
+  76   3                                      n=5-i;
+  77   3                                      break;
+  78   3                              }
+  79   2              
+  80   2                      }
+  81   1                      for(j=0;j<5;j++){
+  82   2                              for(i=0;i<=n;i++){
+  83   3                                      P3=dig[i];
+  84   3                                  P1=table[buffer[i]];
+  85   3                                      delay();
+  86   3                              }
+  87   2                      }
+  88   1                      EA=1;
+  89   1              TL0 = -2500%256;
+  90   1              TH0 = -2500/256;                     //2.5ms定时
+  91   1              TR0 = 1;
+  92   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    517    ----
+   CONSTANT SIZE    =     17    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     20    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      8    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,81 @@
+C51 COMPILER V7.50   12                                                                    04/16/2006 15:15:39 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE 12
+OBJECT MODULE PLACED IN 12.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 12.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.H>
+   2          
+   3          sbit P3_6=P3^6;
+   4          sbit P3_7=P3^7;
+   5          unsigned char curcount;
+   6          
+   7          void delay10ms(void)
+   8          {
+   9   1        unsigned char i,j;
+  10   1        for(i=20;i>0;i--)
+  11   1        for(j=248;j>0;j--);
+  12   1      }
+  13          
+  14          
+  15          void main(void)
+  16          {
+  17   1        curcount=P3 & 0x0f;
+  18   1        P1=~curcount;
+  19   1        while(1)
+  20   1          {
+  21   2            if(P3_6==0)
+  22   2              {
+  23   3                delay10ms();
+  24   3                if(P3_6==0)
+  25   3                  {
+  26   4                    if(curcount>=15)
+  27   4                      {
+  28   5                        curcount=15;
+  29   5                      }
+  30   4                      else
+  31   4                        {
+  32   5                          curcount++;
+  33   5                        }
+  34   4                     P1=~curcount;
+  35   4                     while(P3_6==0);
+  36   4                  }
+  37   3              }
+  38   2            if(P3_7==0)
+  39   2              {
+  40   3                delay10ms();
+  41   3                if(P3_7==0)
+  42   3                  {
+  43   4                    if(curcount<=0)
+  44   4                      {
+  45   5                        curcount=0;
+  46   5                      }
+  47   4                      else
+  48   4                        {
+  49   5                          curcount--;
+  50   5                        }
+  51   4                     P1=~curcount;
+  52   4                     while(P3_7==0);
+  53   4                  }
+  54   3              }
+  55   2          }
+C51 COMPILER V7.50   12                                                                    04/16/2006 15:15:39 PAGE 2   
+
+  56   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     82    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

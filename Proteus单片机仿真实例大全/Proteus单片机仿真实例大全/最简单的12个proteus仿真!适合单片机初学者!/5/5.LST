@@ -1,0 +1,60 @@
+C51 COMPILER V7.50   5                                                                     04/16/2006 10:44:57 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE 5
+OBJECT MODULE PLACED IN 5.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 5.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.H>
+   2          unsigned char code table[]={0xfe,0xfd,0xfb,0xf7,
+   3                                      0xef,0xdf,0xbf,0x7f,
+   4                                      0xfe,0xfd,0xfb,0xf7,
+   5                                      0xef,0xdf,0xbf,0x7f,
+   6                                      0x7f,0xbf,0xdf,0xef,
+   7                                      0xf7,0xfb,0xfd,0xfe,
+   8                                      0x7f,0xbf,0xdf,0xef,
+   9                                      0xf7,0xfb,0xfd,0xfe,
+  10                                      0x00,0xff,0x00,0xff,
+  11                                      0x01};
+  12          unsigned char i;
+  13          
+  14          void delay(void)
+  15          {
+  16   1        unsigned char m,n,s;
+  17   1        for(m=20;m>0;m--)
+  18   1        for(n=20;n>0;n--)
+  19   1        for(s=248;s>0;s--);
+  20   1      }
+  21          
+  22          void main(void)
+  23          {
+  24   1        while(1)
+  25   1          {
+  26   2            if(table[i]!=0x01)
+  27   2              {
+  28   3                P1=table[i];
+  29   3                i++;
+  30   3                delay();
+  31   3              }
+  32   2              else
+  33   2                {
+  34   3                  i=0;
+  35   3                }
+  36   2          }
+  37   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     38    ----
+   CONSTANT SIZE    =     37    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

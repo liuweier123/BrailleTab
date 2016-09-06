@@ -1,0 +1,137 @@
+C51 COMPILER V8.02   16KEY_C                                                               06/04/2006 15:15:07 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE 16KEY_C
+OBJECT MODULE PLACED IN 16key_c.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 16key_c.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          //调试程序成功，只是不知什么原因，显示不正常
+   2          //预期目的：按键显示键值
+   3          
+   4          #include<reg51.h>
+   5          #include<stdio.h>
+   6          #include<absacc.h>
+   7          
+   8          
+   9          #define unchar unsigned char 
+  10          #define unint unsigned int
+  11          
+  12          unchar code LEDSEG[17]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,
+  13                                  0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71,0x00};
+  14          unchar temp,i,j;
+  15          unchar dis_buf[]={16,16,16,0};            //显示3个空格和一个0
+  16          void display(void);
+  17          void keyscan(void);
+  18          unchar testkey(unchar); 
+  19          void delay(void);
+  20          //===============================================================================
+  21          void main(void)
+  22          {IT0=1;                                           //外部中断0初始化
+  23   1       EX0=1;
+  24   1       EA=1;
+  25   1       P2=0xff;
+  26   1       P0=0xff;
+  27   1       while(1)
+  28   1              {display();}
+  29   1      }
+  30          
+  31          //********************************************************************************
+  32          void key_int(void) interrupt 0
+  33          {
+  34   1       unchar temp_h,temp_l,keynum;          //行码 列码 键值
+  35   1       unchar code_h,code_l;
+  36   1       if(testkey(0xf0))
+  37   1              {
+  38   2               temp_l=0;
+  39   2               temp_h=0;                                                //功能：扫描键盘并更新显示缓冲区
+  40   2           code_l=0xfe;
+  41   2           while(temp_l<0x04)
+  42   2                  {
+  43   3                       if(testkey(code_l)==1)
+  44   3                         {
+  45   4                          code_h=P2;                  
+  46   4                              if(P2^4==0) temp_h=0x00;
+  47   4                              else if(P2^5==0)temp_h=0x04;
+  48   4                          else if(P2^6==0)temp_h=0x08;
+  49   4                              else temp_h=0x0c;
+  50   4                              while(testkey(0xf0)){;}          //等待按键放开
+  51   4                              break;
+  52   4                         }
+  53   3                       else{code_l=code_l<<1|0x01;
+  54   4                        temp_l++;
+  55   4                               }
+C51 COMPILER V8.02   16KEY_C                                                               06/04/2006 15:15:07 PAGE 2   
+
+  56   3              }       
+  57   2           keynum=temp_h+temp_l;               //更新显示缓冲区
+  58   2           dis_buf[0]=dis_buf[1];
+  59   2               dis_buf[1]=dis_buf[2];
+  60   2               dis_buf[2]=dis_buf[3];
+  61   2               dis_buf[3]=keynum;
+  62   2              }
+  63   1      }
+  64                  
+  65          
+  66          //----------------------------------------
+  67          unchar testkey(unchar scan_code )   //测试是否有键按下，scan_code是扫描码，返回1说明有键按下
+  68          {
+  69   1        unchar temp;
+  70   1        P2=scan_code;
+  71   1        delay();            //延时1ms防抖   ／／1ms不够，最好是20ms !!!!!!!!!!!!!!!!!
+  72   1        temp=P2;
+  73   1        if((~temp)&0xf0)  return (1);
+  74   1              else   return (0);
+  75   1      } 
+  76          
+  77          //********************************************************************************
+  78          void display(void)                          //显示4位数
+  79          {
+  80   1       unchar i,disbit;
+  81   1       disbit=0xfe;
+  82   1       
+  83   1       for(i=0;i<4;i++)
+  84   1              {
+  85   2              //P0=LEDSEG[dis_buf[i]];
+  86   2           P2=disbit;                     //选中要显示的管
+  87   2               P0=LEDSEG[dis_buf[i]];    //要先选中，才能输出显示数据！！！！！！！！！！！
+  88   2               delay();
+  89   2               disbit=disbit<<1;                        //改变位码
+  90   2           disbit++;
+  91   2               }
+  92   1              
+  93   1      }
+  94          //================================================================================
+  95          /*void delay(void)                //
+  96          {EA=1;
+  97          ET0=1;
+  98          TMOD=0x01;
+  99          TH0=0xFC;
+ 100          TL0=0x18;
+ 101          TR0=1;
+ 102          while(!TF0);
+ 103          TF0=0;
+ 104          }       */
+ 105          
+ 106          void delay(void)  // 延时1ms
+ 107          {
+ 108   1        int a=0;
+ 109   1        for(a=0;a<1000;a++);
+ 110   1       }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    253    ----
+   CONSTANT SIZE    =     17    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+C51 COMPILER V8.02   16KEY_C                                                               06/04/2006 15:15:07 PAGE 3   
+
+   DATA SIZE        =      7       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

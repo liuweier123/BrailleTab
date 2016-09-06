@@ -1,0 +1,4 @@
+"pwm.obj",
+"keyscan.obj" 
+TO "PWM" 
+RAMSIZE(256) 

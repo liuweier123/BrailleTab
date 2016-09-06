@@ -1,0 +1,226 @@
+XL
+H 4 areas 13 global symbols
+M Counter.C
+S push_gset1 Ref0000
+S push_gset2 Ref0000
+S push_gset3 Ref0000
+S mod16u Ref0000
+S div16u Ref0000
+S pop_gset1 Ref0000
+S pop_gset2 Ref0000
+S pop_gset3 Ref0000
+A text size 174 flags 0
+dbfile F:\myavr\mydesign\seg_time\Counter.C
+dbfunc e DelayMs 0 fV
+dbsym r j 14 i
+dbsym r i 10 c
+dbline FFFFFFFF 2
+dbline 11 2
+dbline 12 2
+dbline 13 4
+dbline 13 4
+dbline 13 A
+dbline 13 A
+dbline 13 E
+dbline 13 16
+dbline 12 16
+dbline 12 18
+dbline FFFFFFFE 1C
+dbline 14 1C
+dbline 0 1E
+dbfunc e Display 20 fV
+dbsym r sel 14 c
+dbsym r i 16 c
+dbsym r p A pc
+dbline FFFFFFFF 26
+dbline 17 26
+dbline 17 26
+dbline 18 28
+dbline 19 2C
+dbline 19 2C
+dbline 1A 2E
+dbline 1B 46
+dbline 1C 4A
+dbline 1D 4C
+dbline 18 4C
+dbline 18 4E
+dbline FFFFFFFE 52
+dbline 1E 52
+dbline 0 54
+dbfunc e Process 56 fV
+dbsym r p 14 pc
+dbsym r i 16 i
+dbline FFFFFFFF 60
+dbline 24 60
+dbline 24 60
+dbline 25 70
+dbline 26 70
+dbline 27 8A
+dbline 28 8A
+dbline 29 A4
+dbline 2A A4
+dbline FFFFFFFE B8
+dbline 2B B8
+dbline 0 BA
+dbfunc e Init_IO BC fV
+dbline FFFFFFFF BC
+dbline 2E BC
+dbline 2E BC
+dbline 2F C0
+dbline 30 C2
+dbline 31 C6
+dbline 32 C8
+dbline 33 CA
+dbline FFFFFFFE CC
+dbline 34 CC
+dbline 0 CC
+dbfunc e Get_Key CE fV
+dbline FFFFFFFF CE
+dbline 37 CE
+dbline 38 D0
+dbline 38 D0
+dbline 39 D0
+dbline 3A DC
+dbline 37 DC
+dbline 3C E2
+dbline 3C E2
+dbline 3D E2
+dbline 3E EE
+dbline 3B EE
+dbline FFFFFFFE F2
+dbline 3F F2
+dbline 0 F2
+dbfunc e main F4 fV
+dbsym l I 1 c
+dbline FFFFFFFF F4
+dbline 42 F4
+dbline 43 F4
+dbline 44 F6
+dbline 45 FA
+dbline 47 FE
+dbline 49 102
+dbline 49 102
+dbline 4A 104
+dbline 4B 10C
+dbline 4B 10C
+dbline 4C 11C
+dbline 4C 11C
+dbline 4D 11C
+dbline 4D 12C
+dbline 4E 12C
+dbline 4F 12C
+dbline 50 134
+dbline 50 134
+dbline 51 144
+dbline 51 144
+dbline 52 144
+dbline 52 15C
+dbline 53 15C
+dbline 54 15C
+dbline 55 16A
+dbline 56 170
+dbline 48 170
+dbline FFFFFFFE 172
+dbline 57 172
+dbline 0 172
+S _main Def00F4
+S _Get_Key Def00CE
+S _DelayMs Def0000
+S _Display Def0020
+S _Process Def0056
+S _Init_IO Def00BC
+A data size 10 flags 20
+dbfile F:\myavr\mydesign\seg_time\Counter.C
+dbsym e Table 0 A[10:10]c
+dbsym e Data A A[4:4]c
+dbsym e CNT E i
+S _CNT Def000E
+S _Table Def0000
+S _Data Def000A
+A idata size 10 flags 0
+A bss size 2 flags 20
+dbfile F:\myavr\mydesign\seg_time\Counter.C
+dbsym e Key_Down 0 c
+dbsym e Key_Up 1 c
+S _Key_Down Def0000
+S _Key_Up Def0001
+T 00 00 C0 F9
+R 00 00 02 00
+T 02 00 A4 B0
+R 00 00 02 00
+T 04 00 99 92
+R 00 00 02 00
+T 06 00 82 F8
+R 00 00 02 00
+T 08 00 80 90
+R 00 00 02 00
+T 0A 00 00 00
+R 00 00 02 00
+T 0C 00 00 00
+R 00 00 02 00
+T 0E 00 00 00
+R 00 00 02 00
+T 00 00 00 D0 0A C0 44 27 55 27 02 C0 4F 5F 5F 4F
+R 00 00 00 00 82 02 00 00
+T 0E 00 4A 3F E0 E0 5E 07 D0 F3 0A 95 00 23 A1 F7
+R 00 00 00 00
+T 1C 00 00 D0 08 95
+R 00 00 00 00 82 02 05 00
+T 20 00 00 D0 A0 2E B1 2E 41 E0 66 27 11 C0 45 BB
+R 00 00 00 00 82 02 02 00
+T 2E 00 E6 2F FF 27 EA 0D FB 1D E0 81 FF 27 80 E0
+R 00 00 00 00 20 0E 01 00 00 00
+T 3C 00 90 E0 E8 0F F9 1F 20 80 2B BA 02 E0 DB DF
+R 00 00 00 00 40 02 01 00 00 00
+T 4A 00 44 0F 63 95 64 30 68 F3 00 D0 08 95
+R 00 00 00 00 82 0A 07 00
+T 56 00 00 D0 42 2F 53 2F 60 2F 71 2F 28 EE 33 E0
+R 00 00 00 00 82 02 01 00
+T 64 00 06 2F 17 2F 00 D0 E4 2F F5 2F 00 83 28 EE
+R 00 00 00 00 82 06 04 00
+T 72 00 33 E0 06 2F 17 2F 00 D0 60 2F 71 2F 24 E6
+R 00 00 00 00 82 08 03 00
+T 80 00 30 E0 00 D0 E4 2F F5 2F 01 83 24 E6 30 E0
+R 00 00 00 00 82 04 04 00
+T 8E 00 06 2F 17 2F 00 D0 60 2F 71 2F 2A E0 30 E0
+R 00 00 00 00 82 06 03 00
+T 9C 00 00 D0 E4 2F F5 2F 02 83 2A E0 30 E0 06 2F
+R 00 00 00 00 82 02 04 00
+T AA 00 17 2F 00 D0 60 2F 71 2F E4 2F F5 2F 63 83
+R 00 00 00 00 82 04 03 00
+T B8 00 00 D0 08 95
+R 00 00 00 00 82 02 06 00
+T BC 00 8F EF 8A BB 8B BB 22 24 27 BA 28 BA 84 BB
+R 00 00 00 00
+T CA 00 85 BB 08 95
+R 00 00 00 00
+T CE 00 06 C0 81 E0 80 93 01 00 00 E0
+R 00 00 00 00 00 08 03 00 20 0A 01 00 0A 00
+T D8 00 10 E0 A2 DF B0 9B F8 CF 06 C0 81 E0 80 93
+R 00 00 00 00 40 02 01 00 0A 00
+T E6 00 00 00 00 E0
+R 00 00 00 00 00 02 03 00 20 04 01 00 0A 00
+T EA 00 10 E0 99 DF B1 9B F8 CF 08 95
+R 00 00 00 00 40 02 01 00 0A 00
+T F4 00 E3 DF 8F EF 8B BB 22 24 25 BA 85 BB 37 C0
+R 00 00 00 00
+T 02 01 E5 DF 80 91 01 00 81 30 81 F4 80 91 0E 00
+R 00 00 00 00 00 06 03 00 00 0E 01 00
+T 10 01 90 91 0F 00 8F 30 E7 E2 9E 07 41 F0 01 96
+R 00 00 00 00 00 04 01 00
+T 1E 01 90 93 0F 00 80 93 0E 00 22 24 20 92 01 00
+R 00 00 00 00 00 04 01 00 00 08 01 00 00 0E 03 00
+T 2C 01 80 91 00 00 81 30 A1 F4 20 90 0E 00 30 90
+R 00 00 00 00 00 04 03 00 00 0C 01 00
+T 3A 01 0F 00 22 20 11 F4 33 20 61 F0 80 91 0E 00
+R 00 00 00 00 00 02 01 00 00 0E 01 00
+T 48 01 90 91 0F 00 01 97 90 93 0F 00 80 93 0E 00
+R 00 00 00 00 00 04 01 00 00 0A 01 00 00 0E 01 00
+T 56 01 22 24 20 92 00 00 20 E0
+R 00 00 00 00 00 06 03 00 20 08 01 00 0A 00
+T 5E 01 30 E0 00 91 0E 00 10 91
+R 00 00 00 00 40 02 01 00 0A 00 00 06 01 00
+T 66 01 0F 00 76 DF 00 E0
+R 00 00 00 00 00 02 01 00 20 06 01 00 0A 00
+T 6C 01 10 E0 58 DF C8 CF 08 95
+R 00 00 00 00 40 02 01 00 0A 00

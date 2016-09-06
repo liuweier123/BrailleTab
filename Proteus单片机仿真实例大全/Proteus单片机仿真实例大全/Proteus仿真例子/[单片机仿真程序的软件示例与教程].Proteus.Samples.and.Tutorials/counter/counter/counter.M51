@@ -1,0 +1,198 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        12/05/2003  18:29:28  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE zqyy_counter.obj TO counter CODE (0X0000-0X0FFF)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  zqyy_counter.obj (ZQYY_COUNTER)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LMUL)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?ULDIV)
+
+
+LINK MAP OF MODULE:  counter (ZQYY_COUNTER)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0014H     UNIT         ?DT?ZQYY_COUNTER
+                    001CH     0004H                  *** GAP ***
+            BIT     0020H.0   0001H.0   UNIT         ?BI?ZQYY_COUNTER
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0002H     ABSOLUTE     
+            CODE    000DH     011DH     UNIT         ?C?LIB_CODE
+            CODE    012AH     0108H     INBLOCK      ?PR?COUNTER_DISPLAY?ZQYY_COUNTER
+            CODE    0232H     009BH     INBLOCK      ?PR?TIMERINT?ZQYY_COUNTER
+            CODE    02CDH     0053H     INBLOCK      ?PR?MAIN?ZQYY_COUNTER
+            CODE    0320H     0011H     UNIT         ?CO?ZQYY_COUNTER
+            CODE    0331H     000FH     INBLOCK      ?PR?DELAY?ZQYY_COUNTER
+            CODE    0340H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   counter (ZQYY_COUNTER)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?TIMERINT?ZQYY_COUNTER
+  +--> ?PR?COUNTER_DISPLAY?ZQYY_COUNTER
+  +--> ?CO?ZQYY_COUNTER
+  +--> ?PR?DELAY?ZQYY_COUNTER
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?ZQYY_COUNTER
+
+?PR?MAIN?ZQYY_COUNTER
+BL51 BANKED LINKER/LOCATER V5.03                                                      12/05/2003  18:29:28  PAGE 2
+
+
+  +--> ?CO?ZQYY_COUNTER
+  +--> ?PR?DELAY?ZQYY_COUNTER
+
+
+
+SYMBOL TABLE OF MODULE:  counter (ZQYY_COUNTER)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ZQYY_COUNTER
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  B:0020H.0       PUBLIC        OldKey3
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:0008H         PUBLIC        counter
+  B:00A8H.7       PUBLIC        EA
+  C:0320H         PUBLIC        table
+  B:0020H.1       PUBLIC        fKey
+  C:0331H         PUBLIC        delay
+  C:02CDH         PUBLIC        main
+  D:000CH         PUBLIC        scan
+  C:032BH         PUBLIC        dig
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  B:00A8H.1       PUBLIC        ET0
+  D:000DH         PUBLIC        ch
+  D:008CH         PUBLIC        TH0
+  D:000EH         PUBLIC        KeyVal
+  D:008AH         PUBLIC        TL0
+  D:000FH         PUBLIC        tmp
+  B:0088H.4       PUBLIC        TR0
+  B:0020H.2       PUBLIC        Key1
+  B:0020H.3       PUBLIC        Key2
+  B:0020H.4       PUBLIC        Key3
+  C:012AH         PUBLIC        counter_display
+  D:0013H         PUBLIC        i
+  C:0232H         PUBLIC        timerint
+  B:0020H.5       PUBLIC        fBI
+  B:0020H.6       PUBLIC        OldKey1
+  B:0020H.7       PUBLIC        OldKey2
+  D:0014H         PUBLIC        buffer
+  -------         PROC          COUNTER_DISPLAY
+  C:012AH         LINE#         23
+  C:012AH         LINE#         24
+  C:012AH         LINE#         25
+  C:013EH         LINE#         26
+  C:015BH         LINE#         27
+  C:0183H         LINE#         28
+  C:01B5H         LINE#         29
+  C:01F1H         LINE#         30
+  C:0231H         LINE#         32
+  -------         ENDPROC       COUNTER_DISPLAY
+  -------         PROC          DELAY
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+BL51 BANKED LINKER/LOCATER V5.03                                                      12/05/2003  18:29:28  PAGE 3
+
+
+  C:0331H         LINE#         33
+  C:0331H         LINE#         34
+  C:0331H         LINE#         36
+  C:0334H         LINE#         37
+  C:0334H         LINE#         39
+  C:033FH         LINE#         40
+  -------         ENDPROC       DELAY
+  -------         PROC          MAIN
+  -------         DO            
+  D:0004H         SYMBOL        i
+  -------         ENDDO         
+  C:02CDH         LINE#         42
+  C:02CDH         LINE#         43
+  C:02CDH         LINE#         46
+  C:02D4H         LINE#         47
+  C:02DBH         LINE#         48
+  C:02DEH         LINE#         49
+  C:02E1H         LINE#         50
+  C:02E4H         LINE#         51
+  C:02E7H         LINE#         52
+  C:02EAH         LINE#         53
+  C:02ECH         LINE#         54
+  C:02EEH         LINE#         55
+  C:02F0H         LINE#         56
+  C:02F9H         LINE#         57
+  C:02F9H         LINE#         58
+  C:02FCH         LINE#         59
+  C:02FEH         LINE#         60
+  C:0309H         LINE#         61
+  C:031EH         LINE#         62
+  -------         ENDPROC       MAIN
+  -------         PROC          TIMERINT
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0002H         SYMBOL        j
+  D:0001H         SYMBOL        n
+  -------         ENDDO         
+  C:0232H         LINE#         66
+  C:024FH         LINE#         70
+  C:0251H         LINE#         73
+  C:0253H         LINE#         74
+  C:0257H         LINE#         75
+  C:0262H         LINE#         76
+  C:0264H         LINE#         77
+  C:0266H         LINE#         78
+  C:0266H         LINE#         80
+  C:0271H         LINE#         81
+  C:0274H         LINE#         82
+  C:0282H         LINE#         83
+  C:0289H         LINE#         84
+  C:0294H         LINE#         85
+  C:0296H         LINE#         86
+  C:029DH         LINE#         87
+  C:02A8H         LINE#         88
+  C:02AAH         LINE#         89
+  C:02ADH         LINE#         90
+  C:02B0H         LINE#         91
+BL51 BANKED LINKER/LOCATER V5.03                                                      12/05/2003  18:29:28  PAGE 4
+
+
+  C:02B2H         LINE#         92
+  -------         ENDPROC       TIMERINT
+  -------         ENDMOD        ZQYY_COUNTER
+
+  -------         MODULE        ?C?LMUL
+  C:000DH         PUBLIC        ?C?LMUL
+  -------         ENDMOD        ?C?LMUL
+
+  -------         MODULE        ?C?ULDIV
+  C:0098H         PUBLIC        ?C?ULDIV
+  -------         ENDMOD        ?C?ULDIV
+
+Program Size: data=30.0 xdata=0 code=836
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

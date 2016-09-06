@@ -1,0 +1,32 @@
+[DisAssemblyWindow]
+NumStates=_ 1
+State 1=_ 1
+[Watch]
+Watch 1=
+Watch 2=
+Watch 3=
+[Profiling]
+State=_ 0
+[TermIOSettings]
+Filename=_ ""
+InputMode=_ 1
+[Desktop-Debug]
+Wnd0=_ "Locals" "open" 44 0 1 -1 -1 -1 -1 728 0 1019 167 100 100 100 100
+Wnd1=_ "Terminal I/O" "open" 44 0 1 -1 -1 -1 -1 727 315 1019 499
+Wnd2=_ "Watch" "open" 44 0 1 -1 -1 -1 -1 728 167 1019 316 100 100 100 100
+Wnd3=_ "Disassembly" "open" 44 0 1 -1 -1 -1 -1 723 -2 1014 497
+Wnd4=_ "CallStack" "open" 44 0 1 -1 -1 -1 -1 154 304 312 508 1
+Wnd5=_ "Log" "open" 44 0 1 -1 -1 -1 -1 348 470 810 607
+Wnd6=_ "Editor-DebugSource" "open" 44 0 1 -1 -1 -1 -1 359 70 1181 504 "G:\008 machao\IAR\ds1302_lcd_4bit\cfile\ds1302_test.c" 1 1 0 28 797 797 0 51 1864 1864
+Maximized=_ 0
+Count=_ 7
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[Breakpoints]
+Bp0=_ "Code" "{$PROJ_DIR$\cfile\ds1302_test.c}.91.3" 1 0 0 0 "" 0 ""
+Count=1

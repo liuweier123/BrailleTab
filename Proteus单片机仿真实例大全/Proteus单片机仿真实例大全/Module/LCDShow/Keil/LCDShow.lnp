@@ -1,0 +1,10 @@
+"main.obj",
+"SMC1602.obj",
+"KeyScan.obj",
+"KeyProcess.obj",
+"InputNumber.obj",
+"InputChar.obj",
+"Introduce.obj",
+"CapProcess.obj",
+"SmallProcess.obj" 
+TO "LCDShow" 

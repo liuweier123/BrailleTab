@@ -1,0 +1,65 @@
+BL51 BANKED LINKER/LOCATER V6.00                                                        07/31/2006  10:03:52  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.00, INVOKED BY:
+E:\PROGRAM FILES\KEIL\C51\BIN\BL51.EXE Parallel to Serial.obj TO Parallel to Serial
+
+
+INPUT MODULES INCLUDED:
+  Parallel to Serial.obj (PARALLEL_TO_SERIAL)
+
+
+LINK MAP OF MODULE:  Parallel to Serial (PARALLEL_TO_SERIAL)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     001FH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  Parallel to Serial (PARALLEL_TO_SERIAL)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        PARALLEL_TO_SERIAL
+  C:0018H         SYMBOL        AA
+  C:0016H         SYMBOL        AA1
+  C:0014H         SYMBOL        DELAY
+  D:0080H         SYMBOL        P0
+  D:0090H         SYMBOL        P1
+  B:0090H.0       SYMBOL        PL
+  B:0098H.0       SYMBOL        RI
+  D:0099H         SYMBOL        SBUF
+  D:0098H         SYMBOL        SCON
+  C:0000H         SYMBOL        START
+  C:0007H         SYMBOL        WAIT
+  C:0000H         LINE#         3
+  C:0002H         LINE#         4
+  C:0004H         LINE#         5
+  C:0007H         LINE#         6
+  C:000AH         LINE#         7
+  C:000CH         LINE#         8
+  C:000EH         LINE#         9
+  C:0010H         LINE#         10
+  C:0012H         LINE#         11
+  C:0014H         LINE#         12
+  C:0016H         LINE#         13
+  C:0018H         LINE#         14
+  C:0019H         LINE#         15
+  C:001AH         LINE#         16
+  C:001CH         LINE#         17
+  C:001EH         LINE#         18
+  -------         ENDMOD        PARALLEL_TO_SERIAL
+
+Program Size: data=8.0 xdata=0 code=31
+BL51 BANKED LINKER/LOCATER V6.00                                                      07/31/2006  10:03:52  PAGE 2
+
+
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

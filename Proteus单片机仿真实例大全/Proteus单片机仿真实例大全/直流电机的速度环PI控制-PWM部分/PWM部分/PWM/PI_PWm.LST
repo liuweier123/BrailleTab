@@ -1,0 +1,52 @@
+C51 COMPILER V7.08   PI_PWM                                                                08/22/2007 11:32:28 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE PI_PWM
+OBJECT MODULE PLACED IN PI_PWm.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE PI_PWm.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <stdio.h>
+   2          #include <reg51.h>
+   3          sbit P1_1=P2^1;
+   4          sbit P1_0=P2^0;
+   5          unsigned char a;
+   6          void delay(unsigned char i)
+   7          {  unsigned char j,k;
+   8   1          for(;i>0;i--)
+   9   1          for(j=15;j>0;j--)
+  10   1          for(k=10;k>0;k--); //大约0.1的周期。
+  11   1      }
+  12          void PWM_creat()
+  13          {if(a>=231)   //线性区在10到231转。
+  14   1      a=250;
+  15   1      if(a<=10) 
+  16   1      a=10;
+  17   1      P1_1=0; 
+  18   1      delay(255-a);
+  19   1      P1_1=1;
+  20   1      delay(a);
+  21   1      }
+  22          main()
+  23          {a=255;
+  24   1       P1_0=1;
+  25   1      while(1)
+  26   1      {   
+  27   2       PWM_creat();
+  28   2      }
+  29   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     66    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

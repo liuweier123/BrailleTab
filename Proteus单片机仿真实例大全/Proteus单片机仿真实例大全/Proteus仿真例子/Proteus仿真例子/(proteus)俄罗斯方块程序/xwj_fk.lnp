@@ -1,0 +1,9 @@
+"xwj_fk.obj",
+"xwj_fkmain.obj",
+".\xwj_hlkey.OBJ",
+".\xwj_lcd_16.OBJ",
+".\xwj_lcd6963.OBJ",
+".\xwj_Serial.OBJ",
+".\change.OBJ" 
+TO "xwj_fk" 
+RAMSIZE(256) 

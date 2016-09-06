@@ -1,0 +1,386 @@
+C51 COMPILER V7.50   MAINMYMEDIA                                                           07/22/2007 16:13:48 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE MAINMYMEDIA
+OBJECT MODULE PLACED IN MainMyMedia.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE MainMyMedia.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include"REG51F.h"
+   2          #include"intrins.h"
+   3          #include"USEH1.h"
+   4          #include"MainMyMedia.h"
+   5          #include"lcd.h"
+   6          #include"Music.h"
+   7          #include"24c02.h"
+   8          #include"PictureCode.h"
+   9          #include"CartoonCode.h"
+  10          #include"MusicCode.h"
+  11          
+  12          //位变量声明===========================================
+  13          bit gf_50Ms = 0;
+  14          bit gf_kLok = 0;
+  15          bit gf_have = 0;
+  16          bit gf_clrScreen = 0; //清屏标志
+  17          
+  18          //全局变量声明=========================================
+  19          uchar g_tim2Ms = 0;     //time0计数器
+  20          //按键变量
+  21          uchar g_kCou = 0;
+  22          uchar g_kStart = 0;
+  23          uchar g_kLast = 0;
+  24          uchar g_kVal = 0;
+  25          
+  26          uchar g_cnLin=0, g_cnColumn=0, g_cnNum1=0;
+  27          uchar g_bootDly = 0; //文字显完时延时
+  28          uchar g_cnDly = 0;
+  29          uchar g_jdColumn = 16;
+  30          uchar g_jdBootDy = 0;
+  31          uchar g_bootCartoonDly = 0;
+  32          uchar g_cantStup = 0; //动画播放的帧指示
+  33          
+  34          uchar g_showLCD = 0;            //LCD显示界面控制
+  35          uchar g_menu1=25, g_menu2=24, g_menu3=24; //光标指示
+  36          /*e2romData[0]:头码0x55，e2romData[1]:g_menu1，e2romData[2]:g_menu2
+  37          e2romData[3]:g_menu3，e2romData[4]：g_showLCD，e2romData[5]：累加和校验
+  38          */
+  39          uchar e2romData[6]; //E2ROM缓存
+  40          uchar chkSun;
+  41          
+  42          //函数声明=============================================
+  43          void InitMCU(void);
+  44          void WR_E2rom(void); //写E2ROM函数
+  45          
+  46          //主程序===============================================
+  47          void main(void)
+  48          {
+  49   1         InitMCU();
+  50   1         ReadDate(0, e2romData, 6); //E2ROM处理
+  51   1         chkSun = e2romData[0]+e2romData[1]+e2romData[2]+e2romData[3]+e2romData[4];
+  52   1         if((e2romData[0]==0x55)&&(e2romData[4]!=0)&&(e2romData[5]==chkSun))
+  53   1         {
+  54   2            g_menu1   = e2romData[1];
+  55   2            g_menu2   = e2romData[2];
+C51 COMPILER V7.50   MAINMYMEDIA                                                           07/22/2007 16:13:48 PAGE 2   
+
+  56   2            g_menu3   = e2romData[3];
+  57   2            g_showLCD = e2romData[4];
+  58   2            g_cnNum1 = 18;
+  59   2            g_bootDly = 0;
+  60   2         }
+  61   1         InitLCD();
+  62   1         for(;;)
+  63   1         {
+  64   2            if(gf_50Ms)
+  65   2            {
+  66   3               gf_50Ms = 0;
+  67   3               if(g_cnNum1<=17) //上电显示
+  68   3               {
+  69   4                  if(g_cnDly==0)
+  70   4                  {
+  71   5                     ShowChina(g_cnLin,g_cnColumn,g_cnNum1);
+  72   5                     if(++g_cnNum1>=18)
+  73   5                        g_cnDly = 0;
+  74   5                     else
+  75   5                        g_cnDly = 4;
+  76   5                     g_cnColumn += 16;
+  77   5                     if(g_cnColumn>=112)
+  78   5                     {
+  79   6                        g_cnColumn = 0;
+  80   6                        g_cnLin += 2;
+  81   6                     }
+  82   5                  }
+  83   4                  else
+  84   4                     --g_cnDly;
+  85   4               }
+  86   3               else if(g_bootDly!=0)
+  87   3                  --g_bootDly;
+  88   3               else  //进入正常工作
+  89   3               {
+  90   4                  if(gf_have) //按键处理
+  91   4                  {
+  92   5                     gf_have = 0;
+  93   5                     if(g_showLCD==0)
+  94   5                     {
+  95   6                        if((g_kVal==KUP)&&(g_menu1!=25)) //向上选择
+  96   6                        {
+  97   7                           if(g_menu3==25) //铃声→动画
+  98   7                           {
+  99   8                              g_menu2 = 25;
+ 100   8                              g_menu1 = g_menu3 = 24;
+ 101   8                           }
+ 102   7                           else if(g_menu2==25) //动画→图片
+ 103   7                           {
+ 104   8                              g_menu1 = 25;
+ 105   8                              g_menu2 = g_menu3 = 24;
+ 106   8                              g_jdBootDy = 30;
+ 107   8                           }
+ 108   7                           else { }
+ 109   7                        }
+ 110   6                        else if((g_kVal==KDOW)&&(g_menu3!=25)) //向下选择
+ 111   6                        {
+ 112   7                           if(g_menu1==25) //图片→动画
+ 113   7                           {
+ 114   8                              g_menu2 = 25;
+ 115   8                              g_menu1 = g_menu3 = 24;
+ 116   8                              g_jdBootDy = 30;
+ 117   8                           }
+C51 COMPILER V7.50   MAINMYMEDIA                                                           07/22/2007 16:13:48 PAGE 3   
+
+ 118   7                           else if(g_menu2==25) //动画→铃声
+ 119   7                           {
+ 120   8                              g_menu3 = 25;
+ 121   8                              g_menu1 = g_menu2 = 24;
+ 122   8                           }
+ 123   7                           else { }
+ 124   7                        }
+ 125   6                        else if(g_kVal==KENT)
+ 126   6                        {
+ 127   7                           gf_clrScreen = 1;
+ 128   7                           if(g_menu1==25)      //选择了图片确认
+ 129   7                              g_showLCD = 1;
+ 130   7                           else if(g_menu2==25) //选择了动画确认
+ 131   7                                 g_showLCD = 2;
+ 132   7                           else                //选择了铃声确认
+ 133   7                              g_showLCD = 3;
+ 134   7                           
+ 135   7                           
+ 136   7                           WR_E2rom();
+ 137   7                        }
+ 138   6                        else { }
+ 139   6                     }
+ 140   5                     else
+ 141   5                     {
+ 142   6                        if(g_kVal==KESC)  //按ESC返回菜单选择
+ 143   6                        {
+ 144   7                           gf_clrScreen = 1;
+ 145   7                           g_showLCD = 0;
+ 146   7                           g_cantStup = 0;
+ 147   7                           g_jdColumn = 16;
+ 148   7                           g_jdBootDy = 30;
+ 149   7                           
+ 150   7                           WR_E2rom();
+ 151   7                        }
+ 152   6                     }
+ 153   5                  }
+ 154   4                  if(gf_clrScreen)
+ 155   4                  {
+ 156   5                     gf_clrScreen = 0;
+ 157   5                     ClearScreen(1);
+ 158   5                     ClearScreen(2);
+ 159   5                  }
+ 160   4      //选菜单============================
+ 161   4                  if(g_showLCD==0)
+ 162   4                  {
+ 163   5                     ShowChina(0,16,18); //图片
+ 164   5                     ShowChina(0,32,19);
+ 165   5                     ShowChina(2,16,20); //动画
+ 166   5                     ShowChina(2,32,21);
+ 167   5                     ShowChina(4,16,22); //铃声
+ 168   5                     ShowChina(4,32,23);
+ 169   5                     ShowChina(0,0,g_menu1); //光标
+ 170   5                     ShowChina(2,0,g_menu2);
+ 171   5                     ShowChina(4,0,g_menu3);
+ 172   5                  }
+ 173   4      //显示图片---------------------------
+ 174   4                  else if(g_showLCD==1)
+ 175   4                  {
+ 176   5                     ShowPicture(1, 13, 48, 101, PictureCode);
+ 177   5                  }
+ 178   4      //放动画----------------------------
+ 179   4                  else if(g_showLCD==2)
+C51 COMPILER V7.50   MAINMYMEDIA                                                           07/22/2007 16:13:48 PAGE 4   
+
+ 180   4                  {
+ 181   5                     if(g_jdColumn<=96)
+ 182   5                     {
+ 183   6                        if(g_cnDly==0)
+ 184   6                        {
+ 185   7                           ShowChina(2,0,26); //[ ]
+ 186   7                           ShowChina(2,112,27);
+ 187   7                           ShowChina(4,32,29); //请稍候…
+ 188   7                           ShowChina(4,48,30);
+ 189   7                           ShowChina(4,64,31);
+ 190   7                           ShowChina(4,80,32);
+ 191   7                           if(g_jdBootDy == 0)
+ 192   7                           {
+ 193   8                              ShowChina(2,g_jdColumn,28); //■
+ 194   8                              g_jdColumn += 16;
+ 195   8                              if(g_jdColumn>=112)
+ 196   8                                 {
+ 197   9                                    g_cnDly = 0;
+ 198   9                                    g_bootCartoonDly = 20;
+ 199   9                                 }
+ 200   8                              else
+ 201   8                              g_cnDly = 15;
+ 202   8                           }
+ 203   7                           else
+ 204   7                              --g_jdBootDy;
+ 205   7                        }
+ 206   6                        else
+ 207   6                           --g_cnDly;
+ 208   6                     }
+ 209   5                     else if(g_bootCartoonDly!=0)
+ 210   5                     {
+ 211   6                        if(--g_bootCartoonDly==0)
+ 212   6                           gf_clrScreen = 1;
+ 213   6                     }
+ 214   5                     else //进入动画播放
+ 215   5                     {
+ 216   6                        if(g_cnDly==0)
+ 217   6                        {
+ 218   7                           switch(++g_cantStup)
+ 219   7                           {
+ 220   8                              case 1:
+ 221   8                                 {
+ 222   9                                    ShowPicture(1, 22, 48, 84, CartoonP1);
+ 223   9                                    g_cnDly = 8;
+ 224   9                                 }
+ 225   8                                 break;
+ 226   8                              case 2:
+ 227   8                                 {
+ 228   9                                    ShowPicture(1, 22, 48, 84, CartoonP2);
+ 229   9                                    g_cnDly = 12;
+ 230   9                                 }
+ 231   8                                 break;
+ 232   8                              default:
+ 233   8                                 {
+ 234   9                                    ShowPicture(1, 22, 48, 84, CartoonP3);
+ 235   9                                    g_cantStup = 0;
+ 236   9                                    g_cnDly = 40;
+ 237   9                                 }
+ 238   8                           }
+ 239   7                        }
+ 240   6                        else
+ 241   6                           --g_cnDly;
+C51 COMPILER V7.50   MAINMYMEDIA                                                           07/22/2007 16:13:48 PAGE 5   
+
+ 242   6                     } //end else 进入动画播放
+ 243   5                  } //end else 放动画
+ 244   4      //放铃声----------------------------
+ 245   4                  else
+ 246   4                  {
+ 247   5                     ShowChina(2,16,33); //∮
+ 248   5                     ShowChina(2,32,34); //两
+ 249   5                     ShowChina(2,48,35); //只
+ 250   5                     ShowChina(2,64,36); //蝴
+ 251   5                     ShowChina(2,80,37); //蝶
+ 252   5                     if(g_cnDly==0)
+ 253   5                     {
+ 254   6                        InitialSound();
+ 255   6                        Play(music1,0,3,360);
+ 256   6                        if(gf_have&&(g_kVal==KESC))
+ 257   6                        {
+ 258   7                           gf_have = 0;
+ 259   7                           gf_clrScreen = 1;
+ 260   7                           g_showLCD = 0;
+ 261   7                           ET0 = 0;
+ 262   7                           ET1 = 0;
+ 263   7                           //g_cantStup = 0;
+ 264   7                           //g_jdColumn = 16;
+ 265   7                           //g_jdBootDy = 30;
+ 266   7                           BeepIO = 0;
+ 267   7                           WR_E2rom();
+ 268   7                        }
+ 269   6                        else
+ 270   6                           g_cnDly = 40;
+ 271   6                     }
+ 272   5                     else
+ 273   5                        --g_cnDly;
+ 274   5                  }
+ 275   4               } //end else进入正常工作
+ 276   3            }
+ 277   2         }
+ 278   1      }
+ 279          //定时器2中断，10ms中断一次=========================
+ 280          void time2_interrupt(void)interrupt 5
+ 281          {
+ 282   1         TF2 = 0;
+ 283   1         if(++g_tim2Ms>=5)
+ 284   1         {
+ 285   2            g_tim2Ms = 0;
+ 286   2            gf_50Ms = 01;
+ 287   2         }
+ 288   1      //按键读取---------------
+ 289   1         P0 |= 0xf0;
+ 290   1         _nop_();
+ 291   1         _nop_();
+ 292   1         _nop_();
+ 293   1         _nop_();
+ 294   1         _nop_();
+ 295   1         g_kStart = P0 | 0x0f;
+ 296   1         if(g_cnNum1<=17) { }
+ 297   1         else if(g_kStart!=g_kLast)
+ 298   1         {
+ 299   2            g_kLast = g_kStart;
+ 300   2            g_kCou = 0;
+ 301   2         }
+ 302   1         else
+ 303   1         {
+C51 COMPILER V7.50   MAINMYMEDIA                                                           07/22/2007 16:13:48 PAGE 6   
+
+ 304   2            if(++g_kCou>=3)
+ 305   2            {
+ 306   3               g_kCou = 0;
+ 307   3               if(g_kStart==0xff)
+ 308   3               {
+ 309   4                  gf_kLok = 0;
+ 310   4               }
+ 311   3               else if(gf_kLok) { }
+ 312   3               else
+ 313   3               {
+ 314   4                  gf_kLok = 1;
+ 315   4                  gf_have = 1;
+ 316   4                  g_kVal = g_kStart;
+ 317   4               }
+ 318   3            }
+ 319   2         }
+ 320   1      }
+ 321          //子函数===============================================
+ 322          //MCU初始化----------------------
+ 323          void InitMCU(void)
+ 324          {
+ 325   1         P0 = 0xff;
+ 326   1         P1 = 0xff;
+ 327   1         P2 = 0xff;
+ 328   1         P3 = 0x7f;
+ 329   1      //定时器2初始化
+ 330   1         T2MOD = 0xfd;
+ 331   1         CP_RL2 = 0;
+ 332   1         TL2 = 0xf0;
+ 333   1         TH2 = 0xd8;
+ 334   1         RCAP2L = 0xf0;
+ 335   1         RCAP2H = 0xd8;
+ 336   1         C_T2 = 0;
+ 337   1         TR2 = 1;
+ 338   1         ET2 = 1;
+ 339   1         EA = 1;
+ 340   1         gf_clrScreen = 1;
+ 341   1         g_bootDly = 40;
+ 342   1      }
+ 343          //写E2ROM函数--------------------
+ 344          void WR_E2rom(void)
+ 345          {
+ 346   1            e2romData[0] = 0x55;
+ 347   1            e2romData[1] = g_menu1;
+ 348   1            e2romData[2] = g_menu2;
+ 349   1            e2romData[3] = g_menu3;
+ 350   1            e2romData[4] = g_showLCD;
+ 351   1            e2romData[5] = e2romData[0]+e2romData[1]+e2romData[2]+e2romData[3]+e2romData[4];
+ 352   1            WriteDate(0, e2romData, 6);
+ 353   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    952    ----
+   CONSTANT SIZE    =   2444    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     25    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      4    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

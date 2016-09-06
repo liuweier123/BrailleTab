@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>0</fileVersion>
+  <configuration>
+    <name>Debug</name>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\240x64_t6963.d90</name>
+      <inputs>
+        <name>$TOOLKIT_DIR$\src\template\cfgm16.xcl</name>
+        <name>$TOOLKIT_DIR$\src\template\cfg3s.xcl</name>
+        <name>$PROJ_DIR$\Debug\Obj\mian.r90</name>
+        <name>$PROJ_DIR$\Debug\Obj\t6963.r90</name>
+        <name>$TOOLKIT_DIR$\lib\clib\cl3s-ec-sf.r90</name>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\cfile\mian.c</name>
+      <outputs>
+        <name>$PROJ_DIR$\Debug\Obj\mian.r90</name>
+      </outputs>
+      <inputs>
+        <name>$PROJ_DIR$\includes\includes.h</name>
+        <name>$PROJ_DIR$\includes\t6963.h</name>
+        <name>$TOOLKIT_DIR$\INC\iom16.h</name>
+        <name>$TOOLKIT_DIR$\INC\iomacro.h</name>
+        <name>$TOOLKIT_DIR$\INC\CLIB\stdlib.h</name>
+        <name>$TOOLKIT_DIR$\INC\CLIB\sysmac.h</name>
+        <name>$TOOLKIT_DIR$\INC\CLIB\stdio.h</name>
+        <name>$TOOLKIT_DIR$\INC\CLIB\stdarg.h</name>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\cfile\t6963.c</name>
+      <outputs>
+        <name>$PROJ_DIR$\Debug\Obj\t6963.r90</name>
+      </outputs>
+      <inputs>
+        <name>$PROJ_DIR$\includes\includes.h</name>
+        <name>$PROJ_DIR$\includes\dot.h</name>
+        <name>$PROJ_DIR$\includes\t6963.h</name>
+        <name>$TOOLKIT_DIR$\INC\iom16.h</name>
+        <name>$TOOLKIT_DIR$\INC\iomacro.h</name>
+        <name>$TOOLKIT_DIR$\INC\CLIB\stdlib.h</name>
+        <name>$TOOLKIT_DIR$\INC\CLIB\sysmac.h</name>
+        <name>$TOOLKIT_DIR$\INC\CLIB\stdio.h</name>
+        <name>$TOOLKIT_DIR$\INC\CLIB\stdarg.h</name>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+  </configuration>
+</project>
+
+

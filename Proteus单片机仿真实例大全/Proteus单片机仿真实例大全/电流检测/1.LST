@@ -1,0 +1,73 @@
+C51 COMPILER V7.00  1                                                                      09/14/2005 08:11:35 PAGE 1   
+
+
+C51 COMPILER V7.00, COMPILATION OF MODULE 1
+OBJECT MODULE PLACED IN 1.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 1.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include <reg51.h>
+   2          
+   3          #define x 1                     //修正系数
+   4          #define p 2             //放大倍数
+   5          void main()
+   6                  {
+   7   1              int i,j;
+   8   1              EA=1;
+   9   1              EX0=1;
+  10   1              IT0=1;
+  11   1              P3_0=0;
+  12   1              P3_1=0;
+  13   1              P0=0;
+  14   1              P2=0;
+  15   1              while(1)
+  16   1              {
+  17   2              for (j=0;j<1;j++)               //采样延迟，可以用定时器比较准确
+  18   2              for (i=0;i<500;i++)
+  19   2                      ;
+  20   2              P3_0=1;                                 //地址锁存
+  21   2              for (i=0;i<50;i++)
+  22   2              ;
+  23   2              P3_1=1;                                 //启动AD
+  24   2              for (i=0;i<100;i++)
+  25   2              ;
+  26   2              P3_0=0;
+  27   2              P3_1=0;
+  28   2              }}
+  29          
+  30          void int0() interrupt 0
+  31                  {
+  32   1              char a,b,c,d;
+  33   1              int out;
+  34   1              EA=0;
+  35   1              out=(P1*100.0/255.0)*5/p/0.1;           //计算输出值
+  36   1              b=out%100/10;                           //取小数点后一位
+  37   1              a=out%1000/100*16;                      //取个位
+  38   1              if(out>=1000)                           //取十位
+  39   1              c=out/1000*16;
+  40   1              else
+  41   1              c=0;
+  42   1              d=out%10;                                       //取小数点后两位
+  43   1              P2=a|b;
+  44   1              P0=c|d;
+  45   1              EA=1;
+  46   1              }
+  47                  
+  48          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    313    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+C51 COMPILER V7.00  1                                                                      09/14/2005 08:11:35 PAGE 2   
+
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,136 @@
+C51 COMPILER V8.05a   KEYPROCESS                                                           08/11/2007 16:59:00 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE KEYPROCESS
+OBJECT MODULE PLACED IN KeyProcess.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE source\KeyProcess.c BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\Key
+                    -Process.lst) OBJECT(KeyProcess.obj)
+
+line level    source
+
+   1          //*************************************************************************************************
+   2          //*                                                                                                                                                                                               *
+   3          //*                      ******************************键码处理程序**************************                             *
+   4          //*                                                                                                                                                                                               *
+   5          //*************************************************************************************************
+   6          
+   7          
+   8          //*************************************************************************************************
+   9          //*                                                                                                                                                                                               *
+  10          //*                      ******************************头文件及宏定义**************************                           *
+  11          //*                                                                                                                                                                                               *
+  12          //*************************************************************************************************
+  13          #include "at89x51.h"
+  14          #include "SMC1602.h"
+  15          
+  16          #define MOTORPORT P1              //电机接口。
+  17          
+  18          #define MO_COMMON 0x09            //正向。
+  19          #define MO_OPPOSE 0x06            //反向。
+  20          #define MO_CUTOFF 0x00            //切断。
+  21          #define MO_STOP 0x0A              //停止。
+  22          //*************************************************************************************************
+  23          //*                                                                                                                                                                                               *
+  24          //*                       *******************************全局变量*****************************                            *
+  25          //*                                                                                                                                                                                               *
+  26          //*************************************************************************************************
+  27          
+  28          extern unsigned char uc_MoChange;
+  29          
+  30          
+  31          
+  32          //*************************************************************************************************
+  33          //*                                                                                                                                                                                               *
+  34          //*                       *******************************键码处理程序**************************                           *
+  35          //*                                                                                                                                                                                               *
+  36          //*************************************************************************************************
+  37          void vKeyProcess(unsigned char ucKeyCode)
+  38          {
+  39   1              switch(ucKeyCode)
+  40   1                      {
+  41   2                      case 14:
+  42   2                                      MOTORPORT=MO_COMMON;
+  43   2      
+  44   2                                      vWriteCMD(0xC4);
+  45   2                                      vShowChar("Common");
+  46   2                                      uc_MoChange=255;
+  47   2                                      break;
+  48   2      
+  49   2                                                                                                
+  50   2                      case 24:
+  51   2                                      MOTORPORT=MO_OPPOSE;
+  52   2      
+  53   2                                      vWriteCMD(0xC4);
+  54   2                                      vShowChar("Oppose");
+C51 COMPILER V8.05a   KEYPROCESS                                                           08/11/2007 16:59:00 PAGE 2   
+
+  55   2                                      uc_MoChange=0;
+  56   2                                      break;
+  57   2      
+  58   2                                                                                               
+  59   2                      case 34:
+  60   2                                      MOTORPORT=MO_STOP;
+  61   2      
+  62   2                                      vWriteCMD(0xC4);
+  63   2                                      vShowChar("Stop   ");
+  64   2                                      uc_MoChange=128;
+  65   2                                      break;
+  66   2      
+  67   2                                                                                               
+  68   2                      case 44:
+  69   2                                      MOTORPORT=MO_CUTOFF;
+  70   2      
+  71   2                                      vWriteCMD(0xC4);
+  72   2                                      vShowChar("CutOff");
+  73   2                                      uc_MoChange=128;
+  74   2                                      break;
+  75   2      
+  76   2                                      
+  77   2                      case 13:
+  78   2                                      if(uc_MoChange<251)
+  79   2                                              uc_MoChange+=5;
+  80   2      
+  81   2                                      break;
+  82   2      
+  83   2      
+  84   2                      case 23:
+  85   2                                      if(uc_MoChange>4)
+  86   2                                              uc_MoChange-=5;
+  87   2      
+  88   2                                      break;
+  89   2                      case 33:
+  90   2                                      if(uc_MoChange<255)
+  91   2                                              uc_MoChange++;
+  92   2      
+  93   2                                      break;
+  94   2      
+  95   2      
+  96   2                      case 43:
+  97   2                                      if(uc_MoChange>0)
+  98   2                                              uc_MoChange--;
+  99   2      
+ 100   2                                      break;
+ 101   2                                                                                               
+ 102   2      
+ 103   2                      default:break;
+ 104   2                      }
+ 105   1      
+ 106   1              vWriteCMD(0xCC);
+ 107   1              vShowNumber(uc_MoChange);
+ 108   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    179    ----
+   CONSTANT SIZE    =     29    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+C51 COMPILER V8.05a   KEYPROCESS                                                           08/11/2007 16:59:00 PAGE 3   
+
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

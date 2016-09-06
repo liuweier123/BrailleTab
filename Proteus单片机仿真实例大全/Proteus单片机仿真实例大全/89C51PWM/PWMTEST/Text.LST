@@ -1,0 +1,141 @@
+A51 MACRO ASSEMBLER  TEXT                                                                 07/27/2008 15:50:17 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.07
+OBJECT MODULE PLACED IN Text.OBJ
+ASSEMBLER INVOKED BY: d:\Keil\C51\BIN\A51.EXE Text.ASM SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0030                 1     PWMH DATA 30H ;高电平脉冲的个数 
+  0031                 2     PWM DATA 31H ;PWM周期 
+  0032                 3     COUNTER DATA 32H 
+  0033                 4     TEMP DATA 33H 
+                       5     
+0000                   6     ORG 0000H 
+0000 2100              7     AJMP MAIN 
+000B                   8     ORG 000BH 
+000B 216A              9     AJMP INTT0 
+                      10     
+0100                  11     ORG 0100H 
+0100                  12     MAIN: 
+0100 758160           13     MOV SP,#60H ;给堆栈指针赋初值 
+0103 753002           14     MOV PWMH,#02H ; 
+0106 753201           15     MOV COUNTER,#01H 
+0109 753115           16     MOV PWM,#15H 
+010C 758902           17     MOV TMOD,#02H ;定时器0在模式2下工作 
+010F 758A38           18     MOV TL0,#38H ;定时器每200us产生一次溢出 
+0112 758C38           19     MOV TH0,#38H ;自动重装的值 
+0115 D2A9             20     SETB ET0 ;使能定时器0中断 
+0117 D2AF             21     SETB EA ;使能总中断 
+0119 D28C             22     SETB TR0 ;开始计时 
+011B                  23     KSCAN: 
+011B 309105           24     JNB P1.1,K1CHECK ;扫描KEY1, 
+011E 309223           25     JNB P1.2,K2CHECK ;扫描KEY2,如果按下KEY2,跳转到KEY2处理程序 
+0121 80F8             26     SJMP KSCAN 
+                      27     
+0123                  28     K1CHECK: 
+0123 209102           29     JB P1.1,K1HANDLE ;去抖动,如果按下KEY1,跳转到KEY1处理程序 
+0126 80FB             30     SJMP K1CHECK 
+0128                  31     K1HANDLE: 
+0128 E530             32     MOV A,PWMH 
+012A B53102           33     CJNE A,PWM,K1H0 ;判断是否到达上边界 
+012D 80EC             34     SJMP KSCAN ;是,则不进行任何操作 
+012F                  35     K1H0: 
+012F E530             36     MOV A,PWMH 
+0131 04               37     INC A 
+0132 B53106           38     CJNE A,PWM,K1H1 ;如果在加1后到达最大值 
+0135 C28C             39     CLR TR0 ;定时器停止 
+0137 D290             40     SETB P1.0 ;P1.0为高电平 
+0139 8005             41     SJMP K1H2 
+013B                  42     K1H1: 
+013B B40202           43     CJNE A,#02H,K1H2 ;如果加1后到达下边界 
+013E D28C             44     SETB TR0 ;重开定时器 
+0140                  45     K1H2: 
+0140 0530             46     INC PWMH ;增加占空比 
+0142 80D7             47     SJMP KSCAN 
+                      48     
+0144                  49     K2CHECK: 
+0144 209202           50     JB P1.2,K2HANDLE ;去抖动,如果按下KEY2,跳转到KEY2处理程序 
+0147 80FB             51     SJMP K2CHECK 
+0149                  52     K2HANDLE: 
+0149 E530             53     MOV A,PWMH 
+014B B40102           54     CJNE A,#01H,K2H0 ;判断是否到达下边界 
+014E 80CB             55     SJMP KSCAN ;是,则不进行任何操作 
+0150                  56     K2H0: 
+0150 E530             57     MOV A,PWMH 
+0152 853133           58     MOV TEMP,PWM 
+A51 MACRO ASSEMBLER  TEXT                                                                 07/27/2008 15:50:17 PAGE     2
+
+0155 14               59     DEC A 
+0156 B40106           60     CJNE A,#01H,K2H1 ;如果在减1后到达下边界 
+0159 C28C             61     CLR TR0 ;定时器停止 
+015B C290             62     CLR P1.0 ;P1.0为低电平 
+015D 8007             63     SJMP K2H2 
+015F                  64     K2H1: 
+015F 1533             65     DEC TEMP 
+0161 B53302           66     CJNE A,TEMP,K2H2 ;如果到达上边界 
+0164 D28C             67     SETB TR0 ;启动定时器 
+0166                  68     K2H2: 
+0166 1530             69     DEC PWMH ;降低占空比 
+0168 80B1             70     SJMP KSCAN 
+                      71     
+                      72     
+016A                  73     INTT0: 
+016A C0D0             74     PUSH PSW ;现场保护 
+016C C0E0             75     PUSH ACC 
+016E 0532             76     INC COUNTER ;计数值加1 
+0170 E532             77     MOV A,COUNTER 
+0172 B53002           78     CJNE A,PWMH,INTT01 ;如果等于高电平脉冲数 
+0175 C290             79     CLR P1.0 ;P1.0变为低电平 
+0177 B53105           80     INTT01: CJNE A,PWM,INTT02 ;如果等于周期数 
+017A 753201           81     MOV COUNTER,#01H ;计数器复位 
+017D D290             82     SETB P1.0 ;P1.0为高电平 
+017F D0E0             83     INTT02: POP ACC ;出栈 
+0181 D0D0             84     POP PSW 
+0183 32               85     RETI 
+                      86     
+                      87     END
+A51 MACRO ASSEMBLER  TEXT                                                                 07/27/2008 15:50:17 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+COUNTER. . . . . .  D ADDR   0032H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+INTT0. . . . . . .  C ADDR   016AH   A   
+INTT01 . . . . . .  C ADDR   0177H   A   
+INTT02 . . . . . .  C ADDR   017FH   A   
+K1CHECK. . . . . .  C ADDR   0123H   A   
+K1H0 . . . . . . .  C ADDR   012FH   A   
+K1H1 . . . . . . .  C ADDR   013BH   A   
+K1H2 . . . . . . .  C ADDR   0140H   A   
+K1HANDLE . . . . .  C ADDR   0128H   A   
+K2CHECK. . . . . .  C ADDR   0144H   A   
+K2H0 . . . . . . .  C ADDR   0150H   A   
+K2H1 . . . . . . .  C ADDR   015FH   A   
+K2H2 . . . . . . .  C ADDR   0166H   A   
+K2HANDLE . . . . .  C ADDR   0149H   A   
+KSCAN. . . . . . .  C ADDR   011BH   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+PWM. . . . . . . .  D ADDR   0031H   A   
+PWMH . . . . . . .  D ADDR   0030H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+TEMP . . . . . . .  D ADDR   0033H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

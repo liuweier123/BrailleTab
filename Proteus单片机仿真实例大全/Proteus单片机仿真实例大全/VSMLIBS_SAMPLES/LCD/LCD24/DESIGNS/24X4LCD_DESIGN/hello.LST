@@ -1,0 +1,483 @@
+MPASM 03.20.09 Released                             HELLO.ASM   6-30-2004  4:14:07         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ; Scrivo "Hello World!" sul display
+                      00002                 PROCESSOR       16F84
+                      00003                 RADIX           DEC
+                      00004                 INCLUDE         "p16f84.inc"
+                      00001         LIST
+                      00002 ; P16F84.INC  Standard Header File, Version 2.00    Microchip Technology, Inc.
+                      00136         LIST
+                      00005 
+                      00006                 ERRORLEVEL      -302
+                      00007 
+  00000004            00008 PIN11           EQU     4       ; PIN11 LCD --> RB4
+  00000005            00009 PIN12           EQU     5       ; PIN12 LCD --> RB5
+  00000006            00010 PIN13           EQU     6       ; PIN13 LCD --> RB6
+  00000007            00011 PIN14           EQU     7       ; PIN14 LCD --> RB7
+                      00012 
+  00000003            00013 RS              EQU     3       ; RS LCD --> RB3
+  00000002            00014 EN              EQU     2       ; RS LCD --> RB2
+                      00015 
+000C                  00016                 ORG     0CH
+                      00017 
+000C                  00018 lsb             RES     1
+000D                  00019 msb             RES     1
+000E                  00020 tmp             RES     1
+000F                  00021 tmp1            RES     1
+                      00022 
+0000                  00023                 ORG     00H
+                      00024 
+0000   0000           00025                 nop
+                      00026 
+0001   1683           00027                 bsf     STATUS,RP0      ;Banco 1
+                      00028 
+0002   3000           00029                 movlw   0x00
+0003   0086           00030                 movwf   TRISB           ;PORTB TUTTA IN OUTPUT
+                      00031 
+0004   1283           00032                 bcf     STATUS,RP0      ;Banco 0
+                      00033 
+0005   2039           00034                 call    init
+                      00035 
+0006   3006           00036                 movlw   06H
+0007   2055           00037                 call    cp              ;Riga 0 posizione 6
+                      00038 
+0008   3050           00039                 movlw   'P'
+0009   2067           00040                 call    sd
+000A   3052           00041                 movlw   'R'
+000B   2067           00042                 call    sd
+000C   304F           00043                 movlw   'O'
+000D   2067           00044                 call    sd
+000E   3054           00045                 movlw   'T'
+000F   2067           00046                 call    sd
+0010   3045           00047                 movlw   'E'
+0011   2067           00048                 call    sd
+0012   3055           00049                 movlw   'U'
+0013   2067           00050                 call    sd
+MPASM 03.20.09 Released                             HELLO.ASM   6-30-2004  4:14:07         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0014   3053           00051                 movlw   'S'
+0015   2067           00052                 call    sd
+                      00053                 
+0016   3015           00054                 movlw   15H             ;Riga 1 posizione 5
+0017   2055           00055                 call    cp
+                      00056 
+0018   3032           00057                 movlw   '2'
+0019   2067           00058                 call    sd
+001A   3034           00059                 movlw   '4'
+001B   2067           00060                 call    sd
+001C   3058           00061                 movlw   'X'
+001D   2067           00062                 call    sd
+001E   3032           00063                 movlw   '2'
+001F   2067           00064                 call    sd
+0020   304C           00065                 movlw   'L'
+0021   2067           00066                 call    sd
+0022   3043           00067                 movlw   'C'
+0023   2067           00068                 call    sd
+0024   3044           00069                 movlw   'D'
+0025   2067           00070                 call    sd
+                      00071                 
+0026   3020           00072                 movlw   ' '
+0027   2067           00073                 call    sd
+                      00074                 
+0028   3056           00075                 movlw   'V'
+0029   2067           00076                 call    sd
+002A   3053           00077                 movlw   'S'
+002B   2067           00078                 call    sd
+002C   304D           00079                 movlw   'M'
+002D   2067           00080                 call    sd
+002E   3020           00081                 movlw   ' '
+002F   2067           00082                 call    sd
+0030   3054           00083                 movlw   'T'
+0031   2067           00084                 call    sd
+0032   3045           00085                 movlw   'E'
+0033   2067           00086                 call    sd
+0034   3053           00087                 movlw   'S'
+0035   2067           00088                 call    sd
+0036   3054           00089                 movlw   'T'
+0037   2067           00090                 call    sd
+0038   2838           00091 loop            goto    loop
+                      00092 
+                      00093                 INCLUDE "liblcd4.asm"
+                      00001 ; COLLEGAMENTI:
+                      00002 ;
+                      00003 ; LCD DB7 (14)          -->     PIC RB7 (13)
+                      00004 ; LCD DB6 (13)          -->     PIC RB6 (12)
+                      00005 ; LCD DB5 (12)          -->     PIC RB5 (11)
+                      00006 ; LCD DB4 (11)          -->     PIC RB4 (10)
+                      00007 ; LCD EN  (6)           -->     PIC RB2 (8)
+                      00008 ; LCD RS  (4)           -->     PIC RB3 (9)
+                      00009 ;
+                      00010 ; INTESTAZIONE:
+MPASM 03.20.09 Released                             HELLO.ASM   6-30-2004  4:14:07         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00011 ;
+                      00012 ; PROCESSOR     16F84
+                      00013 ; RADIX         DEC
+                      00014 ; INCLUDE       "p16f84.inc"
+                      00015 ;
+                      00016 ; PIN11         EQU     4       
+                      00017 ; PIN12         EQU     5       
+                      00018 ; PIN13         EQU     6       
+                      00019 ; PIN14         EQU     7       
+                      00020 ; EN            EQU     2       
+                      00021 ; RS            EQU     3       
+                      00022 ;
+                      00023 ;               ORG     0CH
+                      00024 ;
+                      00025 ; lsb           RES     1
+                      00026 ; msb           RES     1
+                      00027 ; tmp           RES     1
+                      00028 ; tmp1          RES     1
+                      00029 ;
+                      00030 ;               ORG     00H
+                      00031 ;
+                      00032 ; bsf           STATUS,RP0      ;BANCO 1
+                      00033 ;
+                      00034 ; movlw         0x00
+                      00035 ; movwf         TRISB
+                      00036 ;
+                      00037 ; bcf           STATUS,RP0      ;BANCO 0
+                      00038 ;
+                      00039 ; ...
+                      00040                                 
+                      00041 
+                      00042 ; ********************************************************
+                      00043 ; init
+                      00044 ; Da usare all'inizio del programma per inizializzare l'LCD
+                      00045 ; Registri usati:
+                      00046 ; \
+                      00047 ; Subroutine richiamate:
+                      00048 ; rit
+                      00049 ; enable
+                      00050 ; sc
+                      00051 ; ********************************************************
+                      00052 
+0039   301E           00053 init    movlw   30
+003A   2083           00054         call    rit             ; Ritardo 30 ms
+                      00055 
+003B   1186           00056         bcf     PORTB,RS        ; RS = 0 --> Dati
+                      00057 
+003C   1606           00058         bsf     PORTB,PIN11
+003D   1686           00059         bsf     PORTB,PIN12
+003E   1306           00060         bcf     PORTB,PIN13
+003F   1386           00061         bcf     PORTB,PIN14     ; PORTB --> 0011XXXX
+                      00062                 
+0040   1506           00063         bsf     PORTB,EN
+MPASM 03.20.09 Released                             HELLO.ASM   6-30-2004  4:14:07         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0041   3005           00064         movlw   5
+0042   2083           00065         call    rit             ; Ritardo 5 ms
+0043   1106           00066         bcf     PORTB,EN
+0044   3001           00067         movlw   1
+0045   2083           00068         call    rit             ; Ritardo 1 ms
+                      00069 
+0046   207B           00070         call    enable
+                      00071                 
+0047   207B           00072         call    enable
+                      00073 
+0048   1206           00074         bcf     PORTB,PIN11
+0049   1686           00075         bsf     PORTB,PIN12
+004A   1306           00076         bcf     PORTB,PIN13
+004B   1386           00077         bcf     PORTB,PIN14     ; PORTB --> 0010XXXX
+                      00078 
+004C   207B           00079         call    enable
+                      00080 
+004D   3028           00081         movlw   0x28            ; 4-bit
+004E   206A           00082         call    sc
+                      00083 
+004F   3006           00084         movlw   0x06            
+0050   206A           00085         call    sc
+                      00086 
+0051   300C           00087         movlw   0x0C
+0052   206A           00088         call    sc
+                      00089                 
+0053   2060           00090         call    cl
+                      00091 
+0054   0008           00092         return
+                      00093 
+                      00094 ; ********************************************************
+                      00095 ; cp
+                      00096 ; Cursor Position - Mette il cursore in una certa posizione
+                      00097 ; Registri usati:
+                      00098 ; W     -->     D7-D4 righe,    D3,D0 colonne
+                      00099 ; tmp
+                      00100 ; tmp1
+                      00101 ; Subroutine richiamate:
+                      00102 ; sc
+                      00103 ; ********************************************************
+0055   008E           00104 cp      movwf   tmp
+                      00105 
+0056   3080           00106         movlw   0x80
+0057   008F           00107         movwf   tmp1            ; Metti 10000000 in tmp1
+                      00108 
+0058   080E           00109         movf    tmp,W           ; Metti tmp in W
+0059   390F           00110         andlw   0x0F            ; W --> 0000DDDD
+005A   048F           00111         iorwf   tmp1,F          ; tmp1 --> 1000DDDD
+                      00112 
+005B   1A0E           00113         btfsc   tmp,4           ; Se il bit 4 di tmp = 0 salta
+005C   170F           00114         bsf     tmp1,6          ; altrimenti tmp1 diventa 1100DDDD
+                      00115 
+005D   080F           00116         movf    tmp1,W          ; Metti tmp1 in W
+MPASM 03.20.09 Released                             HELLO.ASM   6-30-2004  4:14:07         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+005E   206A           00117         call    sc              ; Manda il comando 1X00DDDD
+                      00118 
+005F   0008           00119         return          
+                      00120 
+                      00121 ; ********************************************************
+                      00122 ; cl
+                      00123 ; Clear - Pulisce il display e mette il cursore all'inizio
+                      00124 ; Registri usati:
+                      00125 ; \
+                      00126 ; Subroutine richiamate:
+                      00127 ; sc
+                      00128 ; rit
+                      00129 ; ********************************************************
+                      00130 
+0060   3001           00131 cl      movlw   0x01
+0061   206A           00132         call    sc      ; CLEAR
+                      00133 
+0062   3002           00134         movlw   2
+0063   2083           00135         call    rit     ; Ritardo 2 ms
+                      00136 
+0064   3080           00137         movlw   80H     
+0065   206A           00138         call    sc      ; Posizione Iniziale
+                      00139 
+0066   0008           00140         return
+                      00141 
+                      00142 ; ********************************************************
+                      00143 ; sd
+                      00144 ; Send data - Invia un dato al display
+                      00145 ; Registri usati:
+                      00146 ; W     -->     dato da inviare
+                      00147 ; Subroutine richiamate:
+                      00148 ; sb
+                      00149 ; ********************************************************
+                      00150 
+0067   1586           00151 sd      bsf     PORTB,RS
+0068   206D           00152         call    sb
+0069   0008           00153         return
+                      00154 
+                      00155 
+                      00156 ; ********************************************************
+                      00157 ; sc
+                      00158 ; Send Command - Invia un comando al display
+                      00159 ; Registri usati:
+                      00160 ; W     -->     Comando da inviare
+                      00161 ; Subroutine richiamate:
+                      00162 ; sb
+                      00163 ; ********************************************************
+                      00164 
+006A   1186           00165 sc      bcf     PORTB,RS
+006B   206D           00166         call    sb
+006C   0008           00167         return
+                      00168 
+                      00169 ; ********************************************************
+MPASM 03.20.09 Released                             HELLO.ASM   6-30-2004  4:14:07         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00170 ; sb
+                      00171 ; Send byte - Invia un byte sull'msb di PORTB
+                      00172 ; Registri usati:
+                      00173 ; tmp
+                      00174 ; Subroutine richiamate:
+                      00175 ; enable
+                      00176 ; ********************************************************
+                      00177 
+006D   008E           00178 sb      movwf   tmp
+006E   300F           00179         movlw   B'00001111'
+006F   0586           00180         andwf   PORTB,F         ;Metto a 0 i 4 bit MSB di PORTB
+0070   080E           00181         movf    tmp,W
+0071   39F0           00182         andlw   B'11110000'     ;Metto a 0 i 4 bit LSB del byte da inviare in W
+0072   0486           00183         iorwf   PORTB,F         ;OR fra PORTB (0000XXXX) e W (DDDD0000)
+0073   207B           00184         call    enable          ;Impulso di Enable
+0074   300F           00185         movlw   B'00001111'
+0075   0586           00186         andwf   PORTB,F         ;Metto a 0 i 4 bit MSB di PORTB
+0076   0E0E           00187         swapf   tmp,W           ;Metto tmp1 in W con LSB invertito con MSB
+0077   39F0           00188         andlw   B'11110000'     ;Metto a 0 i 4 bit LSB del byte da inviare in W
+0078   0486           00189         iorwf   PORTB,F         ;OR fra PORTB (0000XXXX) e W (DDDD0000) 
+0079   207B           00190         call    enable          ;Impulso di Enable
+                      00191 
+007A   0008           00192         return
+                      00193 
+                      00194 ; ********************************************************
+                      00195 ; enable
+                      00196 ; Manda un impulso di ENABLE della durata di 1ms
+                      00197 ; Registri usati:
+                      00198 ; \
+                      00199 ; Subroutine richiamate:
+                      00200 ; rit
+                      00201 ; ********************************************************
+                      00202 
+007B   1283           00203 enable  bcf     STATUS,RP0      ;banco 0
+007C   1506           00204         bsf     PORTB,EN        ;metto a 1 enable
+007D   3001           00205         movlw   1               ;metto 1 in w
+007E   2083           00206         call    rit             ;ritardo
+007F   1106           00207         bcf     PORTB,EN        ;rimetto a 0 enable
+0080   3001           00208         movlw   1
+0081   2083           00209         call    rit
+                      00210         
+0082   0008           00211         return
+                      00212 
+                      00213 ; ********************************************************
+                      00214 ; rit
+                      00215 ; Ciclo di ritardo programmabile
+                      00216 ; Registri usati:
+                      00217 ; W     -->     Numero di ms (per CLK = 4MHz)
+                      00218 ; msb   -->     (uso interno)
+                      00219 ; lsb   -->     (uso interno)
+                      00220 ; Subroutine richiamate:
+                      00221 ; \
+                      00222 ; ********************************************************
+MPASM 03.20.09 Released                             HELLO.ASM   6-30-2004  4:14:07         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00223 
+0083   008D           00224 rit     movwf   msb
+0084   018C           00225         clrf    lsb
+0085                  00226 rit_loop
+0085   0000           00227         nop
+0086   0B8C           00228         decfsz  lsb,F
+0087   2885           00229         goto    rit_loop
+0088   0000           00230         nop
+0089   0B8D           00231         decfsz  msb,F
+008A   2885           00232         goto    rit_loop
+                      00233 
+008B   0008           00234         return
+                      00094 
+                      00095         end
+MPASM 03.20.09 Released                             HELLO.ASM   6-30-2004  4:14:07         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+C                                 00000000
+DC                                00000001
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+EN                                00000002
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+PIN11                             00000004
+PIN12                             00000005
+PIN13                             00000006
+PIN14                             00000007
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+RS                                00000003
+STATUS                            00000003
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+TMR0                              00000001
+TRISA                             00000085
+TRISB                             00000086
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+MPASM 03.20.09 Released                             HELLO.ASM   6-30-2004  4:14:07         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_HS_OSC                           00003FFE
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F84                           00000001
+cl                                00000060
+cp                                00000055
+enable                            0000007B
+init                              00000039
+loop                              00000038
+lsb                               0000000C
+msb                               0000000D
+rit                               00000083
+rit_loop                          00000085
+sb                                0000006D
+sc                                0000006A
+sd                                00000067
+tmp                               0000000E
+tmp1                              0000000F
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0080 : XXXXXXXXXXXX---- ---------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:   140
+Program Memory Words Free:   884
+
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     1 suppressed
+
+

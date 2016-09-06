@@ -1,0 +1,8 @@
+"STARTUP.obj",
+"main.obj",
+".\HZK_LCD.OBJ",
+".\IIC.OBJ",
+".\key.OBJ",
+".\serial.OBJ" 
+TO "LCD_HZK" 
+RAMSIZE(256) 

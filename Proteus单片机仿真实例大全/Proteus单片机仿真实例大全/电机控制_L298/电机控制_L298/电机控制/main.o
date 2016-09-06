@@ -1,0 +1,68 @@
+XL
+H 2 areas A global symbols
+M main.c
+S _speed_subtract Ref0000
+S _init_devices Ref0000
+S _for_ward Ref0000
+S _motor_stop Ref0000
+S _Delay1s Ref0000
+S _speed_add Ref0000
+S _back_ward Ref0000
+A text size 62 flags 0
+dbfile E:\avr\电机控制\电机控制\main.c
+dbfunc e main 0 fV
+dbline FFFFFFFF 0
+dbline 7 0
+dbline C 0
+dbline F 6
+dbline 10 6
+dbline 11 C
+dbline 12 14
+dbline 13 18
+dbline 14 20
+dbline 15 26
+dbline 16 2E
+dbline 17 34
+dbline 18 3C
+dbline 19 42
+dbline 1A 4A
+dbline E 4A
+dbline FFFFFFFE 4C
+dbline 0 4C
+dbfunc e timer2_comp_isr 4E fV
+dbline FFFFFFFF 4E
+dbline 25 4E
+dbline FFFFFFFE 4E
+dbline 0 4E
+dbfunc e timer2_ovf_isr 50 fV
+dbline FFFFFFFF 56
+dbline 2A 56
+dbline 2B 56
+dbline FFFFFFFE 5A
+dbline 0 5A
+S _main Def0000
+S _timer2_ovf_isr Def0050
+S _timer2_comp_isr Def004E
+A vector size 18 flags C
+T 00 00 0E 94 00 00 22 C0 00 27 0E 94 00 00 05 E0
+R 00 00 00 00 12 04 01 00 12 0C 02 00
+T 0E 00 10 E0 0E 94 00 00 0E 94 00 00 05 E0 10 E0
+R 00 00 00 00 12 06 04 00 12 0A 03 00
+T 1C 00 0E 94 00 00 00 27 0E 94 00 00 05 E0 10 E0
+R 00 00 00 00 12 04 04 00 12 0A 06 00
+T 2A 00 0E 94 00 00 04 E1 0E 94 00 00 05 E0 10 E0
+R 00 00 00 00 12 04 04 00 12 0A 05 00
+T 38 00 0E 94 00 00 04 E1 0E 94 00 00 05 E0 10 E0
+R 00 00 00 00 12 04 04 00 12 0A 00 00
+T 46 00 0E 94 00 00 DD CF 08 95
+R 00 00 00 00 12 04 04 00
+T 10 00 0C 94 27 00
+R 00 00 01 00 10 04 00 00
+T 4E 00 18 95
+R 00 00 00 00
+T 14 00 0C 94 28 00
+R 00 00 01 00 10 04 00 00
+T 50 00 8A 93 8F B7 8A 93 81 E0 84 BD 89 91 8F BF
+R 00 00 00 00
+T 5E 00 89 91 18 95
+R 00 00 00 00

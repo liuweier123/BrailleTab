@@ -1,0 +1,141 @@
+                        .module delay.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\avr\电机控制\电机控制\delay.c
+ 0000                   .dbfunc e Delay100us _Delay100us fV
+ 0000           ;              i -> R20
+ 0000           ;              x -> R16
+                        .even
+ 0000           _Delay100us::
+ 0000 4A93              st -y,R20
+ 0002                   .dbline -1
+ 0002                   .dbline 8
+ 0002           ; // 文件名 delay.c 延时
+ 0002           ; 
+ 0002           ; #include "config.h"
+ 0002           ; /***************************************************************************
+ 0002           ; 延时 M32 7.3728M 粗略计算
+ 0002           ; */
+ 0002           ; void Delay100us(uint8 x)
+ 0002           ; {
+ 0002                   .dbline 10
+ 0002           ;       uint8 i;          //4clock                   
+ 0002           ;       for(i=147;x!=0;x--)     
+ 0002 43E9              ldi R20,147
+ 0004 06C0              xjmp L5
+ 0006           L6:
+ 0006                   .dbline 11
+ 0006           ;       while(--i);      //5 * i clock
+ 0006           L7:
+ 0006                   .dbline 11
+ 0006 842F              mov R24,R20
+ 0008 8150              subi R24,1
+ 000A 482F              mov R20,R24
+ 000C 8823              tst R24
+ 000E D9F7              brne L6
+ 0010           X0:
+ 0010           L3:
+ 0010                   .dbline 10
+ 0010 0A95              dec R16
+ 0012           L5:
+ 0012                   .dbline 10
+ 0012 0023              tst R16
+ 0014 C1F7              brne L7
+ 0016           X1:
+ 0016                   .dbline -2
+ 0016           L1:
+ 0016                   .dbline 0 ; func end
+ 0016 4991              ld R20,y+
+ 0018 0895              ret
+ 001A                   .dbsym r i 20 c
+ 001A                   .dbsym r x 16 c
+ 001A                   .dbend
+ 001A                   .dbfunc e Delay1ms _Delay1ms fV
+ 001A           ;              n -> R20,R21
+                        .even
+ 001A           _Delay1ms::
+ 001A 4A93              st -y,R20
+ 001C 5A93              st -y,R21
+ 001E A801              movw R20,R16
+ 0020                   .dbline -1
+ 0020                   .dbline 14
+ 0020           ; }
+ 0020           ; void Delay1ms(uint16 n)
+ 0020           ; {        
+ 0020                   .dbline 15
+ 0020           ;       for (;n!=0;n--){
+ 0020 04C0              xjmp L13
+ 0022           L10:
+ 0022                   .dbline 15
+ 0022                   .dbline 16
+ 0022           ;               Delay100us(10);
+ 0022 0AE0              ldi R16,10
+ 0024 EDDF              xcall _Delay100us
+ 0026                   .dbline 17
+ 0026           ;       }
+ 0026           L11:
+ 0026                   .dbline 15
+ 0026 4150              subi R20,1
+ 0028 5040              sbci R21,0
+ 002A           L13:
+ 002A                   .dbline 15
+ 002A 4030              cpi R20,0
+ 002C 4507              cpc R20,R21
+ 002E C9F7              brne L10
+ 0030           X2:
+ 0030                   .dbline -2
+ 0030           L9:
+ 0030                   .dbline 0 ; func end
+ 0030 5991              ld R21,y+
+ 0032 4991              ld R20,y+
+ 0034 0895              ret
+ 0036                   .dbsym r n 20 i
+ 0036                   .dbend
+ 0036                   .dbfunc e Delay1s _Delay1s fV
+ 0036           ;              m -> R20,R21
+                        .even
+ 0036           _Delay1s::
+ 0036 4A93              st -y,R20
+ 0038 5A93              st -y,R21
+ 003A A801              movw R20,R16
+ 003C                   .dbline -1
+ 003C                   .dbline 20
+ 003C           ; }
+ 003C           ; void Delay1s(uint16 m)         //  m <= 6 ,when m==7, it is 1. 
+ 003C           ; {
+ 003C                   .dbline 21
+ 003C           ;       m=m*40;                
+ 003C 08E2              ldi R16,40
+ 003E 10E0              ldi R17,0
+ 0040 9A01              movw R18,R20
+ 0042 0E940000          xcall empy16s
+ 0046 A801              movw R20,R16
+ 0048                   .dbline 22
+ 0048           ;       for (;m!=0;m--){
+ 0048 04C0              xjmp L18
+ 004A           L15:
+ 004A                   .dbline 22
+ 004A                   .dbline 23
+ 004A           ;               Delay100us(250);
+ 004A 0AEF              ldi R16,250
+ 004C D9DF              xcall _Delay100us
+ 004E                   .dbline 24
+ 004E           ;       }
+ 004E           L16:
+ 004E                   .dbline 22
+ 004E 4150              subi R20,1
+ 0050 5040              sbci R21,0
+ 0052           L18:
+ 0052                   .dbline 22
+ 0052 4030              cpi R20,0
+ 0054 4507              cpc R20,R21
+ 0056 C9F7              brne L15
+ 0058           X3:
+ 0058                   .dbline -2
+ 0058           L14:
+ 0058                   .dbline 0 ; func end
+ 0058 5991              ld R21,y+
+ 005A 4991              ld R20,y+
+ 005C 0895              ret
+ 005E                   .dbsym r m 20 i
+ 005E                   .dbend
+ 005E           ; }

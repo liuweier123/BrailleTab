@@ -1,0 +1,24 @@
+<html>
+<body>
+<pre>
+<h1>µVision2 Build Log</h1>
+<h2>Project:</h2>
+E:\AT89X51\12\12.uv2
+Project File Date:  04/16/2006
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 12.c...
+12.C(19): error C202: 'P3_6': undefined identifier
+12.C(22): error C202: 'P3_6': undefined identifier
+12.C(33): error C202: 'P3_6': undefined identifier
+12.C(36): error C202: 'P3_7': undefined identifier
+12.C(39): error C202: 'P3_7': undefined identifier
+12.C(50): error C202: 'P3_7': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling 12.c...
+linking...
+Program Size: data=10.0 xdata=0 code=97
+creating hex file from "12"...
+"12" - 0 Error(s), 0 Warning(s).

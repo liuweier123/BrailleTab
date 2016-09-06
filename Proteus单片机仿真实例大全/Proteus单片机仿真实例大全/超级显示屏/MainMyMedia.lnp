@@ -1,0 +1,7 @@
+"STARTUP.obj",
+"MainMyMedia.obj",
+"LCD.obj",
+"Music.obj",
+"24c02.obj" 
+TO "MainMyMedia" 
+RAMSIZE(256) 

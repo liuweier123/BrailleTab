@@ -1,0 +1,95 @@
+		ORG		00H
+		JMP		MAIN
+		ORG   	0BH
+		LJMP	INTS_T0
+		ORG		30H
+MAIN:	CLR		EA
+		MOV		R2,#0
+		MOV		R1,#16			;16个字符
+		MOV		R0,#40H
+		MOV		DPTR,#TAB		;把全部字符复制到40H
+MOVEDATA:
+		MOV		A,R2
+		MOVC	A,@A+DPTR
+		MOV		@R0,A
+		INC		R2
+		INC		R0
+		DJNZ	R1,MOVEDATA
+		MOV		TMOD,#01H		;定时器0工作方式1
+		MOV		TL0,#0FFH		;置计数初值
+		MOV		TH0,#03CH		;0FFFFH-3CAFH=50000,50MS
+		MOV		R7,#5			;软件计数器，循环5次
+		SETB	ET0				;允许T0中断
+		CLR		ET1				;禁止T1中断
+		SETB	EA
+		SETB	TR0 
+		MOV		SCON,#00H		;串行口工作模式0
+		CLR		P3.2
+		MOV		SP,#60H
+		MOV		R3,#080H		;第一行
+A0:		MOV		R2,#08H
+		MOV		R0,#40H
+LOOP:	MOV		DPTR,#TAB		;字符首地址
+		MOV		R1,#2
+		MOV		A,R3
+		RR		A				;行码右移一位转下一行
+		MOV		R3,A
+		MOV		SBUF,A			;发送行码
+WAIT1: 	JNB		TI,WAIT1		;等待一帧发送完
+		CLR		TI
+A1:		MOV		A,@R0
+		MOV		SBUF,A
+WAIT2:	JNB		TI,WAIT2
+		CLR		TI
+		INC		R0
+		DJNZ	R1,A1
+		SETB	P3.2			;显示一行
+		CLR		P3.2
+		DJNZ	R2,LOOP			;下一行
+		JMP		A0
+		JMP		$
+INTS_T0:
+		CLR	EA
+		PUSH	00H
+		PUSH	01H
+		PUSH	02H
+		DJNZ	R7,BACK			;软件次数，次数不到返回 
+		MOV		R7,#5
+		MOV		R0,#40H
+		MOV		R1,#8
+SHIFT1:
+		MOV		R2,#2
+		CLR		C
+		PUSH	00H
+		MOV		A,R0
+		ADD		A,#1
+		MOV		R0,A
+		MOV		A,@R0
+		POP		00H
+		RLC		A
+SHIFT2:
+		MOV		A,@R0
+		RLC		A
+		MOV		@R0,A
+		INC		R0
+		DJNZ	R2,SHIFT2
+		DJNZ	R1,SHIFT1
+BACK:	POP		02H
+		POP		01H
+		POP		00H
+		MOV		TMOD,#01H		;定时器0工作方式1
+		MOV		TL0,#0FFH               
+		MOV		TH0,#03CH		;0FFFFH-3CAFH=50000。50MS
+		SETB	ET0				;禁止T0中断
+		CLR		ET1				;禁止T1中断
+		SETB	EA
+		SETB	TR0
+		RETI
+TAB:	DB		0FFH,0FFH		;箭头符号				
+		DB		0DFH,0FFH
+		DB		0BFH,0FFH														
+		DB		001H,0FFH
+		DB		0BFH,0FFH
+		DB		0DFH,0FFH
+		DB		0FFH,0FFH
+		END

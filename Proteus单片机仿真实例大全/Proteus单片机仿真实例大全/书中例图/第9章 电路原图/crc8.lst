@@ -1,0 +1,85 @@
+   1               		.file	"crc8.c"
+   2               		.arch atmega32
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  17               	.Ltext0:
+  18               	.global	crc8
+  20               	crc8:
+  21               	.LFB2:
+  22               	.LM1:
+  23               	/* prologue: frame size=0 */
+  24               	/* prologue end (size=0) */
+  25               	.LM2:
+  26 0000 30E0      		ldi r19,lo8(0)
+  27               	.LM3:
+  28 0002 40E0      		ldi r20,lo8(0)
+  29 0004 50E0      		ldi r21,hi8(0)
+  30 0006 4617      		cp r20,r22
+  31 0008 5707      		cpc r21,r23
+  32 000a B9F0      		breq .L12
+  33 000c B8E1      		ldi r27,lo8(24)
+  34 000e FC01      		movw r30,r24
+  35               	.L10:
+  36               	.LM4:
+  37 0010 2081      		ld r18,Z
+  38               	.LM5:
+  39 0012 A8E0      		ldi r26,lo8(8)
+  40               	.L5:
+  41               	.LM6:
+  42 0014 832F      		mov r24,r19
+  43 0016 8227      		eor r24,r18
+  44               	.LM7:
+  45 0018 982F      		mov r25,r24
+  46 001a 9170      		andi r25,lo8(1)
+  47 001c 80FD      		sbrc r24,0
+  48               	.LM8:
+  49 001e 3B27      		eor r19,r27
+  50               	.L8:
+  51               	.LM9:
+  52 0020 3695      		lsr r19
+  53               	.LM10:
+  54 0022 9130      		cpi r25,lo8(1)
+  55 0024 09F4      		brne .L9
+  56               	.LM11:
+  57 0026 3068      		ori r19,lo8(-128)
+  58               	.L9:
+  59               	.LM12:
+  60 0028 2695      		lsr r18
+  61               	.LM13:
+  62 002a A150      		subi r26,lo8(-(-1))
+  63               	.LM14:
+  64 002c 99F7      		brne .L5
+  65               	.LM15:
+  66 002e 4F5F      		subi r20,lo8(-(1))
+  67 0030 5F4F      		sbci r21,hi8(-(1))
+  68 0032 3196      		adiw r30,1
+  69 0034 4617      		cp r20,r22
+  70 0036 5707      		cpc r21,r23
+  71 0038 59F7      		brne .L10
+  72               	.L12:
+  73               	.LM16:
+  74 003a 832F      		mov r24,r19
+  75 003c 9927      		clr r25
+  76               	/* epilogue: frame size=0 */
+  77 003e 0895      		ret
+  78               	/* epilogue end (size=1) */
+  79               	/* function crc8 size 34 (33) */
+  80               	.LFE2:
+  82               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 crc8.c
+                            *ABS*:0000003f __SREG__
+                            *ABS*:0000003e __SP_H__
+                            *ABS*:0000003d __SP_L__
+                            *ABS*:00000000 __tmp_reg__
+                            *ABS*:00000001 __zero_reg__
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/ccqabaaa.s:20     .text:00000000 crc8
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

@@ -1,0 +1,148 @@
+C51 COMPILER V8.02   PWM_MOTOR_TEST                                                        08/15/2007 22:47:36 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE PWM_MOTOR_TEST
+OBJECT MODULE PLACED IN PWM_motor_test.OBJ
+COMPILER INVOKED BY: C:\Program Files\keil\C51\BIN\C51.EXE PWM_motor_test.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1            /*用PWM控制电机脉冲频率应控制在25HZ～35HZ之间*/
+   2            /*定时1ms,1个周期30ms,脉冲频率为33HZ             */                   
+   3            /*                                                                               */
+   4              
+   5          #include   <reg51.h>   
+   6            typedef   unsigned   char   uchar;   
+   7            sbit   P0_0=P0^0;
+   8            sbit   P0_1=P0^1; 
+   9            sbit   P0_2=P0^2;
+  10            sbit   P0_3=P0^3;
+  11            sbit   P0_4=P0^4;
+  12            sbit   P2_0=P2^0;
+  13            sbit   P2_1=P2^1;
+  14            sbit   P2_2=P2^2;
+  15            sbit   P2_3=P2^3;
+  16            sbit   P2_4=P2^4;
+  17            sbit   P3_4=P3^4;   
+  18           
+  19            uchar   time=0;   
+  20            uchar   period=30;   
+  21            uchar   high=10; 
+  22            uchar   th0=0;
+  23            uchar   tl0=1;
+  24            bit    dir;
+  25            
+  26              
+  27            void dealy()
+  28            {
+  29   1         uchar i;
+  30   1         for(i=0;i<100;i++);
+  31   1      
+  32   1        }
+  33          
+  34          
+  35            
+  36            void   timer0()   interrupt   1   using   1   
+  37            {   
+  38   1                  TH0=0xfc;     /*定时器初值重装载*/   
+  39   1                  TL0=0x18;
+  40   1                  
+  41   1                  time++; 
+  42   1                              P3_4=~P3_4;  
+  43   1            if(dir==1)
+  44   1                {
+  45   2                              
+  46   2                              if(time==high)   /*高电平持续时间结束，变低*/   
+  47   2                     P2_0=th0;                 /*经过反相器反相*/
+  48   2                                  
+  49   2                                  
+  50   2                  else   if(time==period)     /*周期时间到，变高*/   
+  51   2                            {   time=0;   
+  52   3                                P2_0=tl0;             /*经过反相器反相*/
+  53   3                                                        
+  54   3                                                         
+  55   3                            }   
+C51 COMPILER V8.02   PWM_MOTOR_TEST                                                        08/15/2007 22:47:36 PAGE 2   
+
+  56   2                        
+  57   2                      }
+  58   1                       else     if(time==high)   /*高电平持续时间结束，变低*/   
+  59   1                  
+  60   1                                 P2_1=th0;             /*经过反相器反相*/
+  61   1                                  
+  62   1                                 
+  63   1                        else   if(time==period)     /*周期时间到，变高*/   
+  64   1                            {   time=0;   
+  65   2                                P2_1=tl0;             /*经过反相器反相*/
+  66   2                                                        
+  67   2                            }
+  68   1          
+  69   1              
+  70   1      } 
+  71          
+  72          
+  73          
+  74           void   main()   
+  75            {   
+  76   1      
+  77   1                      P0=0x00;
+  78   1                      P2=0x00;
+  79   1      
+  80   1              TMOD=0x01;   /*定时器0方式1*/   
+  81   1              TH0=0xfc;     /*定时器装载初值，设置脉冲信号的占空比为1／5*/   
+  82   1              TL0=0x18; 
+  83   1                      
+  84   1               
+  85   1              ET0=1;   /*开定时器0中断*/   
+  86   1              TR0=1;    /*启动定时器0*/ 
+  87   1              
+  88   1              
+  89   1              
+  90   1      
+  91   1              while(1)    
+  92   1              {
+  93   2                              if(P0_0==1)
+  94   2                      EA=1;     /*开CPU中断*/
+  95   2      
+  96   2                              if(P0_1==1)
+  97   2                              EA=0;    /*关CPU中断*/
+  98   2      
+  99   2                              if(P0_2==1)
+ 100   2                              {
+ 101   3                              dir=~dir;  /*转向控制*/
+ 102   3                              while(P0_2!=0)
+ 103   3                              {};
+ 104   3      
+ 105   3                              }
+ 106   2      
+ 107   2                              if(P0_3==1)
+ 108   2                              {
+ 109   3      
+ 110   3                               high++;
+ 111   3                               if(high==30)
+ 112   3                               high=0;
+ 113   3                              while(P0_3!=0)
+ 114   3                              {};
+ 115   3                               }
+ 116   2                       }   
+ 117   1          
+C51 COMPILER V8.02   PWM_MOTOR_TEST                                                        08/15/2007 22:47:36 PAGE 3   
+
+ 118   1      
+ 119   1      }       
+ 120             
+ 121          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    131    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

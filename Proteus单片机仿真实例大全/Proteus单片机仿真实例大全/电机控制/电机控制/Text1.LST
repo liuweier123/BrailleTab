@@ -1,0 +1,249 @@
+A51 MACRO ASSEMBLER  TEXT1                                                                06/05/2008 11:31:12 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.01
+OBJECT MODULE PLACED IN Text1.OBJ
+ASSEMBLER INVOKED BY: d:\Keil\C51\BIN\A51.EXE Text1.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1         ;µç»úµÄÇ¶¯Âö³åÆµÂÊÎª16.6HZ,ÖÜÆÚ60MS.¶¨Ê±Æ÷Ê±¼ä30MS,³õÖµÎª8AD0H.
+  0030                 2                        HDIAN0      EQU       30H             ;¸ßµçÆ½ÑÓ³ÙÊ±¼ä´æ´¢µ¥Ôª
+  0031                 3                        LDIAN0          EQU       31H
+  0032                 4                        HDIAN1          EQU       32H                ;µÍµçÆ½ÑÓ³ÙÊ±¼ä´æ´¢µ¥Ôª
+  0033                 5                        LDIAN1          EQU       33H
+  0034                 6                        COT0        EQU       34H
+  0035                 7                        COT1        EQU       35H
+  0036                 8                        WAY         EQU       36H
+  00A6                 9                        DJ0         EQU       P2.6
+  00A7                10                        DJ          EQU       P2.7
+  0090                11                        K1          EQU       P1.0           ;Æô¶¯,Í£Ö¹
+  0091                12                        K2          EQU       P1.1           ;¼ÓËÙ
+  0092                13                        K3          EQU       P1.2       ;¼õËÙ
+  0093                14                        K4          EQU       P1.3       ;·½Ïò¿ØÖÆ
+0000                  15                      ORG        0000H
+0000 020100           16                      LJMP       MAIN   
+0003                  17                  ORG                 0003H
+0003 02013B           18                  LJMP       XINT0
+000B                  19              ORG        000BH
+000B 0201C1           20                  LJMP       IN0
+0100                  21                      ORG       0100H
+0100 75816F           22     MAIN:    MOV      SP,#6FH
+                      23     ;         SETB     F1
+0103 753600           24              MOV       WAY,#00H
+0106 753405           25              MOV      COT0,#5
+0109 753505           26                      MOV      COT1,#5
+010C 758921           27              MOV      TMOD,#21H
+010F 758C8A           28                  MOV      TH0,#8AH           
+0112 758AD0           29                  MOV      TL0,#0D0H
+0115 75308A           30                  MOV      HDIAN0,#8AH
+0118 7531D0           31                  MOV      LDIAN0,#0D0H
+011B 75328A           32                      MOV      HDIAN1,#8AH
+011E 7533D0           33                      MOV      LDIAN1,#0D0H
+0121 75A89F           34                      MOV      IE,#9FH
+0124 C288             35              CLR        IT0
+0126 C2A8             36                      CLR      EX0
+0128 309002           37     STAR:    JNB      K1,NEXT1
+012B 80FB             38              SJMP     STAR
+012D 1201FC           39     NEXT1:   LCALL    YAN_1MS
+0130 2090F5           40                      JB       K1,STAR
+0133 D2A8             41                      SETB     EX0
+0135 D2D5             42                      SETB     F0
+0137 D28C             43                      SETB     TR0
+0139 80FE             44                  SJMP     $
+013B C2A9             45     XINT0:   CLR      ET0
+013D 209312           46              JB       K4,K11
+0140 120205           47                      LCALL    YAN_3MS
+0143 20930C           48                      JB       K4,K11
+0146 E536             49                      MOV      A,WAY
+0148 6005             50                      JZ       K41
+014A 753600           51                      MOV      WAY,#00H
+014D 8003             52                      SJMP     K11
+014F 753601           53     K41:     MOV      WAY,#01H
+0152 20901A           54     K11:     JB       K1,K21
+0155 1201FC           55                     LCALL   YAN_1MS
+0158 1201FC           56                     LCALL    YAN_1MS
+015B 209011           57             JB       K1,K21
+015E 30D508           58                      JNB       F0,STAR1
+A51 MACRO ASSEMBLER  TEXT1                                                                06/05/2008 11:31:12 PAGE     2
+
+0161 C2A7             59     STOP0:   CLR     DJ 
+0163 C2D5             60              CLR      F0
+0165 C28C             61                      CLR      TR0
+0167 8057             62                      SJMP     FANHUI11
+0169 D2D5             63     STAR1:   SETB     F0
+016B D28C             64              SETB     TR0
+016D 804F             65              SJMP     FANHUI
+016F 209106           66     K21:     JB        K2,K33
+0172 120205           67              LCALL    YAN_3MS
+0175 309128           68                      JNB      K2,JIASU
+0178 209243           69     K33:     JB        K3, FANHUI
+017B 120205           70              LCALL    YAN_3MS
+017E 20923D           71                      JB        K3,FANHUI     
+0181                  72     JIANSU: ; MOV      A,COT0
+                      73     ;        CJNE      A,#10,JIANSU1
+                      74     ;JIANSU1: JC       JIANSU2
+                      75     ;         SJMP     FANHUI 
+                      76     ;JIANSU2: DEC       COT1
+                      77     ;                INC       COT0 
+0181 E531             78              MOV      A,LDIAN0
+0183 C3               79              CLR       C
+0184 94C8             80              SUBB      A,#200
+0186 F531             81                      MOV       LDIAN0,A
+0188 E530             82                      MOV      A,HDIAN0
+018A 9400             83                      SUBB     A,#00H
+018C F530             84                      MOV      HDIAN0,A
+                      85     ;                CJNE     A,#0CEH,JIANSU3          ;È·±£LDIAN½ÏÐ¡
+                      86     ;EQQ1:   SJMP     FANHUI
+                      87     ;JIANSU3: JNC     EQQ1
+018E E533             88              MOV      A,LDIAN1
+0190 24C8             89              ADD      A,#200
+0192 F533             90                      MOV      LDIAN1,A
+0194 E532             91                      MOV      A,HDIAN1
+0196 3400             92                      ADDC     A,#00H
+0198 F532             93                      MOV      HDIAN1,A
+019A D280             94                      SETB     P0.0
+019C C2A0             95                      CLR      P2.0
+019E 801E             96                      SJMP     FANHUI
+01A0                  97     JIASU: ;  MOV      A,COT1
+                      98     ;         CJNE     A,#10,JIASU1
+                      99     ;JIASU1:  JC       JIASU2
+                     100      ;        SJMP     FANHUI
+                     101     ;JIASU2:  DEC      COT0
+                     102      ;        INC      COT1
+01A0 E531            103              MOV      A,LDIAN0
+01A2 24C8            104              ADD      A,#200
+01A4 F531            105              MOV      LDIAN0,A
+01A6 E530            106                      MOV      A,HDIAN0
+01A8 3400            107                      ADDC     A,#00H
+01AA F530            108                      MOV      HDIAN0,A
+01AC E533            109              MOV      A,LDIAN1
+01AE C3              110                      CLR       C
+01AF 94C8            111                      SUBB     A,#200
+01B1 F533            112                      MOV      LDIAN1,A
+01B3 E532            113                      MOV      A,HDIAN1
+01B5 9400            114                      SUBB     A,#00H
+01B7 F532            115                      MOV      HDIAN1,A        
+01B9 D2A0            116                      SETB     P2.0
+01BB C3              117                      CLR       C
+01BC 9280            118                      MOV      P0.0,C         
+01BE D2A9            119     FANHUI:  SETB      ET0
+01C0 32              120     FANHUI11:RETI
+                     121     
+                     122                           
+01C1 C2AA            123     IN0:     CLR       EX1                                   ;        
+01C3 E536            124              MOV       A,WAY                                 ;
+A51 MACRO ASSEMBLER  TEXT1                                                                06/05/2008 11:31:12 PAGE     3
+
+01C5 601A            125                      JZ        ZHENGX                                ;
+01C7 D2A7            126     FANX:    SETB      DJ
+01C9 A2A6            127               MOV      C,DJ0                                   ;
+01CB 400A            128                JC       LD0                      ;ÅÐ¶Ïµ±Ç°Âö³åÊÇ¸ß»¹ÊÇµÍ
+01CD 85318A          129     HD0:      MOV      TL0,LDIAN0            ;ÏÂÒ»Ê±¿ÌÎª¸ßµçÆ½
+01D0 85308C          130                      MOV      TH0,HDIAN0
+01D3 D2A6            131                  SETB      DJ0
+01D5 8022            132                  SJMP      FANHUI2
+01D7 85338A          133     LD0:      MOV      TL0,LDIAN1            ;ÏÂÒ»Ê±¿ÌÎªµÍµçÆ½
+01DA 85328C          134              MOV      TH0,HDIAN1
+01DD C2A6            135              CLR      DJ0
+01DF 8018            136                      SJMP     FANHUI2                          ;
+01E1 D2A6            137     ZHENGX:  SETB     DJ0
+01E3 A2A7            138               MOV      C,DJ                            ;
+01E5 400A            139                JC       LD                       ;ÅÐ¶Ïµ±Ç°Âö³åÊÇ¸ß»¹ÊÇµÍ
+01E7 85318A          140     HD:      MOV      TL0,LDIAN0            ;ÏÂÒ»Ê±¿ÌÎª¸ßµçÆ½
+01EA 85308C          141                      MOV      TH0,HDIAN0
+01ED D2A7            142                  SETB      DJ
+01EF 8008            143                  SJMP      FANHUI2
+01F1 85338A          144     LD:      MOV      TL0,LDIAN1            ;ÏÂÒ»Ê±¿ÌÎªµÍµçÆ½
+01F4 85328C          145              MOV      TH0,HDIAN1
+01F7 C2A7            146              CLR      DJ
+01F9 D2AA            147     FANHUI2: SETB     EX1
+01FB 32              148              RETI
+01FC 7F02            149     YAN_1MS:    MOV         R7,#2
+01FE 7EFA            150     DLAY11:     MOV         R6,#250
+0200 DEFE            151     DLAY12:         DJNZ        R6,DLAY12
+0202 DFFA            152                 DJNZ        R7,DLAY11
+0204 22              153                             RET                                        
+0205 7F06            154     YAN_3MS:    MOV         R7,#6
+0207 7EFA            155     DLAY31:     MOV         R6,#250
+0209 DEFE            156     DLAY32:     DJNZ        R6,DLAY32
+020B DFFA            157                 DJNZ        R7,DLAY31
+020D 22              158                             RET
+020E 7F14            159     YAN_6MS:    MOV         R7,#20                          ;6MS
+0210 7E96            160     DLAY61:         MOV         R6,#150
+0212 DEFE            161     DLAY62:     DJNZ        R6,DLAY62
+0214 DFFA            162                             DJNZ        R7,DLAY61  
+0216 22              163                 RET  
+                     164                  END
+A51 MACRO ASSEMBLER  TEXT1                                                                06/05/2008 11:31:12 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+COT0 . . . . . . .  N NUMB   0034H   A   
+COT1 . . . . . . .  N NUMB   0035H   A   
+DJ . . . . . . . .  B ADDR   00A0H.7 A   
+DJ0. . . . . . . .  B ADDR   00A0H.6 A   
+DLAY11 . . . . . .  C ADDR   01FEH   A   
+DLAY12 . . . . . .  C ADDR   0200H   A   
+DLAY31 . . . . . .  C ADDR   0207H   A   
+DLAY32 . . . . . .  C ADDR   0209H   A   
+DLAY61 . . . . . .  C ADDR   0210H   A   
+DLAY62 . . . . . .  C ADDR   0212H   A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+EX0. . . . . . . .  B ADDR   00A8H.0 A   
+EX1. . . . . . . .  B ADDR   00A8H.2 A   
+F0 . . . . . . . .  B ADDR   00D0H.5 A   
+FANHUI . . . . . .  C ADDR   01BEH   A   
+FANHUI11 . . . . .  C ADDR   01C0H   A   
+FANHUI2. . . . . .  C ADDR   01F9H   A   
+FANX . . . . . . .  C ADDR   01C7H   A   
+HD . . . . . . . .  C ADDR   01E7H   A   
+HD0. . . . . . . .  C ADDR   01CDH   A   
+HDIAN0 . . . . . .  N NUMB   0030H   A   
+HDIAN1 . . . . . .  N NUMB   0032H   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+IN0. . . . . . . .  C ADDR   01C1H   A   
+IT0. . . . . . . .  B ADDR   0088H.0 A   
+JIANSU . . . . . .  C ADDR   0181H   A   
+JIASU. . . . . . .  C ADDR   01A0H   A   
+K1 . . . . . . . .  B ADDR   0090H.0 A   
+K11. . . . . . . .  C ADDR   0152H   A   
+K2 . . . . . . . .  B ADDR   0090H.1 A   
+K21. . . . . . . .  C ADDR   016FH   A   
+K3 . . . . . . . .  B ADDR   0090H.2 A   
+K33. . . . . . . .  C ADDR   0178H   A   
+K4 . . . . . . . .  B ADDR   0090H.3 A   
+K41. . . . . . . .  C ADDR   014FH   A   
+LD . . . . . . . .  C ADDR   01F1H   A   
+LD0. . . . . . . .  C ADDR   01D7H   A   
+LDIAN0 . . . . . .  N NUMB   0031H   A   
+LDIAN1 . . . . . .  N NUMB   0033H   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+NEXT1. . . . . . .  C ADDR   012DH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+STAR . . . . . . .  C ADDR   0128H   A   
+STAR1. . . . . . .  C ADDR   0169H   A   
+STOP0. . . . . . .  C ADDR   0161H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+WAY. . . . . . . .  N NUMB   0036H   A   
+XINT0. . . . . . .  C ADDR   013BH   A   
+YAN_1MS. . . . . .  C ADDR   01FCH   A   
+YAN_3MS. . . . . .  C ADDR   0205H   A   
+YAN_6MS. . . . . .  C ADDR   020EH   A   
+ZHENGX . . . . . .  C ADDR   01E1H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

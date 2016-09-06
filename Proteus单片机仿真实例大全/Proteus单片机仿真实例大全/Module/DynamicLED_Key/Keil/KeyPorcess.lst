@@ -1,0 +1,80 @@
+C51 COMPILER V8.05a   KEYPORCESS                                                           08/11/2007 15:13:58 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE KEYPORCESS
+OBJECT MODULE PLACED IN KeyPorcess.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sources\KeyPorcess.c BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\Ke
+                    -yPorcess.lst) OBJECT(KeyPorcess.obj)
+
+line level    source
+
+   1          //*************************************************************************************************
+   2          //*************************************************************************************************
+   3          //**<程序名>：按键处理子函数                                                                                                                                     **
+   4          //**<功能>：当有外部中断0时调用此函数，获得键码，进行相应处理。                                                              **
+   5          //*************************************************************************************************
+   6          //*************************************************************************************************
+   7          
+   8          extern unsigned long ul_Number;         //LCE显示数据,LCD实时显示该数字。
+   9          
+  10          //*************************************************************************************************
+  11          //*                                                                                                                                                                                               *
+  12          //*              ********************************按键处理函数主函数******************************                 *
+  13          //*                                                                                                                                                                                               *
+  14          //************************************************************************************************* 
+  15          void vKeyProcess(unsigned char ucKeyCode)
+  16          {
+  17   1              switch(ucKeyCode)                                               
+  18   1                      {
+  19   2                      case 11: ul_Number=7;break;                                               //'7'
+  20   2      
+  21   2                      case 12: ul_Number=8;break;                                               //'8'
+  22   2      
+  23   2                      case 13: ul_Number=9;break;                                               //'9'
+  24   2      
+  25   2                      case 14: ul_Number=14;break;                                      //'/'
+  26   2      
+  27   2                      case 21: ul_Number=4;break;                                               //'4'
+  28   2      
+  29   2                      case 22: ul_Number=5;break;                                               //'5'
+  30   2      
+  31   2                      case 23: ul_Number=6;break;                                               //'6'
+  32   2      
+  33   2                      case 24: ul_Number=24;break;                                      //*
+  34   2      
+  35   2                      case 31: ul_Number=1;break;                                               //'1'
+  36   2      
+  37   2                      case 32: ul_Number=2;break;                                               //'2'
+  38   2      
+  39   2                      case 33: ul_Number=3;break;                                               //'3'
+  40   2      
+  41   2                      case 34: ul_Number=34;break;                                      //'-'
+  42   2      
+  43   2                      case 41: ul_Number=41;break;                                      //'NO/C'
+  44   2      
+  45   2                      case 42: ul_Number=0;break;                                               //'0'
+  46   2      
+  47   2                      case 43: ul_Number=43;break;                                      //'='
+  48   2      
+  49   2                      case 44: ul_Number=44;break;                                      //'+'
+  50   2      
+  51   2                      default:break;
+  52   2                      }
+  53   1      }
+  54          
+C51 COMPILER V8.05a   KEYPORCESS                                                           08/11/2007 15:13:58 PAGE 2   
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    156    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

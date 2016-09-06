@@ -1,0 +1,102 @@
+BL51 BANKED LINKER/LOCATER V6.02                                                        08/09/2007  15:33:26  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.02, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE main.obj TO Stepmotor
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  main.obj (MAIN)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  Stepmotor (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000BH     UNIT         ?DT?MAIN
+            IDATA   0013H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    009AH     0044H     UNIT         ?PR?VTIMER0?MAIN
+            CODE    00DEH     0012H     UNIT         ?C_INITSEG
+            CODE    00F0H     0011H     UNIT         ?PR?MAIN?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   Stepmotor (MAIN)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+
+
+SYMBOL TABLE OF MODULE:  Stepmotor (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  B:00A8H.7       PUBLIC        EA
+  D:0008H         PUBLIC        ui_ChangeCount
+  C:00F0H         PUBLIC        main
+BL51 BANKED LINKER/LOCATER V6.02                                                      08/09/2007  15:33:26  PAGE 2
+
+
+  C:009AH         PUBLIC        vTimer0
+  D:0089H         PUBLIC        TMOD
+  D:000AH         PUBLIC        uc_StepSelect
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:000BH         PUBLIC        uca_MotorStep
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  -------         PROC          MAIN
+  C:00F0H         LINE#         42
+  C:00F0H         LINE#         43
+  C:00F0H         LINE#         45
+  C:00F3H         LINE#         46
+  C:00F6H         LINE#         47
+  C:00F9H         LINE#         48
+  C:00FBH         LINE#         49
+  C:00FDH         LINE#         51
+  C:00FFH         LINE#         53
+  -------         ENDPROC       MAIN
+  -------         PROC          VTIMER0
+  C:009AH         LINE#         62
+  C:00A3H         LINE#         64
+  C:00ABH         LINE#         65
+  C:00ABH         LINE#         66
+  C:00B3H         LINE#         68
+  C:00BAH         LINE#         69
+  C:00BEH         LINE#         71
+  C:00C1H         LINE#         73
+  C:00C7H         LINE#         74
+  C:00C9H         LINE#         76
+  C:00D1H         LINE#         78
+  C:00D4H         LINE#         79
+  C:00D7H         LINE#         80
+  -------         ENDPROC       VTIMER0
+  -------         ENDMOD        MAIN
+
+Program Size: data=20.0 xdata=0 code=249
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

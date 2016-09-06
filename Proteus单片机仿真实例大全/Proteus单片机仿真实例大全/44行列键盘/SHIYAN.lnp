@@ -1,0 +1,5 @@
+"STARTUP.obj",
+"SHIYAN.obj",
+"LCD1602.obj" 
+TO "SHIYAN" 
+RAMSIZE(256) 

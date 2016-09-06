@@ -1,0 +1,329 @@
+,,,; Scrivo "Hello World!" sul display
+,,,                PROCESSOR       16F84
+,,,                RADIX           DEC
+,,,                INCLUDE         "p16f84.inc"
+,,,
+,,,                ERRORLEVEL      -302
+,,,
+,,,PIN11           EQU     4       ; PIN11 LCD --> RB4
+,,,PIN12           EQU     5       ; PIN12 LCD --> RB5
+,,,PIN13           EQU     6       ; PIN13 LCD --> RB6
+,,,PIN14           EQU     7       ; PIN14 LCD --> RB7
+,,,
+,,,RS              EQU     3       ; RS LCD --> RB3
+,,,EN              EQU     2       ; RS LCD --> RB2
+,,,
+0000000C,,,                ORG     0CH
+,,,
+0000000C,,lsb,lsb             RES     1
+0000000D,,msb,msb             RES     1
+0000000E,,tmp,tmp             RES     1
+0000000F,,tmp1,tmp1            RES     1
+,,,
+00000000,,,                ORG     00H
+,,,
+00000000,0000,,                nop
+,,,
+00000001,1683,,                bsf     STATUS,RP0      ;Banco 1
+,,,
+00000002,3000,,                movlw   0x00
+00000003,0086,,                movwf   TRISB           ;PORTB TUTTA IN OUTPUT
+,,,
+00000004,1283,,                bcf     STATUS,RP0      ;Banco 0
+,,,
+00000005,2039,,                call    init
+,,,
+00000006,3006,,                movlw   06H
+00000007,2055,,                call    cp              ;Riga 0 posizione 6
+,,,
+00000008,3050,,                movlw   'P'
+00000009,2067,,                call    sd
+0000000A,3052,,                movlw   'R'
+0000000B,2067,,                call    sd
+0000000C,304F,,                movlw   'O'
+0000000D,2067,,                call    sd
+0000000E,3054,,                movlw   'T'
+0000000F,2067,,                call    sd
+00000010,3045,,                movlw   'E'
+00000011,2067,,                call    sd
+00000012,3055,,                movlw   'U'
+00000013,2067,,                call    sd
+00000014,3053,,                movlw   'S'
+00000015,2067,,                call    sd
+,,,
+00000016,3015,,                movlw   15H             ;Riga 1 posizione 5
+00000017,2055,,                call    cp
+,,,
+00000018,3032,,                movlw   '2'
+00000019,2067,,                call    sd
+0000001A,3034,,                movlw   '4'
+0000001B,2067,,                call    sd
+0000001C,3058,,                movlw   'X'
+0000001D,2067,,                call    sd
+0000001E,3032,,                movlw   '2'
+0000001F,2067,,                call    sd
+00000020,304C,,                movlw   'L'
+00000021,2067,,                call    sd
+00000022,3043,,                movlw   'C'
+00000023,2067,,                call    sd
+00000024,3044,,                movlw   'D'
+00000025,2067,,                call    sd
+,,,
+00000026,3020,,                movlw   ' '
+00000027,2067,,                call    sd
+,,,
+00000028,3056,,                movlw   'V'
+00000029,2067,,                call    sd
+0000002A,3053,,                movlw   'S'
+0000002B,2067,,                call    sd
+0000002C,304D,,                movlw   'M'
+0000002D,2067,,                call    sd
+0000002E,3020,,                movlw   ' '
+0000002F,2067,,                call    sd
+00000030,3054,,                movlw   'T'
+00000031,2067,,                call    sd
+00000032,3045,,                movlw   'E'
+00000033,2067,,                call    sd
+00000034,3053,,                movlw   'S'
+00000035,2067,,                call    sd
+00000036,3054,,                movlw   'T'
+00000037,2067,,                call    sd
+00000038,2838,loop,loop            goto    loop
+,,,
+,,,                INCLUDE "liblcd4.asm"
+,,,; COLLEGAMENTI:
+,,,;
+,,,; LCD DB7 (14)          -->     PIC RB7 (13)
+,,,; LCD DB6 (13)          -->     PIC RB6 (12)
+,,,; LCD DB5 (12)          -->     PIC RB5 (11)
+,,,; LCD DB4 (11)          -->     PIC RB4 (10)
+,,,; LCD EN  (6)           -->     PIC RB2 (8)
+,,,; LCD RS  (4)           -->     PIC RB3 (9)
+,,,;
+,,,; INTESTAZIONE:
+,,,;
+,,,; PROCESSOR     16F84
+,,,; RADIX         DEC
+,,,; INCLUDE       "p16f84.inc"
+,,,;
+,,,; PIN11         EQU     4
+,,,; PIN12         EQU     5
+,,,; PIN13         EQU     6
+,,,; PIN14         EQU     7
+,,,; EN            EQU     2
+,,,; RS            EQU     3
+,,,;
+,,,;               ORG     0CH
+,,,;
+,,,; lsb           RES     1
+,,,; msb           RES     1
+,,,; tmp           RES     1
+,,,; tmp1          RES     1
+,,,;
+,,,;               ORG     00H
+,,,;
+,,,; bsf           STATUS,RP0      ;BANCO 1
+,,,;
+,,,; movlw         0x00
+,,,; movwf         TRISB
+,,,;
+,,,; bcf           STATUS,RP0      ;BANCO 0
+,,,;
+,,,; ...
+,,,
+,,,
+,,,; ********************************************************
+,,,; init
+,,,; Da usare all'inizio del programma per inizializzare l'LCD
+,,,; Registri usati:
+,,,; \
+,,,; Subroutine richiamate:
+,,,; rit
+,,,; enable
+,,,; sc
+,,,; ********************************************************
+,,,
+00000039,301E,init,init    movlw   30
+0000003A,2083,,        call    rit             ; Ritardo 30 ms
+,,,
+0000003B,1186,,        bcf     PORTB,RS        ; RS = 0 --> Dati
+,,,
+0000003C,1606,,        bsf     PORTB,PIN11
+0000003D,1686,,        bsf     PORTB,PIN12
+0000003E,1306,,        bcf     PORTB,PIN13
+0000003F,1386,,        bcf     PORTB,PIN14     ; PORTB --> 0011XXXX
+,,,
+00000040,1506,,        bsf     PORTB,EN
+00000041,3005,,        movlw   5
+00000042,2083,,        call    rit             ; Ritardo 5 ms
+00000043,1106,,        bcf     PORTB,EN
+00000044,3001,,        movlw   1
+00000045,2083,,        call    rit             ; Ritardo 1 ms
+,,,
+00000046,207B,,        call    enable
+,,,
+00000047,207B,,        call    enable
+,,,
+00000048,1206,,        bcf     PORTB,PIN11
+00000049,1686,,        bsf     PORTB,PIN12
+0000004A,1306,,        bcf     PORTB,PIN13
+0000004B,1386,,        bcf     PORTB,PIN14     ; PORTB --> 0010XXXX
+,,,
+0000004C,207B,,        call    enable
+,,,
+0000004D,3028,,        movlw   0x28            ; 4-bit
+0000004E,206A,,        call    sc
+,,,
+0000004F,3006,,        movlw   0x06
+00000050,206A,,        call    sc
+,,,
+00000051,300C,,        movlw   0x0C
+00000052,206A,,        call    sc
+,,,
+00000053,2060,,        call    cl
+,,,
+00000054,0008,,        return
+,,,
+,,,; ********************************************************
+,,,; cp
+,,,; Cursor Position - Mette il cursore in una certa posizione
+,,,; Registri usati:
+,,,; W     -->     D7-D4 righe,    D3,D0 colonne
+,,,; tmp
+,,,; tmp1
+,,,; Subroutine richiamate:
+,,,; sc
+,,,; ********************************************************
+00000055,008E,cp,cp      movwf   tmp
+,,,
+00000056,3080,,        movlw   0x80
+00000057,008F,,        movwf   tmp1            ; Metti 10000000 in tmp1
+,,,
+00000058,080E,,        movf    tmp,W           ; Metti tmp in W
+00000059,390F,,        andlw   0x0F            ; W --> 0000DDDD
+0000005A,048F,,        iorwf   tmp1,F          ; tmp1 --> 1000DDDD
+,,,
+0000005B,1A0E,,        btfsc   tmp,4           ; Se il bit 4 di tmp = 0 salta
+0000005C,170F,,        bsf     tmp1,6          ; altrimenti tmp1 diventa 1100DDDD
+,,,
+0000005D,080F,,        movf    tmp1,W          ; Metti tmp1 in W
+0000005E,206A,,        call    sc              ; Manda il comando 1X00DDDD
+,,,
+0000005F,0008,,        return
+,,,
+,,,; ********************************************************
+,,,; cl
+,,,; Clear - Pulisce il display e mette il cursore all'inizio
+,,,; Registri usati:
+,,,; \
+,,,; Subroutine richiamate:
+,,,; sc
+,,,; rit
+,,,; ********************************************************
+,,,
+00000060,3001,cl,cl      movlw   0x01
+00000061,206A,,        call    sc      ; CLEAR
+,,,
+00000062,3002,,        movlw   2
+00000063,2083,,        call    rit     ; Ritardo 2 ms
+,,,
+00000064,3080,,        movlw   80H
+00000065,206A,,        call    sc      ; Posizione Iniziale
+,,,
+00000066,0008,,        return
+,,,
+,,,; ********************************************************
+,,,; sd
+,,,; Send data - Invia un dato al display
+,,,; Registri usati:
+,,,; W     -->     dato da inviare
+,,,; Subroutine richiamate:
+,,,; sb
+,,,; ********************************************************
+,,,
+00000067,1586,sd,sd      bsf     PORTB,RS
+00000068,206D,,        call    sb
+00000069,0008,,        return
+,,,
+,,,
+,,,; ********************************************************
+,,,; sc
+,,,; Send Command - Invia un comando al display
+,,,; Registri usati:
+,,,; W     -->     Comando da inviare
+,,,; Subroutine richiamate:
+,,,; sb
+,,,; ********************************************************
+,,,
+0000006A,1186,sc,sc      bcf     PORTB,RS
+0000006B,206D,,        call    sb
+0000006C,0008,,        return
+,,,
+,,,; ********************************************************
+,,,; sb
+,,,; Send byte - Invia un byte sull'msb di PORTB
+,,,; Registri usati:
+,,,; tmp
+,,,; Subroutine richiamate:
+,,,; enable
+,,,; ********************************************************
+,,,
+0000006D,008E,sb,sb      movwf   tmp
+0000006E,300F,,        movlw   B'00001111'
+0000006F,0586,,        andwf   PORTB,F         ;Metto a 0 i 4 bit MSB di PORTB
+00000070,080E,,        movf    tmp,W
+00000071,39F0,,        andlw   B'11110000'     ;Metto a 0 i 4 bit LSB del byte da inviare in W
+00000072,0486,,        iorwf   PORTB,F         ;OR fra PORTB (0000XXXX) e W (DDDD0000)
+00000073,207B,,        call    enable          ;Impulso di Enable
+00000074,300F,,        movlw   B'00001111'
+00000075,0586,,        andwf   PORTB,F         ;Metto a 0 i 4 bit MSB di PORTB
+00000076,0E0E,,        swapf   tmp,W           ;Metto tmp1 in W con LSB invertito con MSB
+00000077,39F0,,        andlw   B'11110000'     ;Metto a 0 i 4 bit LSB del byte da inviare in W
+00000078,0486,,        iorwf   PORTB,F         ;OR fra PORTB (0000XXXX) e W (DDDD0000)
+00000079,207B,,        call    enable          ;Impulso di Enable
+,,,
+0000007A,0008,,        return
+,,,
+,,,; ********************************************************
+,,,; enable
+,,,; Manda un impulso di ENABLE della durata di 1ms
+,,,; Registri usati:
+,,,; \
+,,,; Subroutine richiamate:
+,,,; rit
+,,,; ********************************************************
+,,,
+0000007B,1283,enable,enable  bcf     STATUS,RP0      ;banco 0
+0000007C,1506,,        bsf     PORTB,EN        ;metto a 1 enable
+0000007D,3001,,        movlw   1               ;metto 1 in w
+0000007E,2083,,        call    rit             ;ritardo
+0000007F,1106,,        bcf     PORTB,EN        ;rimetto a 0 enable
+00000080,3001,,        movlw   1
+00000081,2083,,        call    rit
+,,,
+00000082,0008,,        return
+,,,
+,,,; ********************************************************
+,,,; rit
+,,,; Ciclo di ritardo programmabile
+,,,; Registri usati:
+,,,; W     -->     Numero di ms (per CLK = 4MHz)
+,,,; msb   -->     (uso interno)
+,,,; lsb   -->     (uso interno)
+,,,; Subroutine richiamate:
+,,,; \
+,,,; ********************************************************
+,,,
+00000083,008D,rit,rit     movwf   msb
+00000084,018C,,        clrf    lsb
+00000085,,rit_loop,rit_loop
+00000085,0000,,        nop
+00000086,0B8C,,        decfsz  lsb,F
+00000087,2885,,        goto    rit_loop
+00000088,0000,,        nop
+00000089,0B8D,,        decfsz  msb,F
+0000008A,2885,,        goto    rit_loop
+,,,
+0000008B,0008,,        return
+,,,
+,,,        end

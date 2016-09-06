@@ -1,0 +1,89 @@
+PWMH DATA 30H ;高电平脉冲的个数 
+PWM DATA 31H ;PWM周期 
+COUNTER DATA 32H 
+TEMP DATA 33H 
+
+ORG 0000H 
+AJMP MAIN 
+ORG 000BH 
+AJMP INTT0 
+
+ORG 0100H 
+MAIN: 
+	MOV SP,#60H ;给堆栈指针赋初值 
+	MOV PWMH,#02H ; 
+	MOV COUNTER,#01H 
+	MOV PWM,#15H 
+	MOV TMOD,#02H ;定时器0在模式2下工作 
+	MOV TL0,#38H ;定时器每200us产生一次溢出 
+	MOV TH0,#38H ;自动重装的值 
+	SETB ET0 ;使能定时器0中断 
+	SETB EA ;使能总中断 
+	SETB TR0 ;开始计时 
+KSCAN: 
+	JNB P1.1,K1CHECK ;扫描KEY1, 
+	JNB P1.2,K2CHECK ;扫描KEY2,如果按下KEY2,跳转到KEY2处理程序 
+	SJMP KSCAN 
+
+K1CHECK: 
+	JB P1.1,K1HANDLE ;去抖动,如果按下KEY1,跳转到KEY1处理程序 
+	SJMP K1CHECK 
+K1HANDLE: 
+	MOV A,PWMH 
+	CJNE A,PWM,K1H0 ;判断是否到达上边界 
+	SJMP KSCAN ;是,则不进行任何操作 
+K1H0: 
+	MOV A,PWMH 
+	INC A 
+	CJNE A,PWM,K1H1 ;如果在加1后到达最大值 
+	CLR TR0 ;定时器停止 
+	SETB P1.0 ;P1.0为高电平 
+	SJMP K1H2 
+K1H1: 
+	CJNE A,#02H,K1H2 ;如果加1后到达下边界 
+	SETB TR0 ;重开定时器 
+K1H2: 
+	INC PWMH ;增加占空比 
+	SJMP KSCAN 
+
+K2CHECK: 
+	JB P1.2,K2HANDLE ;去抖动,如果按下KEY2,跳转到KEY2处理程序 
+	SJMP K2CHECK 
+K2HANDLE: 
+	MOV A,PWMH 
+	CJNE A,#01H,K2H0 ;判断是否到达下边界 
+	SJMP KSCAN ;是,则不进行任何操作 
+K2H0: 
+	MOV A,PWMH 
+	MOV TEMP,PWM 
+	DEC A 
+	CJNE A,#01H,K2H1 ;如果在减1后到达下边界 
+	CLR TR0 ;定时器停止 
+	CLR P1.0 ;P1.0为低电平 
+	SJMP K2H2 
+K2H1: 
+	DEC TEMP 
+	CJNE A,TEMP,K2H2 ;如果到达上边界 
+	SETB TR0 ;启动定时器 
+K2H2: 
+	DEC PWMH ;降低占空比 
+	SJMP KSCAN 
+
+
+INTT0: 
+	PUSH PSW ;现场保护 
+	PUSH ACC 
+	INC COUNTER ;计数值加1 
+	MOV A,COUNTER 
+	CJNE A,PWMH,INTT01 ;如果等于高电平脉冲数 
+	CLR P1.0 ;P1.0变为低电平 
+INTT01: 
+	CJNE A,PWM,INTT02 ;如果等于周期数 
+	MOV COUNTER,#01H ;计数器复位 
+	SETB P1.0 ;P1.0为高电平 
+INTT02: 
+	POP ACC ;出栈 
+	POP PSW 
+	RETI 
+
+	END

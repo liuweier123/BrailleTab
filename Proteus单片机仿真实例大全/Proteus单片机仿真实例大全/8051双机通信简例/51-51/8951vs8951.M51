@@ -1,0 +1,57 @@
+BL51 BANKED LINKER/LOCATER V6.00                                                        05/13/2006  01:24:15  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.00, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE 8951vs8951.obj TO 8951vs8951
+
+
+INPUT MODULES INCLUDED:
+  8951vs8951.obj (8951VS8951)
+
+
+LINK MAP OF MODULE:  8951vs8951 (8951VS8951)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     001CH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  8951vs8951 (8951VS8951)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        8951VS8951
+  C:0009H         SYMBOL        LOOP
+  D:0080H         SYMBOL        P0
+  D:00A0H         SYMBOL        P2
+  D:0087H         SYMBOL        PCON
+  C:0015H         SYMBOL        RECEIVED
+  B:0098H.0       SYMBOL        RI
+  D:0099H         SYMBOL        SBUF
+  D:0098H         SYMBOL        SCON
+  C:0000H         SYMBOL        START
+  B:0098H.1       SYMBOL        TI
+  C:000DH         SYMBOL        WAIT
+  C:0000H         LINE#         2
+  C:0003H         LINE#         3
+  C:0006H         LINE#         4
+  C:0009H         LINE#         5
+  C:000BH         LINE#         6
+  C:000DH         LINE#         7
+  C:0010H         LINE#         8
+  C:0013H         LINE#         9
+  C:0015H         LINE#         10
+  C:0018H         LINE#         11
+  C:001AH         LINE#         12
+  -------         ENDMOD        8951VS8951
+
+Program Size: data=8.0 xdata=0 code=28
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

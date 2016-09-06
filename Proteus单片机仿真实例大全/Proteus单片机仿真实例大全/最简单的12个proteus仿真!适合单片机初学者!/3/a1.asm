@@ -1,0 +1,11 @@
+			ORG 00H
+START:			MOV A,P1
+			ANL A,#0F0H
+			RR A
+			RR A
+			RR A
+			RR A
+			XOR A,#0F0H
+			MOV P1,A
+			SJMP START
+			END

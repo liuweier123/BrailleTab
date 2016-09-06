@@ -1,0 +1,72 @@
+C51 COMPILER V8.02   MAIN                                                                  10/13/2008 11:46:32 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************************************************
+   2          * 函数名称    ：
+   3          * 功能描述    ：
+   4          * 参数        ：
+   5          * 
+   6          * 返回值      ：
+   7          * 作者        ：
+   8          * 创建日期    ：
+   9          * 全局变量    ：
+  10          * 全局静态变量：
+  11          * 局部静态变量：
+  12          *----------------------------------------修改历史-------------------------------
+  13          * 当前版本    ：              修改人：                  修改日期：
+  14          * 修改说明    ：
+  15          *----------------------------------------联系作者-------------------------------
+  16          * 作者邮箱    ：mcu_china@sina.com      at89c58@163.com 
+  17          *-----------------------未经作者同意，不得用于其它用途--------------------------
+  18          *******************************************************************************/
+  19          #include<reg52.h>
+  20          #include<absacc.h>
+  21          #include"LCD.h"
+  22          #include"serial.h"
+  23          #include"main.h"
+  24          #include"iic.h"
+  25          #include"key.h" 
+  26          
+  27          uchar idata recive_buffer[64]={"                                                                "};
+  28          uchar re_data,recive_tept=0;
+  29          uchar count;
+  30          uchar m_count;
+  31          uchar disp_count; 
+  32          uint idata time;
+  33          bit flag;
+  34          bit key_flag;
+  35          
+  36          void main()
+  37          { 
+  38   1       init_mcu();       
+  39   1       init_lcd(); 
+  40   1       init_iic();
+  41   1       while(1)
+  42   1       {              
+  43   2              recive_string();            
+  44   2              key_handle();   
+  45   2              disp_init_string();             
+  46   2       }
+  47   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     20    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5    ----
+C51 COMPILER V8.02   MAIN                                                                  10/13/2008 11:46:32 PAGE 2   
+
+   IDATA SIZE       =     66    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,61 @@
+A51 MACRO ASSEMBLER  SERIAL_TO_PARALLEL                                                   07/31/2006 08:46:15 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.00
+OBJECT MODULE PLACED IN Serial to Parallel.OBJ
+ASSEMBLER INVOKED BY: e:\Program Files\Keil\C51\BIN\A51.EXE Serial to Parallel.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG   0
+0000 0102              2     AJMP    START
+0002 759800            3     START:  MOV     SCON, #0
+0005 753001            4             MOV     30H, #01H
+0008 753102            5             MOV     31H, #02H
+000B 753204            6             MOV     32H, #04H
+000E 753308            7             MOV     33H, #08H
+0011 753410            8             MOV     34H, #16
+0014 753520            9             MOV     35H, #32
+0017 753640           10             MOV     36H, #64
+001A 753780           11             MOV     37H, #128
+001D 7830             12             MOV     R0,  #30H
+001F 7A08             13             MOV     R2,  #8
+0021 E6               14     LOOP:   MOV     A,  @R0
+0022 F599             15             MOV     SBUF,  A
+0024 3099FD           16     LO:     JNB     TI,  LO
+0027 C299             17             CLR     TI
+0029 1130             18             ACALL   DELAY
+002B 08               19             INC     R0
+002C DAF3             20             DJNZ    R2,  LOOP
+002E 80D2             21             SJMP    START
+0030 7F03             22     DELAY:  MOV     R7,  #3
+0032 7EFF             23     DD1:    MOV     R6,  #0FFH
+0034 7DFF             24     DD2:    MOV     R5,  #0FFH
+0036 DDFE             25             DJNZ    R5,  $
+0038 DEFA             26             DJNZ    R6,  DD2
+003A DFF6             27             DJNZ    R7,  DD1
+003C 22               28             RET
+                      29             END
+A51 MACRO ASSEMBLER  SERIAL_TO_PARALLEL                                                   07/31/2006 08:46:15 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DD1. . . . . . . .  C ADDR   0032H   A   
+DD2. . . . . . . .  C ADDR   0034H   A   
+DELAY. . . . . . .  C ADDR   0030H   A   
+LO . . . . . . . .  C ADDR   0024H   A   
+LOOP . . . . . . .  C ADDR   0021H   A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+START. . . . . . .  C ADDR   0002H   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

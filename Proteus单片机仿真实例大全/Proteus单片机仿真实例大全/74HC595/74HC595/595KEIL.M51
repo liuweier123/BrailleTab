@@ -1,0 +1,148 @@
+BL51 BANKED LINKER/LOCATER V5.12                                                        09/28/2008  10:50:34  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.12, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE main.obj TO 595KEIL
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  main.obj (MAIN)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  595KEIL (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0013H     UNIT         ?DT?MAIN
+            IDATA   001BH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     008CH     UNIT         ?C_C51STARTUP
+            CODE    008FH     0024H     UNIT         ?PR?MAIN?MAIN
+            CODE    00B3H     0023H     UNIT         ?PR?_SERIALSENDDATA?MAIN
+            CODE    00D6H     0017H     UNIT         ?C_INITSEG
+            CODE    00EDH     000DH     UNIT         ?PR?DELAY?MAIN
+            CODE    00FAH     0007H     UNIT         ?PR?INITSERIALPORT?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   595KEIL (MAIN)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN
+  +--> ?PR?INITSERIALPORT?MAIN
+  +--> ?PR?DELAY?MAIN
+  +--> ?PR?_SERIALSENDDATA?MAIN
+
+
+
+SYMBOL TABLE OF MODULE:  595KEIL (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+BL51 BANKED LINKER/LOCATER V5.12                                                      09/28/2008  10:50:34  PAGE 2
+
+
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:00EDH         PUBLIC        delay
+  D:00B8H         PUBLIC        IP
+  B:0090H.0       PUBLIC        ST_CP
+  C:00FAH         PUBLIC        InitSerialPort
+  C:008FH         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:00B3H         PUBLIC        _SerialSendData
+  D:0008H         PUBLIC        ledcode
+  B:0090H.1       PUBLIC        SDA
+  D:00C8H         PUBLIC        T2CON
+  D:0012H         PUBLIC        i
+  B:0090H.2       PUBLIC        SHIFT_CP
+  D:00D0H         PUBLIC        PSW
+  D:0013H         PUBLIC        ledbitselect
+  -------         PROC          INITSERIALPORT
+  C:00FAH         LINE#         28
+  C:00FAH         LINE#         29
+  C:00FAH         LINE#         30
+  C:00FCH         LINE#         31
+  C:00FEH         LINE#         32
+  C:0100H         LINE#         33
+  -------         ENDPROC       INITSERIALPORT
+  -------         PROC          DELAY
+  -------         DO            
+  D:0007H         SYMBOL        jj
+  -------         ENDDO         
+  C:00EDH         LINE#         35
+  C:00EDH         LINE#         36
+  C:00EDH         LINE#         38
+  C:00F3H         LINE#         39
+  C:00F9H         LINE#         40
+  -------         ENDPROC       DELAY
+  -------         PROC          _SERIALSENDDATA
+  D:0007H         SYMBOL        dat
+  -------         DO            
+  D:0006H         SYMBOL        ii
+  D:0007H         SYMBOL        sdata
+  -------         ENDDO         
+  C:00B3H         LINE#         42
+  C:00B3H         LINE#         43
+  C:00B3H         LINE#         45
+  C:00B3H         LINE#         46
+  C:00B5H         LINE#         47
+  C:00B5H         LINE#         48
+  C:00BDH         LINE#         49
+  C:00BFH         LINE#         50
+  C:00C3H         LINE#         51
+  C:00C5H         LINE#         52
+  C:00C6H         LINE#         53
+  C:00C7H         LINE#         54
+  C:00C9H         LINE#         55
+BL51 BANKED LINKER/LOCATER V5.12                                                      09/28/2008  10:50:34  PAGE 3
+
+
+  C:00CAH         LINE#         56
+  C:00CBH         LINE#         57
+  C:00CFH         LINE#         58
+  C:00D1H         LINE#         59
+  C:00D2H         LINE#         60
+  C:00D3H         LINE#         61
+  C:00D5H         LINE#         62
+  -------         ENDPROC       _SERIALSENDDATA
+  -------         PROC          MAIN
+  C:008FH         LINE#         69
+  C:008FH         LINE#         70
+  C:008FH         LINE#         71
+  C:0092H         LINE#         72
+  C:0092H         LINE#         73
+  C:0095H         LINE#         74
+  C:0098H         LINE#         75
+  C:00A0H         LINE#         76
+  C:00AAH         LINE#         77
+  C:00B1H         LINE#         78
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+Program Size: data=28.0 xdata=0 code=257
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

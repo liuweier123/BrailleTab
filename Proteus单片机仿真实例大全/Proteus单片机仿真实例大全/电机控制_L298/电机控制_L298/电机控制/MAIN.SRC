@@ -1,0 +1,11 @@
+[Files]
+motor.h
+motor.c
+device_init.h
+device_init.c
+delay.h
+delay.c
+config.h
+main.c
+[Headers]
+[Documents]

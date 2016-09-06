@@ -1,0 +1,60 @@
+XL
+H 1 areas 4 global symbols
+M delay.c
+S empy16s Ref0000
+A text size 5E flags 0
+dbfile E:\avr\电机控制\电机控制\delay.c
+dbfunc e Delay100us 0 fV
+dbsym r i 14 c
+dbsym r x 10 c
+dbline FFFFFFFF 2
+dbline 8 2
+dbline A 2
+dbline B 6
+dbline B 6
+dbline A 10
+dbline A 12
+dbline FFFFFFFE 16
+dbline 0 16
+dbfunc e Delay1ms 1A fV
+dbsym r n 14 i
+dbline FFFFFFFF 20
+dbline E 20
+dbline F 20
+dbline F 22
+dbline 10 22
+dbline 11 26
+dbline F 26
+dbline F 2A
+dbline FFFFFFFE 30
+dbline 0 30
+dbfunc e Delay1s 36 fV
+dbsym r m 14 i
+dbline FFFFFFFF 3C
+dbline 14 3C
+dbline 15 3C
+dbline 16 48
+dbline 16 4A
+dbline 17 4A
+dbline 18 4E
+dbline 16 4E
+dbline 16 52
+dbline FFFFFFFE 58
+dbline 0 58
+S _Delay1ms Def001A
+S _Delay100us Def0000
+S _Delay1s Def0036
+T 00 00 4A 93 43 E9 06 C0 84 2F 81 50 48 2F 88 23
+R 00 00 00 00
+T 0E 00 D9 F7 0A 95 00 23 C1 F7 49 91 08 95
+R 00 00 00 00
+T 1A 00 4A 93 5A 93 A8 01 04 C0 0A E0 ED DF 41 50
+R 00 00 00 00
+T 28 00 50 40 40 30 45 07 C9 F7 59 91 49 91 08 95
+R 00 00 00 00
+T 36 00 4A 93 5A 93 A8 01 08 E2 10 E0 9A 01
+R 00 00 00 00
+T 42 00 0E 94 00 00 A8 01 04 C0 0A EF D9 DF 41 50
+R 00 00 00 00 12 04 00 00
+T 50 00 50 40 40 30 45 07 C9 F7 59 91 49 91 08 95
+R 00 00 00 00

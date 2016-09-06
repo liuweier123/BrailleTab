@@ -1,0 +1,58 @@
+C51 COMPILER V7.50   4                                                                     04/16/2006 10:17:49 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE 4
+OBJECT MODULE PLACED IN 4.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 4.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.H>
+   2          unsigned char i;
+   3          unsigned char temp;
+   4          unsigned char a,b;
+   5          
+   6          void delay(void)
+   7          {
+   8   1        unsigned char m,n,s;
+   9   1        for(m=20;m>0;m--)
+  10   1        for(n=20;n>0;n--)
+  11   1        for(s=248;s>0;s--);
+  12   1      }
+  13          void main(void)
+  14          {
+  15   1        while(1)
+  16   1          {
+  17   2            temp=0xfe;
+  18   2            P1=temp;
+  19   2            delay();
+  20   2            for(i=1;i<8;i++)
+  21   2              {
+  22   3                a=temp<<i;
+  23   3                b=temp>>(8-i);
+  24   3                P1=a|b;
+  25   3                delay();
+  26   3              }
+  27   2            for(i=1;i<8;i++)
+  28   2              {
+  29   3                a=temp>>i;
+  30   3                b=temp<<(8-i);
+  31   3                P1=a|b;
+  32   3                delay();
+  33   3              }
+  34   2          }
+  35   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    124    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

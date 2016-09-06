@@ -1,0 +1,530 @@
+C51 COMPILER V8.02   HZK_LCD                                                               10/13/2008 11:41:33 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE HZK_LCD
+OBJECT MODULE PLACED IN HZK_LCD.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE HZK_LCD.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.h>
+   2          #include<absacc.h> 
+   3          #include"main.h"
+   4          #include"LCD.h"
+   5          
+   6          #define LCDCOM XBYTE[0x7ff0] 
+   7          #define LCDDAT XBYTE[0x7ff1] 
+   8          #define LCDREAD XBYTE[0x7ff2] 
+   9          #define Disp_On  0x3f
+  10          #define Disp_Off 0x3e
+  11          #define Col_Add  0x40                            
+  12          #define Page_Add 0xb8                             
+  13          #define Start_Line 0xc0
+  14          
+  15          //////////////////////////////////////////////
+  16          /*
+  17          sbit Busy=ACC^7;
+  18          sbit CS1=P3^2; 
+  19          sbit CS2=P3^3;
+  20          */      
+  21          sbit P10=P1^0;
+  22          sbit P11=P1^1;
+  23          sbit P12=P1^2;
+  24          sbit CE0=P1^3;
+  25          sbit CE1=P1^4;
+  26          //sbit CE2=P1^5;
+  27          //sbit CE3=P1^6;
+  28          //sbit CE4=P1^7;
+  29          
+  30          uchar star=0;
+  31                                           
+  32          //==============忙测试===================//
+  33          void wait_lcd(void)
+  34          {
+  35   1          do 
+  36   1          {
+  37   2              ACC=LCDREAD;
+  38   2          }
+  39   1          while(Busy==1);
+  40   1      }
+  41          /////////////////////////////////////
+  42          //==============延时1*d ms===============//
+  43          void delay(uint d)
+  44          {
+  45   1          uchar j;
+  46   1          while(d--)
+  47   1          {
+  48   2              for (j=0;j<125;j++)
+  49   2              {
+  50   3                  ;
+  51   3              }
+  52   2          }
+  53   1      }
+  54          //void  gled(uchar y)
+  55          //{
+C51 COMPILER V8.02   HZK_LCD                                                               10/13/2008 11:41:33 PAGE 2   
+
+  56          //      wait_lcd();
+  57          //      LED=y;
+  58          //}
+  59          //===============送命令字================//
+  60          void  I_SEND(uchar y)
+  61          {
+  62   1          wait_lcd();
+  63   1          LCDCOM=y;
+  64   1      }
+  65          //================送数据=================//
+  66          void D_SEND(uchar x)
+  67          {
+  68   1          wait_lcd();
+  69   1          LCDDAT=x;
+  70   1      }
+  71          
+  72          void hz_disp(unsigned char pag,unsigned char col,unsigned char k, unsigned char code *hzk,bit heibia)
+  73          {
+  74   1              unsigned char j=0,i=0;
+  75   1              for(j=0;j<2;j++)
+  76   1              {
+  77   2                      I_SEND(Page_Add+pag+j);
+  78   2                      I_SEND(Col_Add+col);
+  79   2                      for(i=0;i<16;i++)
+  80   2                      { 
+  81   3                              if(heibia==0)
+  82   3                              D_SEND(hzk[16*(k+j)+i]);
+  83   3                              else
+  84   3                              D_SEND(255-hzk[16*(k+j)+i]);
+  85   3                      }
+  86   2              }
+  87   1      }
+  88          
+  89          void init_lcd()
+  90          {
+  91   1          
+  92   1          delay(10);
+  93   1          I_SEND(Disp_Off);
+  94   1          I_SEND(Page_Add+0);
+  95   1          I_SEND(Start_Line+0);
+  96   1          I_SEND(Col_Add+0);
+  97   1          I_SEND(Disp_On);
+  98   1              star=1;
+  99   1              disp_string("欢迎您和我交流mcu_china@sina.comat89c58@163.com!");
+ 100   1              delay(1200);
+ 101   1              disp_string("                                                                ");
+ 102   1              
+ 103   1      }
+ 104          unsigned long int haizhi(uchar i,uchar j)
+ 105          {
+ 106   1          unsigned long int k;           
+ 107   1          k=((unsigned long int)(((i-0xa1)*94+(j-0xa1))))*32;
+ 108   1              if(star==1)   
+ 109   1          return k;
+ 110   1              else
+ 111   1              return 0x10;
+ 112   1      }
+ 113          
+ 114          
+ 115          void disp_string(uchar *hzk)
+ 116          {
+ 117   1          uchar pag=0;
+C51 COMPILER V8.02   HZK_LCD                                                               10/13/2008 11:41:33 PAGE 3   
+
+ 118   1              uchar col=0;
+ 119   1              uint zhtemp=0;
+ 120   1              uint cs=0;
+ 121   1          uint j=0,i=0,c1,c2,c3;
+ 122   1          unsigned long int k;        
+ 123   1      
+ 124   1          if(pag==0)
+ 125   1          {
+ 126   2              if((col<64)&&(cs==0))
+ 127   2              {
+ 128   3                  CS1=0;
+ 129   3                  CS2=1;
+ 130   3                              cs=0;
+ 131   3              }
+ 132   2              else
+ 133   2              {
+ 134   3                  CS1=1;
+ 135   3                  CS2=0;
+ 136   3                              cs=1;
+ 137   3              }
+ 138   2              
+ 139   2          }
+ 140   1          else if(pag==2)
+ 141   1          {
+ 142   2              if(col<64)
+ 143   2              {
+ 144   3                  CS1=0;
+ 145   3                  CS2=1;
+ 146   3                              cs=2;
+ 147   3              }
+ 148   2              else
+ 149   2              {
+ 150   3                  CS1=1;
+ 151   3                  CS2=0;
+ 152   3                              cs=3;
+ 153   3              }
+ 154   2          }
+ 155   1          else if(pag==4)
+ 156   1          {
+ 157   2              if(col<64)
+ 158   2              {
+ 159   3                  CS1=0;
+ 160   3                  CS2=1;
+ 161   3                              cs=4;
+ 162   3              }
+ 163   2              else
+ 164   2              {
+ 165   3                  CS1=1;
+ 166   3                  CS2=0;
+ 167   3                              cs=5;
+ 168   3              }
+ 169   2          }
+ 170   1          else //if(pag==6)
+ 171   1          {
+ 172   2              if(col<64)
+ 173   2              {
+ 174   3                  CS1=0;
+ 175   3                  CS2=1;
+ 176   3                              cs=6;
+ 177   3              }
+ 178   2              else
+ 179   2              {
+C51 COMPILER V8.02   HZK_LCD                                                               10/13/2008 11:41:33 PAGE 4   
+
+ 180   3                  CS1=1;
+ 181   3                  CS2=0;
+ 182   3                              cs=7;
+ 183   3              }
+ 184   2          }           
+ 185   1          while(hzk[zhtemp])
+ 186   1          {
+ 187   2              
+ 188   2                      c1=hzk[zhtemp];c2=hzk[zhtemp+1];
+ 189   2              P10=0;P11=0;P12=0;
+ 190   2              
+ 191   2              k=haizhi(c1,c2);
+ 192   2              if(c1>128)
+ 193   2              {
+ 194   3                  if((k>0x8000)&&(k<0x10000))
+ 195   3                  {
+ 196   4                      //CE0=1;
+ 197   4      
+ 198   4                                      P10=0;P11=0;P12=0;
+ 199   4                      k=(uint)(k-0x8000);
+ 200   4                  }
+ 201   3                  else if((k>0x10000)&&(k<0x18000))
+ 202   3                  {
+ 203   4                      //CE1=0;CE0=1;
+ 204   4                                      CE0=1;CE1=0;
+ 205   4                                      P10=1;P11=0;P12=0;
+ 206   4                      k=(uint)(k-0x10000);
+ 207   4                      
+ 208   4                  }
+ 209   3                  else if((k>0x18000)&&(k<0x20000))
+ 210   3                  {
+ 211   4                      //CE1=1;CE0=1;
+ 212   4                                      CE1=1;CE0=0;
+ 213   4                                      P10=1;P11=0;P12=0;
+ 214   4                      k=(uint)(k-0x18000);
+ 215   4                      
+ 216   4                  }
+ 217   3                  else if((k>0x20000)&&(k<0x28000))
+ 218   3                  {
+ 219   4                      //CE1=1;CE0=1;CE2=0;
+ 220   4                                      CE1=1;CE0=0;
+ 221   4                                      P10=0;P11=1;P12=0;
+ 222   4                      k=(uint)(k-0x20000);
+ 223   4                      
+ 224   4                  }
+ 225   3                  else if((k>0x28000)&&(k<0x30000))
+ 226   3                  {
+ 227   4                      //CE1=1;CE0=1;CE2=1;
+ 228   4                                      CE1=1;CE0=1;
+ 229   4                                      P10=0;P11=1;P12=0;
+ 230   4                      k=(uint)(k-0x28000);
+ 231   4                      
+ 232   4                  }
+ 233   3                  else if((k>0x30000)&&(k<0x38000))
+ 234   3                  {
+ 235   4                      //CE1=1;CE0=1;CE2=1;CE3=0;
+ 236   4                                      CE1=1;CE0=1;
+ 237   4                                      P10=1;P11=1;P12=0;
+ 238   4                      k=(uint)(k-0x30000);
+ 239   4                      
+ 240   4                  }
+ 241   3                  else if((k>0x38000)&&(k<0x40000))
+C51 COMPILER V8.02   HZK_LCD                                                               10/13/2008 11:41:33 PAGE 5   
+
+ 242   3                  {
+ 243   4                      //CE1=1;CE0=1;CE2=1;CE3=1;
+ 244   4                                      CE1=0;CE0=1;
+ 245   4                                      P10=1;P11=1;P12=0;
+ 246   4                      k=(uint)(k-0x38000);
+ 247   4                      
+ 248   4                  }
+ 249   3                  else
+ 250   3                  {
+ 251   4                      //CE0=0;
+ 252   4                                      CE1=0;CE0=0;
+ 253   4                                      P10=0;P11=0;P12=0;
+ 254   4                  }
+ 255   3                  for(j=0;j<2;j++)
+ 256   3                  {
+ 257   4                      I_SEND(Page_Add+pag+j);
+ 258   4                      I_SEND(Col_Add+col);
+ 259   4                      for(i=0;i<16;i++)             
+ 260   4                      D_SEND(XBYTE[k+i+j*16+0x8000]);
+ 261   4                  }
+ 262   3                  zhtemp+=2;
+ 263   3                              //zhtemp++;
+ 264   3                              //c3=hzk[zhtemp];
+ 265   3                              //if(c3>128)
+ 266   3                              //{
+ 267   3                                      //if((col+8)>48)
+ 268   3                                      //col+=16;
+ 269   3                                      //else
+ 270   3                                      //col+=8;
+ 271   3      
+ 272   3                              //}
+ 273   3                              //else
+ 274   3                              //col+=8;
+ 275   3                  col+=16;
+ 276   3                              if(col>48)
+ 277   3                              {
+ 278   4                                      if(cs==0)
+ 279   4                                      {
+ 280   5                                              CS1=1;
+ 281   5                              CS2=0;
+ 282   5                                              cs=1;
+ 283   5                                              col=0;
+ 284   5                                      }
+ 285   4                                      else if(cs==1)
+ 286   4                                      {
+ 287   5                                              CS1=0;
+ 288   5                                              CS2=1;
+ 289   5                                              cs=2;
+ 290   5                                              col=0;
+ 291   5                                              pag+=2;
+ 292   5                                      }
+ 293   4                                      else if(cs==2)
+ 294   4                                      {
+ 295   5                                              CS1=1;
+ 296   5                                              CS2=0;
+ 297   5                                              cs=3;
+ 298   5                                              col=0;
+ 299   5                                      }
+ 300   4                                      else if(cs==3)
+ 301   4                                      {
+ 302   5                                              CS1=0;
+ 303   5                                              CS2=1;
+C51 COMPILER V8.02   HZK_LCD                                                               10/13/2008 11:41:33 PAGE 6   
+
+ 304   5                                              cs=4;
+ 305   5                                              col=0;
+ 306   5                                              pag+=2;
+ 307   5                                      }
+ 308   4                                      else if(cs==4)
+ 309   4                                      {
+ 310   5                                              CS1=1;
+ 311   5                              CS2=0;
+ 312   5                                              cs=5;
+ 313   5                                              col=0;
+ 314   5                                      }
+ 315   4                                      else if(cs==5)
+ 316   4                                      {
+ 317   5                                              CS1=0;
+ 318   5                                              CS2=1;
+ 319   5                                              cs=6;
+ 320   5                                              col=0;
+ 321   5                                              pag+=2;
+ 322   5                                      }
+ 323   4                                      else if(cs==6)
+ 324   4                                      {
+ 325   5                                              CS1=1;
+ 326   5                              CS2=0;
+ 327   5                                              cs=7;
+ 328   5                                              col=0;
+ 329   5                                      }
+ 330   4                                      else
+ 331   4                                      {
+ 332   5                                              //CS1=0;
+ 333   5                                              //CS2=0;
+ 334   5                                              cs=7;
+ 335   5                                              //col-=16;
+ 336   5                                              //pag+=2;
+ 337   5                                              //zhtemp-=2;
+ 338   5                                              //hzk[zhtemp]=0;
+ 339   5                                              //break;
+ 340   5                                              //return;
+ 341   5                                              if(zhtemp>62)
+ 342   5                                              {
+ 343   6                                                      zhtemp=0;
+ 344   6                                                      break;
+ 345   6                                              }
+ 346   5                                      }
+ 347   4                              }
+ 348   3                              //col+=16;
+ 349   3                  
+ 350   3              }
+ 351   2              else
+ 352   2              {
+ 353   3                  //CE4=0;
+ 354   3                              P10=0;P11=0;P12=1;         
+ 355   3                  for(j=0;j<2;j++)
+ 356   3                  {
+ 357   4                      I_SEND(Page_Add+pag+j);
+ 358   4                      I_SEND(Col_Add+col);
+ 359   4                      
+ 360   4                      for(i=0;i<8;i++)
+ 361   4                      {
+ 362   5                          
+ 363   5                          D_SEND(XBYTE[(c1-0x20)*16+8*j+i+0x8000]);
+ 364   5                          
+ 365   5                      }
+C51 COMPILER V8.02   HZK_LCD                                                               10/13/2008 11:41:33 PAGE 7   
+
+ 366   4                  }
+ 367   3                  zhtemp++;
+ 368   3                              c3=hzk[zhtemp];
+ 369   3                              if(c3>128)
+ 370   3                              {
+ 371   4                                      if((col+8)>48)
+ 372   4                                      col+=16;
+ 373   4                                      else
+ 374   4                                      col+=8;
+ 375   4      
+ 376   4                              }
+ 377   3                              else
+ 378   3                              col+=8;
+ 379   3                              
+ 380   3                              if(col>56)
+ 381   3                              {
+ 382   4                                      if(cs==0)
+ 383   4                                      {
+ 384   5                                              CS1=1;
+ 385   5                              CS2=0;
+ 386   5                                              cs=1;
+ 387   5                                              col=0;
+ 388   5                                      }
+ 389   4                                      else if(cs==1)
+ 390   4                                      {
+ 391   5                                              CS1=0;
+ 392   5                                              CS2=1;
+ 393   5                                              cs=2;
+ 394   5                                              col=0;
+ 395   5                                              pag+=2;
+ 396   5                                      }
+ 397   4                                      else if(cs==2)
+ 398   4                                      {
+ 399   5                                              CS1=1;
+ 400   5                                              CS2=0;
+ 401   5                                              cs=3;
+ 402   5                                              col=0;
+ 403   5                                      }
+ 404   4                                      else if(cs==3)
+ 405   4                                      {
+ 406   5                                              CS1=0;
+ 407   5                                              CS2=1;
+ 408   5                                              cs=4;
+ 409   5                                              col=0;
+ 410   5                                              pag+=2;
+ 411   5                                      }
+ 412   4                                      else if(cs==4)
+ 413   4                                      {
+ 414   5                                              CS1=1;
+ 415   5                              CS2=0;
+ 416   5                                              cs=5;
+ 417   5                                              col=0;
+ 418   5                                      }
+ 419   4                                      else if(cs==5)
+ 420   4                                      {
+ 421   5                                              CS1=0;
+ 422   5                                              CS2=1;
+ 423   5                                              cs=6;
+ 424   5                                              col=0;
+ 425   5                                              pag+=2;
+ 426   5                                      }
+ 427   4                                      else if(cs==6)
+C51 COMPILER V8.02   HZK_LCD                                                               10/13/2008 11:41:33 PAGE 8   
+
+ 428   4                                      {
+ 429   5                                              CS1=1;
+ 430   5                              CS2=0;
+ 431   5                                              cs=7;
+ 432   5                                              col=0;
+ 433   5                                      }
+ 434   4                                      else
+ 435   4                                      {
+ 436   5                                              //CS1=0;
+ 437   5                                              //CS2=0;
+ 438   5                                              cs=7;
+ 439   5                                              //col-=8;;
+ 440   5                                              //pag+=2;
+ 441   5                                              //zhtemp--;
+ 442   5                                              //hzk[zhtemp]=0;
+ 443   5                                              //break;
+ 444   5                                              //return;
+ 445   5                                              //col=56;
+ 446   5                                              if(zhtemp>63)
+ 447   5                                              {
+ 448   6                                                      zhtemp=0;
+ 449   6                                                      break;
+ 450   6                                              }
+ 451   5                                      }
+ 452   4                              }
+ 453   3              }
+ 454   2              if(col>48)
+ 455   2                      {
+ 456   3                              if(cs>6)
+ 457   3                              {
+ 458   4                                      //zhtemp--;
+ 459   4                                      //CS1=0;
+ 460   4                                      //CS2=0;
+ 461   4                                      cs=7;
+ 462   4                                      //hzk[zhtemp]=0;
+ 463   4                                      //break;        
+ 464   4                                      //return;
+ 465   4                              }
+ 466   3                              if(zhtemp>62)
+ 467   3                              {
+ 468   4                                      //zhtemp=0;
+ 469   4                                      //break;
+ 470   4                              }
+ 471   3                      }
+ 472   2          } 
+ 473   1      }
+ 474          /*
+ 475          void main(void)
+ 476          {
+ 477                  
+ 478              init_lcd();    
+ 479              //while(1)
+ 480              {
+ 481                  //disp(0,0,"好");
+ 482                  //disp(0,0,"好人一个呀火气大部队上场军队后勤学生名册工人主义农民可怜便不可民啊一");
+ 483                          //disp(0,0,"mcu_china@sina.com12好,0123456789队上场军队后abcd大部队efg勤@奸-34567891");
+ 484                          disp_string("4645ina.com12好,0123456789队上场军队后abcd大部队efg勤@奸-34567891");
+ 485                  //disp(2,0,"好人一个呀呀");
+ 486                  //disp(0,16,"集");
+ 487                  //CS1=1;CS2=0;        
+ 488              } 
+ 489                  while(1);                                                       
+C51 COMPILER V8.02   HZK_LCD                                                               10/13/2008 11:41:33 PAGE 9   
+
+ 490          }
+ 491          */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1486    ----
+   CONSTANT SIZE    =    114    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1      24
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

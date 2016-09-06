@@ -1,0 +1,116 @@
+C51 COMPILER V6.12  LCD1602                                                                11/14/2005 20:22:43 PAGE 1   
+
+
+C51 COMPILER V6.12, COMPILATION OF MODULE LCD1602
+OBJECT MODULE PLACED IN .\LCD1602.OBJ
+COMPILER INVOKED BY: D:\Program Files\Keil\C51\BIN\C51.EXE .\LCD1602.C BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          /*---------------------------------------------------------------------
+   2                                   LCD1602.C文件 LCD1602的函数  
+   3            作者：Computer-lov     创建日期:2004.11.12    最后修改日期:2004.11.12
+   4            版本：1.0
+   5          ----------------------------------------------------------------------*/
+   6          
+   7          #include "hardware.h"
+   8          #include "lcd1602.h"
+   9          
+  10          void LCD_check_busy(void)   //检测LCD状态，看它是不是还在忙呢
+  11          {
+  12   1       while(1)
+  13   1        {
+  14   2         LCD_EN=0;
+  15   2         LCD_RS=0;
+  16   2         LCD_RW=1;
+  17   2         LCD_DATA=0xff;
+  18   2         LCD_EN=1;
+  19   2         if(!LCD_BUSY)break;
+  20   2        }
+  21   1       LCD_EN=0;
+  22   1      }
+  23          
+  24          void LCD_cls(void)          //LCD清屏
+  25          {
+  26   1       
+  27   1       LCD_check_busy();
+  28   1       LCD_RS=0;
+  29   1       LCD_RW=0;
+  30   1       LCD_DATA=1;
+  31   1       LCD_EN=1;
+  32   1       LCD_EN=0;
+  33   1       
+  34   1      }
+  35          
+  36          void LCD_write_instruction(unsigned char LCD_instruction)   //写指令到LCD
+  37          {
+  38   1        LCD_check_busy();
+  39   1       LCD_RS=0;
+  40   1       LCD_RW=0;
+  41   1       
+  42   1       LCD_DATA=LCD_instruction;
+  43   1       LCD_EN=1;
+  44   1       LCD_EN=0;
+  45   1       }
+  46          
+  47          void LCD_write_data(unsigned char LCD_data)      //输出一个字节数据到LCD
+  48          {
+  49   1        LCD_check_busy();
+  50   1       LCD_RS=1;
+  51   1       LCD_RW=0;
+  52   1       
+  53   1       LCD_DATA=LCD_data;
+  54   1       LCD_EN=1;
+  55   1       LCD_EN=0;
+C51 COMPILER V6.12  LCD1602                                                                11/14/2005 20:22:43 PAGE 2   
+
+  56   1       }
+  57           
+  58          void LCD_set_position(unsigned char x)            //LCD光标定位到x处
+  59          {
+  60   1       LCD_write_instruction(0x80+x);
+  61   1      }
+  62          
+  63          /*
+  64          void LCD_go_home(void)                         //LCD光标归位
+  65          {
+  66           LCD_write_instruction(LCD_GO_HOME);
+  67          }
+  68          */
+  69          
+  70          void LCD_printc(unsigned char lcd_data)          //输出一个字符到LCD
+  71          {
+  72   1       LCD_write_data(lcd_data);
+  73   1      }
+  74          
+  75          void LCD_prints(unsigned char *lcd_string)       //输出一个字符串到LCD
+  76          {
+  77   1       unsigned char i=0;
+  78   1       while(lcd_string[i]!=0x00)
+  79   1        {
+  80   2         LCD_write_data(lcd_string[i]);
+  81   2         i++;
+  82   2        } 
+  83   1      }
+  84          
+  85          void LCD_initial(void)                        //初始化LCD
+  86          {
+  87   1       LCD_write_instruction(LCD_AC_AUTO_INCREMENT|LCD_MOVE_DISENABLE);
+  88   1       LCD_write_instruction(LCD_DISPLAY_ON|LCD_CURSOR_OFF);
+  89   1       LCD_write_instruction(LCD_DISPLAY_DOUBLE_LINE);
+  90   1       LCD_cls();
+  91   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    120    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

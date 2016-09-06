@@ -1,0 +1,21 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+F:\学习\电子研究杂烩\杂锦\冯文俊\单片机实例\流水灯\Keil\FlashLED.uv2
+Project File Date:  03/17/2007
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling FlashLED.c...
+linking...
+Program Size: data=9.1 xdata=0 code=103
+creating hex file from "FlashLED"...
+"FlashLED" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling FlashLED.c...
+linking...
+Program Size: data=9.1 xdata=0 code=105
+creating hex file from "FlashLED"...
+"FlashLED" - 0 Error(s), 0 Warning(s).

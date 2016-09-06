@@ -1,0 +1,3758 @@
+
+main.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000018a4  00000000  00000000  00000094  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         0000000a  00800060  000018a4  00001938  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000074  0080006a  0080006a  00001942  2**0
+                  ALLOC
+  3 .noinit       00000000  008000de  008000de  00001942  2**0
+                  CONTENTS
+  4 .eeprom       00000000  00810000  00810000  00001942  2**0
+                  CONTENTS
+  5 .debug_aranges 00000078  00000000  00000000  00001942  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_pubnames 000003dc  00000000  00000000  000019ba  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_info   0000139a  00000000  00000000  00001d96  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_abbrev 0000059b  00000000  00000000  00003130  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_line   00000f52  00000000  00000000  000036cb  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    00000502  00000000  00000000  0000461d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 0000000c  000018a4  000018a4  00004b1f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+       0:	0c 94 ab 02 	jmp	0x556
+       4:	0c 94 c6 02 	jmp	0x58c
+       8:	0c 94 c6 02 	jmp	0x58c
+       c:	0c 94 c6 02 	jmp	0x58c
+      10:	0c 94 c6 02 	jmp	0x58c
+      14:	0c 94 c6 02 	jmp	0x58c
+      18:	0c 94 c6 02 	jmp	0x58c
+      1c:	0c 94 c6 02 	jmp	0x58c
+      20:	0c 94 c6 02 	jmp	0x58c
+      24:	0c 94 c6 02 	jmp	0x58c
+      28:	0c 94 c6 02 	jmp	0x58c
+      2c:	0c 94 c6 02 	jmp	0x58c
+      30:	0c 94 c6 02 	jmp	0x58c
+      34:	0c 94 f5 0a 	jmp	0x15ea
+      38:	0c 94 1e 0b 	jmp	0x163c
+      3c:	0c 94 c6 02 	jmp	0x58c
+      40:	0c 94 c6 02 	jmp	0x58c
+      44:	0c 94 c6 02 	jmp	0x58c
+      48:	0c 94 c6 02 	jmp	0x58c
+      4c:	0c 94 c6 02 	jmp	0x58c
+      50:	0c 94 c6 02 	jmp	0x58c
+
+00000054 <__ctors_end>:
+      54:	0d 53       	subi	r16, 0x3D	; 61
+      56:	63 61       	ori	r22, 0x13	; 19
+      58:	6e 6e       	ori	r22, 0xEE	; 238
+      5a:	69 6e       	ori	r22, 0xE9	; 233
+      5c:	67 20       	and	r6, r7
+      5e:	42 75       	andi	r20, 0x52	; 82
+      60:	73 20       	and	r7, r3
+      62:	66 6f       	ori	r22, 0xF6	; 246
+      64:	72 20       	and	r7, r2
+      66:	44 53       	subi	r20, 0x34	; 52
+      68:	31 38       	cpi	r19, 0x81	; 129
+      6a:	58 32       	cpi	r21, 0x28	; 40
+      6c:	30 0d       	add	r19, r0
+	...
+
+0000006f <c.47>:
+      6f:	4e 6f 20 53 65 6e 73 6f 72 20 66 6f 75 6e 64 0d     No Sensor found.
+	...
+
+00000080 <c.48>:
+      80:	42 75 73 20 45 72 72 6f 72 0d 00                    Bus Error..
+
+0000008b <c.41>:
+      8b:	2e 00                                               ..
+
+0000008d <c.42>:
+      8d:	30 00                                               0.
+
+0000008f <c.43>:
+      8f:	b0 43 20 5b 00                                      .C [.
+
+00000094 <c.44>:
+      94:	2e 00                                               ..
+
+00000096 <c.45>:
+      96:	b0 43 5d 00                                         .C].
+
+0000009a <c.0>:
+      9a:	0d 44 53 31 38 58 32 30 20 31 2d 57 69 72 65 2d     .DS18X20 1-Wire-
+      aa:	52 65 61 64 65 72 20 44 65 6d 6f 20 62 79 20 4d     Reader Demo by M
+      ba:	61 72 74 69 6e 20 54 68 6f 6d 61 73 0d 00           artin Thomas..
+
+000000c8 <c.1>:
+      c8:	2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d     ----------------
+      d8:	2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d     ----------------
+      e8:	2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 2d 00                 -----------.
+
+000000f4 <c.2>:
+      f4:	20 44 53 31 38 58 32 30 20 53 65 6e 73 6f 72 28      DS18X20 Sensor(
+     104:	73 29 20 61 76 61 69 6c 61 62 6c 65 3a 0d 00        s) available:..
+
+00000113 <c.3>:
+     113:	23 20 69 6e 20 42 75 73 20 3a 00                    # in Bus :.
+
+0000011e <c.4>:
+     11e:	20 3a 20 00                                          : .
+
+00000122 <c.5>:
+     122:	0d 00                                               ..
+
+00000124 <c.6>:
+     124:	53 65 6e 73 6f 72 23 20 00                          Sensor# .
+
+0000012d <c.7>:
+     12d:	20 69 73 20 61 20 00                                 is a .
+
+00000134 <c.8>:
+     134:	44 53 31 38 53 32 30 2f 44 53 31 38 32 30 00        DS18S20/DS1820.
+
+00000143 <c.9>:
+     143:	44 53 31 38 42 32 30 00                             DS18B20.
+
+0000014b <c.10>:
+     14b:	20 77 68 69 63 68 20 69 73 20 00                     which is .
+
+00000156 <c.11>:
+     156:	70 61 72 61 73 69 74 65 00                          parasite.
+
+0000015f <c.12>:
+     15f:	65 78 74 65 72 6e 61 6c 6c 79 00                    externally.
+
+0000016a <c.13>:
+     16a:	20 70 6f 77 65 72 65 64 0d 00                        powered..
+
+00000174 <c.29>:
+     174:	0d 44 53 31 38 78 32 30 20 45 45 50 52 4f 4d 20     .DS18x20 EEPROM 
+     184:	73 75 70 70 6f 72 74 20 74 65 73 74 20 66 6f 72     support test for
+     194:	20 66 69 73 74 20 73 65 6e 73 6f 72 0d 00            fist sensor..
+
+000001a2 <c.30>:
+     1a2:	54 48 2f 54 4c 20 66 72 6f 6d 20 45 45 50 52 4f     TH/TL from EEPRO
+     1b2:	4d 20 73 65 6e 73 6f 72 20 31 20 3a 20 00           M sensor 1 : .
+
+000001c0 <c.31>:
+     1c0:	20 2f 20 00                                          / .
+
+000001c4 <c.32>:
+     1c4:	0d 00                                               ..
+
+000001c6 <c.33>:
+     1c6:	54 48 2b 31 20 61 6e 64 20 54 4c 2b 31 20 77 72     TH+1 and TL+1 wr
+     1d6:	69 74 74 65 6e 20 74 6f 20 73 63 72 61 74 63 68     itten to scratch
+     1e6:	70 61 64 0d 00                                      pad..
+
+000001eb <c.34>:
+     1eb:	73 63 72 61 74 63 68 70 61 64 20 63 6f 70 69 65     scratchpad copie
+     1fb:	64 20 74 6f 20 44 53 31 38 78 32 30 20 45 45 50     d to DS18x20 EEP
+     20b:	52 4f 4d 0d 00                                      ROM..
+
+00000210 <c.35>:
+     210:	44 53 31 38 78 32 30 20 45 45 50 52 4f 4d 20 63     DS18x20 EEPROM c
+     220:	6f 70 69 65 64 20 62 61 63 6b 20 74 6f 20 73 63     opied back to sc
+     230:	72 61 74 63 68 70 61 64 0d 00                       ratchpad..
+
+0000023a <c.36>:
+     23a:	54 48 20 61 6e 64 20 54 4c 20 76 65 72 69 66 69     TH and TL verifi
+     24a:	65 64 0d 00                                         ed..
+
+0000024e <c.37>:
+     24e:	76 65 72 69 66 79 20 66 61 69 6c 65 64 0d 00        verify failed..
+
+0000025d <c.38>:
+     25d:	54 48 2f 54 4c 20 66 72 6f 6d 20 45 45 50 52 4f     TH/TL from EEPRO
+     26d:	4d 20 73 65 6e 73 6f 72 20 31 20 6e 6f 77 20 3a     M sensor 1 now :
+     27d:	20 00                                                .
+
+0000027f <c.39>:
+     27f:	20 2f 20 00                                          / .
+
+00000283 <c.40>:
+     283:	0d 00                                               ..
+
+00000285 <c.14>:
+     285:	0d 54 68 65 72 65 20 69 73 20 6f 6e 6c 79 20 6f     .There is only o
+     295:	6e 65 20 73 65 6e 73 6f 72 20 2d 3e 20 44 65 6d     ne sensor -> Dem
+     2a5:	6f 20 6f 66 20 22 72 65 61 64 5f 6d 65 61 73 5f     o of "read_meas_
+     2b5:	73 69 6e 67 6c 65 22 3a 0d 00                       single":..
+
+000002bf <c.15>:
+     2bf:	0d 00                                               ..
+
+000002c1 <c.16>:
+     2c1:	0d 43 6f 6e 76 65 72 74 5f 54 20 61 6e 64 20 52     .Convert_T and R
+     2d1:	65 61 64 20 53 65 6e 73 6f 72 20 62 79 20 53 65     ead Sensor by Se
+     2e1:	6e 73 6f 72 20 28 72 65 76 65 72 73 65 20 6f 72     nsor (reverse or
+     2f1:	64 65 72 29 0d 00                                   der)..
+
+000002f7 <c.17>:
+     2f7:	53 65 6e 73 6f 72 23 20 00                          Sensor# .
+
+00000300 <c.18>:
+     300:	20 3d 20 00                                          = .
+
+00000304 <c.19>:
+     304:	43 52 43 20 45 72 72 6f 72 20 28 6c 6f 73 74 20     CRC Error (lost 
+     314:	63 6f 6e 6e 65 63 74 69 6f 6e 3f 29 00              connection?).
+
+00000321 <c.20>:
+     321:	0d 00                                               ..
+
+00000323 <c.21>:
+     323:	53 74 61 72 74 20 6d 65 61 73 2e 20 66 61 69 6c     Start meas. fail
+     333:	65 64 20 28 73 68 6f 72 74 20 63 69 72 63 75 69     ed (short circui
+     343:	74 3f 29 00                                         t?).
+
+00000347 <c.22>:
+     347:	0d 43 6f 6e 76 65 72 74 5f 54 20 66 6f 72 20 61     .Convert_T for a
+     357:	6c 6c 20 53 65 6e 73 6f 72 73 20 61 6e 64 20 52     ll Sensors and R
+     367:	65 61 64 20 53 65 6e 73 6f 72 20 62 79 20 53 65     ead Sensor by Se
+     377:	6e 73 6f 72 0d 00                                   nsor..
+
+0000037d <c.23>:
+     37d:	53 65 6e 73 6f 72 23 20 00                          Sensor# .
+
+00000386 <c.24>:
+     386:	20 3d 20 00                                          = .
+
+0000038a <c.25>:
+     38a:	43 52 43 20 45 72 72 6f 72 20 28 6c 6f 73 74 20     CRC Error (lost 
+     39a:	63 6f 6e 6e 65 63 74 69 6f 6e 3f 29 00              connection?).
+
+000003a7 <c.26>:
+     3a7:	0d 00                                               ..
+
+000003a9 <c.27>:
+     3a9:	53 74 61 72 74 20 6d 65 61 73 2e 20 66 61 69 6c     Start meas. fail
+     3b9:	65 64 20 28 73 68 6f 72 74 20 63 69 72 63 75 69     ed (short circui
+     3c9:	74 3f 29 00                                         t?).
+
+000003cd <c.28>:
+     3cd:	0d 56 65 72 62 6f 73 65 20 6f 75 74 70 75 74 0d     .Verbose output.
+	...
+
+000003de <c.30>:
+     3de:	2e 00                                               ..
+
+000003e0 <c.31>:
+     3e0:	30 00                                               0.
+
+000003e2 <c.32>:
+     3e2:	b0 43 00                                            .C.
+
+000003e5 <c.21>:
+     3e5:	46 43 3a 00                                         FC:.
+
+000003e9 <c.22>:
+     3e9:	43 52 43 3a 00                                      CRC:.
+
+000003ee <c.23>:
+     3ee:	53 4e 3a 20 00                                      SN: .
+
+000003f3 <c.24>:
+     3f3:	20 00                                                .
+
+000003f5 <c.25>:
+     3f5:	28 31 38 53 29 00                                   (18S).
+
+000003fb <c.26>:
+     3fb:	28 31 38 42 29 00                                   (18B).
+
+00000401 <c.27>:
+     401:	28 20 3f 20 29 00                                   ( ? ).
+
+00000407 <c.28>:
+     407:	20 43 52 43 20 46 41 49 4c 20 00                     CRC FAIL .
+
+00000412 <c.29>:
+     412:	20 43 52 43 20 4f 2e 4b 2e 20 00                     CRC O.K. .
+
+0000041d <c.18>:
+     41d:	53 50 3a 00                                         SP:.
+
+00000421 <c.19>:
+     421:	43 52 43 3a 00                                      CRC:.
+
+00000426 <c.20>:
+     426:	20 00                                                .
+
+00000428 <c.5>:
+     428:	4e 6f 20 53 65 6e 73 6f 72 20 66 6f 75 6e 64 0d     No Sensor found.
+	...
+
+00000439 <c.6>:
+     439:	42 75 73 20 45 72 72 6f 72 0d 00                    Bus Error..
+
+00000444 <c.7>:
+     444:	20 43 52 43 20 46 41 49 4c 20 00                     CRC FAIL .
+
+0000044f <c.8>:
+     44f:	20 43 52 43 20 4f 2e 4b 2e 20 00                     CRC O.K. .
+
+0000045a <c.9>:
+     45a:	20 54 5f 72 61 77 3d 00                              T_raw=.
+
+00000462 <c.10>:
+     462:	20 00                                                .
+
+00000464 <c.11>:
+     464:	53 32 30 2f 30 39 00                                S20/09.
+
+0000046b <c.12>:
+     46b:	42 32 30 2f 31 32 00                                B20/12.
+
+00000472 <c.13>:
+     472:	42 32 30 2f 31 31 00                                B20/11.
+
+00000479 <c.14>:
+     479:	20 42 32 30 2f 31 30 20 00                           B20/10 .
+
+00000482 <c.15>:
+     482:	42 32 30 2f 30 39 00                                B20/09.
+
+00000489 <c.16>:
+     489:	20 00                                                .
+
+0000048b <c.17>:
+     48b:	0d 00                                               ..
+
+0000048d <c.4>:
+     48d:	44 53 31 38 58 32 30 5f 73 74 61 72 74 5f 6d 65     DS18X20_start_me
+     49d:	61 73 3a 20 53 68 6f 72 74 20 43 69 72 63 75 69     as: Short Circui
+     4ad:	74 20 21 0d 00                                      t !..
+
+000004b2 <c.3>:
+     4b2:	44 53 31 38 58 32 30 5f 77 72 69 74 65 5f 73 63     DS18X20_write_sc
+     4c2:	72 61 74 63 68 70 61 64 3a 20 53 68 6f 72 74 20     ratchpad: Short 
+     4d2:	43 69 72 63 75 69 74 20 21 0d 00                    Circuit !..
+
+000004dd <c.2>:
+     4dd:	44 53 31 38 58 32 30 5f 72 65 61 64 5f 73 63 72     DS18X20_read_scr
+     4ed:	61 74 63 68 70 61 64 3a 20 53 68 6f 72 74 20 43     atchpad: Short C
+     4fd:	69 72 63 75 69 74 20 21 0d 00                       ircuit !..
+
+00000507 <c.1>:
+     507:	44 53 31 38 58 32 30 5f 63 6f 70 79 5f 73 63 72     DS18X20_copy_scr
+     517:	61 74 63 68 70 61 64 3a 20 53 68 6f 72 74 20 43     atchpad: Short C
+     527:	69 72 63 75 69 74 20 21 0d 00                       ircuit !..
+
+00000531 <c.0>:
+     531:	44 53 31 38 58 32 30 5f 72 65 63 61 6c 6c 5f 45     DS18X20_recall_E
+     541:	32 3a 20 53 68 6f 72 74 20 43 69 72 63 75 69 74     2: Short Circuit
+     551:	20 21 0d 00 00                                       !...
+
+00000556 <__init>:
+     556:	11 24       	eor	r1, r1
+     558:	1f be       	out	0x3f, r1	; 63
+     55a:	cf e5       	ldi	r28, 0x5F	; 95
+     55c:	d8 e0       	ldi	r29, 0x08	; 8
+     55e:	de bf       	out	0x3e, r29	; 62
+     560:	cd bf       	out	0x3d, r28	; 61
+
+00000562 <__do_copy_data>:
+     562:	10 e0       	ldi	r17, 0x00	; 0
+     564:	a0 e6       	ldi	r26, 0x60	; 96
+     566:	b0 e0       	ldi	r27, 0x00	; 0
+     568:	e4 ea       	ldi	r30, 0xA4	; 164
+     56a:	f8 e1       	ldi	r31, 0x18	; 24
+     56c:	02 c0       	rjmp	.+4      	; 0x572
+
+0000056e <.do_copy_data_loop>:
+     56e:	05 90       	lpm	r0, Z+
+     570:	0d 92       	st	X+, r0
+
+00000572 <.do_copy_data_start>:
+     572:	aa 36       	cpi	r26, 0x6A	; 106
+     574:	b1 07       	cpc	r27, r17
+     576:	d9 f7       	brne	.-10     	; 0x56e
+
+00000578 <__do_clear_bss>:
+     578:	10 e0       	ldi	r17, 0x00	; 0
+     57a:	aa e6       	ldi	r26, 0x6A	; 106
+     57c:	b0 e0       	ldi	r27, 0x00	; 0
+     57e:	01 c0       	rjmp	.+2      	; 0x582
+
+00000580 <.do_clear_bss_loop>:
+     580:	1d 92       	st	X+, r1
+
+00000582 <.do_clear_bss_start>:
+     582:	ae 3d       	cpi	r26, 0xDE	; 222
+     584:	b1 07       	cpc	r27, r17
+     586:	e1 f7       	brne	.-8      	; 0x580
+     588:	0c 94 8f 03 	jmp	0x71e
+
+0000058c <__bad_interrupt>:
+     58c:	0c 94 00 00 	jmp	0x0
+
+00000590 <search_sensors>:
+
+uint8_t gSensorIDs[MAXSENSORS][OW_ROMCODE_SIZE];
+
+uint8_t search_sensors(void)
+ { uint8_t i;
+     590:	1f 93       	push	r17
+     592:	cf 93       	push	r28
+     594:	df 93       	push	r29
+     596:	cd b7       	in	r28, 0x3d	; 61
+     598:	de b7       	in	r29, 0x3e	; 62
+     59a:	29 97       	sbiw	r28, 0x09	; 9
+     59c:	0f b6       	in	r0, 0x3f	; 63
+     59e:	f8 94       	cli
+     5a0:	de bf       	out	0x3e, r29	; 62
+     5a2:	0f be       	out	0x3f, r0	; 63
+     5a4:	cd bf       	out	0x3d, r28	; 61
+   uint8_t id[OW_ROMCODE_SIZE];
+   uint8_t diff, nSensors;
+
+   uart_puts_P( "\rScanning Bus for DS18X20\r" );
+     5a6:	84 e5       	ldi	r24, 0x54	; 84
+     5a8:	90 e0       	ldi	r25, 0x00	; 0
+     5aa:	0e 94 94 0b 	call	0x1728
+
+   nSensors = 0;
+     5ae:	10 e0       	ldi	r17, 0x00	; 0
+
+   for( diff = OW_SEARCH_FIRST; diff != OW_LAST_DEVICE && nSensors < MAXSENSORS ; )
+     5b0:	8f ef       	ldi	r24, 0xFF	; 255
+     5b2:	89 87       	std	Y+9, r24	; 0x09
+    { DS18X20_find_sensor( &diff, &id[0] );
+     5b4:	be 01       	movw	r22, r28
+     5b6:	6f 5f       	subi	r22, 0xFF	; 255
+     5b8:	7f 4f       	sbci	r23, 0xFF	; 255
+     5ba:	ce 01       	movw	r24, r28
+     5bc:	09 96       	adiw	r24, 0x09	; 9
+     5be:	0e 94 3f 09 	call	0x127e
+
+      if( diff == OW_PRESENCE_ERR ) 
+     5c2:	29 85       	ldd	r18, Y+9	; 0x09
+     5c4:	2f 3f       	cpi	r18, 0xFF	; 255
+     5c6:	19 f4       	brne	.+6      	; 0x5ce
+       { uart_puts_P( "No Sensor found\r" );
+     5c8:	8f e6       	ldi	r24, 0x6F	; 111
+     5ca:	90 e0       	ldi	r25, 0x00	; 0
+     5cc:	04 c0       	rjmp	.+8      	; 0x5d6
+         break;
+       }
+      if( diff == OW_DATA_ERR ) 
+     5ce:	2e 3f       	cpi	r18, 0xFE	; 254
+     5d0:	29 f4       	brne	.+10     	; 0x5dc
+       { uart_puts_P( "Bus Error\r" );
+     5d2:	80 e8       	ldi	r24, 0x80	; 128
+     5d4:	90 e0       	ldi	r25, 0x00	; 0
+     5d6:	0e 94 94 0b 	call	0x1728
+         break;
+     5da:	16 c0       	rjmp	.+44     	; 0x608
+     5dc:	e1 2f       	mov	r30, r17
+     5de:	ff 27       	eor	r31, r31
+     5e0:	83 e0       	ldi	r24, 0x03	; 3
+     5e2:	ee 0f       	add	r30, r30
+     5e4:	ff 1f       	adc	r31, r31
+     5e6:	8a 95       	dec	r24
+     5e8:	e1 f7       	brne	.-8      	; 0x5e2
+     5ea:	e1 55       	subi	r30, 0x51	; 81
+     5ec:	ff 4f       	sbci	r31, 0xFF	; 255
+     5ee:	de 01       	movw	r26, r28
+     5f0:	11 96       	adiw	r26, 0x01	; 1
+     5f2:	97 e0       	ldi	r25, 0x07	; 7
+       }
+      for (i=0;i<OW_ROMCODE_SIZE;i++)
+         gSensorIDs[nSensors][i]=id[i];
+     5f4:	8d 91       	ld	r24, X+
+     5f6:	81 93       	st	Z+, r24
+     5f8:	91 50       	subi	r25, 0x01	; 1
+     5fa:	97 ff       	sbrs	r25, 7
+     5fc:	fb cf       	rjmp	.-10     	; 0x5f4
+
+      nSensors++;
+     5fe:	1f 5f       	subi	r17, 0xFF	; 255
+     600:	22 23       	and	r18, r18
+     602:	11 f0       	breq	.+4      	; 0x608
+     604:	15 30       	cpi	r17, 0x05	; 5
+     606:	b0 f2       	brcs	.-84     	; 0x5b4
+    }
+   return nSensors;
+ }
+     608:	81 2f       	mov	r24, r17
+     60a:	99 27       	eor	r25, r25
+     60c:	29 96       	adiw	r28, 0x09	; 9
+     60e:	0f b6       	in	r0, 0x3f	; 63
+     610:	f8 94       	cli
+     612:	de bf       	out	0x3e, r29	; 62
+     614:	0f be       	out	0x3f, r0	; 63
+     616:	cd bf       	out	0x3d, r28	; 61
+     618:	df 91       	pop	r29
+     61a:	cf 91       	pop	r28
+     61c:	1f 91       	pop	r17
+     61e:	08 95       	ret
+
+00000620 <uart_put_temp>:
+
+void uart_put_temp(const uint8_t subzero, uint8_t cel, uint8_t cel_frac_bits)
+ { uint8_t buffer[sizeof(int)*8+1];
+     620:	ef 92       	push	r14
+     622:	ff 92       	push	r15
+     624:	0f 93       	push	r16
+     626:	1f 93       	push	r17
+     628:	cf 93       	push	r28
+     62a:	df 93       	push	r29
+     62c:	cd b7       	in	r28, 0x3d	; 61
+     62e:	de b7       	in	r29, 0x3e	; 62
+     630:	61 97       	sbiw	r28, 0x11	; 17
+     632:	0f b6       	in	r0, 0x3f	; 63
+     634:	f8 94       	cli
+     636:	de bf       	out	0x3e, r29	; 62
+     638:	0f be       	out	0x3f, r0	; 63
+     63a:	cd bf       	out	0x3d, r28	; 61
+     63c:	18 2f       	mov	r17, r24
+     63e:	e6 2e       	mov	r14, r22
+     640:	f4 2e       	mov	r15, r20
+   uint16_t decicelsius;
+   uint8_t i, j;
+
+   uart_putc((subzero)?'-':'+');
+     642:	88 23       	and	r24, r24
+     644:	11 f0       	breq	.+4      	; 0x64a
+     646:	8d e2       	ldi	r24, 0x2D	; 45
+     648:	01 c0       	rjmp	.+2      	; 0x64c
+     64a:	8b e2       	ldi	r24, 0x2B	; 43
+     64c:	0e 94 73 0b 	call	0x16e6
+   uart_puti((int)cel);
+     650:	8e 2d       	mov	r24, r14
+     652:	99 27       	eor	r25, r25
+     654:	0e 94 a6 0b 	call	0x174c
+   uart_puts_P(".");
+     658:	8b e8       	ldi	r24, 0x8B	; 139
+     65a:	90 e0       	ldi	r25, 0x00	; 0
+     65c:	0e 94 94 0b 	call	0x1728
+   itoa((cel_frac_bits*DS18X20_FRACCONV),buffer,10);
+     660:	2f 2d       	mov	r18, r15
+     662:	33 27       	eor	r19, r19
+     664:	4a e0       	ldi	r20, 0x0A	; 10
+     666:	50 e0       	ldi	r21, 0x00	; 0
+     668:	be 01       	movw	r22, r28
+     66a:	6f 5f       	subi	r22, 0xFF	; 255
+     66c:	7f 4f       	sbci	r23, 0xFF	; 255
+     66e:	81 e7       	ldi	r24, 0x71	; 113
+     670:	92 e0       	ldi	r25, 0x02	; 2
+     672:	28 9f       	mul	r18, r24
+     674:	f0 01       	movw	r30, r0
+     676:	29 9f       	mul	r18, r25
+     678:	f0 0d       	add	r31, r0
+     67a:	38 9f       	mul	r19, r24
+     67c:	f0 0d       	add	r31, r0
+     67e:	11 24       	eor	r1, r1
+     680:	cf 01       	movw	r24, r30
+     682:	0e 94 f6 0b 	call	0x17ec
+   j=4-strlen(buffer);
+     686:	de 01       	movw	r26, r28
+     688:	11 96       	adiw	r26, 0x01	; 1
+     68a:	fd 01       	movw	r30, r26
+     68c:	01 90       	ld	r0, Z+
+     68e:	00 20       	and	r0, r0
+     690:	e9 f7       	brne	.-6      	; 0x68c
+     692:	31 97       	sbiw	r30, 0x01	; 1
+     694:	ea 1b       	sub	r30, r26
+     696:	fb 0b       	sbc	r31, r27
+     698:	84 e0       	ldi	r24, 0x04	; 4
+     69a:	8e 1b       	sub	r24, r30
+   for (i=0;i<j;i++) uart_puts_P("0")
+     69c:	39 f0       	breq	.+14     	; 0x6ac
+     69e:	08 2f       	mov	r16, r24
+     6a0:	8d e8       	ldi	r24, 0x8D	; 141
+     6a2:	90 e0       	ldi	r25, 0x00	; 0
+     6a4:	0e 94 94 0b 	call	0x1728
+     6a8:	01 50       	subi	r16, 0x01	; 1
+     6aa:	d1 f7       	brne	.-12     	; 0x6a0
+      ;
+   
+   uart_puts(buffer);
+     6ac:	ce 01       	movw	r24, r28
+     6ae:	01 96       	adiw	r24, 0x01	; 1
+     6b0:	0e 94 85 0b 	call	0x170a
+   uart_puts_P("°C [");
+     6b4:	8f e8       	ldi	r24, 0x8F	; 143
+     6b6:	90 e0       	ldi	r25, 0x00	; 0
+     6b8:	0e 94 94 0b 	call	0x1728
+   // "rounding"
+   uart_putc((subzero)?'-':'+');
+     6bc:	11 23       	and	r17, r17
+     6be:	11 f0       	breq	.+4      	; 0x6c4
+     6c0:	8d e2       	ldi	r24, 0x2D	; 45
+     6c2:	01 c0       	rjmp	.+2      	; 0x6c6
+     6c4:	8b e2       	ldi	r24, 0x2B	; 43
+     6c6:	0e 94 73 0b 	call	0x16e6
+   decicelsius = DS18X20_temp_to_decicel(subzero, cel, cel_frac_bits);
+     6ca:	4f 2d       	mov	r20, r15
+     6cc:	6e 2d       	mov	r22, r14
+     6ce:	81 2f       	mov	r24, r17
+     6d0:	0e 94 d8 08 	call	0x11b0
+     6d4:	8c 01       	movw	r16, r24
+   uart_puti( (int)(decicelsius/10) );
+     6d6:	6a e0       	ldi	r22, 0x0A	; 10
+     6d8:	70 e0       	ldi	r23, 0x00	; 0
+     6da:	0e 94 2b 0c 	call	0x1856
+     6de:	cb 01       	movw	r24, r22
+     6e0:	0e 94 a6 0b 	call	0x174c
+   uart_puts_P(".");
+     6e4:	84 e9       	ldi	r24, 0x94	; 148
+     6e6:	90 e0       	ldi	r25, 0x00	; 0
+     6e8:	0e 94 94 0b 	call	0x1728
+   uart_putc( (decicelsius%10) + '0');
+     6ec:	c8 01       	movw	r24, r16
+     6ee:	6a e0       	ldi	r22, 0x0A	; 10
+     6f0:	70 e0       	ldi	r23, 0x00	; 0
+     6f2:	0e 94 2b 0c 	call	0x1856
+     6f6:	80 5d       	subi	r24, 0xD0	; 208
+     6f8:	0e 94 73 0b 	call	0x16e6
+	uart_puts_P("°C]");
+     6fc:	86 e9       	ldi	r24, 0x96	; 150
+     6fe:	90 e0       	ldi	r25, 0x00	; 0
+     700:	0e 94 94 0b 	call	0x1728
+     704:	61 96       	adiw	r28, 0x11	; 17
+     706:	0f b6       	in	r0, 0x3f	; 63
+     708:	f8 94       	cli
+     70a:	de bf       	out	0x3e, r29	; 62
+     70c:	0f be       	out	0x3f, r0	; 63
+     70e:	cd bf       	out	0x3d, r28	; 61
+     710:	df 91       	pop	r29
+     712:	cf 91       	pop	r28
+     714:	1f 91       	pop	r17
+     716:	0f 91       	pop	r16
+     718:	ff 90       	pop	r15
+     71a:	ef 90       	pop	r14
+     71c:	08 95       	ret
+
+0000071e <main>:
+ }
+
+#ifdef DS18X20_EEPROMSUPPORT
+static void eeprom_test(void)
+ { uint8_t sp[DS18X20_SP_SIZE], th, tl;
+
+   uart_puts_P( "\rDS18x20 EEPROM support test for fist sensor\r" ); 
+   // DS18X20_recall_E2(&gSensorIDs[0][0]); // already done at power-on
+   DS18X20_read_scratchpad( &gSensorIDs[0][0], sp);	
+   th = sp[DS18X20_TH_REG];
+   tl = sp[DS18X20_TL_REG];
+   uart_puts_P( "TH/TL from EEPROM sensor 1 : " ); 
+   uart_puti(th);
+   uart_puts_P( " / " ); 
+   uart_puti(tl);
+   uart_puts_P( "\r" ); 
+   tl++; th++;
+   DS18X20_write_scratchpad( &gSensorIDs[0][0], th, tl, DS18B20_12_BIT);
+   uart_puts_P( "TH+1 and TL+1 written to scratchpad\r" ); 
+   DS18X20_copy_scratchpad(  DS18X20_POWER_PARASITE, &gSensorIDs[0][0] );
+   uart_puts_P( "scratchpad copied to DS18x20 EEPROM\r" );
+   DS18X20_recall_E2(&gSensorIDs[0][0]);
+   uart_puts_P( "DS18x20 EEPROM copied back to scratchpad\r" );
+   DS18X20_read_scratchpad( &gSensorIDs[0][0], sp);
+   if ( (th == sp[DS18X20_TH_REG]) && (tl == sp[DS18X20_TL_REG]) ) 
+      uart_puts_P( "TH and TL verified\r" );
+   else 
+      uart_puts_P( "verify failed\r" );
+   th = sp[DS18X20_TH_REG];
+   tl = sp[DS18X20_TL_REG];
+   uart_puts_P( "TH/TL from EEPROM sensor 1 now : " ); 
+   uart_puti(th);
+   uart_puts_P( " / " ); 
+   uart_puti(tl);
+	uart_puts_P( "\r" ); 
+ }
+#endif
+
+int main( void )
+ { uint8_t nSensors, i;
+     71e:	c3 e5       	ldi	r28, 0x53	; 83
+     720:	d8 e0       	ldi	r29, 0x08	; 8
+     722:	de bf       	out	0x3e, r29	; 62
+     724:	cd bf       	out	0x3d, r28	; 61
+   uint8_t subzero, cel, cel_frac_bits;
+
+   uart_init((UART_BAUD_SELECT((BAUD),F_OSC)));
+     726:	89 e1       	ldi	r24, 0x19	; 25
+     728:	90 e0       	ldi	r25, 0x00	; 0
+     72a:	0e 94 44 0b 	call	0x1688
+	
+   #ifndef OW_ONE_BUS
+   ow_set_bus(&PIND,&PORTD,&DDRD,PD6);
+     72e:	26 e0       	ldi	r18, 0x06	; 6
+     730:	41 e3       	ldi	r20, 0x31	; 49
+     732:	50 e0       	ldi	r21, 0x00	; 0
+     734:	62 e3       	ldi	r22, 0x32	; 50
+     736:	70 e0       	ldi	r23, 0x00	; 0
+     738:	80 e3       	ldi	r24, 0x30	; 48
+     73a:	90 e0       	ldi	r25, 0x00	; 0
+     73c:	0e 94 a5 05 	call	0xb4a
+   #endif
+	
+   sei();
+     740:	78 94       	sei
+	
+   uart_puts_P( "\rDS18X20 1-Wire-Reader Demo by Martin Thomas\r" );
+     742:	8a e9       	ldi	r24, 0x9A	; 154
+     744:	90 e0       	ldi	r25, 0x00	; 0
+     746:	0e 94 94 0b 	call	0x1728
+   uart_puts_P( "-------------------------------------------" );
+     74a:	88 ec       	ldi	r24, 0xC8	; 200
+     74c:	90 e0       	ldi	r25, 0x00	; 0
+     74e:	0e 94 94 0b 	call	0x1728
+	
+   // dbg uart_puts_P( "\r" );
+   // dbg uart_puti((int) OW_CONF_DELAYOFFSET);
+   // dbg uart_puts_P( "\r" );
+	
+   nSensors = search_sensors();
+     752:	0e 94 c8 02 	call	0x590
+     756:	e8 2e       	mov	r14, r24
+   uart_puti((int) nSensors);
+     758:	99 27       	eor	r25, r25
+     75a:	0e 94 a6 0b 	call	0x174c
+   uart_puts_P( " DS18X20 Sensor(s) available:\r" );
+     75e:	84 ef       	ldi	r24, 0xF4	; 244
+     760:	90 e0       	ldi	r25, 0x00	; 0
+     762:	0e 94 94 0b 	call	0x1728
+   
+   #ifdef DS18X20_VERBOSE
+   for (i=0; i<nSensors; i++) 
+     766:	ee 20       	and	r14, r14
+     768:	21 f1       	breq	.+72     	; 0x7b2
+     76a:	3f ea       	ldi	r19, 0xAF	; 175
+     76c:	c3 2e       	mov	r12, r19
+     76e:	30 e0       	ldi	r19, 0x00	; 0
+     770:	d3 2e       	mov	r13, r19
+     772:	00 e0       	ldi	r16, 0x00	; 0
+     774:	10 e0       	ldi	r17, 0x00	; 0
+     776:	fe 2c       	mov	r15, r14
+    { uart_puts_P("# in Bus :");
+     778:	83 e1       	ldi	r24, 0x13	; 19
+     77a:	91 e0       	ldi	r25, 0x01	; 1
+     77c:	0e 94 94 0b 	call	0x1728
+      uart_puti((int) i+1);
+     780:	0f 5f       	subi	r16, 0xFF	; 255
+     782:	1f 4f       	sbci	r17, 0xFF	; 255
+     784:	c8 01       	movw	r24, r16
+     786:	0e 94 a6 0b 	call	0x174c
+      uart_puts_P(" : ");
+     78a:	8e e1       	ldi	r24, 0x1E	; 30
+     78c:	91 e0       	ldi	r25, 0x01	; 1
+     78e:	0e 94 94 0b 	call	0x1728
+      DS18X20_show_id_uart( &gSensorIDs[i][0], OW_ROMCODE_SIZE );
+     792:	68 e0       	ldi	r22, 0x08	; 8
+     794:	70 e0       	ldi	r23, 0x00	; 0
+     796:	c6 01       	movw	r24, r12
+     798:	0e 94 29 07 	call	0xe52
+      uart_puts_P( "\r" );
+     79c:	82 e2       	ldi	r24, 0x22	; 34
+     79e:	91 e0       	ldi	r25, 0x01	; 1
+     7a0:	0e 94 94 0b 	call	0x1728
+     7a4:	fa 94       	dec	r15
+     7a6:	28 e0       	ldi	r18, 0x08	; 8
+     7a8:	30 e0       	ldi	r19, 0x00	; 0
+     7aa:	c2 0e       	add	r12, r18
+     7ac:	d3 1e       	adc	r13, r19
+     7ae:	ff 20       	and	r15, r15
+     7b0:	19 f7       	brne	.-58     	; 0x778
+    }
+   #endif
+	
+   for (i=0; i<nSensors; i++) 
+     7b2:	ee 20       	and	r14, r14
+     7b4:	e9 f1       	breq	.+122    	; 0x830
+     7b6:	0f ea       	ldi	r16, 0xAF	; 175
+     7b8:	10 e0       	ldi	r17, 0x00	; 0
+     7ba:	58 01       	movw	r10, r16
+     7bc:	cc 24       	eor	r12, r12
+     7be:	dd 24       	eor	r13, r13
+     7c0:	fe 2c       	mov	r15, r14
+    { uart_puts_P("Sensor# ");
+     7c2:	84 e2       	ldi	r24, 0x24	; 36
+     7c4:	91 e0       	ldi	r25, 0x01	; 1
+     7c6:	0e 94 94 0b 	call	0x1728
+      uart_puti((int) i+1);
+     7ca:	c6 01       	movw	r24, r12
+     7cc:	01 96       	adiw	r24, 0x01	; 1
+     7ce:	0e 94 a6 0b 	call	0x174c
+      uart_puts_P(" is a ");
+     7d2:	8d e2       	ldi	r24, 0x2D	; 45
+     7d4:	91 e0       	ldi	r25, 0x01	; 1
+     7d6:	0e 94 94 0b 	call	0x1728
+      if ( gSensorIDs[i][0] == DS18S20_ID)
+     7da:	f5 01       	movw	r30, r10
+     7dc:	80 81       	ld	r24, Z
+     7de:	28 e0       	ldi	r18, 0x08	; 8
+     7e0:	30 e0       	ldi	r19, 0x00	; 0
+     7e2:	a2 0e       	add	r10, r18
+     7e4:	b3 1e       	adc	r11, r19
+     7e6:	80 31       	cpi	r24, 0x10	; 16
+     7e8:	19 f4       	brne	.+6      	; 0x7f0
+         uart_puts_P("DS18S20/DS1820");
+     7ea:	84 e3       	ldi	r24, 0x34	; 52
+     7ec:	91 e0       	ldi	r25, 0x01	; 1
+     7ee:	02 c0       	rjmp	.+4      	; 0x7f4
+      else uart_puts_P("DS18B20");
+     7f0:	83 e4       	ldi	r24, 0x43	; 67
+     7f2:	91 e0       	ldi	r25, 0x01	; 1
+     7f4:	0e 94 94 0b 	call	0x1728
+         uart_puts_P(" which is ");
+     7f8:	8b e4       	ldi	r24, 0x4B	; 75
+     7fa:	91 e0       	ldi	r25, 0x01	; 1
+     7fc:	0e 94 94 0b 	call	0x1728
+		
+      if ( DS18X20_get_power_status( &gSensorIDs[i][0] ) == DS18X20_POWER_PARASITE ) 
+     800:	c8 01       	movw	r24, r16
+     802:	0e 94 5c 09 	call	0x12b8
+     806:	88 23       	and	r24, r24
+     808:	19 f4       	brne	.+6      	; 0x810
+         uart_puts_P( "parasite" );
+     80a:	86 e5       	ldi	r24, 0x56	; 86
+     80c:	91 e0       	ldi	r25, 0x01	; 1
+     80e:	02 c0       	rjmp	.+4      	; 0x814
+      else uart_puts_P( "externally" ); 
+     810:	8f e5       	ldi	r24, 0x5F	; 95
+     812:	91 e0       	ldi	r25, 0x01	; 1
+     814:	0e 94 94 0b 	call	0x1728
+         uart_puts_P( " powered\r" );
+     818:	8a e6       	ldi	r24, 0x6A	; 106
+     81a:	91 e0       	ldi	r25, 0x01	; 1
+     81c:	0e 94 94 0b 	call	0x1728
+     820:	fa 94       	dec	r15
+     822:	08 94       	sec
+     824:	c1 1c       	adc	r12, r1
+     826:	d1 1c       	adc	r13, r1
+     828:	08 5f       	subi	r16, 0xF8	; 248
+     82a:	1f 4f       	sbci	r17, 0xFF	; 255
+     82c:	ff 20       	and	r15, r15
+     82e:	49 f6       	brne	.-110    	; 0x7c2
+    }
+	
+#ifdef DS18X20_EEPROMSUPPORT
+   if (nSensors>0) 
+     830:	ee 20       	and	r14, r14
+     832:	09 f4       	brne	.+2      	; 0x836
+     834:	69 c0       	rjmp	.+210    	; 0x908
+     836:	84 e7       	ldi	r24, 0x74	; 116
+     838:	91 e0       	ldi	r25, 0x01	; 1
+     83a:	0e 94 94 0b 	call	0x1728
+     83e:	be 01       	movw	r22, r28
+     840:	6f 5f       	subi	r22, 0xFF	; 255
+     842:	7f 4f       	sbci	r23, 0xFF	; 255
+     844:	8f ea       	ldi	r24, 0xAF	; 175
+     846:	90 e0       	ldi	r25, 0x00	; 0
+     848:	0e 94 86 0a 	call	0x150c
+     84c:	1b 81       	ldd	r17, Y+3	; 0x03
+     84e:	0c 81       	ldd	r16, Y+4	; 0x04
+     850:	82 ea       	ldi	r24, 0xA2	; 162
+     852:	91 e0       	ldi	r25, 0x01	; 1
+     854:	0e 94 94 0b 	call	0x1728
+     858:	81 2f       	mov	r24, r17
+     85a:	99 27       	eor	r25, r25
+     85c:	0e 94 a6 0b 	call	0x174c
+     860:	80 ec       	ldi	r24, 0xC0	; 192
+     862:	91 e0       	ldi	r25, 0x01	; 1
+     864:	0e 94 94 0b 	call	0x1728
+     868:	80 2f       	mov	r24, r16
+     86a:	99 27       	eor	r25, r25
+     86c:	0e 94 a6 0b 	call	0x174c
+     870:	84 ec       	ldi	r24, 0xC4	; 196
+     872:	91 e0       	ldi	r25, 0x01	; 1
+     874:	0e 94 94 0b 	call	0x1728
+     878:	0f 5f       	subi	r16, 0xFF	; 255
+     87a:	1f 5f       	subi	r17, 0xFF	; 255
+     87c:	20 e6       	ldi	r18, 0x60	; 96
+     87e:	40 2f       	mov	r20, r16
+     880:	61 2f       	mov	r22, r17
+     882:	8f ea       	ldi	r24, 0xAF	; 175
+     884:	90 e0       	ldi	r25, 0x00	; 0
+     886:	0e 94 58 0a 	call	0x14b0
+     88a:	86 ec       	ldi	r24, 0xC6	; 198
+     88c:	91 e0       	ldi	r25, 0x01	; 1
+     88e:	0e 94 94 0b 	call	0x1728
+     892:	6f ea       	ldi	r22, 0xAF	; 175
+     894:	70 e0       	ldi	r23, 0x00	; 0
+     896:	80 e0       	ldi	r24, 0x00	; 0
+     898:	0e 94 ac 0a 	call	0x1558
+     89c:	8b ee       	ldi	r24, 0xEB	; 235
+     89e:	91 e0       	ldi	r25, 0x01	; 1
+     8a0:	0e 94 94 0b 	call	0x1728
+     8a4:	8f ea       	ldi	r24, 0xAF	; 175
+     8a6:	90 e0       	ldi	r25, 0x00	; 0
+     8a8:	0e 94 d6 0a 	call	0x15ac
+     8ac:	80 e1       	ldi	r24, 0x10	; 16
+     8ae:	92 e0       	ldi	r25, 0x02	; 2
+     8b0:	0e 94 94 0b 	call	0x1728
+     8b4:	be 01       	movw	r22, r28
+     8b6:	6f 5f       	subi	r22, 0xFF	; 255
+     8b8:	7f 4f       	sbci	r23, 0xFF	; 255
+     8ba:	8f ea       	ldi	r24, 0xAF	; 175
+     8bc:	90 e0       	ldi	r25, 0x00	; 0
+     8be:	0e 94 86 0a 	call	0x150c
+     8c2:	8b 81       	ldd	r24, Y+3	; 0x03
+     8c4:	18 17       	cp	r17, r24
+     8c6:	31 f4       	brne	.+12     	; 0x8d4
+     8c8:	8c 81       	ldd	r24, Y+4	; 0x04
+     8ca:	08 17       	cp	r16, r24
+     8cc:	19 f4       	brne	.+6      	; 0x8d4
+     8ce:	8a e3       	ldi	r24, 0x3A	; 58
+     8d0:	92 e0       	ldi	r25, 0x02	; 2
+     8d2:	02 c0       	rjmp	.+4      	; 0x8d8
+     8d4:	8e e4       	ldi	r24, 0x4E	; 78
+     8d6:	92 e0       	ldi	r25, 0x02	; 2
+     8d8:	0e 94 94 0b 	call	0x1728
+     8dc:	1b 81       	ldd	r17, Y+3	; 0x03
+     8de:	0c 81       	ldd	r16, Y+4	; 0x04
+     8e0:	8d e5       	ldi	r24, 0x5D	; 93
+     8e2:	92 e0       	ldi	r25, 0x02	; 2
+     8e4:	0e 94 94 0b 	call	0x1728
+     8e8:	81 2f       	mov	r24, r17
+     8ea:	99 27       	eor	r25, r25
+     8ec:	0e 94 a6 0b 	call	0x174c
+     8f0:	8f e7       	ldi	r24, 0x7F	; 127
+     8f2:	92 e0       	ldi	r25, 0x02	; 2
+     8f4:	0e 94 94 0b 	call	0x1728
+     8f8:	80 2f       	mov	r24, r16
+     8fa:	99 27       	eor	r25, r25
+     8fc:	0e 94 a6 0b 	call	0x174c
+     900:	83 e8       	ldi	r24, 0x83	; 131
+     902:	92 e0       	ldi	r25, 0x02	; 2
+     904:	0e 94 94 0b 	call	0x1728
+    { eeprom_test();
+    }
+#endif
+
+   if ( nSensors == 1 )
+     908:	31 e0       	ldi	r19, 0x01	; 1
+     90a:	e3 16       	cp	r14, r19
+     90c:	31 f5       	brne	.+76     	; 0x95a
+    { uart_puts_P( "\rThere is only one sensor -> Demo of \"read_meas_single\":\r" ); 
+     90e:	85 e8       	ldi	r24, 0x85	; 133
+     910:	92 e0       	ldi	r25, 0x02	; 2
+     912:	0e 94 94 0b 	call	0x1728
+      i = gSensorIDs[0][0]; // family-code for conversion-routine
+     916:	f0 90 af 00 	lds	r15, 0x00AF
+      DS18X20_start_meas( DS18X20_POWER_PARASITE, NULL );
+     91a:	60 e0       	ldi	r22, 0x00	; 0
+     91c:	70 e0       	ldi	r23, 0x00	; 0
+     91e:	80 e0       	ldi	r24, 0x00	; 0
+     920:	0e 94 74 09 	call	0x12e8
+      delay_ms(DS18B20_TCONV_12BIT);
+     924:	66 e4       	ldi	r22, 0x46	; 70
+     926:	71 e4       	ldi	r23, 0x41	; 65
+     928:	8f e0       	ldi	r24, 0x0F	; 15
+     92a:	90 e0       	ldi	r25, 0x00	; 0
+     92c:	0e 94 b3 06 	call	0xd66
+      DS18X20_read_meas_single(i, &subzero, &cel, &cel_frac_bits);
+     930:	9e 01       	movw	r18, r28
+     932:	26 5f       	subi	r18, 0xF6	; 246
+     934:	3f 4f       	sbci	r19, 0xFF	; 255
+     936:	ae 01       	movw	r20, r28
+     938:	45 5f       	subi	r20, 0xF5	; 245
+     93a:	5f 4f       	sbci	r21, 0xFF	; 255
+     93c:	be 01       	movw	r22, r28
+     93e:	64 5f       	subi	r22, 0xF4	; 244
+     940:	7f 4f       	sbci	r23, 0xFF	; 255
+     942:	8f 2d       	mov	r24, r15
+     944:	0e 94 f8 09 	call	0x13f0
+      uart_put_temp(subzero, cel, cel_frac_bits);
+     948:	4a 85       	ldd	r20, Y+10	; 0x0a
+     94a:	6b 85       	ldd	r22, Y+11	; 0x0b
+     94c:	8c 85       	ldd	r24, Y+12	; 0x0c
+     94e:	0e 94 10 03 	call	0x620
+      uart_puts_P("\r");
+     952:	8f eb       	ldi	r24, 0xBF	; 191
+     954:	92 e0       	ldi	r25, 0x02	; 2
+     956:	0e 94 94 0b 	call	0x1728
+    }
+	
+	for(;;)
+    { // main loop
+      uart_puts_P( "\rConvert_T and Read Sensor by Sensor (reverse order)\r" ); 
+     95a:	81 ec       	ldi	r24, 0xC1	; 193
+     95c:	92 e0       	ldi	r25, 0x02	; 2
+     95e:	0e 94 94 0b 	call	0x1728
+      for ( i=nSensors; i>0; i-- ) 
+     962:	fe 2c       	mov	r15, r14
+     964:	ff 20       	and	r15, r15
+     966:	09 f4       	brne	.+2      	; 0x96a
+     968:	42 c0       	rjmp	.+132    	; 0x9ee
+       { if ( DS18X20_start_meas( DS18X20_POWER_PARASITE, &gSensorIDs[i-1][0] ) == DS18X20_OK ) 
+     96a:	cf 2c       	mov	r12, r15
+     96c:	dd 24       	eor	r13, r13
+     96e:	86 01       	movw	r16, r12
+     970:	23 e0       	ldi	r18, 0x03	; 3
+     972:	00 0f       	add	r16, r16
+     974:	11 1f       	adc	r17, r17
+     976:	2a 95       	dec	r18
+     978:	e1 f7       	brne	.-8      	; 0x972
+     97a:	09 55       	subi	r16, 0x59	; 89
+     97c:	1f 4f       	sbci	r17, 0xFF	; 255
+     97e:	b8 01       	movw	r22, r16
+     980:	80 e0       	ldi	r24, 0x00	; 0
+     982:	0e 94 74 09 	call	0x12e8
+     986:	88 23       	and	r24, r24
+     988:	61 f5       	brne	.+88     	; 0x9e2
+          { delay_ms(DS18B20_TCONV_12BIT);
+     98a:	66 e4       	ldi	r22, 0x46	; 70
+     98c:	71 e4       	ldi	r23, 0x41	; 65
+     98e:	8f e0       	ldi	r24, 0x0F	; 15
+     990:	90 e0       	ldi	r25, 0x00	; 0
+     992:	0e 94 b3 06 	call	0xd66
+            uart_puts_P("Sensor# ");
+     996:	87 ef       	ldi	r24, 0xF7	; 247
+     998:	92 e0       	ldi	r25, 0x02	; 2
+     99a:	0e 94 94 0b 	call	0x1728
+            uart_puti((int) i);
+     99e:	c6 01       	movw	r24, r12
+     9a0:	0e 94 a6 0b 	call	0x174c
+            uart_puts_P(" = ");
+     9a4:	80 e0       	ldi	r24, 0x00	; 0
+     9a6:	93 e0       	ldi	r25, 0x03	; 3
+     9a8:	0e 94 94 0b 	call	0x1728
+            
+            if ( DS18X20_read_meas( &gSensorIDs[i-1][0], &subzero, &cel, &cel_frac_bits) == DS18X20_OK ) 
+     9ac:	9e 01       	movw	r18, r28
+     9ae:	26 5f       	subi	r18, 0xF6	; 246
+     9b0:	3f 4f       	sbci	r19, 0xFF	; 255
+     9b2:	ae 01       	movw	r20, r28
+     9b4:	45 5f       	subi	r20, 0xF5	; 245
+     9b6:	5f 4f       	sbci	r21, 0xFF	; 255
+     9b8:	be 01       	movw	r22, r28
+     9ba:	64 5f       	subi	r22, 0xF4	; 244
+     9bc:	7f 4f       	sbci	r23, 0xFF	; 255
+     9be:	c8 01       	movw	r24, r16
+     9c0:	0e 94 94 09 	call	0x1328
+     9c4:	88 23       	and	r24, r24
+     9c6:	31 f4       	brne	.+12     	; 0x9d4
+             { uart_put_temp(subzero, cel, cel_frac_bits);
+     9c8:	4a 85       	ldd	r20, Y+10	; 0x0a
+     9ca:	6b 85       	ldd	r22, Y+11	; 0x0b
+     9cc:	8c 85       	ldd	r24, Y+12	; 0x0c
+     9ce:	0e 94 10 03 	call	0x620
+     9d2:	04 c0       	rjmp	.+8      	; 0x9dc
+             }
+            else uart_puts_P("CRC Error (lost connection?)");
+     9d4:	84 e0       	ldi	r24, 0x04	; 4
+     9d6:	93 e0       	ldi	r25, 0x03	; 3
+     9d8:	0e 94 94 0b 	call	0x1728
+               uart_puts_P("\r");
+     9dc:	81 e2       	ldi	r24, 0x21	; 33
+     9de:	93 e0       	ldi	r25, 0x03	; 3
+     9e0:	02 c0       	rjmp	.+4      	; 0x9e6
+          }
+         else uart_puts_P("Start meas. failed (short circuit?)");
+     9e2:	83 e2       	ldi	r24, 0x23	; 35
+     9e4:	93 e0       	ldi	r25, 0x03	; 3
+     9e6:	0e 94 94 0b 	call	0x1728
+     9ea:	fa 94       	dec	r15
+     9ec:	bb cf       	rjmp	.-138    	; 0x964
+       }
+   
+      uart_puts_P( "\rConvert_T for all Sensors and Read Sensor by Sensor\r" ); 	
+     9ee:	87 e4       	ldi	r24, 0x47	; 71
+     9f0:	93 e0       	ldi	r25, 0x03	; 3
+     9f2:	0e 94 94 0b 	call	0x1728
+      if ( DS18X20_start_meas( DS18X20_POWER_PARASITE, NULL ) == DS18X20_OK)
+     9f6:	60 e0       	ldi	r22, 0x00	; 0
+     9f8:	70 e0       	ldi	r23, 0x00	; 0
+     9fa:	80 e0       	ldi	r24, 0x00	; 0
+     9fc:	0e 94 74 09 	call	0x12e8
+     a00:	18 2f       	mov	r17, r24
+     a02:	88 23       	and	r24, r24
+     a04:	09 f0       	breq	.+2      	; 0xa08
+     a06:	41 c0       	rjmp	.+130    	; 0xa8a
+       { delay_ms(DS18B20_TCONV_12BIT);
+     a08:	66 e4       	ldi	r22, 0x46	; 70
+     a0a:	71 e4       	ldi	r23, 0x41	; 65
+     a0c:	8f e0       	ldi	r24, 0x0F	; 15
+     a0e:	90 e0       	ldi	r25, 0x00	; 0
+     a10:	0e 94 b3 06 	call	0xd66
+         for ( i=0; i<nSensors; i++ ) 
+     a14:	1e 15       	cp	r17, r14
+     a16:	e8 f5       	brcc	.+122    	; 0xa92
+     a18:	9f ea       	ldi	r25, 0xAF	; 175
+     a1a:	c9 2e       	mov	r12, r25
+     a1c:	90 e0       	ldi	r25, 0x00	; 0
+     a1e:	d9 2e       	mov	r13, r25
+     a20:	00 e0       	ldi	r16, 0x00	; 0
+     a22:	10 e0       	ldi	r17, 0x00	; 0
+     a24:	fe 2c       	mov	r15, r14
+          { uart_puts_P("Sensor# ");
+     a26:	8d e7       	ldi	r24, 0x7D	; 125
+     a28:	93 e0       	ldi	r25, 0x03	; 3
+     a2a:	0e 94 94 0b 	call	0x1728
+            uart_puti((int) i+1);
+     a2e:	c8 01       	movw	r24, r16
+     a30:	01 96       	adiw	r24, 0x01	; 1
+     a32:	0e 94 a6 0b 	call	0x174c
+            uart_puts_P(" = ");
+     a36:	86 e8       	ldi	r24, 0x86	; 134
+     a38:	93 e0       	ldi	r25, 0x03	; 3
+     a3a:	0e 94 94 0b 	call	0x1728
+            if ( DS18X20_read_meas( &gSensorIDs[i][0], &subzero, &cel, &cel_frac_bits) == DS18X20_OK )
+     a3e:	9e 01       	movw	r18, r28
+     a40:	26 5f       	subi	r18, 0xF6	; 246
+     a42:	3f 4f       	sbci	r19, 0xFF	; 255
+     a44:	ae 01       	movw	r20, r28
+     a46:	45 5f       	subi	r20, 0xF5	; 245
+     a48:	5f 4f       	sbci	r21, 0xFF	; 255
+     a4a:	be 01       	movw	r22, r28
+     a4c:	64 5f       	subi	r22, 0xF4	; 244
+     a4e:	7f 4f       	sbci	r23, 0xFF	; 255
+     a50:	c6 01       	movw	r24, r12
+     a52:	0e 94 94 09 	call	0x1328
+     a56:	88 23       	and	r24, r24
+     a58:	31 f4       	brne	.+12     	; 0xa66
+             { uart_put_temp(subzero, cel, cel_frac_bits);
+     a5a:	4a 85       	ldd	r20, Y+10	; 0x0a
+     a5c:	6b 85       	ldd	r22, Y+11	; 0x0b
+     a5e:	8c 85       	ldd	r24, Y+12	; 0x0c
+     a60:	0e 94 10 03 	call	0x620
+     a64:	04 c0       	rjmp	.+8      	; 0xa6e
+             }
+            else uart_puts_P("CRC Error (lost connection?)");
+     a66:	8a e8       	ldi	r24, 0x8A	; 138
+     a68:	93 e0       	ldi	r25, 0x03	; 3
+     a6a:	0e 94 94 0b 	call	0x1728
+            uart_puts_P("\r");
+     a6e:	87 ea       	ldi	r24, 0xA7	; 167
+     a70:	93 e0       	ldi	r25, 0x03	; 3
+     a72:	0e 94 94 0b 	call	0x1728
+     a76:	fa 94       	dec	r15
+     a78:	0f 5f       	subi	r16, 0xFF	; 255
+     a7a:	1f 4f       	sbci	r17, 0xFF	; 255
+     a7c:	88 e0       	ldi	r24, 0x08	; 8
+     a7e:	90 e0       	ldi	r25, 0x00	; 0
+     a80:	c8 0e       	add	r12, r24
+     a82:	d9 1e       	adc	r13, r25
+     a84:	ff 20       	and	r15, r15
+     a86:	79 f6       	brne	.-98     	; 0xa26
+     a88:	04 c0       	rjmp	.+8      	; 0xa92
+          }
+       }
+      else uart_puts_P("Start meas. failed (short circuit?)");
+     a8a:	89 ea       	ldi	r24, 0xA9	; 169
+     a8c:	93 e0       	ldi	r25, 0x03	; 3
+     a8e:	0e 94 94 0b 	call	0x1728
+				
+#ifdef DS18X20_VERBOSE
+      // all devices:
+      uart_puts_P( "\rVerbose output\r" ); 
+     a92:	8d ec       	ldi	r24, 0xCD	; 205
+     a94:	93 e0       	ldi	r25, 0x03	; 3
+     a96:	0e 94 94 0b 	call	0x1728
+      DS18X20_start_meas( DS18X20_POWER_PARASITE, NULL );
+     a9a:	60 e0       	ldi	r22, 0x00	; 0
+     a9c:	70 e0       	ldi	r23, 0x00	; 0
+     a9e:	80 e0       	ldi	r24, 0x00	; 0
+     aa0:	0e 94 74 09 	call	0x12e8
+      delay_ms(DS18B20_TCONV_12BIT);
+     aa4:	66 e4       	ldi	r22, 0x46	; 70
+     aa6:	71 e4       	ldi	r23, 0x41	; 65
+     aa8:	8f e0       	ldi	r24, 0x0F	; 15
+     aaa:	90 e0       	ldi	r25, 0x00	; 0
+     aac:	0e 94 b3 06 	call	0xd66
+      DS18X20_read_meas_all_verbose();
+     ab0:	0e 94 00 08 	call	0x1000
+#endif
+      delay_ms(3000); 
+     ab4:	68 e1       	ldi	r22, 0x18	; 24
+     ab6:	75 e0       	ldi	r23, 0x05	; 5
+     ab8:	8d e3       	ldi	r24, 0x3D	; 61
+     aba:	90 e0       	ldi	r25, 0x00	; 0
+     abc:	0e 94 b3 06 	call	0xd66
+     ac0:	4c cf       	rjmp	.-360    	; 0x95a
+
+00000ac2 <ow_reset>:
+uint8_t ow_reset(void)
+ { uint8_t err;
+   uint8_t sreg;
+
+   OW_OUT_LOW(); // disable internal pull-up (maybe on from parasite)
+     ac2:	e0 91 d7 00 	lds	r30, 0x00D7
+     ac6:	f0 91 d8 00 	lds	r31, 0x00D8
+     aca:	90 91 d9 00 	lds	r25, 0x00D9
+     ace:	90 95       	com	r25
+     ad0:	80 81       	ld	r24, Z
+     ad2:	89 23       	and	r24, r25
+     ad4:	80 83       	st	Z, r24
+   OW_DIR_OUT(); // pull OW-Pin low for 480us
+     ad6:	e0 91 dc 00 	lds	r30, 0x00DC
+     ada:	f0 91 dd 00 	lds	r31, 0x00DD
+     ade:	80 81       	ld	r24, Z
+     ae0:	90 91 d9 00 	lds	r25, 0x00D9
+     ae4:	89 2b       	or	r24, r25
+     ae6:	80 83       	st	Z, r24
+/* delay function for microsec
+   4 cpu cycles per loop + 1 cycles(?) overhead 
+   when a constant is passed. */
+static inline void delayloop16(uint16_t count)
+ {	asm volatile ( "cp  %A0,__zero_reg__ \n\t"  \
+     ae8:	8f eb       	ldi	r24, 0xBF	; 191
+     aea:	93 e0       	ldi	r25, 0x03	; 3
+     aec:	81 15       	cp	r24, r1
+     aee:	91 05       	cpc	r25, r1
+     af0:	11 f0       	breq	.+4      	; 0xaf6
+
+00000af2 <L_LOOP_23>:
+     af2:	01 97       	sbiw	r24, 0x01	; 1
+     af4:	f1 f7       	brne	.-4      	; 0xaf2
+
+00000af6 <L_Exit_23>:
+
+   delay_us(480);
+   
+   sreg=SREG;
+     af6:	3f b7       	in	r19, 0x3f	; 63
+   cli();
+     af8:	f8 94       	cli
+
+   // set Pin as input - wait for clients to pull low
+   OW_DIR_IN(); // input
+     afa:	e0 91 dc 00 	lds	r30, 0x00DC
+     afe:	f0 91 dd 00 	lds	r31, 0x00DD
+     b02:	90 91 d9 00 	lds	r25, 0x00D9
+     b06:	90 95       	com	r25
+     b08:	80 81       	ld	r24, Z
+     b0a:	89 23       	and	r24, r25
+     b0c:	80 83       	st	Z, r24
+/* delay function for microsec
+   4 cpu cycles per loop + 1 cycles(?) overhead 
+   when a constant is passed. */
+static inline void delayloop16(uint16_t count)
+ {	asm volatile ( "cp  %A0,__zero_reg__ \n\t"  \
+     b0e:	83 e8       	ldi	r24, 0x83	; 131
+     b10:	90 e0       	ldi	r25, 0x00	; 0
+     b12:	81 15       	cp	r24, r1
+     b14:	91 05       	cpc	r25, r1
+     b16:	11 f0       	breq	.+4      	; 0xb1c
+
+00000b18 <L_LOOP_42>:
+     b18:	01 97       	sbiw	r24, 0x01	; 1
+     b1a:	f1 f7       	brne	.-4      	; 0xb18
+
+00000b1c <L_Exit_42>:
+
+   delay_us(66);
+   err = OW_GET_IN();		// no presence detect
+     b1c:	e0 91 da 00 	lds	r30, 0x00DA
+     b20:	f0 91 db 00 	lds	r31, 0x00DB
+     b24:	40 81       	ld	r20, Z
+     b26:	20 91 d9 00 	lds	r18, 0x00D9
+     b2a:	42 23       	and	r20, r18
+   // nobody pulled to low, still high
+
+   SREG=sreg; // sei()
+     b2c:	3f bf       	out	0x3f, r19	; 63
+/* delay function for microsec
+   4 cpu cycles per loop + 1 cycles(?) overhead 
+   when a constant is passed. */
+static inline void delayloop16(uint16_t count)
+ {	asm volatile ( "cp  %A0,__zero_reg__ \n\t"  \
+     b2e:	8b e3       	ldi	r24, 0x3B	; 59
+     b30:	93 e0       	ldi	r25, 0x03	; 3
+     b32:	81 15       	cp	r24, r1
+     b34:	91 05       	cpc	r25, r1
+     b36:	11 f0       	breq	.+4      	; 0xb3c
+
+00000b38 <L_LOOP_57>:
+     b38:	01 97       	sbiw	r24, 0x01	; 1
+     b3a:	f1 f7       	brne	.-4      	; 0xb38
+
+00000b3c <L_Exit_57>:
+
+   // after a delay the clients should release the line
+   // and input-pin gets back to high due to pull-up-resistor
+   delay_us(480-66);
+   if( OW_GET_IN() == 0 )		// short circuit
+     b3c:	80 81       	ld	r24, Z
+     b3e:	82 23       	and	r24, r18
+     b40:	09 f4       	brne	.+2      	; 0xb44
+      err = 1;
+     b42:	41 e0       	ldi	r20, 0x01	; 1
+
+   return err;
+ }
+     b44:	84 2f       	mov	r24, r20
+     b46:	99 27       	eor	r25, r25
+     b48:	08 95       	ret
+
+00000b4a <ow_set_bus>:
+     b4a:	50 93 dd 00 	sts	0x00DD, r21
+     b4e:	40 93 dc 00 	sts	0x00DC, r20
+     b52:	70 93 d8 00 	sts	0x00D8, r23
+     b56:	60 93 d7 00 	sts	0x00D7, r22
+     b5a:	90 93 db 00 	sts	0x00DB, r25
+     b5e:	80 93 da 00 	sts	0x00DA, r24
+     b62:	81 e0       	ldi	r24, 0x01	; 1
+     b64:	90 e0       	ldi	r25, 0x00	; 0
+     b66:	02 c0       	rjmp	.+4      	; 0xb6c
+     b68:	88 0f       	add	r24, r24
+     b6a:	99 1f       	adc	r25, r25
+     b6c:	2a 95       	dec	r18
+     b6e:	e2 f7       	brpl	.-8      	; 0xb68
+     b70:	80 93 d9 00 	sts	0x00D9, r24
+     b74:	0e 94 61 05 	call	0xac2
+     b78:	08 95       	ret
+
+00000b7a <ow_input_pin_state>:
+     b7a:	e0 91 da 00 	lds	r30, 0x00DA
+     b7e:	f0 91 db 00 	lds	r31, 0x00DB
+     b82:	80 81       	ld	r24, Z
+     b84:	90 91 d9 00 	lds	r25, 0x00D9
+     b88:	89 23       	and	r24, r25
+     b8a:	99 27       	eor	r25, r25
+     b8c:	08 95       	ret
+
+00000b8e <ow_parasite_enable>:
+     b8e:	e0 91 d7 00 	lds	r30, 0x00D7
+     b92:	f0 91 d8 00 	lds	r31, 0x00D8
+     b96:	80 81       	ld	r24, Z
+     b98:	90 91 d9 00 	lds	r25, 0x00D9
+     b9c:	89 2b       	or	r24, r25
+     b9e:	80 83       	st	Z, r24
+     ba0:	e0 91 dc 00 	lds	r30, 0x00DC
+     ba4:	f0 91 dd 00 	lds	r31, 0x00DD
+     ba8:	80 81       	ld	r24, Z
+     baa:	90 91 d9 00 	lds	r25, 0x00D9
+     bae:	89 2b       	or	r24, r25
+     bb0:	80 83       	st	Z, r24
+     bb2:	08 95       	ret
+
+00000bb4 <ow_parasite_disable>:
+     bb4:	e0 91 d7 00 	lds	r30, 0x00D7
+     bb8:	f0 91 d8 00 	lds	r31, 0x00D8
+     bbc:	90 91 d9 00 	lds	r25, 0x00D9
+     bc0:	90 95       	com	r25
+     bc2:	80 81       	ld	r24, Z
+     bc4:	89 23       	and	r24, r25
+     bc6:	80 83       	st	Z, r24
+     bc8:	e0 91 dc 00 	lds	r30, 0x00DC
+     bcc:	f0 91 dd 00 	lds	r31, 0x00DD
+     bd0:	90 91 d9 00 	lds	r25, 0x00D9
+     bd4:	90 95       	com	r25
+     bd6:	80 81       	ld	r24, Z
+     bd8:	89 23       	and	r24, r25
+     bda:	80 83       	st	Z, r24
+     bdc:	08 95       	ret
+
+00000bde <ow_bit_io>:
+
+/* Timing issue when using runtime-bus-selection (!OW_ONE_BUS):
+   The master should sample at the end of the 15-slot after initiating
+   the read-time-slot. The variable bus-settings need more
+   cycles than the constant ones so the delays had to be shortened 
+   to achive a 15uS overall delay 
+   Setting/clearing a bit in I/O Register needs 1 cyle in OW_ONE_BUS
+   but around 14 cyles in configureable bus (us-Delay is 4 cyles per uS) */
+uint8_t ow_bit_io( uint8_t b )
+ { uint8_t sreg;
+     bde:	38 2f       	mov	r19, r24
+
+   sreg=SREG;
+     be0:	4f b7       	in	r20, 0x3f	; 63
+   cli();
+     be2:	f8 94       	cli
+	
+   OW_DIR_OUT(); // drive bus low
+     be4:	e0 91 dc 00 	lds	r30, 0x00DC
+     be8:	f0 91 dd 00 	lds	r31, 0x00DD
+     bec:	80 81       	ld	r24, Z
+     bee:	90 91 d9 00 	lds	r25, 0x00D9
+     bf2:	89 2b       	or	r24, r25
+     bf4:	80 83       	st	Z, r24
+/* delay function for microsec
+   4 cpu cycles per loop + 1 cycles(?) overhead 
+   when a constant is passed. */
+static inline void delayloop16(uint16_t count)
+ {	asm volatile ( "cp  %A0,__zero_reg__ \n\t"  \
+     bf6:	81 e0       	ldi	r24, 0x01	; 1
+     bf8:	90 e0       	ldi	r25, 0x00	; 0
+     bfa:	81 15       	cp	r24, r1
+     bfc:	91 05       	cpc	r25, r1
+     bfe:	11 f0       	breq	.+4      	; 0xc04
+
+00000c00 <L_LOOP_155>:
+     c00:	01 97       	sbiw	r24, 0x01	; 1
+     c02:	f1 f7       	brne	.-4      	; 0xc00
+
+00000c04 <L_Exit_155>:
+
+   delay_us(1); // Recovery-Time wuffwuff was 1
+   if ( b ) OW_DIR_IN(); // if bit is 1 set bus high (by ext. pull-up)
+     c04:	33 23       	and	r19, r19
+     c06:	51 f0       	breq	.+20     	; 0xc1c
+     c08:	e0 91 dc 00 	lds	r30, 0x00DC
+     c0c:	f0 91 dd 00 	lds	r31, 0x00DD
+     c10:	90 91 d9 00 	lds	r25, 0x00D9
+     c14:	90 95       	com	r25
+     c16:	80 81       	ld	r24, Z
+     c18:	89 23       	and	r24, r25
+     c1a:	80 83       	st	Z, r24
+/* delay function for microsec
+   4 cpu cycles per loop + 1 cycles(?) overhead 
+   when a constant is passed. */
+static inline void delayloop16(uint16_t count)
+ {	asm volatile ( "cp  %A0,__zero_reg__ \n\t"  \
+     c1c:	89 e1       	ldi	r24, 0x19	; 25
+     c1e:	90 e0       	ldi	r25, 0x00	; 0
+     c20:	81 15       	cp	r24, r1
+     c22:	91 05       	cpc	r25, r1
+     c24:	11 f0       	breq	.+4      	; 0xc2a
+
+00000c26 <L_LOOP_175>:
+     c26:	01 97       	sbiw	r24, 0x01	; 1
+     c28:	f1 f7       	brne	.-4      	; 0xc26
+
+00000c2a <L_Exit_175>:
+	
+   // wuffwuff delay was 15uS-1 see comment above
+   delay_us(15-1-OW_CONF_DELAYOFFSET);
+      
+   if( OW_GET_IN() == 0 ) b = 0;  // sample at end of read-timeslot
+     c2a:	e0 91 da 00 	lds	r30, 0x00DA
+     c2e:	f0 91 db 00 	lds	r31, 0x00DB
+     c32:	e0 81       	ld	r30, Z
+     c34:	20 91 d9 00 	lds	r18, 0x00D9
+     c38:	e2 23       	and	r30, r18
+     c3a:	09 f4       	brne	.+2      	; 0xc3e
+     c3c:	3e 2f       	mov	r19, r30
+/* delay function for microsec
+   4 cpu cycles per loop + 1 cycles(?) overhead 
+   when a constant is passed. */
+static inline void delayloop16(uint16_t count)
+ {	asm volatile ( "cp  %A0,__zero_reg__ \n\t"  \
+     c3e:	89 e5       	ldi	r24, 0x59	; 89
+     c40:	90 e0       	ldi	r25, 0x00	; 0
+     c42:	81 15       	cp	r24, r1
+     c44:	91 05       	cpc	r25, r1
+     c46:	11 f0       	breq	.+4      	; 0xc4c
+
+00000c48 <L_LOOP_194>:
+     c48:	01 97       	sbiw	r24, 0x01	; 1
+     c4a:	f1 f7       	brne	.-4      	; 0xc48
+
+00000c4c <L_Exit_194>:
+	
+   delay_us(60-15);
+   OW_DIR_IN();
+     c4c:	e0 91 dc 00 	lds	r30, 0x00DC
+     c50:	f0 91 dd 00 	lds	r31, 0x00DD
+     c54:	20 95       	com	r18
+     c56:	80 81       	ld	r24, Z
+     c58:	82 23       	and	r24, r18
+     c5a:	80 83       	st	Z, r24
+
+   SREG=sreg; // sei();
+     c5c:	4f bf       	out	0x3f, r20	; 63
+	
+   return b;
+ }
+     c5e:	83 2f       	mov	r24, r19
+     c60:	99 27       	eor	r25, r25
+     c62:	08 95       	ret
+
+00000c64 <ow_byte_wr>:
+
+
+uint8_t ow_byte_wr( uint8_t b )
+ { uint8_t i = 8, j;
+     c64:	1f 93       	push	r17
+     c66:	cf 93       	push	r28
+     c68:	c8 2f       	mov	r28, r24
+     c6a:	18 e0       	ldi	r17, 0x08	; 8
+   do 
+    { j = ow_bit_io( b & 1 );
+     c6c:	8c 2f       	mov	r24, r28
+     c6e:	81 70       	andi	r24, 0x01	; 1
+     c70:	0e 94 ef 05 	call	0xbde
+      b >>= 1;
+     c74:	c6 95       	lsr	r28
+      if( j ) b |= 0x80;
+     c76:	81 11       	cpse	r24, r1
+     c78:	c0 68       	ori	r28, 0x80	; 128
+    } 
+     c7a:	11 50       	subi	r17, 0x01	; 1
+     c7c:	b9 f7       	brne	.-18     	; 0xc6c
+   while( --i );
+   return b;
+ }
+     c7e:	8c 2f       	mov	r24, r28
+     c80:	99 27       	eor	r25, r25
+     c82:	cf 91       	pop	r28
+     c84:	1f 91       	pop	r17
+     c86:	08 95       	ret
+
+00000c88 <ow_byte_rd>:
+
+
+uint8_t ow_byte_rd( void )
+ { // read by sending 0xff (a dontcare?)
+   return ow_byte_wr( 0xFF ); 
+     c88:	8f ef       	ldi	r24, 0xFF	; 255
+     c8a:	0e 94 32 06 	call	0xc64
+ }
+     c8e:	99 27       	eor	r25, r25
+     c90:	08 95       	ret
+
+00000c92 <ow_rom_search>:
+
+
+uint8_t ow_rom_search( uint8_t diff, uint8_t *id )
+ { uint8_t i, j, next_diff;
+     c92:	df 92       	push	r13
+     c94:	ef 92       	push	r14
+     c96:	ff 92       	push	r15
+     c98:	0f 93       	push	r16
+     c9a:	1f 93       	push	r17
+     c9c:	cf 93       	push	r28
+     c9e:	df 93       	push	r29
+     ca0:	e8 2e       	mov	r14, r24
+     ca2:	eb 01       	movw	r28, r22
+   uint8_t b;
+
+   if( ow_reset() ) 
+     ca4:	0e 94 61 05 	call	0xac2
+     ca8:	18 2f       	mov	r17, r24
+     caa:	88 23       	and	r24, r24
+     cac:	19 f0       	breq	.+6      	; 0xcb4
+      return OW_PRESENCE_ERR;       // error, no device found
+     cae:	8f ef       	ldi	r24, 0xFF	; 255
+     cb0:	90 e0       	ldi	r25, 0x00	; 0
+     cb2:	32 c0       	rjmp	.+100    	; 0xd18
+
+   ow_byte_wr( OW_SEARCH_ROM );     // ROM search command
+     cb4:	80 ef       	ldi	r24, 0xF0	; 240
+     cb6:	0e 94 32 06 	call	0xc64
+   next_diff = OW_LAST_DEVICE;      // unchanged on last device
+     cba:	d1 2e       	mov	r13, r17
+
+   i = OW_ROMCODE_SIZE * 8;         // 8 bytes
+     cbc:	00 e4       	ldi	r16, 0x40	; 64
+   do 
+    {	j = 8;                        // 8 bits
+     cbe:	88 e0       	ldi	r24, 0x08	; 8
+     cc0:	f8 2e       	mov	r15, r24
+		do 
+       { b = ow_bit_io( 1 );			// read bit
+     cc2:	81 e0       	ldi	r24, 0x01	; 1
+     cc4:	0e 94 ef 05 	call	0xbde
+     cc8:	18 2f       	mov	r17, r24
+         if( ow_bit_io( 1 ) ) 
+     cca:	81 e0       	ldi	r24, 0x01	; 1
+     ccc:	0e 94 ef 05 	call	0xbde
+     cd0:	88 23       	and	r24, r24
+     cd2:	29 f0       	breq	.+10     	; 0xcde
+          { // read complement bit
+            if( b )                 // 11
+     cd4:	11 23       	and	r17, r17
+     cd6:	71 f0       	breq	.+28     	; 0xcf4
+               return OW_DATA_ERR;  // data error
+     cd8:	8e ef       	ldi	r24, 0xFE	; 254
+     cda:	90 e0       	ldi	r25, 0x00	; 0
+     cdc:	1d c0       	rjmp	.+58     	; 0xd18
+          }
+         else 
+          { if( !b ) 
+     cde:	11 23       	and	r17, r17
+     ce0:	49 f4       	brne	.+18     	; 0xcf4
+             { // 00 = 2 devices
+               if( diff > i || ((*id & 1) && diff != i) ) 
+     ce2:	0e 15       	cp	r16, r14
+     ce4:	28 f0       	brcs	.+10     	; 0xcf0
+     ce6:	88 81       	ld	r24, Y
+     ce8:	80 ff       	sbrs	r24, 0
+     cea:	04 c0       	rjmp	.+8      	; 0xcf4
+     cec:	e0 16       	cp	r14, r16
+     cee:	11 f0       	breq	.+4      	; 0xcf4
+                { b = 1;               // now 1
+     cf0:	11 e0       	ldi	r17, 0x01	; 1
+                  next_diff = i;       // next pass 0
+     cf2:	d0 2e       	mov	r13, r16
+                }
+             }
+          }
+         ow_bit_io( b );               // write bit
+     cf4:	81 2f       	mov	r24, r17
+     cf6:	0e 94 ef 05 	call	0xbde
+         *id >>= 1;
+     cfa:	88 81       	ld	r24, Y
+     cfc:	86 95       	lsr	r24
+     cfe:	88 83       	st	Y, r24
+         if( b ) *id |= 0x80;			// store bit
+     d00:	11 23       	and	r17, r17
+     d02:	11 f0       	breq	.+4      	; 0xd08
+     d04:	80 68       	ori	r24, 0x80	; 128
+     d06:	88 83       	st	Y, r24
+         i--;
+     d08:	01 50       	subi	r16, 0x01	; 1
+       } 
+     d0a:	fa 94       	dec	r15
+     d0c:	d1 f6       	brne	.-76     	; 0xcc2
+      while( --j );
+      id++;                            // next byte
+     d0e:	21 96       	adiw	r28, 0x01	; 1
+    } 
+     d10:	00 23       	and	r16, r16
+     d12:	a9 f6       	brne	.-86     	; 0xcbe
+   while( i );
+   return next_diff;                  // to continue search
+     d14:	8d 2d       	mov	r24, r13
+     d16:	99 27       	eor	r25, r25
+     d18:	df 91       	pop	r29
+     d1a:	cf 91       	pop	r28
+     d1c:	1f 91       	pop	r17
+     d1e:	0f 91       	pop	r16
+     d20:	ff 90       	pop	r15
+     d22:	ef 90       	pop	r14
+     d24:	df 90       	pop	r13
+     d26:	08 95       	ret
+
+00000d28 <ow_command>:
+ }
+
+
+void ow_command( uint8_t command, uint8_t *id )
+ { uint8_t i;
+     d28:	0f 93       	push	r16
+     d2a:	1f 93       	push	r17
+     d2c:	cf 93       	push	r28
+     d2e:	df 93       	push	r29
+     d30:	08 2f       	mov	r16, r24
+     d32:	eb 01       	movw	r28, r22
+
+   ow_reset();
+     d34:	0e 94 61 05 	call	0xac2
+   if( id ) 
+     d38:	20 97       	sbiw	r28, 0x00	; 0
+     d3a:	51 f0       	breq	.+20     	; 0xd50
+    { ow_byte_wr( OW_MATCH_ROM );			// to a single device
+     d3c:	85 e5       	ldi	r24, 0x55	; 85
+     d3e:	0e 94 32 06 	call	0xc64
+      i = OW_ROMCODE_SIZE;
+     d42:	18 e0       	ldi	r17, 0x08	; 8
+      do 
+       { ow_byte_wr( *id );
+     d44:	89 91       	ld	r24, Y+
+     d46:	0e 94 32 06 	call	0xc64
+         id++;
+       } 
+     d4a:	11 50       	subi	r17, 0x01	; 1
+     d4c:	d9 f7       	brne	.-10     	; 0xd44
+     d4e:	03 c0       	rjmp	.+6      	; 0xd56
+      while( --i );
+    } 
+   else
+      ow_byte_wr( OW_SKIP_ROM );			// to all devices
+     d50:	8c ec       	ldi	r24, 0xCC	; 204
+     d52:	0e 94 32 06 	call	0xc64
+
+   ow_byte_wr( command );
+     d56:	80 2f       	mov	r24, r16
+     d58:	0e 94 32 06 	call	0xc64
+     d5c:	df 91       	pop	r29
+     d5e:	cf 91       	pop	r28
+     d60:	1f 91       	pop	r17
+     d62:	0f 91       	pop	r16
+     d64:	08 95       	ret
+
+00000d66 <delayloop32>:
+
+#include "delay.h"
+
+void delayloop32(uint32_t loops) 
+ { __asm__ volatile (  "cp  %A0,__zero_reg__ \n\t"  \
+     d66:	dc 01       	movw	r26, r24
+     d68:	cb 01       	movw	r24, r22
+     d6a:	81 15       	cp	r24, r1
+     d6c:	91 05       	cpc	r25, r1
+     d6e:	a1 05       	cpc	r26, r1
+     d70:	b1 05       	cpc	r27, r1
+     d72:	29 f0       	breq	.+10     	; 0xd7e
+
+00000d74 <L_LOOP_5>:
+     d74:	81 50       	subi	r24, 0x01	; 1
+     d76:	90 40       	sbci	r25, 0x00	; 0
+     d78:	a0 40       	sbci	r26, 0x00	; 0
+     d7a:	b0 40       	sbci	r27, 0x00	; 0
+     d7c:	d9 f7       	brne	.-10     	; 0xd74
+
+00000d7e <L_Exit_5>:
+     d7e:	08 95       	ret
+
+00000d80 <DS18X20_uart_put_temp>:
+#include "uart.h"
+
+void DS18X20_uart_put_temp(const uint8_t subzero, 
+   const uint8_t cel, 	const uint8_t cel_frac_bits)
+ { uint8_t buffer[sizeof(int)*8+1];
+     d80:	ef 92       	push	r14
+     d82:	ff 92       	push	r15
+     d84:	0f 93       	push	r16
+     d86:	1f 93       	push	r17
+     d88:	cf 93       	push	r28
+     d8a:	df 93       	push	r29
+     d8c:	cd b7       	in	r28, 0x3d	; 61
+     d8e:	de b7       	in	r29, 0x3e	; 62
+     d90:	61 97       	sbiw	r28, 0x11	; 17
+     d92:	0f b6       	in	r0, 0x3f	; 63
+     d94:	f8 94       	cli
+     d96:	de bf       	out	0x3e, r29	; 62
+     d98:	0f be       	out	0x3f, r0	; 63
+     d9a:	cd bf       	out	0x3d, r28	; 61
+     d9c:	16 2f       	mov	r17, r22
+     d9e:	04 2f       	mov	r16, r20
+   int i;
+
+   uart_putc((subzero)?'-':'+');
+     da0:	88 23       	and	r24, r24
+     da2:	11 f0       	breq	.+4      	; 0xda8
+     da4:	8d e2       	ldi	r24, 0x2D	; 45
+     da6:	01 c0       	rjmp	.+2      	; 0xdaa
+     da8:	8b e2       	ldi	r24, 0x2B	; 43
+     daa:	0e 94 73 0b 	call	0x16e6
+   uart_puti((int)cel);
+     dae:	81 2f       	mov	r24, r17
+     db0:	99 27       	eor	r25, r25
+     db2:	0e 94 a6 0b 	call	0x174c
+   uart_puts_P(".");
+     db6:	8e ed       	ldi	r24, 0xDE	; 222
+     db8:	93 e0       	ldi	r25, 0x03	; 3
+     dba:	0e 94 94 0b 	call	0x1728
+   itoa(cel_frac_bits*DS18X20_FRACCONV,buffer,10);
+     dbe:	20 2f       	mov	r18, r16
+     dc0:	33 27       	eor	r19, r19
+     dc2:	4a e0       	ldi	r20, 0x0A	; 10
+     dc4:	50 e0       	ldi	r21, 0x00	; 0
+     dc6:	be 01       	movw	r22, r28
+     dc8:	6f 5f       	subi	r22, 0xFF	; 255
+     dca:	7f 4f       	sbci	r23, 0xFF	; 255
+     dcc:	81 e7       	ldi	r24, 0x71	; 113
+     dce:	92 e0       	ldi	r25, 0x02	; 2
+     dd0:	28 9f       	mul	r18, r24
+     dd2:	f0 01       	movw	r30, r0
+     dd4:	29 9f       	mul	r18, r25
+     dd6:	f0 0d       	add	r31, r0
+     dd8:	38 9f       	mul	r19, r24
+     dda:	f0 0d       	add	r31, r0
+     ddc:	11 24       	eor	r1, r1
+     dde:	cf 01       	movw	r24, r30
+     de0:	0e 94 f6 0b 	call	0x17ec
+   for (i=0;i<4-strlen(buffer);i++) uart_puts_P("0");
+     de4:	8e 01       	movw	r16, r28
+     de6:	0f 5f       	subi	r16, 0xFF	; 255
+     de8:	1f 4f       	sbci	r17, 0xFF	; 255
+     dea:	f8 01       	movw	r30, r16
+     dec:	01 90       	ld	r0, Z+
+     dee:	00 20       	and	r0, r0
+     df0:	e9 f7       	brne	.-6      	; 0xdec
+     df2:	35 97       	sbiw	r30, 0x05	; 5
+     df4:	ee 24       	eor	r14, r14
+     df6:	ff 24       	eor	r15, r15
+     df8:	e0 17       	cp	r30, r16
+     dfa:	f1 07       	cpc	r31, r17
+     dfc:	a9 f0       	breq	.+42     	; 0xe28
+     dfe:	80 ee       	ldi	r24, 0xE0	; 224
+     e00:	93 e0       	ldi	r25, 0x03	; 3
+     e02:	0e 94 94 0b 	call	0x1728
+     e06:	08 94       	sec
+     e08:	e1 1c       	adc	r14, r1
+     e0a:	f1 1c       	adc	r15, r1
+     e0c:	f8 01       	movw	r30, r16
+     e0e:	01 90       	ld	r0, Z+
+     e10:	00 20       	and	r0, r0
+     e12:	e9 f7       	brne	.-6      	; 0xe0e
+     e14:	31 97       	sbiw	r30, 0x01	; 1
+     e16:	e0 1b       	sub	r30, r16
+     e18:	f1 0b       	sbc	r31, r17
+     e1a:	84 e0       	ldi	r24, 0x04	; 4
+     e1c:	90 e0       	ldi	r25, 0x00	; 0
+     e1e:	8e 1b       	sub	r24, r30
+     e20:	9f 0b       	sbc	r25, r31
+     e22:	e8 16       	cp	r14, r24
+     e24:	f9 06       	cpc	r15, r25
+     e26:	58 f3       	brcs	.-42     	; 0xdfe
+   uart_puts(buffer);
+     e28:	ce 01       	movw	r24, r28
+     e2a:	01 96       	adiw	r24, 0x01	; 1
+     e2c:	0e 94 85 0b 	call	0x170a
+   uart_puts_P("°C");
+     e30:	82 ee       	ldi	r24, 0xE2	; 226
+     e32:	93 e0       	ldi	r25, 0x03	; 3
+     e34:	0e 94 94 0b 	call	0x1728
+     e38:	61 96       	adiw	r28, 0x11	; 17
+     e3a:	0f b6       	in	r0, 0x3f	; 63
+     e3c:	f8 94       	cli
+     e3e:	de bf       	out	0x3e, r29	; 62
+     e40:	0f be       	out	0x3f, r0	; 63
+     e42:	cd bf       	out	0x3d, r28	; 61
+     e44:	df 91       	pop	r29
+     e46:	cf 91       	pop	r28
+     e48:	1f 91       	pop	r17
+     e4a:	0f 91       	pop	r16
+     e4c:	ff 90       	pop	r15
+     e4e:	ef 90       	pop	r14
+     e50:	08 95       	ret
+
+00000e52 <DS18X20_show_id_uart>:
+ }
+
+void DS18X20_show_id_uart( uint8_t *id, size_t n )
+ { size_t i;
+     e52:	cf 92       	push	r12
+     e54:	df 92       	push	r13
+     e56:	ef 92       	push	r14
+     e58:	ff 92       	push	r15
+     e5a:	0f 93       	push	r16
+     e5c:	1f 93       	push	r17
+     e5e:	cf 93       	push	r28
+     e60:	df 93       	push	r29
+     e62:	6c 01       	movw	r12, r24
+     e64:	7b 01       	movw	r14, r22
+   for( i = 0; i < n; i++ ) 
+     e66:	c0 e0       	ldi	r28, 0x00	; 0
+     e68:	d0 e0       	ldi	r29, 0x00	; 0
+     e6a:	c6 17       	cp	r28, r22
+     e6c:	d7 07       	cpc	r29, r23
+     e6e:	b0 f5       	brcc	.+108    	; 0xedc
+     e70:	8c 01       	movw	r16, r24
+    { if ( i == 0 ) uart_puts_P( "FC:" );
+     e72:	20 97       	sbiw	r28, 0x00	; 0
+     e74:	19 f4       	brne	.+6      	; 0xe7c
+     e76:	85 ee       	ldi	r24, 0xE5	; 229
+     e78:	93 e0       	ldi	r25, 0x03	; 3
+     e7a:	07 c0       	rjmp	.+14     	; 0xe8a
+      else if ( i == n-1 ) uart_puts_P( "CRC:" );
+     e7c:	c7 01       	movw	r24, r14
+     e7e:	01 97       	sbiw	r24, 0x01	; 1
+     e80:	c8 17       	cp	r28, r24
+     e82:	d9 07       	cpc	r29, r25
+     e84:	21 f4       	brne	.+8      	; 0xe8e
+     e86:	89 ee       	ldi	r24, 0xE9	; 233
+     e88:	93 e0       	ldi	r25, 0x03	; 3
+     e8a:	0e 94 94 0b 	call	0x1728
+      if ( i == 1 ) uart_puts_P( "SN: " );
+     e8e:	c1 30       	cpi	r28, 0x01	; 1
+     e90:	d1 05       	cpc	r29, r1
+     e92:	21 f4       	brne	.+8      	; 0xe9c
+     e94:	8e ee       	ldi	r24, 0xEE	; 238
+     e96:	93 e0       	ldi	r25, 0x03	; 3
+     e98:	0e 94 94 0b 	call	0x1728
+      uart_puthex_byte(id[i]);
+     e9c:	f8 01       	movw	r30, r16
+     e9e:	80 81       	ld	r24, Z
+     ea0:	0e 94 cb 0b 	call	0x1796
+      uart_puts_P(" ");
+     ea4:	83 ef       	ldi	r24, 0xF3	; 243
+     ea6:	93 e0       	ldi	r25, 0x03	; 3
+     ea8:	0e 94 94 0b 	call	0x1728
+      if ( i == 0 ) 
+     eac:	20 97       	sbiw	r28, 0x00	; 0
+     eae:	81 f4       	brne	.+32     	; 0xed0
+       { if ( id[0] == DS18S20_ID ) uart_puts_P ("(18S)");
+     eb0:	f6 01       	movw	r30, r12
+     eb2:	80 81       	ld	r24, Z
+     eb4:	80 31       	cpi	r24, 0x10	; 16
+     eb6:	19 f4       	brne	.+6      	; 0xebe
+     eb8:	85 ef       	ldi	r24, 0xF5	; 245
+     eba:	93 e0       	ldi	r25, 0x03	; 3
+     ebc:	07 c0       	rjmp	.+14     	; 0xecc
+         else if ( id[0] == DS18B20_ID ) uart_puts_P ("(18B)");
+     ebe:	88 32       	cpi	r24, 0x28	; 40
+     ec0:	19 f4       	brne	.+6      	; 0xec8
+     ec2:	8b ef       	ldi	r24, 0xFB	; 251
+     ec4:	93 e0       	ldi	r25, 0x03	; 3
+     ec6:	02 c0       	rjmp	.+4      	; 0xecc
+         else uart_puts_P ("( ? )");
+     ec8:	81 e0       	ldi	r24, 0x01	; 1
+     eca:	94 e0       	ldi	r25, 0x04	; 4
+     ecc:	0e 94 94 0b 	call	0x1728
+     ed0:	21 96       	adiw	r28, 0x01	; 1
+     ed2:	0f 5f       	subi	r16, 0xFF	; 255
+     ed4:	1f 4f       	sbci	r17, 0xFF	; 255
+     ed6:	ce 15       	cp	r28, r14
+     ed8:	df 05       	cpc	r29, r15
+     eda:	58 f2       	brcs	.-106    	; 0xe72
+       }
+    }
+   if ( crc8( id, OW_ROMCODE_SIZE) )
+     edc:	68 e0       	ldi	r22, 0x08	; 8
+     ede:	70 e0       	ldi	r23, 0x00	; 0
+     ee0:	c6 01       	movw	r24, r12
+     ee2:	0e 94 d6 0b 	call	0x17ac
+     ee6:	88 23       	and	r24, r24
+     ee8:	19 f0       	breq	.+6      	; 0xef0
+      uart_puts_P( " CRC FAIL " );
+     eea:	87 e0       	ldi	r24, 0x07	; 7
+     eec:	94 e0       	ldi	r25, 0x04	; 4
+     eee:	02 c0       	rjmp	.+4      	; 0xef4
+   else 
+      uart_puts_P( " CRC O.K. " );
+     ef0:	82 e1       	ldi	r24, 0x12	; 18
+     ef2:	94 e0       	ldi	r25, 0x04	; 4
+     ef4:	0e 94 94 0b 	call	0x1728
+     ef8:	df 91       	pop	r29
+     efa:	cf 91       	pop	r28
+     efc:	1f 91       	pop	r17
+     efe:	0f 91       	pop	r16
+     f00:	ff 90       	pop	r15
+     f02:	ef 90       	pop	r14
+     f04:	df 90       	pop	r13
+     f06:	cf 90       	pop	r12
+     f08:	08 95       	ret
+
+00000f0a <show_sp_uart>:
+ }
+
+void show_sp_uart( uint8_t *sp, size_t n )
+ { size_t i;
+     f0a:	ef 92       	push	r14
+     f0c:	ff 92       	push	r15
+     f0e:	0f 93       	push	r16
+     f10:	1f 93       	push	r17
+     f12:	cf 93       	push	r28
+     f14:	df 93       	push	r29
+     f16:	7c 01       	movw	r14, r24
+     f18:	eb 01       	movw	r28, r22
+   uart_puts_P( "SP:" );
+     f1a:	8d e1       	ldi	r24, 0x1D	; 29
+     f1c:	94 e0       	ldi	r25, 0x04	; 4
+     f1e:	0e 94 94 0b 	call	0x1728
+   for( i = 0; i < n; i++ ) 
+     f22:	00 e0       	ldi	r16, 0x00	; 0
+     f24:	10 e0       	ldi	r17, 0x00	; 0
+     f26:	0c 17       	cp	r16, r28
+     f28:	1d 07       	cpc	r17, r29
+     f2a:	b8 f4       	brcc	.+46     	; 0xf5a
+    {	if ( i == n-1 ) uart_puts_P( "CRC:" );
+     f2c:	ce 01       	movw	r24, r28
+     f2e:	01 97       	sbiw	r24, 0x01	; 1
+     f30:	08 17       	cp	r16, r24
+     f32:	19 07       	cpc	r17, r25
+     f34:	21 f4       	brne	.+8      	; 0xf3e
+     f36:	81 e2       	ldi	r24, 0x21	; 33
+     f38:	94 e0       	ldi	r25, 0x04	; 4
+     f3a:	0e 94 94 0b 	call	0x1728
+      uart_puthex_byte(sp[i]);
+     f3e:	f7 01       	movw	r30, r14
+     f40:	81 91       	ld	r24, Z+
+     f42:	7f 01       	movw	r14, r30
+     f44:	0e 94 cb 0b 	call	0x1796
+      uart_puts_P(" ");
+     f48:	86 e2       	ldi	r24, 0x26	; 38
+     f4a:	94 e0       	ldi	r25, 0x04	; 4
+     f4c:	0e 94 94 0b 	call	0x1728
+     f50:	0f 5f       	subi	r16, 0xFF	; 255
+     f52:	1f 4f       	sbci	r17, 0xFF	; 255
+     f54:	0c 17       	cp	r16, r28
+     f56:	1d 07       	cpc	r17, r29
+     f58:	48 f3       	brcs	.-46     	; 0xf2c
+     f5a:	df 91       	pop	r29
+     f5c:	cf 91       	pop	r28
+     f5e:	1f 91       	pop	r17
+     f60:	0f 91       	pop	r16
+     f62:	ff 90       	pop	r15
+     f64:	ef 90       	pop	r14
+     f66:	08 95       	ret
+
+00000f68 <DS18X20_meas_to_cel>:
+    }
+ }
+
+/* verbose output rom-search follows read-scratchpad in one loop */
+uint8_t DS18X20_read_meas_all_verbose( void )
+ { uint8_t id[OW_ROMCODE_SIZE], sp[DS18X20_SP_SIZE], diff;
+   uint8_t i;
+   uint16_t meas;
+   uint8_t subzero, cel, cel_frac_bits;
+
+   for( diff = OW_SEARCH_FIRST; diff != OW_LAST_DEVICE; )
+    { diff = ow_rom_search( diff, &id[0] );
+      if( diff == OW_PRESENCE_ERR ) 
+       { uart_puts_P( "No Sensor found\r" );
+         return OW_PRESENCE_ERR;
+       }
+      if( diff == OW_DATA_ERR ) 
+       { uart_puts_P( "Bus Error\r" );
+         return OW_DATA_ERR;
+       }
+
+      DS18X20_show_id_uart( id, OW_ROMCODE_SIZE );
+
+      if( id[0] == DS18B20_ID || id[0] == DS18S20_ID ) 
+       { // temperature sensor
+         uart_putc ('\r');
+         ow_byte_wr( DS18X20_READ );			// read command
+         for ( i=0 ; i< DS18X20_SP_SIZE; i++ )
+            sp[i]=ow_byte_rd();
+
+         show_sp_uart( sp, DS18X20_SP_SIZE );
+
+         if ( crc8( &sp[0], DS18X20_SP_SIZE ) )
+            uart_puts_P( " CRC FAIL " );
+         else 
+            uart_puts_P( " CRC O.K. " );
+         
+         uart_putc ('\r');
+         meas = sp[0]; // LSB Temp. from Scrachpad-Data
+         meas |= (uint16_t) (sp[1] << 8); // MSB
+
+         uart_puts_P(" T_raw=");
+         uart_puthex_byte((uint8_t)(meas>>8));
+         uart_puthex_byte((uint8_t)meas);
+         uart_puts_P(" ");
+
+         if( id[0] == DS18S20_ID ) 
+          { // 18S20
+            uart_puts_P( "S20/09" );
+          }
+         else if ( id[0] == DS18B20_ID ) 
+          { // 18B20
+            i=sp[DS18B20_CONF_REG];
+            if ( (i & DS18B20_12_BIT) == DS18B20_12_BIT ) 
+               uart_puts_P( "B20/12" );
+             
+            else if ( (i & DS18B20_11_BIT) == DS18B20_11_BIT ) 
+               uart_puts_P( "B20/11" );
+             
+            else if ( (i & DS18B20_10_BIT) == DS18B20_10_BIT ) 
+               uart_puts_P( " B20/10 " );
+				 
+            else 
+               // if ( (i & DS18B20_9_BIT) == DS18B20_9_BIT ) { 
+               uart_puts_P( "B20/09" );
+          } 			
+         uart_puts_P(" ");
+         DS18X20_meas_to_cel(id[0], sp, &subzero, &cel, &cel_frac_bits);
+         DS18X20_uart_put_temp(subzero, cel, cel_frac_bits);
+         uart_puts("\r");
+       } // if meas-sensor
+    } // loop all sensors
+
+   uart_puts_P( "\r" );
+	return DS18X20_OK;
+ }
+#endif
+
+/*----------- end of "debug-functions" ---------------*/
+
+/* 
+   convert raw value from DS18x20 to Celsius
+   input is: 
+   - familycode fc (0x10/0x28 see header)
+   - scratchpad-buffer
+   output is:
+   - cel full celsius
+   - fractions of celsius in millicelsius*(10^-1)/625 (the 4 LS-Bits)
+   - subzero =0 positiv / 1 negativ
+   always returns  DS18X20_OK
+   TODO invalid-values detection (but should be covered by CRC)
+*/
+uint8_t DS18X20_meas_to_cel( uint8_t fc, uint8_t *sp, 
+   uint8_t* subzero, uint8_t* cel, uint8_t* cel_frac_bits)
+ { uint16_t meas;
+     f68:	0f 93       	push	r16
+     f6a:	1f 93       	push	r17
+     f6c:	cf 93       	push	r28
+     f6e:	c8 2f       	mov	r28, r24
+     f70:	fb 01       	movw	r30, r22
+     f72:	da 01       	movw	r26, r20
+     f74:	a9 01       	movw	r20, r18
+   uint8_t  i;
+
+   meas = sp[0];  // LSB
+     f76:	80 81       	ld	r24, Z
+     f78:	28 2f       	mov	r18, r24
+     f7a:	33 27       	eor	r19, r19
+   meas |= ((uint16_t)sp[1])<<8; // MSB
+     f7c:	81 81       	ldd	r24, Z+1	; 0x01
+     f7e:	99 27       	eor	r25, r25
+     f80:	98 2f       	mov	r25, r24
+     f82:	88 27       	eor	r24, r24
+     f84:	28 2b       	or	r18, r24
+     f86:	39 2b       	or	r19, r25
+   //meas = 0xff5e; meas = 0xfe6f;
+
+   //  only work on 12bit-base
+   if( fc == DS18S20_ID ) 
+     f88:	c0 31       	cpi	r28, 0x10	; 16
+     f8a:	59 f4       	brne	.+22     	; 0xfa2
+    { // 9 -> 12 bit if 18S20
+      /* Extended measurements for DS18S20 contributed by Carsten Foss */
+      meas &= (uint16_t) 0xfffe;	// Discard LSB , needed for later extended precicion calc
+     f8c:	2e 7f       	andi	r18, 0xFE	; 254
+      meas <<= 3;					// Convert to 12-bit , now degrees are in 1/16 degrees units
+     f8e:	63 e0       	ldi	r22, 0x03	; 3
+     f90:	22 0f       	add	r18, r18
+     f92:	33 1f       	adc	r19, r19
+     f94:	6a 95       	dec	r22
+     f96:	e1 f7       	brne	.-8      	; 0xf90
+      meas += (16 - sp[6]) - 4;	// Add the compensation , and remember to subtract 0.25 degree (4/16)
+     f98:	86 81       	ldd	r24, Z+6	; 0x06
+     f9a:	28 1b       	sub	r18, r24
+     f9c:	31 09       	sbc	r19, r1
+     f9e:	24 5f       	subi	r18, 0xF4	; 244
+     fa0:	3f 4f       	sbci	r19, 0xFF	; 255
+    }
+	// check for negative 
+	if ( meas & 0x8000 )  
+     fa2:	37 ff       	sbrs	r19, 7
+     fa4:	06 c0       	rjmp	.+12     	; 0xfb2
+    { *subzero=1;      // mark negative
+     fa6:	81 e0       	ldi	r24, 0x01	; 1
+     fa8:	8c 93       	st	X, r24
+		meas ^= 0xffff;  // convert to positive => (twos complement)++
+		meas++;
+     faa:	30 95       	com	r19
+     fac:	21 95       	neg	r18
+     fae:	3f 4f       	sbci	r19, 0xFF	; 255
+     fb0:	01 c0       	rjmp	.+2      	; 0xfb4
+	 }
+	else *subzero=0;
+     fb2:	1c 92       	st	X, r1
+
+	// clear undefined bits for B != 12bit
+   if ( fc == DS18B20_ID ) 
+     fb4:	c8 32       	cpi	r28, 0x28	; 40
+     fb6:	91 f4       	brne	.+36     	; 0xfdc
+    { // check resolution 18B20
+      i = sp[DS18B20_CONF_REG];
+     fb8:	84 81       	ldd	r24, Z+4	; 0x04
+      if ( (i & DS18B20_12_BIT) == DS18B20_12_BIT ) 
+     fba:	68 2f       	mov	r22, r24
+     fbc:	77 27       	eor	r23, r23
+     fbe:	cb 01       	movw	r24, r22
+     fc0:	80 76       	andi	r24, 0x60	; 96
+     fc2:	90 70       	andi	r25, 0x00	; 0
+     fc4:	80 36       	cpi	r24, 0x60	; 96
+     fc6:	91 05       	cpc	r25, r1
+     fc8:	49 f0       	breq	.+18     	; 0xfdc
+         ;
+      else if ( (i & DS18B20_11_BIT) == DS18B20_11_BIT ) 
+     fca:	66 ff       	sbrs	r22, 6
+     fcc:	02 c0       	rjmp	.+4      	; 0xfd2
+         meas &= ~(DS18B20_11_BIT_UNDF);
+     fce:	2e 7f       	andi	r18, 0xFE	; 254
+     fd0:	05 c0       	rjmp	.+10     	; 0xfdc
+      else if ( (i & DS18B20_10_BIT) == DS18B20_10_BIT ) 
+     fd2:	65 ff       	sbrs	r22, 5
+     fd4:	02 c0       	rjmp	.+4      	; 0xfda
+         meas &= ~(DS18B20_10_BIT_UNDF);
+     fd6:	2c 7f       	andi	r18, 0xFC	; 252
+     fd8:	01 c0       	rjmp	.+2      	; 0xfdc
+      else 
+         // if ( (i & DS18B20_9_BIT) == DS18B20_9_BIT ) { 
+         meas &= ~(DS18B20_9_BIT_UNDF);
+     fda:	28 7f       	andi	r18, 0xF8	; 248
+    }			
+
+   *cel  = (uint8_t)(meas >> 4); 
+     fdc:	c9 01       	movw	r24, r18
+     fde:	34 e0       	ldi	r19, 0x04	; 4
+     fe0:	96 95       	lsr	r25
+     fe2:	87 95       	ror	r24
+     fe4:	3a 95       	dec	r19
+     fe6:	e1 f7       	brne	.-8      	; 0xfe0
+     fe8:	fa 01       	movw	r30, r20
+     fea:	80 83       	st	Z, r24
+   *cel_frac_bits = (uint8_t)(meas & 0x000F);
+     fec:	82 2f       	mov	r24, r18
+     fee:	8f 70       	andi	r24, 0x0F	; 15
+     ff0:	f8 01       	movw	r30, r16
+     ff2:	80 83       	st	Z, r24
+   return DS18X20_OK;
+ }
+     ff4:	80 e0       	ldi	r24, 0x00	; 0
+     ff6:	90 e0       	ldi	r25, 0x00	; 0
+     ff8:	cf 91       	pop	r28
+     ffa:	1f 91       	pop	r17
+     ffc:	0f 91       	pop	r16
+     ffe:	08 95       	ret
+
+00001000 <DS18X20_read_meas_all_verbose>:
+    1000:	df 92       	push	r13
+    1002:	ef 92       	push	r14
+    1004:	ff 92       	push	r15
+    1006:	0f 93       	push	r16
+    1008:	1f 93       	push	r17
+    100a:	cf 93       	push	r28
+    100c:	df 93       	push	r29
+    100e:	cd b7       	in	r28, 0x3d	; 61
+    1010:	de b7       	in	r29, 0x3e	; 62
+    1012:	65 97       	sbiw	r28, 0x15	; 21
+    1014:	0f b6       	in	r0, 0x3f	; 63
+    1016:	f8 94       	cli
+    1018:	de bf       	out	0x3e, r29	; 62
+    101a:	0f be       	out	0x3f, r0	; 63
+    101c:	cd bf       	out	0x3d, r28	; 61
+    101e:	bf ef       	ldi	r27, 0xFF	; 255
+    1020:	db 2e       	mov	r13, r27
+    1022:	be 01       	movw	r22, r28
+    1024:	6f 5f       	subi	r22, 0xFF	; 255
+    1026:	7f 4f       	sbci	r23, 0xFF	; 255
+    1028:	8d 2d       	mov	r24, r13
+    102a:	0e 94 49 06 	call	0xc92
+    102e:	d8 2e       	mov	r13, r24
+    1030:	8f ef       	ldi	r24, 0xFF	; 255
+    1032:	d8 16       	cp	r13, r24
+    1034:	39 f4       	brne	.+14     	; 0x1044
+    1036:	88 e2       	ldi	r24, 0x28	; 40
+    1038:	94 e0       	ldi	r25, 0x04	; 4
+    103a:	0e 94 94 0b 	call	0x1728
+    103e:	8f ef       	ldi	r24, 0xFF	; 255
+    1040:	90 e0       	ldi	r25, 0x00	; 0
+    1042:	a8 c0       	rjmp	.+336    	; 0x1194
+    1044:	ee ef       	ldi	r30, 0xFE	; 254
+    1046:	de 16       	cp	r13, r30
+    1048:	39 f4       	brne	.+14     	; 0x1058
+    104a:	89 e3       	ldi	r24, 0x39	; 57
+    104c:	94 e0       	ldi	r25, 0x04	; 4
+    104e:	0e 94 94 0b 	call	0x1728
+    1052:	8e ef       	ldi	r24, 0xFE	; 254
+    1054:	90 e0       	ldi	r25, 0x00	; 0
+    1056:	9e c0       	rjmp	.+316    	; 0x1194
+    1058:	68 e0       	ldi	r22, 0x08	; 8
+    105a:	70 e0       	ldi	r23, 0x00	; 0
+    105c:	ce 01       	movw	r24, r28
+    105e:	01 96       	adiw	r24, 0x01	; 1
+    1060:	0e 94 29 07 	call	0xe52
+    1064:	89 81       	ldd	r24, Y+1	; 0x01
+    1066:	88 32       	cpi	r24, 0x28	; 40
+    1068:	19 f0       	breq	.+6      	; 0x1070
+    106a:	80 31       	cpi	r24, 0x10	; 16
+    106c:	09 f0       	breq	.+2      	; 0x1070
+    106e:	89 c0       	rjmp	.+274    	; 0x1182
+    1070:	8d e0       	ldi	r24, 0x0D	; 13
+    1072:	0e 94 73 0b 	call	0x16e6
+    1076:	8e eb       	ldi	r24, 0xBE	; 190
+    1078:	0e 94 32 06 	call	0xc64
+    107c:	ee 24       	eor	r14, r14
+    107e:	ff 24       	eor	r15, r15
+    1080:	98 e0       	ldi	r25, 0x08	; 8
+    1082:	8e 01       	movw	r16, r28
+    1084:	0f 5f       	subi	r16, 0xFF	; 255
+    1086:	1f 4f       	sbci	r17, 0xFF	; 255
+    1088:	0e 0d       	add	r16, r14
+    108a:	1f 1d       	adc	r17, r15
+    108c:	9d 8b       	std	Y+21, r25	; 0x15
+    108e:	0e 94 44 06 	call	0xc88
+    1092:	f8 01       	movw	r30, r16
+    1094:	80 87       	std	Z+8, r24	; 0x08
+    1096:	9d 89       	ldd	r25, Y+21	; 0x15
+    1098:	91 50       	subi	r25, 0x01	; 1
+    109a:	08 94       	sec
+    109c:	e1 1c       	adc	r14, r1
+    109e:	f1 1c       	adc	r15, r1
+    10a0:	97 ff       	sbrs	r25, 7
+    10a2:	ef cf       	rjmp	.-34     	; 0x1082
+    10a4:	a9 e0       	ldi	r26, 0x09	; 9
+    10a6:	ea 2e       	mov	r14, r26
+    10a8:	f1 2c       	mov	r15, r1
+    10aa:	ec 0e       	add	r14, r28
+    10ac:	fd 1e       	adc	r15, r29
+    10ae:	69 e0       	ldi	r22, 0x09	; 9
+    10b0:	70 e0       	ldi	r23, 0x00	; 0
+    10b2:	c7 01       	movw	r24, r14
+    10b4:	0e 94 85 07 	call	0xf0a
+    10b8:	69 e0       	ldi	r22, 0x09	; 9
+    10ba:	70 e0       	ldi	r23, 0x00	; 0
+    10bc:	c7 01       	movw	r24, r14
+    10be:	0e 94 d6 0b 	call	0x17ac
+    10c2:	88 23       	and	r24, r24
+    10c4:	19 f0       	breq	.+6      	; 0x10cc
+    10c6:	84 e4       	ldi	r24, 0x44	; 68
+    10c8:	94 e0       	ldi	r25, 0x04	; 4
+    10ca:	02 c0       	rjmp	.+4      	; 0x10d0
+    10cc:	8f e4       	ldi	r24, 0x4F	; 79
+    10ce:	94 e0       	ldi	r25, 0x04	; 4
+    10d0:	0e 94 94 0b 	call	0x1728
+    10d4:	8d e0       	ldi	r24, 0x0D	; 13
+    10d6:	0e 94 73 0b 	call	0x16e6
+    10da:	89 85       	ldd	r24, Y+9	; 0x09
+    10dc:	08 2f       	mov	r16, r24
+    10de:	11 27       	eor	r17, r17
+    10e0:	8a 85       	ldd	r24, Y+10	; 0x0a
+    10e2:	99 27       	eor	r25, r25
+    10e4:	98 2f       	mov	r25, r24
+    10e6:	88 27       	eor	r24, r24
+    10e8:	08 2b       	or	r16, r24
+    10ea:	19 2b       	or	r17, r25
+    10ec:	8a e5       	ldi	r24, 0x5A	; 90
+    10ee:	94 e0       	ldi	r25, 0x04	; 4
+    10f0:	0e 94 94 0b 	call	0x1728
+    10f4:	81 2f       	mov	r24, r17
+    10f6:	99 27       	eor	r25, r25
+    10f8:	0e 94 cb 0b 	call	0x1796
+    10fc:	80 2f       	mov	r24, r16
+    10fe:	0e 94 cb 0b 	call	0x1796
+    1102:	82 e6       	ldi	r24, 0x62	; 98
+    1104:	94 e0       	ldi	r25, 0x04	; 4
+    1106:	0e 94 94 0b 	call	0x1728
+    110a:	89 81       	ldd	r24, Y+1	; 0x01
+    110c:	80 31       	cpi	r24, 0x10	; 16
+    110e:	19 f4       	brne	.+6      	; 0x1116
+    1110:	84 e6       	ldi	r24, 0x64	; 100
+    1112:	94 e0       	ldi	r25, 0x04	; 4
+    1114:	1a c0       	rjmp	.+52     	; 0x114a
+    1116:	88 32       	cpi	r24, 0x28	; 40
+    1118:	d1 f4       	brne	.+52     	; 0x114e
+    111a:	9d 85       	ldd	r25, Y+13	; 0x0d
+    111c:	29 2f       	mov	r18, r25
+    111e:	33 27       	eor	r19, r19
+    1120:	c9 01       	movw	r24, r18
+    1122:	80 76       	andi	r24, 0x60	; 96
+    1124:	90 70       	andi	r25, 0x00	; 0
+    1126:	80 36       	cpi	r24, 0x60	; 96
+    1128:	91 05       	cpc	r25, r1
+    112a:	19 f4       	brne	.+6      	; 0x1132
+    112c:	8b e6       	ldi	r24, 0x6B	; 107
+    112e:	94 e0       	ldi	r25, 0x04	; 4
+    1130:	0c c0       	rjmp	.+24     	; 0x114a
+    1132:	26 ff       	sbrs	r18, 6
+    1134:	03 c0       	rjmp	.+6      	; 0x113c
+    1136:	82 e7       	ldi	r24, 0x72	; 114
+    1138:	94 e0       	ldi	r25, 0x04	; 4
+    113a:	07 c0       	rjmp	.+14     	; 0x114a
+    113c:	25 ff       	sbrs	r18, 5
+    113e:	03 c0       	rjmp	.+6      	; 0x1146
+    1140:	89 e7       	ldi	r24, 0x79	; 121
+    1142:	94 e0       	ldi	r25, 0x04	; 4
+    1144:	02 c0       	rjmp	.+4      	; 0x114a
+    1146:	82 e8       	ldi	r24, 0x82	; 130
+    1148:	94 e0       	ldi	r25, 0x04	; 4
+    114a:	0e 94 94 0b 	call	0x1728
+    114e:	89 e8       	ldi	r24, 0x89	; 137
+    1150:	94 e0       	ldi	r25, 0x04	; 4
+    1152:	0e 94 94 0b 	call	0x1728
+    1156:	8e 01       	movw	r16, r28
+    1158:	0e 5e       	subi	r16, 0xEE	; 238
+    115a:	1f 4f       	sbci	r17, 0xFF	; 255
+    115c:	9e 01       	movw	r18, r28
+    115e:	2d 5e       	subi	r18, 0xED	; 237
+    1160:	3f 4f       	sbci	r19, 0xFF	; 255
+    1162:	ae 01       	movw	r20, r28
+    1164:	4c 5e       	subi	r20, 0xEC	; 236
+    1166:	5f 4f       	sbci	r21, 0xFF	; 255
+    1168:	b7 01       	movw	r22, r14
+    116a:	89 81       	ldd	r24, Y+1	; 0x01
+    116c:	0e 94 b4 07 	call	0xf68
+    1170:	4a 89       	ldd	r20, Y+18	; 0x12
+    1172:	6b 89       	ldd	r22, Y+19	; 0x13
+    1174:	8c 89       	ldd	r24, Y+20	; 0x14
+    1176:	0e 94 c0 06 	call	0xd80
+    117a:	80 e6       	ldi	r24, 0x60	; 96
+    117c:	90 e0       	ldi	r25, 0x00	; 0
+    117e:	0e 94 85 0b 	call	0x170a
+    1182:	dd 20       	and	r13, r13
+    1184:	09 f0       	breq	.+2      	; 0x1188
+    1186:	4d cf       	rjmp	.-358    	; 0x1022
+    1188:	8b e8       	ldi	r24, 0x8B	; 139
+    118a:	94 e0       	ldi	r25, 0x04	; 4
+    118c:	0e 94 94 0b 	call	0x1728
+    1190:	80 e0       	ldi	r24, 0x00	; 0
+    1192:	90 e0       	ldi	r25, 0x00	; 0
+    1194:	65 96       	adiw	r28, 0x15	; 21
+    1196:	0f b6       	in	r0, 0x3f	; 63
+    1198:	f8 94       	cli
+    119a:	de bf       	out	0x3e, r29	; 62
+    119c:	0f be       	out	0x3f, r0	; 63
+    119e:	cd bf       	out	0x3d, r28	; 61
+    11a0:	df 91       	pop	r29
+    11a2:	cf 91       	pop	r28
+    11a4:	1f 91       	pop	r17
+    11a6:	0f 91       	pop	r16
+    11a8:	ff 90       	pop	r15
+    11aa:	ef 90       	pop	r14
+    11ac:	df 90       	pop	r13
+    11ae:	08 95       	ret
+
+000011b0 <DS18X20_temp_to_decicel>:
+
+/* converts to decicelsius
+   input is ouput from meas_to_cel
+   returns absolute value of temperatur in decicelsius
+	i.e.: sz=0, c=28, frac=15 returns 289 (=28.9°C)
+0	0	0	
+1	625	625	1
+2	1250	250	
+3	1875	875	3
+4	2500	500	4
+5	3125	125	
+6	3750	750	6
+7	4375	375	
+8	5000	0	
+9	5625	625	9
+10	6250	250	
+11	6875	875	11
+12	7500	500	12
+13	8125	125	
+14	8750	750	14
+15	9375	375	*/
+uint16_t DS18X20_temp_to_decicel(uint8_t subzero, uint8_t cel, 
+   uint8_t cel_frac_bits)
+
+ { uint16_t h;
+    11b0:	ef 92       	push	r14
+    11b2:	ff 92       	push	r15
+    11b4:	0f 93       	push	r16
+    11b6:	1f 93       	push	r17
+    11b8:	cf 93       	push	r28
+    11ba:	df 93       	push	r29
+    11bc:	cd b7       	in	r28, 0x3d	; 61
+    11be:	de b7       	in	r29, 0x3e	; 62
+    11c0:	28 97       	sbiw	r28, 0x08	; 8
+    11c2:	0f b6       	in	r0, 0x3f	; 63
+    11c4:	f8 94       	cli
+    11c6:	de bf       	out	0x3e, r29	; 62
+    11c8:	0f be       	out	0x3f, r0	; 63
+    11ca:	cd bf       	out	0x3d, r28	; 61
+    11cc:	08 2f       	mov	r16, r24
+    11ce:	16 2f       	mov	r17, r22
+   uint8_t  i;
+   uint8_t need_rounding[] = { 1, 3, 4, 6, 9, 11, 12, 14 };
+    11d0:	7e 01       	movw	r14, r28
+    11d2:	08 94       	sec
+    11d4:	e1 1c       	adc	r14, r1
+    11d6:	f1 1c       	adc	r15, r1
+    11d8:	88 e0       	ldi	r24, 0x08	; 8
+    11da:	e2 e6       	ldi	r30, 0x62	; 98
+    11dc:	f0 e0       	ldi	r31, 0x00	; 0
+    11de:	d7 01       	movw	r26, r14
+    11e0:	01 90       	ld	r0, Z+
+    11e2:	0d 92       	st	X+, r0
+    11e4:	8a 95       	dec	r24
+    11e6:	e1 f7       	brne	.-8      	; 0x11e0
+
+   h = cel_frac_bits*DS18X20_FRACCONV/1000;
+    11e8:	24 2f       	mov	r18, r20
+    11ea:	33 27       	eor	r19, r19
+    11ec:	81 e7       	ldi	r24, 0x71	; 113
+    11ee:	92 e0       	ldi	r25, 0x02	; 2
+    11f0:	28 9f       	mul	r18, r24
+    11f2:	b0 01       	movw	r22, r0
+    11f4:	29 9f       	mul	r18, r25
+    11f6:	70 0d       	add	r23, r0
+    11f8:	38 9f       	mul	r19, r24
+    11fa:	70 0d       	add	r23, r0
+    11fc:	11 24       	eor	r1, r1
+    11fe:	cb 01       	movw	r24, r22
+    1200:	68 ee       	ldi	r22, 0xE8	; 232
+    1202:	73 e0       	ldi	r23, 0x03	; 3
+    1204:	0e 94 3f 0c 	call	0x187e
+   h += cel*10;
+    1208:	8a e0       	ldi	r24, 0x0A	; 10
+    120a:	18 9f       	mul	r17, r24
+    120c:	c0 01       	movw	r24, r0
+    120e:	11 24       	eor	r1, r1
+    1210:	68 0f       	add	r22, r24
+    1212:	79 1f       	adc	r23, r25
+   if (!subzero) 
+    1214:	00 23       	and	r16, r16
+    1216:	59 f4       	brne	.+22     	; 0x122e
+    { for (i=0; i<sizeof(need_rounding); i++) 
+    1218:	90 2f       	mov	r25, r16
+    121a:	f7 01       	movw	r30, r14
+       { if ( cel_frac_bits == need_rounding[i] ) 
+    121c:	81 91       	ld	r24, Z+
+    121e:	48 17       	cp	r20, r24
+    1220:	19 f4       	brne	.+6      	; 0x1228
+          { h++;
+    1222:	6f 5f       	subi	r22, 0xFF	; 255
+    1224:	7f 4f       	sbci	r23, 0xFF	; 255
+            break;
+    1226:	03 c0       	rjmp	.+6      	; 0x122e
+    1228:	9f 5f       	subi	r25, 0xFF	; 255
+    122a:	98 30       	cpi	r25, 0x08	; 8
+    122c:	b8 f3       	brcs	.-18     	; 0x121c
+          }
+       }
+    }
+   return h;
+ }
+    122e:	cb 01       	movw	r24, r22
+    1230:	28 96       	adiw	r28, 0x08	; 8
+    1232:	0f b6       	in	r0, 0x3f	; 63
+    1234:	f8 94       	cli
+    1236:	de bf       	out	0x3e, r29	; 62
+    1238:	0f be       	out	0x3f, r0	; 63
+    123a:	cd bf       	out	0x3d, r28	; 61
+    123c:	df 91       	pop	r29
+    123e:	cf 91       	pop	r28
+    1240:	1f 91       	pop	r17
+    1242:	0f 91       	pop	r16
+    1244:	ff 90       	pop	r15
+    1246:	ef 90       	pop	r14
+    1248:	08 95       	ret
+
+0000124a <DS18X20_temp_cmp>:
+
+/* compare temperature values (full celsius only)
+   returns -1 if param-pair1 < param-pair2 
+         0 if == 
+         1 if >  */
+int8_t DS18X20_temp_cmp(uint8_t subzero1, uint16_t cel1, 
+   uint8_t subzero2, uint16_t cel2)
+
+ { int16_t t1 = (subzero1) ? (cel1*(-1)) : (cel1);
+    124a:	88 23       	and	r24, r24
+    124c:	19 f0       	breq	.+6      	; 0x1254
+    124e:	70 95       	com	r23
+    1250:	61 95       	neg	r22
+    1252:	7f 4f       	sbci	r23, 0xFF	; 255
+   int16_t t2 = (subzero2) ? (cel2*(-1)) : (cel2);
+    1254:	44 23       	and	r20, r20
+    1256:	19 f0       	breq	.+6      	; 0x125e
+    1258:	30 95       	com	r19
+    125a:	21 95       	neg	r18
+    125c:	3f 4f       	sbci	r19, 0xFF	; 255
+
+   if (t1<t2) return -1;
+    125e:	62 17       	cp	r22, r18
+    1260:	73 07       	cpc	r23, r19
+    1262:	1c f4       	brge	.+6      	; 0x126a
+    1264:	8f ef       	ldi	r24, 0xFF	; 255
+    1266:	9f ef       	ldi	r25, 0xFF	; 255
+    1268:	08 95       	ret
+   if (t1>t2) return 1;
+    126a:	26 17       	cp	r18, r22
+    126c:	37 07       	cpc	r19, r23
+    126e:	1c f4       	brge	.+6      	; 0x1276
+    1270:	81 e0       	ldi	r24, 0x01	; 1
+    1272:	90 e0       	ldi	r25, 0x00	; 0
+    1274:	08 95       	ret
+   return 0;
+    1276:	80 e0       	ldi	r24, 0x00	; 0
+    1278:	90 e0       	ldi	r25, 0x00	; 0
+ }
+    127a:	08 95       	ret
+    127c:	08 95       	ret
+
+0000127e <DS18X20_find_sensor>:
+
+/* find DS18X20 Sensors on 1-Wire-Bus
+   input/ouput: diff is the result of the last rom-search
+   output: id is the rom-code of the sensor found */
+void DS18X20_find_sensor(uint8_t *diff, uint8_t id[])
+ { for (;;) 
+    127e:	0f 93       	push	r16
+    1280:	1f 93       	push	r17
+    1282:	cf 93       	push	r28
+    1284:	df 93       	push	r29
+    1286:	8c 01       	movw	r16, r24
+    1288:	eb 01       	movw	r28, r22
+    { *diff = ow_rom_search( *diff, &id[0] );
+    128a:	be 01       	movw	r22, r28
+    128c:	f8 01       	movw	r30, r16
+    128e:	80 81       	ld	r24, Z
+    1290:	0e 94 49 06 	call	0xc92
+    1294:	98 2f       	mov	r25, r24
+    1296:	f8 01       	movw	r30, r16
+    1298:	80 83       	st	Z, r24
+      if ( *diff==OW_PRESENCE_ERR || *diff==OW_DATA_ERR ||
+    129a:	8e 5f       	subi	r24, 0xFE	; 254
+    129c:	82 30       	cpi	r24, 0x02	; 2
+    129e:	38 f0       	brcs	.+14     	; 0x12ae
+    12a0:	99 23       	and	r25, r25
+    12a2:	29 f0       	breq	.+10     	; 0x12ae
+      *diff == OW_LAST_DEVICE ) return;
+      if ( id[0] == DS18B20_ID || id[0] == DS18S20_ID ) return;
+    12a4:	88 81       	ld	r24, Y
+    12a6:	88 32       	cpi	r24, 0x28	; 40
+    12a8:	11 f0       	breq	.+4      	; 0x12ae
+    12aa:	80 31       	cpi	r24, 0x10	; 16
+    12ac:	71 f7       	brne	.-36     	; 0x128a
+    12ae:	df 91       	pop	r29
+    12b0:	cf 91       	pop	r28
+    12b2:	1f 91       	pop	r17
+    12b4:	0f 91       	pop	r16
+    12b6:	08 95       	ret
+
+000012b8 <DS18X20_get_power_status>:
+    }
+ }
+
+/* get power status of DS18x20 
+   input  : id = rom_code 
+   returns: DS18X20_POWER_EXTERN or DS18X20_POWER_PARASITE */
+uint8_t	DS18X20_get_power_status(uint8_t id[])
+ { uint8_t pstat;
+    12b8:	0f 93       	push	r16
+    12ba:	1f 93       	push	r17
+    12bc:	8c 01       	movw	r16, r24
+   ow_reset();
+    12be:	0e 94 61 05 	call	0xac2
+   ow_command(DS18X20_READ_POWER_SUPPLY, id);
+    12c2:	b8 01       	movw	r22, r16
+    12c4:	84 eb       	ldi	r24, 0xB4	; 180
+    12c6:	0e 94 94 06 	call	0xd28
+   pstat=ow_bit_io(1); // pstat 0=is parasite/ !=0 ext. powered
+    12ca:	81 e0       	ldi	r24, 0x01	; 1
+    12cc:	0e 94 ef 05 	call	0xbde
+    12d0:	18 2f       	mov	r17, r24
+   ow_reset();
+    12d2:	0e 94 61 05 	call	0xac2
+   return (pstat) ? DS18X20_POWER_EXTERN: DS18X20_POWER_PARASITE;
+    12d6:	80 e0       	ldi	r24, 0x00	; 0
+    12d8:	90 e0       	ldi	r25, 0x00	; 0
+    12da:	11 23       	and	r17, r17
+    12dc:	11 f0       	breq	.+4      	; 0x12e2
+    12de:	81 e0       	ldi	r24, 0x01	; 1
+    12e0:	90 e0       	ldi	r25, 0x00	; 0
+    12e2:	1f 91       	pop	r17
+    12e4:	0f 91       	pop	r16
+    12e6:	08 95       	ret
+
+000012e8 <DS18X20_start_meas>:
+ }
+
+/* start measurement (CONVERT_T) for all sensors if input id==NULL 
+   or for single sensor. then id is the rom-code */
+uint8_t DS18X20_start_meas( uint8_t with_power_extern, uint8_t id[])
+ { ow_reset(); //**
+    12e8:	1f 93       	push	r17
+    12ea:	cf 93       	push	r28
+    12ec:	df 93       	push	r29
+    12ee:	18 2f       	mov	r17, r24
+    12f0:	eb 01       	movw	r28, r22
+    12f2:	0e 94 61 05 	call	0xac2
+   if( ow_input_pin_state() ) 
+    12f6:	0e 94 bd 05 	call	0xb7a
+    12fa:	88 23       	and	r24, r24
+    12fc:	59 f0       	breq	.+22     	; 0x1314
+    { // only send if bus is "idle" = high
+      ow_command( DS18X20_CONVERT_T, id );
+    12fe:	be 01       	movw	r22, r28
+    1300:	84 e4       	ldi	r24, 0x44	; 68
+    1302:	0e 94 94 06 	call	0xd28
+      if (with_power_extern != DS18X20_POWER_EXTERN)
+    1306:	11 30       	cpi	r17, 0x01	; 1
+    1308:	11 f0       	breq	.+4      	; 0x130e
+         ow_parasite_enable();
+    130a:	0e 94 c7 05 	call	0xb8e
+
+      return DS18X20_OK;
+    130e:	80 e0       	ldi	r24, 0x00	; 0
+    1310:	90 e0       	ldi	r25, 0x00	; 0
+    1312:	06 c0       	rjmp	.+12     	; 0x1320
+    } 
+   else 
+    { //
+      #ifdef DS18X20_VERBOSE
+      uart_puts_P( "DS18X20_start_meas: Short Circuit !\r" );
+    1314:	8d e8       	ldi	r24, 0x8D	; 141
+    1316:	94 e0       	ldi	r25, 0x04	; 4
+    1318:	0e 94 94 0b 	call	0x1728
+      #endif
+      return DS18X20_START_FAIL;
+    131c:	82 e0       	ldi	r24, 0x02	; 2
+    131e:	90 e0       	ldi	r25, 0x00	; 0
+    1320:	df 91       	pop	r29
+    1322:	cf 91       	pop	r28
+    1324:	1f 91       	pop	r17
+    1326:	08 95       	ret
+
+00001328 <DS18X20_read_meas>:
+    }
+ }
+
+/* reads temperature (scratchpad) of sensor with rom-code id
+   output: subzero==1 if temp.<0, cel: full celsius, mcel: frac 
+   in millicelsius*0.1
+   i.e.: subzero=1, cel=18, millicel=5000 = -18,5000°C */
+uint8_t DS18X20_read_meas(uint8_t id[], uint8_t *subzero, 
+   uint8_t *cel, uint8_t *cel_frac_bits)
+
+ { uint8_t i;
+    1328:	2f 92       	push	r2
+    132a:	3f 92       	push	r3
+    132c:	4f 92       	push	r4
+    132e:	5f 92       	push	r5
+    1330:	6f 92       	push	r6
+    1332:	7f 92       	push	r7
+    1334:	8f 92       	push	r8
+    1336:	9f 92       	push	r9
+    1338:	bf 92       	push	r11
+    133a:	cf 92       	push	r12
+    133c:	df 92       	push	r13
+    133e:	ef 92       	push	r14
+    1340:	ff 92       	push	r15
+    1342:	0f 93       	push	r16
+    1344:	1f 93       	push	r17
+    1346:	cf 93       	push	r28
+    1348:	df 93       	push	r29
+    134a:	cd b7       	in	r28, 0x3d	; 61
+    134c:	de b7       	in	r29, 0x3e	; 62
+    134e:	29 97       	sbiw	r28, 0x09	; 9
+    1350:	0f b6       	in	r0, 0x3f	; 63
+    1352:	f8 94       	cli
+    1354:	de bf       	out	0x3e, r29	; 62
+    1356:	0f be       	out	0x3f, r0	; 63
+    1358:	cd bf       	out	0x3d, r28	; 61
+    135a:	4c 01       	movw	r8, r24
+    135c:	1b 01       	movw	r2, r22
+    135e:	2a 01       	movw	r4, r20
+    1360:	39 01       	movw	r6, r18
+   uint8_t sp[DS18X20_SP_SIZE];
+
+   ow_reset(); //**
+    1362:	0e 94 61 05 	call	0xac2
+   ow_command(DS18X20_READ, id);
+    1366:	b4 01       	movw	r22, r8
+    1368:	8e eb       	ldi	r24, 0xBE	; 190
+    136a:	0e 94 94 06 	call	0xd28
+    136e:	ee 24       	eor	r14, r14
+    1370:	ff 24       	eor	r15, r15
+    1372:	18 e0       	ldi	r17, 0x08	; 8
+    1374:	b1 2e       	mov	r11, r17
+   for ( i=0 ; i< DS18X20_SP_SIZE; i++ ) sp[i]=ow_byte_rd();
+    1376:	6e 01       	movw	r12, r28
+    1378:	08 94       	sec
+    137a:	c1 1c       	adc	r12, r1
+    137c:	d1 1c       	adc	r13, r1
+    137e:	87 01       	movw	r16, r14
+    1380:	0c 0d       	add	r16, r12
+    1382:	1d 1d       	adc	r17, r13
+    1384:	0e 94 44 06 	call	0xc88
+    1388:	f8 01       	movw	r30, r16
+    138a:	80 83       	st	Z, r24
+    138c:	ba 94       	dec	r11
+    138e:	08 94       	sec
+    1390:	e1 1c       	adc	r14, r1
+    1392:	f1 1c       	adc	r15, r1
+    1394:	b7 fe       	sbrs	r11, 7
+    1396:	ef cf       	rjmp	.-34     	; 0x1376
+   if ( crc8( &sp[0], DS18X20_SP_SIZE ) ) 
+    1398:	69 e0       	ldi	r22, 0x09	; 9
+    139a:	70 e0       	ldi	r23, 0x00	; 0
+    139c:	c6 01       	movw	r24, r12
+    139e:	0e 94 d6 0b 	call	0x17ac
+    13a2:	88 23       	and	r24, r24
+    13a4:	19 f0       	breq	.+6      	; 0x13ac
+      return DS18X20_ERROR_CRC;
+    13a6:	83 e0       	ldi	r24, 0x03	; 3
+    13a8:	90 e0       	ldi	r25, 0x00	; 0
+    13aa:	0a c0       	rjmp	.+20     	; 0x13c0
+   DS18X20_meas_to_cel(id[0], sp, subzero, cel, cel_frac_bits);
+    13ac:	83 01       	movw	r16, r6
+    13ae:	92 01       	movw	r18, r4
+    13b0:	a1 01       	movw	r20, r2
+    13b2:	b6 01       	movw	r22, r12
+    13b4:	f4 01       	movw	r30, r8
+    13b6:	80 81       	ld	r24, Z
+    13b8:	0e 94 b4 07 	call	0xf68
+   return DS18X20_OK;
+    13bc:	80 e0       	ldi	r24, 0x00	; 0
+    13be:	90 e0       	ldi	r25, 0x00	; 0
+    13c0:	29 96       	adiw	r28, 0x09	; 9
+    13c2:	0f b6       	in	r0, 0x3f	; 63
+    13c4:	f8 94       	cli
+    13c6:	de bf       	out	0x3e, r29	; 62
+    13c8:	0f be       	out	0x3f, r0	; 63
+    13ca:	cd bf       	out	0x3d, r28	; 61
+    13cc:	df 91       	pop	r29
+    13ce:	cf 91       	pop	r28
+    13d0:	1f 91       	pop	r17
+    13d2:	0f 91       	pop	r16
+    13d4:	ff 90       	pop	r15
+    13d6:	ef 90       	pop	r14
+    13d8:	df 90       	pop	r13
+    13da:	cf 90       	pop	r12
+    13dc:	bf 90       	pop	r11
+    13de:	9f 90       	pop	r9
+    13e0:	8f 90       	pop	r8
+    13e2:	7f 90       	pop	r7
+    13e4:	6f 90       	pop	r6
+    13e6:	5f 90       	pop	r5
+    13e8:	4f 90       	pop	r4
+    13ea:	3f 90       	pop	r3
+    13ec:	2f 90       	pop	r2
+    13ee:	08 95       	ret
+
+000013f0 <DS18X20_read_meas_single>:
+ }
+
+/* reads temperature (scratchpad) of a single sensor (uses skip-rom)
+   output: subzero==1 if temp.<0, cel: full celsius, mcel: frac 
+   in millicelsius*0.1
+   i.e.: subzero=1, cel=18, millicel=5000 = -18,5000°C */
+uint8_t DS18X20_read_meas_single(uint8_t familycode, uint8_t *subzero, 
+   uint8_t *cel, uint8_t *cel_frac_bits)
+
+ { uint8_t i;
+    13f0:	4f 92       	push	r4
+    13f2:	5f 92       	push	r5
+    13f4:	6f 92       	push	r6
+    13f6:	7f 92       	push	r7
+    13f8:	8f 92       	push	r8
+    13fa:	9f 92       	push	r9
+    13fc:	af 92       	push	r10
+    13fe:	bf 92       	push	r11
+    1400:	cf 92       	push	r12
+    1402:	df 92       	push	r13
+    1404:	ef 92       	push	r14
+    1406:	ff 92       	push	r15
+    1408:	0f 93       	push	r16
+    140a:	1f 93       	push	r17
+    140c:	cf 93       	push	r28
+    140e:	df 93       	push	r29
+    1410:	cd b7       	in	r28, 0x3d	; 61
+    1412:	de b7       	in	r29, 0x3e	; 62
+    1414:	29 97       	sbiw	r28, 0x09	; 9
+    1416:	0f b6       	in	r0, 0x3f	; 63
+    1418:	f8 94       	cli
+    141a:	de bf       	out	0x3e, r29	; 62
+    141c:	0f be       	out	0x3f, r0	; 63
+    141e:	cd bf       	out	0x3d, r28	; 61
+    1420:	a8 2e       	mov	r10, r24
+    1422:	2b 01       	movw	r4, r22
+    1424:	3a 01       	movw	r6, r20
+    1426:	49 01       	movw	r8, r18
+   uint8_t sp[DS18X20_SP_SIZE];
+
+   ow_command(DS18X20_READ, NULL);
+    1428:	60 e0       	ldi	r22, 0x00	; 0
+    142a:	70 e0       	ldi	r23, 0x00	; 0
+    142c:	8e eb       	ldi	r24, 0xBE	; 190
+    142e:	0e 94 94 06 	call	0xd28
+    1432:	ee 24       	eor	r14, r14
+    1434:	ff 24       	eor	r15, r15
+    1436:	08 e0       	ldi	r16, 0x08	; 8
+    1438:	b0 2e       	mov	r11, r16
+   for ( i=0 ; i< DS18X20_SP_SIZE; i++ ) sp[i]=ow_byte_rd();
+    143a:	6e 01       	movw	r12, r28
+    143c:	08 94       	sec
+    143e:	c1 1c       	adc	r12, r1
+    1440:	d1 1c       	adc	r13, r1
+    1442:	87 01       	movw	r16, r14
+    1444:	0c 0d       	add	r16, r12
+    1446:	1d 1d       	adc	r17, r13
+    1448:	0e 94 44 06 	call	0xc88
+    144c:	f8 01       	movw	r30, r16
+    144e:	80 83       	st	Z, r24
+    1450:	ba 94       	dec	r11
+    1452:	08 94       	sec
+    1454:	e1 1c       	adc	r14, r1
+    1456:	f1 1c       	adc	r15, r1
+    1458:	b7 fe       	sbrs	r11, 7
+    145a:	ef cf       	rjmp	.-34     	; 0x143a
+   if ( crc8( &sp[0], DS18X20_SP_SIZE ) ) 
+    145c:	69 e0       	ldi	r22, 0x09	; 9
+    145e:	70 e0       	ldi	r23, 0x00	; 0
+    1460:	c6 01       	movw	r24, r12
+    1462:	0e 94 d6 0b 	call	0x17ac
+    1466:	88 23       	and	r24, r24
+    1468:	19 f0       	breq	.+6      	; 0x1470
+      return DS18X20_ERROR_CRC;
+    146a:	83 e0       	ldi	r24, 0x03	; 3
+    146c:	90 e0       	ldi	r25, 0x00	; 0
+    146e:	09 c0       	rjmp	.+18     	; 0x1482
+   DS18X20_meas_to_cel(familycode, sp, subzero, cel, cel_frac_bits);
+    1470:	84 01       	movw	r16, r8
+    1472:	93 01       	movw	r18, r6
+    1474:	a2 01       	movw	r20, r4
+    1476:	b6 01       	movw	r22, r12
+    1478:	8a 2d       	mov	r24, r10
+    147a:	0e 94 b4 07 	call	0xf68
+   return DS18X20_OK;
+    147e:	80 e0       	ldi	r24, 0x00	; 0
+    1480:	90 e0       	ldi	r25, 0x00	; 0
+    1482:	29 96       	adiw	r28, 0x09	; 9
+    1484:	0f b6       	in	r0, 0x3f	; 63
+    1486:	f8 94       	cli
+    1488:	de bf       	out	0x3e, r29	; 62
+    148a:	0f be       	out	0x3f, r0	; 63
+    148c:	cd bf       	out	0x3d, r28	; 61
+    148e:	df 91       	pop	r29
+    1490:	cf 91       	pop	r28
+    1492:	1f 91       	pop	r17
+    1494:	0f 91       	pop	r16
+    1496:	ff 90       	pop	r15
+    1498:	ef 90       	pop	r14
+    149a:	df 90       	pop	r13
+    149c:	cf 90       	pop	r12
+    149e:	bf 90       	pop	r11
+    14a0:	af 90       	pop	r10
+    14a2:	9f 90       	pop	r9
+    14a4:	8f 90       	pop	r8
+    14a6:	7f 90       	pop	r7
+    14a8:	6f 90       	pop	r6
+    14aa:	5f 90       	pop	r5
+    14ac:	4f 90       	pop	r4
+    14ae:	08 95       	ret
+
+000014b0 <DS18X20_write_scratchpad>:
+ }
+
+#ifdef DS18X20_EEPROMSUPPORT
+
+uint8_t DS18X20_write_scratchpad( uint8_t id[], 
+   uint8_t th, uint8_t tl, uint8_t conf)
+
+ { ow_reset(); //**
+    14b0:	ff 92       	push	r15
+    14b2:	0f 93       	push	r16
+    14b4:	1f 93       	push	r17
+    14b6:	cf 93       	push	r28
+    14b8:	df 93       	push	r29
+    14ba:	ec 01       	movw	r28, r24
+    14bc:	16 2f       	mov	r17, r22
+    14be:	04 2f       	mov	r16, r20
+    14c0:	f2 2e       	mov	r15, r18
+    14c2:	0e 94 61 05 	call	0xac2
+   if( ow_input_pin_state() ) 
+    14c6:	0e 94 bd 05 	call	0xb7a
+    14ca:	88 23       	and	r24, r24
+    14cc:	99 f0       	breq	.+38     	; 0x14f4
+    { // only send if bus is "idle" = high
+      ow_command( DS18X20_WRITE_SCRATCHPAD, id );
+    14ce:	be 01       	movw	r22, r28
+    14d0:	8e e4       	ldi	r24, 0x4E	; 78
+    14d2:	0e 94 94 06 	call	0xd28
+      ow_byte_wr(th);
+    14d6:	81 2f       	mov	r24, r17
+    14d8:	0e 94 32 06 	call	0xc64
+      ow_byte_wr(tl);
+    14dc:	80 2f       	mov	r24, r16
+    14de:	0e 94 32 06 	call	0xc64
+      if (id[0] == DS18B20_ID) ow_byte_wr(conf); // config avail. on B20 only
+    14e2:	88 81       	ld	r24, Y
+    14e4:	88 32       	cpi	r24, 0x28	; 40
+    14e6:	19 f4       	brne	.+6      	; 0x14ee
+    14e8:	8f 2d       	mov	r24, r15
+    14ea:	0e 94 32 06 	call	0xc64
+      return DS18X20_OK;
+    14ee:	80 e0       	ldi	r24, 0x00	; 0
+    14f0:	90 e0       	ldi	r25, 0x00	; 0
+    14f2:	06 c0       	rjmp	.+12     	; 0x1500
+    } 
+   else 
+    { //
+      #ifdef DS18X20_VERBOSE
+      uart_puts_P( "DS18X20_write_scratchpad: Short Circuit !\r" );
+    14f4:	82 eb       	ldi	r24, 0xB2	; 178
+    14f6:	94 e0       	ldi	r25, 0x04	; 4
+    14f8:	0e 94 94 0b 	call	0x1728
+      #endif
+      return DS18X20_ERROR;
+    14fc:	81 e0       	ldi	r24, 0x01	; 1
+    14fe:	90 e0       	ldi	r25, 0x00	; 0
+    1500:	df 91       	pop	r29
+    1502:	cf 91       	pop	r28
+    1504:	1f 91       	pop	r17
+    1506:	0f 91       	pop	r16
+    1508:	ff 90       	pop	r15
+    150a:	08 95       	ret
+
+0000150c <DS18X20_read_scratchpad>:
+	 }
+ }
+
+uint8_t DS18X20_read_scratchpad( uint8_t id[], uint8_t sp[] )
+ { uint8_t i;
+    150c:	0f 93       	push	r16
+    150e:	1f 93       	push	r17
+    1510:	cf 93       	push	r28
+    1512:	df 93       	push	r29
+    1514:	ec 01       	movw	r28, r24
+    1516:	8b 01       	movw	r16, r22
+
+   ow_reset(); //**
+    1518:	0e 94 61 05 	call	0xac2
+   if( ow_input_pin_state() ) 
+    151c:	0e 94 bd 05 	call	0xb7a
+    1520:	88 23       	and	r24, r24
+    1522:	79 f0       	breq	.+30     	; 0x1542
+    { // only send if bus is "idle" = high
+      ow_command( DS18X20_READ, id );
+    1524:	be 01       	movw	r22, r28
+    1526:	8e eb       	ldi	r24, 0xBE	; 190
+    1528:	0e 94 94 06 	call	0xd28
+    152c:	e8 01       	movw	r28, r16
+    152e:	18 e0       	ldi	r17, 0x08	; 8
+      for ( i=0 ; i< DS18X20_SP_SIZE; i++ )	sp[i]=ow_byte_rd();
+    1530:	0e 94 44 06 	call	0xc88
+    1534:	89 93       	st	Y+, r24
+    1536:	11 50       	subi	r17, 0x01	; 1
+    1538:	17 ff       	sbrs	r17, 7
+    153a:	fa cf       	rjmp	.-12     	; 0x1530
+      return DS18X20_OK;
+    153c:	80 e0       	ldi	r24, 0x00	; 0
+    153e:	90 e0       	ldi	r25, 0x00	; 0
+    1540:	06 c0       	rjmp	.+12     	; 0x154e
+    } 
+   else 
+    { //
+      #ifdef DS18X20_VERBOSE
+      uart_puts_P( "DS18X20_read_scratchpad: Short Circuit !\r" );
+    1542:	8d ed       	ldi	r24, 0xDD	; 221
+    1544:	94 e0       	ldi	r25, 0x04	; 4
+    1546:	0e 94 94 0b 	call	0x1728
+      #endif
+      return DS18X20_ERROR;
+    154a:	81 e0       	ldi	r24, 0x01	; 1
+    154c:	90 e0       	ldi	r25, 0x00	; 0
+    154e:	df 91       	pop	r29
+    1550:	cf 91       	pop	r28
+    1552:	1f 91       	pop	r17
+    1554:	0f 91       	pop	r16
+    1556:	08 95       	ret
+
+00001558 <DS18X20_copy_scratchpad>:
+    }
+ }
+
+
+uint8_t DS18X20_copy_scratchpad( uint8_t with_power_extern, 
+   uint8_t id[] )
+
+ { ow_reset(); //**
+    1558:	1f 93       	push	r17
+    155a:	cf 93       	push	r28
+    155c:	df 93       	push	r29
+    155e:	18 2f       	mov	r17, r24
+    1560:	eb 01       	movw	r28, r22
+    1562:	0e 94 61 05 	call	0xac2
+   if( ow_input_pin_state() ) 
+    1566:	0e 94 bd 05 	call	0xb7a
+    156a:	88 23       	and	r24, r24
+    156c:	a9 f0       	breq	.+42     	; 0x1598
+    { // only send if bus is "idle" = high
+      ow_command( DS18X20_COPY_SCRATCHPAD, id );
+    156e:	be 01       	movw	r22, r28
+    1570:	88 e4       	ldi	r24, 0x48	; 72
+    1572:	0e 94 94 06 	call	0xd28
+      if (with_power_extern != DS18X20_POWER_EXTERN)
+    1576:	11 30       	cpi	r17, 0x01	; 1
+    1578:	11 f0       	breq	.+4      	; 0x157e
+         ow_parasite_enable();
+    157a:	0e 94 c7 05 	call	0xb8e
+		
+      delay_ms(DS18X20_COPYSP_DELAY); // wait for 10 ms 
+    157e:	62 e1       	ldi	r22, 0x12	; 18
+    1580:	74 e3       	ldi	r23, 0x34	; 52
+    1582:	80 e0       	ldi	r24, 0x00	; 0
+    1584:	90 e0       	ldi	r25, 0x00	; 0
+    1586:	0e 94 b3 06 	call	0xd66
+      if (with_power_extern != DS18X20_POWER_EXTERN)
+    158a:	11 30       	cpi	r17, 0x01	; 1
+    158c:	11 f0       	breq	.+4      	; 0x1592
+         ow_parasite_disable();
+    158e:	0e 94 da 05 	call	0xbb4
+
+      return DS18X20_OK;
+    1592:	80 e0       	ldi	r24, 0x00	; 0
+    1594:	90 e0       	ldi	r25, 0x00	; 0
+    1596:	06 c0       	rjmp	.+12     	; 0x15a4
+    } 
+   else 
+    { // 
+      #ifdef DS18X20_VERBOSE
+      uart_puts_P( "DS18X20_copy_scratchpad: Short Circuit !\r" );
+    1598:	87 e0       	ldi	r24, 0x07	; 7
+    159a:	95 e0       	ldi	r25, 0x05	; 5
+    159c:	0e 94 94 0b 	call	0x1728
+      #endif
+      return DS18X20_START_FAIL;
+    15a0:	82 e0       	ldi	r24, 0x02	; 2
+    15a2:	90 e0       	ldi	r25, 0x00	; 0
+    15a4:	df 91       	pop	r29
+    15a6:	cf 91       	pop	r28
+    15a8:	1f 91       	pop	r17
+    15aa:	08 95       	ret
+
+000015ac <DS18X20_recall_E2>:
+    }
+ }
+
+uint8_t DS18X20_recall_E2( uint8_t id[] )
+ { ow_reset(); //**
+    15ac:	cf 93       	push	r28
+    15ae:	df 93       	push	r29
+    15b0:	ec 01       	movw	r28, r24
+    15b2:	0e 94 61 05 	call	0xac2
+   if( ow_input_pin_state() ) 
+    15b6:	0e 94 bd 05 	call	0xb7a
+    15ba:	88 23       	and	r24, r24
+    15bc:	69 f0       	breq	.+26     	; 0x15d8
+    { // only send if bus is "idle" = high
+      ow_command( DS18X20_RECALL_E2, id );
+    15be:	be 01       	movw	r22, r28
+    15c0:	88 eb       	ldi	r24, 0xB8	; 184
+    15c2:	0e 94 94 06 	call	0xd28
+      // TODO: wait until status is "1" (then eeprom values
+      // have been copied). here simple delay to avoid timeout 
+      // handling
+      delay_ms(DS18X20_COPYSP_DELAY);
+    15c6:	62 e1       	ldi	r22, 0x12	; 18
+    15c8:	74 e3       	ldi	r23, 0x34	; 52
+    15ca:	80 e0       	ldi	r24, 0x00	; 0
+    15cc:	90 e0       	ldi	r25, 0x00	; 0
+    15ce:	0e 94 b3 06 	call	0xd66
+      return DS18X20_OK;
+    15d2:	80 e0       	ldi	r24, 0x00	; 0
+    15d4:	90 e0       	ldi	r25, 0x00	; 0
+    15d6:	06 c0       	rjmp	.+12     	; 0x15e4
+    } 
+   else 
+    { //
+      #ifdef DS18X20_VERBOSE
+      uart_puts_P( "DS18X20_recall_E2: Short Circuit !\r" );
+    15d8:	81 e3       	ldi	r24, 0x31	; 49
+    15da:	95 e0       	ldi	r25, 0x05	; 5
+    15dc:	0e 94 94 0b 	call	0x1728
+      #endif
+      return DS18X20_ERROR;
+    15e0:	81 e0       	ldi	r24, 0x01	; 1
+    15e2:	90 e0       	ldi	r25, 0x00	; 0
+    15e4:	df 91       	pop	r29
+    15e6:	cf 91       	pop	r28
+    15e8:	08 95       	ret
+
+000015ea <__vector_13>:
+/*************************************************************************
+Function: UART Receive Complete interrupt
+Purpose:  called when the UART has received a character
+**************************************************************************/
+ { unsigned char tmphead;
+    15ea:	1f 92       	push	r1
+    15ec:	0f 92       	push	r0
+    15ee:	0f b6       	in	r0, 0x3f	; 63
+    15f0:	0f 92       	push	r0
+    15f2:	11 24       	eor	r1, r1
+    15f4:	2f 93       	push	r18
+    15f6:	8f 93       	push	r24
+    15f8:	9f 93       	push	r25
+    15fa:	ef 93       	push	r30
+    15fc:	ff 93       	push	r31
+   unsigned char data;
+   unsigned char usr;
+   unsigned char lastRxError;
+ 
+   /* read UART status register and UART data register */ 
+   usr  = UART0_STATUS;
+    15fe:	9b b1       	in	r25, 0x0b	; 11
+   data = UART0_DATA;
+    1600:	2c b1       	in	r18, 0x0c	; 12
+    
+   /* */
+#if defined( AT90_UART )
+   lastRxError = (usr & (_BV(FE)|_BV(DOR)) );
+#elif defined( ATMEGA_USART )
+   lastRxError = (usr & (_BV(FE)|_BV(DOR)) );
+    1602:	98 71       	andi	r25, 0x18	; 24
+#elif defined( ATMEGA_USART0 )
+   lastRxError = (usr & (_BV(FE0)|_BV(DOR0)) );
+#elif defined ( ATMEGA_UART )
+   lastRxError = (usr & (_BV(FE)|_BV(DOR)) );
+#endif
+        
+   /* calculate buffer index */ 
+   tmphead = ( UART_RxHead + 1) & UART_RX_BUFFER_MASK;
+    1604:	e0 91 ac 00 	lds	r30, 0x00AC
+    1608:	ef 5f       	subi	r30, 0xFF	; 255
+    160a:	ef 71       	andi	r30, 0x1F	; 31
+    
+   if ( tmphead == UART_RxTail ) 
+    160c:	80 91 ad 00 	lds	r24, 0x00AD
+    1610:	e8 17       	cp	r30, r24
+    1612:	11 f4       	brne	.+4      	; 0x1618
+    { /* error: receive buffer overflow */
+      lastRxError = UART_BUFFER_OVERFLOW >> 8;
+    1614:	92 e0       	ldi	r25, 0x02	; 2
+    1616:	06 c0       	rjmp	.+12     	; 0x1624
+    }
+   else
+    { /* store new index */
+      UART_RxHead = tmphead;
+    1618:	e0 93 ac 00 	sts	0x00AC, r30
+      /* store received data in buffer */
+      UART_RxBuf[tmphead] = data;
+    161c:	ff 27       	eor	r31, r31
+    161e:	e6 57       	subi	r30, 0x76	; 118
+    1620:	ff 4f       	sbci	r31, 0xFF	; 255
+    1622:	20 83       	st	Z, r18
+    }
+   UART_LastRxError = lastRxError;   
+    1624:	90 93 ae 00 	sts	0x00AE, r25
+    1628:	ff 91       	pop	r31
+    162a:	ef 91       	pop	r30
+    162c:	9f 91       	pop	r25
+    162e:	8f 91       	pop	r24
+    1630:	2f 91       	pop	r18
+    1632:	0f 90       	pop	r0
+    1634:	0f be       	out	0x3f, r0	; 63
+    1636:	0f 90       	pop	r0
+    1638:	1f 90       	pop	r1
+    163a:	18 95       	reti
+
+0000163c <__vector_14>:
+ }
+
+
+SIGNAL(UART0_TRANSMIT_INTERRUPT)
+/*************************************************************************
+Function: UART Data Register Empty interrupt
+Purpose:  called when the UART is ready to transmit the next byte
+**************************************************************************/
+ { unsigned char tmptail;
+    163c:	1f 92       	push	r1
+    163e:	0f 92       	push	r0
+    1640:	0f b6       	in	r0, 0x3f	; 63
+    1642:	0f 92       	push	r0
+    1644:	11 24       	eor	r1, r1
+    1646:	8f 93       	push	r24
+    1648:	9f 93       	push	r25
+    164a:	ef 93       	push	r30
+    164c:	ff 93       	push	r31
+    
+   if ( UART_TxHead != UART_TxTail) 
+    164e:	90 91 aa 00 	lds	r25, 0x00AA
+    1652:	80 91 ab 00 	lds	r24, 0x00AB
+    1656:	98 17       	cp	r25, r24
+    1658:	69 f0       	breq	.+26     	; 0x1674
+    { /* calculate and store new buffer index */
+      tmptail = (UART_TxTail + 1) & UART_TX_BUFFER_MASK;
+    165a:	80 91 ab 00 	lds	r24, 0x00AB
+    165e:	8f 5f       	subi	r24, 0xFF	; 255
+    1660:	8f 71       	andi	r24, 0x1F	; 31
+      UART_TxTail = tmptail;
+    1662:	80 93 ab 00 	sts	0x00AB, r24
+      /* get one byte from buffer and write it to UART */
+      UART0_DATA = UART_TxBuf[tmptail];  /* start transmission */
+    1666:	e8 2f       	mov	r30, r24
+    1668:	ff 27       	eor	r31, r31
+    166a:	e6 59       	subi	r30, 0x96	; 150
+    166c:	ff 4f       	sbci	r31, 0xFF	; 255
+    166e:	80 81       	ld	r24, Z
+    1670:	8c b9       	out	0x0c, r24	; 12
+    1672:	01 c0       	rjmp	.+2      	; 0x1676
+    }
+   else
+    { /* tx buffer empty, disable UDRE interrupt */
+      UART0_CONTROL &= ~_BV(UART0_UDRIE);
+    1674:	55 98       	cbi	0x0a, 5	; 10
+    1676:	ff 91       	pop	r31
+    1678:	ef 91       	pop	r30
+    167a:	9f 91       	pop	r25
+    167c:	8f 91       	pop	r24
+    167e:	0f 90       	pop	r0
+    1680:	0f be       	out	0x3f, r0	; 63
+    1682:	0f 90       	pop	r0
+    1684:	1f 90       	pop	r1
+    1686:	18 95       	reti
+
+00001688 <uart_init>:
+    }
+ }
+
+
+/*************************************************************************
+Function: uart_init()
+Purpose:  initialize UART and set baudrate
+Input:    baudrate using macro UART_BAUD_SELECT()
+Returns:  none
+**************************************************************************/
+void uart_init(unsigned int baudrate)
+ { UART_TxHead = 0;
+    1688:	9c 01       	movw	r18, r24
+    168a:	10 92 aa 00 	sts	0x00AA, r1
+   UART_TxTail = 0;
+    168e:	10 92 ab 00 	sts	0x00AB, r1
+   UART_RxHead = 0;
+    1692:	10 92 ac 00 	sts	0x00AC, r1
+   UART_RxTail = 0;
+    1696:	10 92 ad 00 	sts	0x00AD, r1
+    
+#if defined( AT90_UART )
+   /* set baud rate */
+   UBRR = (unsigned char)baudrate; 
+
+   /* enable UART receiver and transmmitter and receive complete interrupt */
+   UART0_CONTROL = _BV(RXCIE)|_BV(RXEN)|BV(TXEN);
+
+#elif defined (ATMEGA_USART)
+   /* Set baud rate */
+   UBRRH = (unsigned char)(baudrate>>8);
+    169a:	83 2f       	mov	r24, r19
+    169c:	99 27       	eor	r25, r25
+    169e:	80 bd       	out	0x20, r24	; 32
+   UBRRL = (unsigned char) baudrate;
+    16a0:	29 b9       	out	0x09, r18	; 9
+
+   /* Enable USART receiver and transmitter and receive complete interrupt */
+   UART0_CONTROL = _BV(RXCIE)|(1<<RXEN)|(1<<TXEN);
+    16a2:	88 e9       	ldi	r24, 0x98	; 152
+    16a4:	8a b9       	out	0x0a, r24	; 10
+    
+   /* Set frame format: asynchronous, 8data, no parity, 1stop bit */
+   #ifdef URSEL
+   UCSRC = (1<<URSEL)|(3<<UCSZ0);
+    16a6:	86 e8       	ldi	r24, 0x86	; 134
+    16a8:	80 bd       	out	0x20, r24	; 32
+    16aa:	08 95       	ret
+
+000016ac <uart_getc>:
+   #else
+   UCSRC = (3<<UCSZ0);
+   #endif 
+    
+#elif defined (ATMEGA_USART0 )
+   /* Set baud rate */
+   UBRR0H = (unsigned char)(baudrate>>8);
+   UBRR0L = (unsigned char) baudrate;
+
+   /* Enable USART receiver and transmitter and receive complete interrupt */
+   UART0_CONTROL = _BV(RXCIE0)|(1<<RXEN0)|(1<<TXEN0);
+    
+   /* Set frame format: asynchronous, 8data, no parity, 1stop bit */
+   #ifdef URSEL0
+   UCSR0C = (1<<URSEL0)|(3<<UCSZ00);
+   #else
+   UCSR0C = (3<<UCSZ00);
+   #endif 
+
+#elif defined ( ATMEGA_UART )
+   /* set baud rate */
+   UBRRHI = (unsigned char)(baudrate>>8);
+   UBRR   = (unsigned char) baudrate;
+
+   /* Enable UART receiver and transmitter and receive complete interrupt */
+   UART0_CONTROL = _BV(RXCIE)|(1<<RXEN)|(1<<TXEN);
+
+#endif
+
+ }/* uart_init */
+
+
+/*************************************************************************
+Function: uart_getc()
+Purpose:  return byte from ringbuffer  
+Returns:  lower byte:  received byte from ringbuffer
+          higher byte: last receive error
+**************************************************************************/
+unsigned int uart_getc(void)
+ { unsigned char tmptail;
+   unsigned char data;
+
+   if ( UART_RxHead == UART_RxTail ) 
+    16ac:	90 91 ac 00 	lds	r25, 0x00AC
+    16b0:	80 91 ad 00 	lds	r24, 0x00AD
+    16b4:	98 17       	cp	r25, r24
+    16b6:	19 f4       	brne	.+6      	; 0x16be
+      return UART_NO_DATA;   /* no data available */
+    16b8:	80 e0       	ldi	r24, 0x00	; 0
+    16ba:	91 e0       	ldi	r25, 0x01	; 1
+    16bc:	08 95       	ret
+    
+   /* calculate /store buffer index */
+   tmptail = (UART_RxTail + 1) & UART_RX_BUFFER_MASK;
+    16be:	80 91 ad 00 	lds	r24, 0x00AD
+    16c2:	8f 5f       	subi	r24, 0xFF	; 255
+    16c4:	8f 71       	andi	r24, 0x1F	; 31
+   UART_RxTail = tmptail; 
+    16c6:	80 93 ad 00 	sts	0x00AD, r24
+    
+   /* get data from receive buffer */
+   data = UART_RxBuf[tmptail];
+    16ca:	e8 2f       	mov	r30, r24
+    16cc:	ff 27       	eor	r31, r31
+    16ce:	e6 57       	subi	r30, 0x76	; 118
+    16d0:	ff 4f       	sbci	r31, 0xFF	; 255
+    16d2:	20 81       	ld	r18, Z
+  
+   return (UART_LastRxError << 8) + data;
+    16d4:	80 91 ae 00 	lds	r24, 0x00AE
+    16d8:	99 27       	eor	r25, r25
+    16da:	98 2f       	mov	r25, r24
+    16dc:	88 27       	eor	r24, r24
+    16de:	82 0f       	add	r24, r18
+    16e0:	91 1d       	adc	r25, r1
+
+ } /* uart_getc */
+    16e2:	08 95       	ret
+    16e4:	08 95       	ret
+
+000016e6 <uart_putc>:
+
+
+/*************************************************************************
+Function: uart_putc()
+Purpose:  write byte to ringbuffer for transmitting via UART
+Input:    byte to be transmitted
+Returns:  none          
+**************************************************************************/
+void uart_putc(unsigned char data)
+ { unsigned char tmphead;
+    16e6:	28 2f       	mov	r18, r24
+   
+   tmphead  = (UART_TxHead + 1) & UART_TX_BUFFER_MASK;
+    16e8:	90 91 aa 00 	lds	r25, 0x00AA
+    16ec:	9f 5f       	subi	r25, 0xFF	; 255
+    16ee:	9f 71       	andi	r25, 0x1F	; 31
+  
+   while ( tmphead == UART_TxTail )
+    16f0:	80 91 ab 00 	lds	r24, 0x00AB
+    16f4:	98 17       	cp	r25, r24
+    16f6:	e1 f3       	breq	.-8      	; 0x16f0
+    { ;/* wait for free space in buffer */
+    }
+    
+   UART_TxBuf[tmphead] = data;
+    16f8:	e9 2f       	mov	r30, r25
+    16fa:	ff 27       	eor	r31, r31
+    16fc:	e6 59       	subi	r30, 0x96	; 150
+    16fe:	ff 4f       	sbci	r31, 0xFF	; 255
+    1700:	20 83       	st	Z, r18
+   UART_TxHead = tmphead;
+    1702:	90 93 aa 00 	sts	0x00AA, r25
+
+   /* enable UDRE interrupt */
+   UART0_CONTROL    |= _BV(UART0_UDRIE);
+    1706:	55 9a       	sbi	0x0a, 5	; 10
+    1708:	08 95       	ret
+
+0000170a <uart_puts>:
+ } /* uart_putc */
+
+
+/*************************************************************************
+Function: uart_puts()
+Purpose:  transmit string to UART
+Input:    string to be transmitted
+Returns:  none          
+**************************************************************************/
+void uart_puts(const char *s )
+ { while (*s) 
+    170a:	cf 93       	push	r28
+    170c:	df 93       	push	r29
+    170e:	ec 01       	movw	r28, r24
+      uart_putc(*s++);
+    1710:	88 81       	ld	r24, Y
+    1712:	88 23       	and	r24, r24
+    1714:	31 f0       	breq	.+12     	; 0x1722
+    1716:	89 91       	ld	r24, Y+
+    1718:	0e 94 73 0b 	call	0x16e6
+    171c:	88 81       	ld	r24, Y
+    171e:	88 23       	and	r24, r24
+    1720:	d1 f7       	brne	.-12     	; 0x1716
+    1722:	df 91       	pop	r29
+    1724:	cf 91       	pop	r28
+    1726:	08 95       	ret
+
+00001728 <uart_puts_p>:
+ } /* uart_puts */
+
+
+/*************************************************************************
+Function: uart_puts_p()
+Purpose:  transmit string from program memory to UART
+Input:    program memory string to be transmitted
+Returns:  none
+**************************************************************************/
+void uart_puts_p(const char *progmem_s )
+ { register char c;
+    1728:	cf 93       	push	r28
+    172a:	df 93       	push	r29
+    172c:	ec 01       	movw	r28, r24
+   
+   while ( (c = pgm_read_byte(progmem_s++)) ) 
+      uart_putc(c);
+    172e:	fc 01       	movw	r30, r24
+    1730:	21 96       	adiw	r28, 0x01	; 1
+    1732:	84 91       	lpm	r24, Z
+    1734:	88 23       	and	r24, r24
+    1736:	39 f0       	breq	.+14     	; 0x1746
+    1738:	0e 94 73 0b 	call	0x16e6
+    173c:	fe 01       	movw	r30, r28
+    173e:	21 96       	adiw	r28, 0x01	; 1
+    1740:	84 91       	lpm	r24, Z
+    1742:	88 23       	and	r24, r24
+    1744:	c9 f7       	brne	.-14     	; 0x1738
+    1746:	df 91       	pop	r29
+    1748:	cf 91       	pop	r28
+    174a:	08 95       	ret
+
+0000174c <uart_puti>:
+ } /* uart_puts_p */
+
+/*************************************************************************
+Function: uart_puti()
+Purpose:  transmit integer as ASCII to UART
+Input:    integer value
+Returns:  none
+This functions has been added by Martin Thomas <eversmith@heizung-thomas.de>
+Don't blame P. Fleury if it doesn't work ;-)
+**************************************************************************/
+void uart_puti( const int val )
+ { char buffer[sizeof(int)*8+1];
+    174c:	cf 93       	push	r28
+    174e:	df 93       	push	r29
+    1750:	cd b7       	in	r28, 0x3d	; 61
+    1752:	de b7       	in	r29, 0x3e	; 62
+    1754:	61 97       	sbiw	r28, 0x11	; 17
+    1756:	0f b6       	in	r0, 0x3f	; 63
+    1758:	f8 94       	cli
+    175a:	de bf       	out	0x3e, r29	; 62
+    175c:	0f be       	out	0x3f, r0	; 63
+    175e:	cd bf       	out	0x3d, r28	; 61
+  
+   uart_puts( itoa(val, buffer, 10) );
+    1760:	4a e0       	ldi	r20, 0x0A	; 10
+    1762:	50 e0       	ldi	r21, 0x00	; 0
+    1764:	be 01       	movw	r22, r28
+    1766:	6f 5f       	subi	r22, 0xFF	; 255
+    1768:	7f 4f       	sbci	r23, 0xFF	; 255
+    176a:	0e 94 f6 0b 	call	0x17ec
+    176e:	0e 94 85 0b 	call	0x170a
+    1772:	61 96       	adiw	r28, 0x11	; 17
+    1774:	0f b6       	in	r0, 0x3f	; 63
+    1776:	f8 94       	cli
+    1778:	de bf       	out	0x3e, r29	; 62
+    177a:	0f be       	out	0x3f, r0	; 63
+    177c:	cd bf       	out	0x3d, r28	; 61
+    177e:	df 91       	pop	r29
+    1780:	cf 91       	pop	r28
+    1782:	08 95       	ret
+
+00001784 <uart_puthex_nibble>:
+ }/* uart_puti */
+
+/*************************************************************************
+Function: uart_puthex_nibble()
+Purpose:  transmit lower nibble as ASCII-hex to UART
+Input:    byte value
+Returns:  none
+This functions has been added by Martin Thomas <eversmith@heizung-thomas.de>
+Don't blame P. Fleury if it doesn't work ;-)
+**************************************************************************/
+void uart_puthex_nibble(const unsigned char b)
+ { unsigned char  c = b & 0x0f;
+    1784:	8f 70       	andi	r24, 0x0F	; 15
+   if (c>9) c += 'A'-10;
+    1786:	8a 30       	cpi	r24, 0x0A	; 10
+    1788:	10 f0       	brcs	.+4      	; 0x178e
+    178a:	89 5c       	subi	r24, 0xC9	; 201
+    178c:	01 c0       	rjmp	.+2      	; 0x1790
+   else c += '0';
+    178e:	80 5d       	subi	r24, 0xD0	; 208
+   uart_putc(c);
+    1790:	0e 94 73 0b 	call	0x16e6
+    1794:	08 95       	ret
+
+00001796 <uart_puthex_byte>:
+ } /* uart_puthex_nibble */
+
+/*************************************************************************
+Function: uart_puthex_byte()
+Purpose:  transmit upper and lower nibble as ASCII-hex to UART
+Input:    byte value
+Returns:  none
+This functions has been added by Martin Thomas <eversmith@heizung-thomas.de>
+Don't blame P. Fleury if it doesn't work ;-)
+**************************************************************************/
+void uart_puthex_byte(const unsigned char  b)
+ { uart_puthex_nibble(b>>4);
+    1796:	1f 93       	push	r17
+    1798:	18 2f       	mov	r17, r24
+    179a:	82 95       	swap	r24
+    179c:	8f 70       	andi	r24, 0x0F	; 15
+    179e:	0e 94 c2 0b 	call	0x1784
+   uart_puthex_nibble(b);
+    17a2:	81 2f       	mov	r24, r17
+    17a4:	0e 94 c2 0b 	call	0x1784
+    17a8:	1f 91       	pop	r17
+    17aa:	08 95       	ret
+
+000017ac <crc8>:
+   uint8_t  bit_counter;
+   uint8_t  data;
+   uint8_t  feedback_bit;
+
+   crc = CRC8INIT;
+    17ac:	30 e0       	ldi	r19, 0x00	; 0
+
+   for (loop_count = 0; loop_count != number_of_bytes_to_read; loop_count++)
+    17ae:	40 e0       	ldi	r20, 0x00	; 0
+    17b0:	50 e0       	ldi	r21, 0x00	; 0
+    17b2:	46 17       	cp	r20, r22
+    17b4:	57 07       	cpc	r21, r23
+    17b6:	b9 f0       	breq	.+46     	; 0x17e6
+    17b8:	b8 e1       	ldi	r27, 0x18	; 24
+    17ba:	fc 01       	movw	r30, r24
+    { data = data_in[loop_count];
+    17bc:	20 81       	ld	r18, Z
+
+      bit_counter = 8;
+    17be:	a8 e0       	ldi	r26, 0x08	; 8
+      do 
+       { feedback_bit = (crc ^ data) & 0x01;
+    17c0:	83 2f       	mov	r24, r19
+    17c2:	82 27       	eor	r24, r18
+         if ( feedback_bit == 0x01 ) 
+    17c4:	98 2f       	mov	r25, r24
+    17c6:	91 70       	andi	r25, 0x01	; 1
+    17c8:	80 fd       	sbrc	r24, 0
+            crc = crc ^ CRC8POLY;
+    17ca:	3b 27       	eor	r19, r27
+
+         crc = (crc >> 1) & 0x7F;
+    17cc:	36 95       	lsr	r19
+         if ( feedback_bit == 0x01 ) 
+    17ce:	91 30       	cpi	r25, 0x01	; 1
+    17d0:	09 f4       	brne	.+2      	; 0x17d4
+            crc = crc | 0x80;
+    17d2:	30 68       	ori	r19, 0x80	; 128
+
+         data = data >> 1;
+    17d4:	26 95       	lsr	r18
+         bit_counter--;
+    17d6:	a1 50       	subi	r26, 0x01	; 1
+       } 
+    17d8:	99 f7       	brne	.-26     	; 0x17c0
+    17da:	4f 5f       	subi	r20, 0xFF	; 255
+    17dc:	5f 4f       	sbci	r21, 0xFF	; 255
+    17de:	31 96       	adiw	r30, 0x01	; 1
+    17e0:	46 17       	cp	r20, r22
+    17e2:	57 07       	cpc	r21, r23
+    17e4:	59 f7       	brne	.-42     	; 0x17bc
+      while (bit_counter > 0);
+    }
+   return crc;
+ }
+    17e6:	83 2f       	mov	r24, r19
+    17e8:	99 27       	eor	r25, r25
+    17ea:	08 95       	ret
+
+000017ec <itoa>:
+    17ec:	e6 2f       	mov	r30, r22
+    17ee:	f7 2f       	mov	r31, r23
+    17f0:	2e 2f       	mov	r18, r30
+    17f2:	3f 2f       	mov	r19, r31
+    17f4:	e8 94       	clt
+    17f6:	42 30       	cpi	r20, 0x02	; 2
+    17f8:	cc f0       	brlt	.+50     	; 0x182c
+    17fa:	45 32       	cpi	r20, 0x25	; 37
+    17fc:	bc f4       	brge	.+46     	; 0x182c
+    17fe:	4a 30       	cpi	r20, 0x0A	; 10
+    1800:	29 f4       	brne	.+10     	; 0x180c
+    1802:	97 fb       	bst	r25, 7
+    1804:	1e f4       	brtc	.+6      	; 0x180c
+    1806:	90 95       	com	r25
+    1808:	81 95       	neg	r24
+    180a:	9f 4f       	sbci	r25, 0xFF	; 255
+
+0000180c <divide_loop>:
+    180c:	64 2f       	mov	r22, r20
+    180e:	77 27       	eor	r23, r23
+    1810:	0e 94 2b 0c 	call	0x1856
+    1814:	80 5d       	subi	r24, 0xD0	; 208
+    1816:	8a 33       	cpi	r24, 0x3A	; 58
+    1818:	0c f0       	brlt	.+2      	; 0x181c
+    181a:	89 5d       	subi	r24, 0xD9	; 217
+
+0000181c <L_10>:
+    181c:	81 93       	st	Z+, r24
+    181e:	86 2f       	mov	r24, r22
+    1820:	97 2f       	mov	r25, r23
+    1822:	00 97       	sbiw	r24, 0x00	; 0
+    1824:	99 f7       	brne	.-26     	; 0x180c
+    1826:	16 f4       	brtc	.+4      	; 0x182c
+    1828:	5d e2       	ldi	r21, 0x2D	; 45
+    182a:	51 93       	st	Z+, r21
+
+0000182c <terminate>:
+    182c:	93 2f       	mov	r25, r19
+    182e:	82 2f       	mov	r24, r18
+    1830:	10 82       	st	Z, r1
+    1832:	0c 94 1b 0c 	jmp	0x1836
+
+00001836 <strrev>:
+    1836:	dc 01       	movw	r26, r24
+    1838:	fc 01       	movw	r30, r24
+
+0000183a <.strrev_eos>:
+    183a:	01 90       	ld	r0, Z+
+    183c:	00 20       	and	r0, r0
+    183e:	e9 f7       	brne	.-6      	; 0x183a
+    1840:	32 97       	sbiw	r30, 0x02	; 2
+
+00001842 <.strrev_loop>:
+    1842:	ae 17       	cp	r26, r30
+    1844:	bf 07       	cpc	r27, r31
+    1846:	30 f4       	brcc	.+12     	; 0x1854
+    1848:	7c 91       	ld	r23, X
+    184a:	60 81       	ld	r22, Z
+    184c:	70 83       	st	Z, r23
+    184e:	31 97       	sbiw	r30, 0x01	; 1
+    1850:	6d 93       	st	X+, r22
+    1852:	f7 cf       	rjmp	.-18     	; 0x1842
+
+00001854 <.strrev_done>:
+    1854:	08 95       	ret
+
+00001856 <__udivmodhi4>:
+    1856:	aa 1b       	sub	r26, r26
+    1858:	bb 1b       	sub	r27, r27
+    185a:	51 e1       	ldi	r21, 0x11	; 17
+    185c:	07 c0       	rjmp	.+14     	; 0x186c
+
+0000185e <__udivmodhi4_loop>:
+    185e:	aa 1f       	adc	r26, r26
+    1860:	bb 1f       	adc	r27, r27
+    1862:	a6 17       	cp	r26, r22
+    1864:	b7 07       	cpc	r27, r23
+    1866:	10 f0       	brcs	.+4      	; 0x186c
+    1868:	a6 1b       	sub	r26, r22
+    186a:	b7 0b       	sbc	r27, r23
+
+0000186c <__udivmodhi4_ep>:
+    186c:	88 1f       	adc	r24, r24
+    186e:	99 1f       	adc	r25, r25
+    1870:	5a 95       	dec	r21
+    1872:	a9 f7       	brne	.-22     	; 0x185e
+    1874:	80 95       	com	r24
+    1876:	90 95       	com	r25
+    1878:	bc 01       	movw	r22, r24
+    187a:	cd 01       	movw	r24, r26
+    187c:	08 95       	ret
+
+0000187e <__divmodhi4>:
+    187e:	97 fb       	bst	r25, 7
+    1880:	09 2e       	mov	r0, r25
+    1882:	07 26       	eor	r0, r23
+    1884:	0a d0       	rcall	.+20     	; 0x189a
+    1886:	77 fd       	sbrc	r23, 7
+    1888:	04 d0       	rcall	.+8      	; 0x1892
+    188a:	e5 df       	rcall	.-54     	; 0x1856
+    188c:	06 d0       	rcall	.+12     	; 0x189a
+    188e:	00 20       	and	r0, r0
+    1890:	1a f4       	brpl	.+6      	; 0x1898
+
+00001892 <__divmodhi4_neg2>:
+    1892:	70 95       	com	r23
+    1894:	61 95       	neg	r22
+    1896:	7f 4f       	sbci	r23, 0xFF	; 255
+
+00001898 <__divmodhi4_exit>:
+    1898:	08 95       	ret
+
+0000189a <__divmodhi4_neg1>:
+    189a:	f6 f7       	brtc	.-4      	; 0x1898
+    189c:	90 95       	com	r25
+    189e:	81 95       	neg	r24
+    18a0:	9f 4f       	sbci	r25, 0xFF	; 255
+    18a2:	08 95       	ret

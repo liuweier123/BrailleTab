@@ -1,0 +1,169 @@
+C51 COMPILER V7.50   MUSIC                                                                 07/22/2007 16:13:48 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE MUSIC
+OBJECT MODULE PLACED IN Music.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE Music.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include"REG51F.h"
+   2          #include"intrins.h"
+   3          #include"USEH1.h"
+   4          #include"MainMyMedia.h"
+   5          #include"Music.h"
+   6          
+   7          //=========================================================================
+   8          
+   9          unsigned int  code FreTab[12]  = { 262,277,294,311,330,349,369,392,415,440,466,494 }; //原始频率表
+  10          unsigned char code SignTab[7]  = { 0,2,4,5,7,9,11 };                                                              //1~7在频率表中的位置
+  11          unsigned char code LengthTab[7]= { 1,2,4,8,16,32,64 };
+  12          unsigned char Sound_Temp_TH0,Sound_Temp_TL0;    //音符定时器初值暂存
+  13          unsigned char Sound_Temp_TH1,Sound_Temp_TL1;    //音长定时器初值暂存
+  14          
+  15          //函数定义===================================================================
+  16          void InitialSound(void)
+  17          {
+  18   1         BeepIO = 0;
+  19   1         Sound_Temp_TH1 = (65535-(1/1200)*SYSTEM_OSC)/256;    // 计算TL1应装入的初值  (10ms的初装值)
+  20   1         Sound_Temp_TL1 = (65535-(1/1200)*SYSTEM_OSC)%256;    // 计算TH1应装入的初值
+  21   1         TH1 = Sound_Temp_TH1;
+  22   1         TL1 = Sound_Temp_TL1;
+  23   1         TMOD  |= 0x11;
+  24   1         ET0    = 1;
+  25   1         ET1    = 0;
+  26   1         TR0    = 0;
+  27   1         TR1    = 0;
+  28   1         EA     = 1;
+  29   1      }
+  30          
+  31          void BeepTimer0(void) interrupt 1       //音符发生中断
+  32          {
+  33   1         BeepIO = !BeepIO;
+  34   1         TH0    = Sound_Temp_TH0;
+  35   1         TL0    = Sound_Temp_TL0;
+  36   1      }
+  37          //**************************************************************************
+  38          void Play(unsigned char *Sound,unsigned char Signature,unsigned Octachord,unsigned int Speed)
+  39          {
+  40   1         unsigned int NewFreTab[12];          //新的频率表
+  41   1         unsigned char i,j;
+  42   1         unsigned int Point,LDiv,LDiv0,LDiv1,LDiv2,LDiv4,CurrentFre,Temp_T,SoundLength;
+  43   1         unsigned char Tone,Length,SL,SH,SM,SLen,XG,FD;
+  44   1         for(i=0;i<12;i++)                            // 根据调号及升降八度来生成新的频率表
+  45   1         {
+  46   2            j = i + Signature;
+  47   2            if(j > 11)
+  48   2            {
+  49   3               j = j-12;
+  50   3               NewFreTab[i] = FreTab[j]*2;
+  51   3            }
+  52   2            else
+  53   2               NewFreTab[i] = FreTab[j];
+  54   2      
+  55   2            if(Octachord == 1)
+C51 COMPILER V7.50   MUSIC                                                                 07/22/2007 16:13:48 PAGE 2   
+
+  56   2               NewFreTab[i]>>=2;
+  57   2            else if(Octachord == 3)
+  58   2               NewFreTab[i]<<=2;
+  59   2         }
+  60   1      
+  61   1         SoundLength = 0;
+  62   1         while(Sound[SoundLength] != 0x00)    //计算歌曲长度
+  63   1         {
+  64   2            SoundLength+=2;
+  65   2         }
+  66   1      
+  67   1         Point  = 0;
+  68   1         Tone   = Sound[Point];
+  69   1         Length = Sound[Point+1];                     // 读出第一个音符和它时时值
+  70   1      
+  71   1         LDiv0 = 12000/Speed;                         // 算出1分音符的长度(几个10ms)
+  72   1         LDiv4 = LDiv0/4;                                     // 算出4分音符的长度
+  73   1         LDiv4 = LDiv4-LDiv4*SOUND_SPACE;     // 普通音最长间隔标准
+  74   1         TR0   = 0;
+  75   1         TR1   = 1;
+  76   1         while(Point < SoundLength)
+  77   1         {
+  78   2            extern bit gf_have;
+  79   2            extern uchar g_kVal;
+  80   2            if(gf_have&&(g_kVal==KESC))
+  81   2               return;
+  82   2            
+  83   2            SL=Tone%10;                                                               //计算出音符
+  84   2            SM=Tone/10%10;                                                            //计算出高低音
+  85   2            SH=Tone/100;                                                              //计算出是否升半
+  86   2            CurrentFre = NewFreTab[SignTab[SL-1]+SH];         //查出对应音符的频率
+  87   2            if(SL!=0)
+  88   2            {
+  89   3               if (SM==1) CurrentFre >>= 2;           //低音
+  90   3               if (SM==3) CurrentFre <<= 2;           //高音
+  91   3               Temp_T = 65536-(50000/CurrentFre)*10/(12000000/SYSTEM_OSC);//计算计数器初值
+  92   3               Sound_Temp_TH0 = Temp_T/256;
+  93   3               Sound_Temp_TL0 = Temp_T%256;
+  94   3               TH0 = Sound_Temp_TH0;
+  95   3               TL0 = Sound_Temp_TL0 + 12; //加12是对中断延时的补偿
+  96   3            }
+  97   2            SLen=LengthTab[Length%10];        //算出是几分音符
+  98   2            XG=Length/10%10;                  //算出音符类型(0普通1连音2顿音)
+  99   2            FD=Length/100;
+ 100   2            LDiv=LDiv0/SLen;                  //算出连音音符演奏的长度(多少个10ms)
+ 101   2            if (FD==1)
+ 102   2               LDiv=LDiv+LDiv/2;
+ 103   2            if(XG!=1)
+ 104   2               if(XG==0)                              //算出普通音符的演奏长度
+ 105   2                  if (SLen<=4)
+ 106   2                     LDiv1=LDiv-LDiv4;
+ 107   2                  else
+ 108   2                     LDiv1=LDiv*SOUND_SPACE;
+ 109   2               else
+ 110   2                  LDiv1=LDiv/2;               //算出顿音的演奏长度
+ 111   2            else
+ 112   2               LDiv1=LDiv;
+ 113   2            if(SL==0) LDiv1=0;
+ 114   2               LDiv2=LDiv-LDiv1;              //算出不发音的长度
+ 115   2            if (SL!=0)
+ 116   2            {
+ 117   3               TR0=1;
+C51 COMPILER V7.50   MUSIC                                                                 07/22/2007 16:13:48 PAGE 3   
+
+ 118   3               for(i=LDiv1;i>0;i--)   //发规定长度的音
+ 119   3               {
+ 120   4                  while(TF1==0);
+ 121   4                  TH1 = Sound_Temp_TH1;
+ 122   4                  TL1 = Sound_Temp_TL1;
+ 123   4                  TF1=0;
+ 124   4               }
+ 125   3            }
+ 126   2            if(LDiv2!=0)
+ 127   2            {
+ 128   3               TR0=0; BeepIO=0;
+ 129   3               for(i=LDiv2;i>0;i--)   //音符间的间隔
+ 130   3               {
+ 131   4                  while(TF1==0);
+ 132   4                  TH1 = Sound_Temp_TH1;
+ 133   4                  TL1 = Sound_Temp_TL1;
+ 134   4                  TF1=0;
+ 135   4               }
+ 136   3            }
+ 137   2            Point+=2;
+ 138   2            Tone=Sound[Point];
+ 139   2            Length=Sound[Point+1];
+ 140   2         }
+ 141   1         BeepIO = 0;
+ 142   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    749    ----
+   CONSTANT SIZE    =     38    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4      51
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

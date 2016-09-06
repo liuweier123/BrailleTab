@@ -1,0 +1,53 @@
+   1               		.file	"delay.c"
+   2               		.arch atmega32
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  17               	.Ltext0:
+  18               	.global	delayloop32
+  20               	delayloop32:
+  21               	.LFB3:
+  22               	.LM1:
+  23               	/* prologue: frame size=0 */
+  24               	/* prologue end (size=0) */
+  25 0000 DC01      		movw r26,r24
+  26 0002 CB01      		movw r24,r22
+  27               	/* #APP */
+  28 0004 8115      		cp  r24,__zero_reg__ 
+  29 0006 9105      		cpc r25,__zero_reg__ 
+  30 0008 A105      		cpc r26,__zero_reg__ 
+  31 000a B105      		cpc r27,__zero_reg__ 
+  32 000c 29F0      		breq L_Exit_5       
+  33               		L_LOOP_5:           
+  34 000e 8150      		subi r24,1           
+  35 0010 9040      		sbci r25,0           
+  36 0012 A040      		sbci r26,0           
+  37 0014 B040      		sbci r27,0           
+  38 0016 D9F7      		brne L_LOOP_5       
+  39               		L_Exit_5:           
+  40               		
+  41               	/* #NOAPP */
+  42               	/* epilogue: frame size=0 */
+  43 0018 0895      		ret
+  44               	/* epilogue end (size=1) */
+  45               	/* function delayloop32 size 29 (28) */
+  46               	.LFE3:
+  48               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 delay.c
+                            *ABS*:0000003f __SREG__
+                            *ABS*:0000003e __SP_H__
+                            *ABS*:0000003d __SP_L__
+                            *ABS*:00000000 __tmp_reg__
+                            *ABS*:00000001 __zero_reg__
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/ccE7aaaa.s:20     .text:00000000 delayloop32
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/ccE7aaaa.s:39     .text:00000018 L_Exit_5
+C:\DOCUME~1\liyuan\LOCALS~1\Temp/ccE7aaaa.s:33     .text:0000000e L_LOOP_5
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

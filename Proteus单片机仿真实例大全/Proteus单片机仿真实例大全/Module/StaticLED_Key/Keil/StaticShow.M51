@@ -1,0 +1,191 @@
+BL51 BANKED LINKER/LOCATER V6.00                                                        08/11/2007  16:54:29  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.00, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE main.obj, Show.obj, KeyScan.obj TO StaticShow
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  main.obj (MAIN)
+  Show.obj (SHOW)
+  KeyScan.obj (KEYSCAN)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?IMUL)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?UIDIV)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  StaticShow (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0006H     UNIT         _DATA_GROUP_
+            DATA    000EH     0004H     UNIT         ?DT?KEYSCAN
+            DATA    0012H     0001H     UNIT         ?DT?MAIN
+            IDATA   0013H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     00BBH     UNIT         ?PR?_VSHOWNUMBER?SHOW
+            CODE    00BEH     008CH     UNIT         ?C_C51STARTUP
+            CODE    014AH     0067H     UNIT         ?C?LIB_CODE
+            CODE    01B1H     0043H     UNIT         ?PR?UCKEYSCAN?KEYSCAN
+            CODE    01F4H     002BH     UNIT         ?PR?MAIN?MAIN
+            CODE    021FH     000AH     UNIT         ?C_INITSEG
+            CODE    0229H     000AH     UNIT         ?CO?SHOW
+
+
+
+OVERLAY MAP OF MODULE:   StaticShow (MAIN)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN                  -----    -----
+  +--> ?PR?_VSHOWNUMBER?SHOW
+  +--> ?PR?UCKEYSCAN?KEYSCAN
+
+?PR?_VSHOWNUMBER?SHOW          0008H    0006H
+  +--> ?CO?SHOW
+BL51 BANKED LINKER/LOCATER V6.00                                                      08/11/2007  16:54:29  PAGE 2
+
+
+
+
+
+SYMBOL TABLE OF MODULE:  StaticShow (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A0H         PUBLIC        P2
+  C:01F4H         PUBLIC        main
+  B:0098H.7       PUBLIC        SM0
+  B:0098H.6       PUBLIC        SM1
+  D:0012H         PUBLIC        uc_KeyShock
+  -------         PROC          MAIN
+  C:01F4H         LINE#         38
+  C:01F4H         LINE#         39
+  C:01F4H         LINE#         40
+  C:01F7H         LINE#         42
+  C:01F9H         LINE#         43
+  C:01FBH         LINE#         45
+  C:0201H         LINE#         47
+  C:0201H         LINE#         48
+  C:0201H         LINE#         49
+  C:0209H         LINE#         50
+  C:0209H         LINE#         51
+  C:020EH         LINE#         52
+  C:020EH         LINE#         53
+  C:0216H         LINE#         54
+  C:0219H         LINE#         55
+  C:021BH         LINE#         56
+  C:021DH         LINE#         57
+  C:021DH         LINE#         58
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        SHOW
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0003H         PUBLIC        _vShowNumber
+  B:0098H.1       PUBLIC        TI
+  D:0099H         PUBLIC        SBUF
+  C:0229H         PUBLIC        uca_LCDCode
+  -------         PROC          _VSHOWNUMBER
+  D:0008H         SYMBOL        uiNumber
+  -------         DO            
+  D:0006H         SYMBOL        ucSelect
+  D:000AH         SYMBOL        ucaNumber
+  D:0007H         SYMBOL        ucNumFront
+  -------         ENDDO         
+  C:0003H         LINE#         31
+  C:0007H         LINE#         32
+  C:0007H         LINE#         38
+  C:0012H         LINE#         39
+  C:0018H         LINE#         40
+  C:0025H         LINE#         41
+  C:0040H         LINE#         42
+BL51 BANKED LINKER/LOCATER V6.00                                                      08/11/2007  16:54:29  PAGE 3
+
+
+  C:006DH         LINE#         43
+  C:0090H         LINE#         45
+  C:0092H         LINE#         46
+  C:0099H         LINE#         47
+  C:009DH         LINE#         49
+  C:009FH         LINE#         50
+  C:009FH         LINE#         51
+  C:00A4H         LINE#         52
+  C:00A9H         LINE#         54
+  C:00B4H         LINE#         56
+  C:00B7H         LINE#         57
+  C:00B9H         LINE#         58
+  C:00BDH         LINE#         59
+  -------         ENDPROC       _VSHOWNUMBER
+  -------         ENDMOD        SHOW
+
+  -------         MODULE        KEYSCAN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A0H         PUBLIC        P2
+  C:01B1H         PUBLIC        ucKeyScan
+  D:000EH         PUBLIC        uca_LineScan
+  -------         PROC          UCKEYSCAN
+  -------         DO            
+  D:0001H         SYMBOL        ucTemp
+  D:0007H         SYMBOL        ucRow
+  D:0006H         SYMBOL        ucLine
+  -------         ENDDO         
+  C:01B1H         LINE#         34
+  C:01B1H         LINE#         35
+  C:01B1H         LINE#         36
+  C:01B2H         LINE#         37
+  C:01B4H         LINE#         39
+  C:01B4H         LINE#         40
+  C:01B4H         LINE#         41
+  C:01BBH         LINE#         42
+  C:01C0H         LINE#         43
+  C:01C4H         LINE#         44
+  C:01C4H         LINE#         45
+  C:01D4H         LINE#         46
+  C:01D4H         LINE#         47
+  C:01D8H         LINE#         48
+  C:01DCH         LINE#         49
+  C:01E0H         LINE#         50
+  C:01E4H         LINE#         51
+  C:01E8H         LINE#         52
+  C:01E8H         LINE#         53
+  C:01E8H         LINE#         54
+  C:01E8H         LINE#         55
+  C:01ECH         LINE#         57
+  C:01EFH         LINE#         59
+  C:01F3H         LINE#         60
+  -------         ENDPROC       UCKEYSCAN
+  -------         ENDMOD        KEYSCAN
+
+  -------         MODULE        ?C?IMUL
+  C:014AH         PUBLIC        ?C?IMUL
+  -------         ENDMOD        ?C?IMUL
+BL51 BANKED LINKER/LOCATER V6.00                                                      08/11/2007  16:54:29  PAGE 4
+
+
+
+  -------         MODULE        ?C?UIDIV
+  C:015CH         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+Program Size: data=20.0 xdata=0 code=563
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

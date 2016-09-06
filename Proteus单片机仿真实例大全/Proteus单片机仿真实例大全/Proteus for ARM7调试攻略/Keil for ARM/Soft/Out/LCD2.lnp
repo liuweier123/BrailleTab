@@ -1,0 +1,1 @@
+".\out\irq.o" ".\out\startup.o" ".\out\target.o" ".\out\main.o" -strict -scatter ".\src\mem_c.scf" -entry 0x00000000 -map -xref -callgraph -symbols -info sizes -info totals -info unused -info veneers -list ".\Out\LCD2.map" -o ".\Out\LCD2.axf"

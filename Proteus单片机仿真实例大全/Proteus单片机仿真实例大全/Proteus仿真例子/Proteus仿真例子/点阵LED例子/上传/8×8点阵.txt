@@ -1,0 +1,12 @@
+        --------------上--------------- 
+        |   |   |   |   |   |    |    |   
+左下0   D0  D1  D2  D3  D4  D5   D6   D7
+  下1   D0  D1  D2  D3  D4  D5   D6   D7 
+  下2	D0  D1  D2  D3  D4  D5   D6   D7 
+  下3   D0  D1  D2  D3  D4  D5   D6   D7 
+  下4   D0  D1  D2  D3  D4  D5   D6   D7 
+  下5   D0  D1  D2  D3  D4  D5   D6   D7 
+  下6   D0  D1  D2  D3  D4  D5   D6   D7 
+右下7	D0  D1  D2  D3  D4  D5   D6   D7 
+            
+  

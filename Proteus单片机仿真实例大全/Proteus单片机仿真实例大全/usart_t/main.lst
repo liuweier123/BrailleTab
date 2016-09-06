@@ -1,0 +1,273 @@
+__text_start:
+__start:
+    0034 E5CF      LDI	R28,0x5F
+    0035 E0D4      LDI	R29,4
+    0036 BFCD      OUT	0x3D,R28
+    0037 BFDE      OUT	0x3E,R29
+    0038 51C0      SUBI	R28,0x10
+    0039 40D0      SBCI	R29,0
+    003A EA0A      LDI	R16,0xAA
+    003B 8308      STD	Y+0,R16
+    003C 2400      CLR	R0
+    003D E7E4      LDI	R30,0x74
+    003E E0F0      LDI	R31,0
+    003F E010      LDI	R17,0
+    0040 37E6      CPI	R30,0x76
+    0041 07F1      CPC	R31,R17
+    0042 F011      BEQ	0x0045
+    0043 9201      ST	R0,Z+
+    0044 CFFB      RJMP	0x0040
+    0045 8300      STD	Z+0,R16
+    0046 E5E4      LDI	R30,0x54
+    0047 E0F0      LDI	R31,0
+    0048 E6A0      LDI	R26,0x60
+    0049 E0B0      LDI	R27,0
+    004A E010      LDI	R17,0
+    004B 36E8      CPI	R30,0x68
+    004C 07F1      CPC	R31,R17
+    004D F021      BEQ	0x0052
+    004E 95C8      LPM
+    004F 9631      ADIW	R30,1
+    0050 920D      ST	R0,X+
+    0051 CFF9      RJMP	0x004B
+    0052 940E008A  CALL	_main
+_exit:
+    0054 CFFF      RJMP	_exit
+FILE: D:\AVR\ICC\usart_t\delay.c
+(0001)    /*-----------------------------------------------------------------------
+(0002) 延时函数
+(0003) 系统时钟：8M
+(0004) -----------------------------------------------------------------------*/
+(0005) void delay_1us(void)                 //1us延时函数
+(0006)   {
+(0007)    asm("nop");
+_delay_1us:
+    0055 0000      NOP
+    0056 9508      RET
+_delay_nus:
+  i                    --> R20
+  n                    --> R22
+    0057 940E00AE  CALL	push_gset2
+    0059 01B8      MOVW	R22,R16
+(0008)   }
+(0009) 
+(0010) void delay_nus(unsigned int n)       //N us延时函数
+(0011)   {
+(0012)    unsigned int i=0;
+    005A 2744      CLR	R20
+    005B 2755      CLR	R21
+(0013)    for (i=0;i<n;i++)
+    005C C003      RJMP	0x0060
+(0014)    delay_1us();
+    005D DFF7      RCALL	_delay_1us
+    005E 5F4F      SUBI	R20,0xFF
+    005F 4F5F      SBCI	R21,0xFF
+    0060 1746      CP	R20,R22
+    0061 0757      CPC	R21,R23
+    0062 F3D0      BCS	0x005D
+    0063 940E00A5  CALL	pop_gset2
+    0065 9508      RET
+(0015)   }
+(0016)   
+(0017) void delay_1ms(void)                 //1ms延时函数
+(0018)   {
+(0019)    unsigned int i;
+(0020)    for (i=0;i<1140;i++);
+_delay_1ms:
+  i                    --> R16
+    0066 2700      CLR	R16
+    0067 2711      CLR	R17
+    0068 C002      RJMP	0x006B
+    0069 5F0F      SUBI	R16,0xFF
+    006A 4F1F      SBCI	R17,0xFF
+    006B 3704      CPI	R16,0x74
+    006C E0E4      LDI	R30,4
+    006D 071E      CPC	R17,R30
+    006E F3D0      BCS	0x0069
+    006F 9508      RET
+_delay_nms:
+  i                    --> R20
+  n                    --> R22
+    0070 940E00AE  CALL	push_gset2
+    0072 01B8      MOVW	R22,R16
+(0021)   }
+(0022)   
+(0023) void delay_nms(unsigned int n)       //N ms延时函数
+(0024)   {
+(0025)    unsigned int i=0;
+    0073 2744      CLR	R20
+    0074 2755      CLR	R21
+(0026)    for (i=0;i<n;i++)
+    0075 C003      RJMP	0x0079
+(0027)    delay_1ms();
+    0076 DFEF      RCALL	_delay_1ms
+    0077 5F4F      SUBI	R20,0xFF
+    0078 4F5F      SBCI	R21,0xFF
+    0079 1746      CP	R20,R22
+    007A 0757      CPC	R21,R23
+    007B F3D0      BCS	0x0076
+    007C 940E00A5  CALL	pop_gset2
+    007E 9508      RET
+FILE: D:\AVR\ICC\usart_t\main.c
+(0001) //ICC-AVR application builder : 2005-9-4 20:55:51
+(0002) // Target : M16
+(0003) // Crystal: 8.0000Mhz
+(0004) 
+(0005) #include <iom16v.h>
+(0006) #include <macros.h>
+(0007) #include <stdio.h>
+(0008) 
+(0009) void delay_nms(unsigned int n);
+(0010) 
+(0011) //UART0 initialize
+(0012) // desired baud rate: 9600
+(0013) // actual: baud rate:9615 (0.2%)
+(0014) // char size: 8 bit
+(0015) // parity: Disabled
+(0016) void uart0_init(void)
+(0017) {
+(0018)  UCSRB = 0x00; //disable while setting baud rate
+_uart0_init:
+    007F 2422      CLR	R2
+    0080 B82A      OUT	0x0A,R2
+(0019)  UCSRA = 0x00;
+    0081 B82B      OUT	0x0B,R2
+(0020)  UCSRC = (1<<URSEL)|(1<<UCSZ1)|(1<<UCSZ0);//8位数据+1位STOP位
+    0082 E886      LDI	R24,0x86
+    0083 BD80      OUT	0x20,R24
+(0021)  UBRRL = 0x33; //set baud rate lo
+    0084 E383      LDI	R24,0x33
+    0085 B989      OUT	0x09,R24
+(0022)  UBRRH = 0x00; //set baud rate hi
+    0086 BC20      OUT	0x20,R2
+(0023)  UCSRB = (1<<RXEN)|(1<<TXEN);//允许发送和接收
+    0087 E188      LDI	R24,0x18
+    0088 B98A      OUT	0x0A,R24
+    0089 9508      RET
+(0024) }
+(0025) 
+(0026) void main(void)
+(0027) {
+(0028)  unsigned char i;
+(0029)  uart0_init(); 
+_main:
+  i                    --> R20
+    008A DFF4      RCALL	_uart0_init
+(0030)  puts("ATmega16 uart Test!");
+    008B E600      LDI	R16,0x60
+    008C E010      LDI	R17,0
+    008D 940E00DE  CALL	_puts
+(0031)  putchar(0x0d);
+    008F E00D      LDI	R16,0xD
+    0090 940E00C7  CALL	_putchar
+(0032)  putchar(0x0a);
+    0092 E00A      LDI	R16,0xA
+    0093 940E00C7  CALL	_putchar
+    0095 C00D      RJMP	0x00A3
+(0033)  while(1)
+(0034)  {
+(0035) 	for(i=0;i<20;i++)
+    0096 2744      CLR	R20
+    0097 C009      RJMP	0x00A1
+(0036)     {  
+(0037) 	  putchar(i+0x30);
+    0098 2F04      MOV	R16,R20
+    0099 5D00      SUBI	R16,0xD0
+    009A 940E00C7  CALL	_putchar
+(0038) 	  delay_nms(1000);	
+FILE: <library>
+    009C EE08      LDI	R16,0xE8
+    009D E013      LDI	R17,3
+    009E 940E0070  CALL	_delay_nms
+    00A0 9543      INC	R20
+    00A1 3144      CPI	R20,0x14
+    00A2 F3A8      BCS	0x0098
+    00A3 CFF2      RJMP	0x0096
+    00A4 9508      RET
+pop_gset2:
+    00A5 E0E2      LDI	R30,2
+    00A6 940C00B4  JMP	pop
+push_gset5:
+    00A8 92FA      ST	R15,-Y
+    00A9 92EA      ST	R14,-Y
+push_gset4:
+    00AA 92DA      ST	R13,-Y
+    00AB 92CA      ST	R12,-Y
+push_gset3:
+    00AC 92BA      ST	R11,-Y
+    00AD 92AA      ST	R10,-Y
+push_gset2:
+    00AE 937A      ST	R23,-Y
+    00AF 936A      ST	R22,-Y
+push_gset1:
+    00B0 935A      ST	R21,-Y
+    00B1 934A      ST	R20,-Y
+    00B2 9508      RET
+pop_gset1:
+    00B3 E0E1      LDI	R30,1
+pop:
+    00B4 9149      LD	R20,Y+
+    00B5 9159      LD	R21,Y+
+    00B6 FDE0      SBRC	R30,0
+    00B7 9508      RET
+    00B8 9169      LD	R22,Y+
+    00B9 9179      LD	R23,Y+
+    00BA FDE1      SBRC	R30,1
+    00BB 9508      RET
+    00BC 90A9      LD	R10,Y+
+    00BD 90B9      LD	R11,Y+
+    00BE FDE2      SBRC	R30,2
+    00BF 9508      RET
+    00C0 90C9      LD	R12,Y+
+    00C1 90D9      LD	R13,Y+
+    00C2 FDE3      SBRC	R30,3
+    00C3 9508      RET
+    00C4 90E9      LD	R14,Y+
+    00C5 90F9      LD	R15,Y+
+    00C6 9508      RET
+_putchar:
+    00C7 940E00B0  CALL	push_gset1
+    00C9 2F40      MOV	R20,R16
+    00CA 90200074  LDS	R2,_textmode
+    00CC 90300075  LDS	R3,_textmode+1
+    00CE 2022      TST	R2
+    00CF F411      BNE	0x00D2
+    00D0 2033      TST	R3
+    00D1 F021      BEQ	0x00D6
+    00D2 304A      CPI	R20,0xA
+    00D3 F411      BNE	0x00D6
+    00D4 E00D      LDI	R16,0xD
+    00D5 DFF1      RCALL	_putchar
+    00D6 9B5D      SBIS	0x0B,5
+    00D7 CFFE      RJMP	0x00D6
+    00D8 B94C      OUT	0x0C,R20
+    00D9 2F04      MOV	R16,R20
+    00DA 2711      CLR	R17
+    00DB 940E00B3  CALL	pop_gset1
+    00DD 9508      RET
+_puts:
+    00DE 940E00AE  CALL	push_gset2
+    00E0 2F60      MOV	R22,R16
+    00E1 2F71      MOV	R23,R17
+    00E2 2744      CLR	R20
+    00E3 2755      CLR	R21
+    00E4 C009      RJMP	0x00EE
+    00E5 2FE6      MOV	R30,R22
+    00E6 2FF7      MOV	R31,R23
+    00E7 8100      LDD	R16,Z+0
+    00E8 940E00C7  CALL	_putchar
+    00EA 5F4F      SUBI	R20,0xFF
+    00EB 4F5F      SBCI	R21,0xFF
+    00EC 5F6F      SUBI	R22,0xFF
+    00ED 4F7F      SBCI	R23,0xFF
+    00EE 2FE6      MOV	R30,R22
+    00EF 2FF7      MOV	R31,R23
+    00F0 8020      LDD	R2,Z+0
+    00F1 2022      TST	R2
+    00F2 F791      BNE	0x00E5
+    00F3 E00A      LDI	R16,0xA
+    00F4 940E00C7  CALL	_putchar
+    00F6 E001      LDI	R16,1
+    00F7 E010      LDI	R17,0
+    00F8 940E00A5  CALL	pop_gset2
+    00FA 9508      RET

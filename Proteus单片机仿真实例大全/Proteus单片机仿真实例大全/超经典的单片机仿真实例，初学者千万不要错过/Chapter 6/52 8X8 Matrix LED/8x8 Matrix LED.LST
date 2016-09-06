@@ -1,0 +1,145 @@
+A51 MACRO ASSEMBLER  8X8_MATRIX_LED                                                       07/31/2006 19:17:04 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.00
+OBJECT MODULE PLACED IN 8x8 Matrix LED.OBJ
+ASSEMBLER INVOKED BY: e:\Program Files\Keil\C51\BIN\A51.EXE 8x8 Matrix LED.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                     ORG             00H
+0000 802E              2                     JMP             MAIN
+000B                   3                     ORG     0BH
+000B 020087            4                     LJMP    INTS_T0
+0030                   5                     ORG             30H
+0030 C2AF              6     MAIN:   CLR             EA
+0032 7A00              7                     MOV             R2,#0
+0034 7910              8                     MOV             R1,#16                  ;16个字符
+0036 7840              9                     MOV             R0,#40H
+0038 9000C4           10                     MOV             DPTR,#TAB               ;把全部字符复制到40H
+003B                  11     MOVEDATA:
+003B EA               12                     MOV             A,R2
+003C 93               13                     MOVC    A,@A+DPTR
+003D F6               14                     MOV             @R0,A
+003E 0A               15                     INC             R2
+003F 08               16                     INC             R0
+0040 D9F9             17                     DJNZ    R1,MOVEDATA
+0042 758901           18                     MOV             TMOD,#01H               ;定时器0工作方式1
+0045 758AFF           19                     MOV             TL0,#0FFH               ;置计数初值
+0048 758C3C           20                     MOV             TH0,#03CH               ;0FFFFH-3CAFH=50000,50MS
+004B 7F05             21                     MOV             R7,#5                   ;软件计数器，循环5次
+004D D2A9             22                     SETB    ET0                             ;允许T0中断
+004F C2AB             23                     CLR             ET1                             ;禁止T1中断
+0051 D2AF             24                     SETB    EA
+0053 D28C             25                     SETB    TR0 
+0055 759800           26                     MOV             SCON,#00H               ;串行口工作模式0
+0058 C2B2             27                     CLR             P3.2
+005A 758160           28                     MOV             SP,#60H
+005D 7B80             29                     MOV             R3,#080H                ;第一行
+005F 7A08             30     A0:             MOV             R2,#08H
+0061 7840             31                     MOV             R0,#40H
+0063 9000C4           32     LOOP:   MOV             DPTR,#TAB               ;字符首地址
+0066 7902             33                     MOV             R1,#2
+0068 EB               34                     MOV             A,R3
+0069 03               35                     RR              A                               ;行码右移一位转下一行
+006A FB               36                     MOV             R3,A
+006B F599             37                     MOV             SBUF,A                  ;发送行码
+006D 3099FD           38     WAIT1:  JNB             TI,WAIT1                ;等待一帧发送完
+0070 C299             39                     CLR             TI
+0072 E6               40     A1:             MOV             A,@R0
+0073 F599             41                     MOV             SBUF,A
+0075 3099FD           42     WAIT2:  JNB             TI,WAIT2
+0078 C299             43                     CLR             TI
+007A 08               44                     INC             R0
+007B D9F5             45                     DJNZ    R1,A1
+007D D2B2             46                     SETB    P3.2                    ;显示一行
+007F C2B2             47                     CLR             P3.2
+0081 DAE0             48                     DJNZ    R2,LOOP                 ;下一行
+0083 80DA             49                     JMP             A0
+0085 80FE             50                     JMP             $
+0087                  51     INTS_T0:
+0087 C2AF             52                     CLR     EA
+0089 C000             53                     PUSH    00H
+008B C001             54                     PUSH    01H
+008D C002             55                     PUSH    02H
+008F DF1B             56                     DJNZ    R7,BACK                 ;软件次数，次数不到返回 
+0091 7F05             57                     MOV             R7,#5
+0093 7840             58                     MOV             R0,#40H
+A51 MACRO ASSEMBLER  8X8_MATRIX_LED                                                       07/31/2006 19:17:04 PAGE     2
+
+0095 7908             59                     MOV             R1,#8
+0097                  60     SHIFT1:
+0097 7A02             61                     MOV             R2,#2
+0099 C3               62                     CLR             C
+009A C000             63                     PUSH    00H
+009C E8               64                     MOV             A,R0
+009D 2401             65                     ADD             A,#1
+009F F8               66                     MOV             R0,A
+00A0 E6               67                     MOV             A,@R0
+00A1 D000             68                     POP             00H
+00A3 33               69                     RLC             A
+00A4                  70     SHIFT2:
+00A4 E6               71                     MOV             A,@R0
+00A5 33               72                     RLC             A
+00A6 F6               73                     MOV             @R0,A
+00A7 08               74                     INC             R0
+00A8 DAFA             75                     DJNZ    R2,SHIFT2
+00AA D9EB             76                     DJNZ    R1,SHIFT1
+00AC D002             77     BACK:   POP             02H
+00AE D001             78                     POP             01H
+00B0 D000             79                     POP             00H
+00B2 758901           80                     MOV             TMOD,#01H               ;定时器0工作方式1
+00B5 758AFF           81                     MOV             TL0,#0FFH               
+00B8 758C3C           82                     MOV             TH0,#03CH               ;0FFFFH-3CAFH=50000。50MS
+00BB D2A9             83                     SETB    ET0                             ;禁止T0中断
+00BD C2AB             84                     CLR             ET1                             ;禁止T1中断
+00BF D2AF             85                     SETB    EA
+00C1 D28C             86                     SETB    TR0
+00C3 32               87                     RETI
+00C4 FFFF             88     TAB:    DB              0FFH,0FFH               ;箭头符号                               
+00C6 DFFF             89                     DB              0DFH,0FFH
+00C8 BFFF             90                     DB              0BFH,0FFH                                                  
+                                                                                          
+00CA 01FF             91                     DB              001H,0FFH
+00CC BFFF             92                     DB              0BFH,0FFH
+00CE DFFF             93                     DB              0DFH,0FFH
+00D0 FFFF             94                     DB              0FFH,0FFH
+                      95                     END
+A51 MACRO ASSEMBLER  8X8_MATRIX_LED                                                       07/31/2006 19:17:04 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+A0 . . . . . . . .  C ADDR   005FH   A   
+A1 . . . . . . . .  C ADDR   0072H   A   
+BACK . . . . . . .  C ADDR   00ACH   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+ET1. . . . . . . .  B ADDR   00A8H.3 A   
+INTS_T0. . . . . .  C ADDR   0087H   A   
+LOOP . . . . . . .  C ADDR   0063H   A   
+MAIN . . . . . . .  C ADDR   0030H   A   
+MOVEDATA . . . . .  C ADDR   003BH   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+SHIFT1 . . . . . .  C ADDR   0097H   A   
+SHIFT2 . . . . . .  C ADDR   00A4H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+TAB. . . . . . . .  C ADDR   00C4H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+WAIT1. . . . . . .  C ADDR   006DH   A   
+WAIT2. . . . . . .  C ADDR   0075H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

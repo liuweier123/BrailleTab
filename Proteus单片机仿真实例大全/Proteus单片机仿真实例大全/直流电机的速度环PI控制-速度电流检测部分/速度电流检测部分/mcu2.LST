@@ -1,0 +1,56 @@
+C51 COMPILER V7.08   MCU2                                                                  08/16/2007 16:46:03 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE MCU2
+OBJECT MODULE PLACED IN mcu2.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE mcu2.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          //从机的查询程序。
+   2          
+   3          
+   4          #include <reg51.h>
+   5          #define uchar unsigned char
+   6          uchar f1=0x00;
+   7          uchar j,k;
+   8          void main (void)
+   9          {
+  10   1          
+  11   1              SCON=0x90; //MODER1,REN=1;   //允许接受信息
+  12   1              PCON=0x00;
+  13   1      
+  14   1              while(1)
+  15   1             {
+  16   2                 do{
+  17   3                     while(RI==0);RI=0;
+  18   3                 }while(SBUF!=0xff);
+  19   2              
+  20   2               SBUF=0xbb;
+  21   2               while(TI==0);TI=0;
+  22   2                       
+  23   2           
+  24   2               while(RI==0);RI=0;                     
+  25   2               f1=SBUF;
+  26   2                  
+  27   2               P2=f1;
+  28   2              }
+  29   1      }
+  30          
+  31                  
+  32          
+  33                                  
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     37    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

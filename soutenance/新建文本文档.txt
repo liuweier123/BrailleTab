@@ -1,0 +1,12 @@
+Notre projet est lié avec OCR et de traitement d'image donc nous avons besoin d'un processeur puissant de faire tous les travaux. 
+Et je pense que le MCU ordinaire ne peut pas correspondre à nos besoins. Le Raspberry PI 2 est ce qu'il nous voulons. 
+Il est équipé de Cortex-A7, accompagné de 1 Go de RAM. Son matériel est assez puissant pour terminer le travail. 
+En outre, il est extensible. C'est a dire, il peut équipé de la caméra. 
+Plus important, il peut exécuter le système Linux qui fournit diverses applications utiles. 
+Dans le dernier mois, je apprends en utilisant le linux.
+Sur le logiciel, nous allons utiliser le Tesseract qui est un projet open source fournissant rapide et précise OCR.
+Nous allons utiliser python pour contrôler tous les flux de travail et Python a beaucoup de paquets pour aider à traiter l'image.
+
+Our project is related with OCR and image processing so that we need a powerful processor to do all works. And I think that the ordinary MCU can't not match our needs. The Raspberry PI 2 is what we want. It is equipped with Cortex-A7.  Its hardware is powerful enough to finish the work. Moreover, it is extendable. In another word, it can equipped with the camara. Most importantly, it can run the linux system which supplies various useful applications. In the last month I am studying using the linux.
+About the software, we are going to use the tesseract which is a open source project peoviding rapid and accurate OCR. 
+We will use python to control all the working flow and python has a series tools to help process the image.

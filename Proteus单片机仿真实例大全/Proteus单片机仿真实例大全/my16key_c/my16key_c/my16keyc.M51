@@ -1,0 +1,194 @@
+BL51 BANKED LINKER/LOCATER V6.00                                                        06/04/2006  15:15:07  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.00, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE 16key_c.obj TO my16keyc
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  16key_c.obj (16KEY_C)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  my16keyc (16KEY_C)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0007H     UNIT         ?DT?16KEY_C
+            DATA    000FH     0006H     UNIT         _DATA_GROUP_
+            IDATA   0015H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     ABSOLUTE     
+            CODE    0006H     00A0H     UNIT         ?PR?KEY_INT?16KEY_C
+            CODE    00A6H     008CH     UNIT         ?C_C51STARTUP
+            CODE    0132H     002AH     UNIT         ?PR?DISPLAY?16KEY_C
+            CODE    015CH     0013H     UNIT         ?PR?_TESTKEY?16KEY_C
+            CODE    016FH     0011H     UNIT         ?PR?MAIN?16KEY_C
+            CODE    0180H     0011H     UNIT         ?CO?16KEY_C
+            CODE    0191H     000FH     UNIT         ?PR?DELAY?16KEY_C
+            CODE    01A0H     0007H     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   my16keyc (16KEY_C)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?PR?KEY_INT?16KEY_C            000FH    0004H
+  +--> ?PR?_TESTKEY?16KEY_C
+
+?PR?_TESTKEY?16KEY_C           -----    -----
+  +--> ?PR?DELAY?16KEY_C
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?16KEY_C
+  +--> ?C_INITSEG
+
+?PR?MAIN?16KEY_C               -----    -----
+BL51 BANKED LINKER/LOCATER V6.00                                                      06/04/2006  15:15:07  PAGE 2
+
+
+  +--> ?PR?DISPLAY?16KEY_C
+
+?PR?DISPLAY?16KEY_C            0013H    0002H
+  +--> ?CO?16KEY_C
+  +--> ?PR?DELAY?16KEY_C
+
+
+
+SYMBOL TABLE OF MODULE:  my16keyc (16KEY_C)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        16KEY_C
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  B:00A8H.7       PUBLIC        EA
+  C:0191H         PUBLIC        delay
+  C:016FH         PUBLIC        main
+  C:0180H         PUBLIC        LEDSEG
+  D:0008H         PUBLIC        temp
+  B:00A8H.0       PUBLIC        EX0
+  B:0088H.0       PUBLIC        IT0
+  D:0009H         PUBLIC        dis_buf
+  D:000DH         PUBLIC        i
+  D:000EH         PUBLIC        j
+  C:015CH         PUBLIC        _testkey
+  C:0006H         PUBLIC        key_int
+  C:0132H         PUBLIC        display
+  -------         PROC          MAIN
+  C:016FH         LINE#         21
+  C:016FH         LINE#         22
+  C:0171H         LINE#         23
+  C:0173H         LINE#         24
+  C:0175H         LINE#         25
+  C:0178H         LINE#         26
+  C:017BH         LINE#         27
+  C:017BH         LINE#         28
+  -------         ENDPROC       MAIN
+  -------         PROC          KEY_INT
+  -------         DO            
+  D:000FH         SYMBOL        temp_h
+  D:0010H         SYMBOL        temp_l
+  D:0007H         SYMBOL        keynum
+  D:0011H         SYMBOL        code_h
+  D:0012H         SYMBOL        code_l
+  -------         ENDDO         
+  C:0006H         LINE#         32
+  C:0023H         LINE#         36
+  C:002BH         LINE#         37
+  C:002BH         LINE#         38
+  C:002EH         LINE#         39
+  C:0031H         LINE#         40
+  C:0034H         LINE#         41
+  C:003BH         LINE#         42
+  C:003BH         LINE#         43
+BL51 BANKED LINKER/LOCATER V6.00                                                      06/04/2006  15:15:07  PAGE 3
+
+
+  C:0045H         LINE#         44
+  C:0045H         LINE#         45
+  C:0048H         LINE#         46
+  C:0051H         LINE#         47
+  C:005AH         LINE#         48
+  C:0063H         LINE#         49
+  C:0066H         LINE#         50
+  C:0070H         LINE#         51
+  C:0070H         LINE#         52
+  C:0070H         LINE#         53
+  C:0078H         LINE#         54
+  C:007AH         LINE#         55
+  C:007AH         LINE#         56
+  C:007CH         LINE#         57
+  C:0080H         LINE#         58
+  C:0083H         LINE#         59
+  C:0086H         LINE#         60
+  C:0089H         LINE#         61
+  C:008BH         LINE#         62
+  C:008BH         LINE#         63
+  -------         ENDPROC       KEY_INT
+  -------         PROC          _TESTKEY
+  D:0007H         SYMBOL        scan_code
+  -------         DO            
+  D:0007H         SYMBOL        temp
+  -------         ENDDO         
+  C:015CH         LINE#         67
+  C:015CH         LINE#         68
+  C:015CH         LINE#         70
+  C:015EH         LINE#         71
+  C:0161H         LINE#         72
+  C:0163H         LINE#         73
+  C:016CH         LINE#         74
+  C:016EH         LINE#         75
+  -------         ENDPROC       _TESTKEY
+  -------         PROC          DISPLAY
+  -------         DO            
+  D:0013H         SYMBOL        i
+  D:0014H         SYMBOL        disbit
+  -------         ENDDO         
+  C:0132H         LINE#         78
+  C:0132H         LINE#         79
+  C:0132H         LINE#         81
+  C:0135H         LINE#         83
+  C:0138H         LINE#         84
+  C:0138H         LINE#         86
+  C:013BH         LINE#         87
+  C:0147H         LINE#         88
+  C:014AH         LINE#         89
+  C:0150H         LINE#         90
+  C:0152H         LINE#         91
+  C:015BH         LINE#         93
+  -------         ENDPROC       DISPLAY
+  -------         PROC          DELAY
+  -------         DO            
+  D:0006H         SYMBOL        a
+  -------         ENDDO         
+BL51 BANKED LINKER/LOCATER V6.00                                                      06/04/2006  15:15:07  PAGE 4
+
+
+  C:0191H         LINE#         106
+  C:0191H         LINE#         107
+  C:0191H         LINE#         108
+  C:0194H         LINE#         109
+  C:019FH         LINE#         110
+  -------         ENDPROC       DELAY
+  -------         ENDMOD        16KEY_C
+
+Program Size: data=22.0 xdata=0 code=423
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

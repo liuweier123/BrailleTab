@@ -1,0 +1,182 @@
+org 00h ;开始
+MOV P1,#00H;开机电压置0
+SETB p2.5;关掉输出，防止开机瞬间电压过高损坏用电器。
+SETB P3.7
+SETB P3.6
+SETB P3.5
+SETB P3.4
+
+start:
+V15:;1.5伏
+LCALL DELAY2;防按鍵抖动
+MOV P1,#03H;1.5V数据量
+CLR P2.5;闭合继电器开关，输出电压
+B1:
+MOV P0,#01111001B;显示1和小数点
+SETB P2.6
+CLR  P2.7
+LCALL delay
+MOV P0,#00010010B;显示5
+CLR P2.6
+SETB P2.7
+LCALL delay
+JNB P2.4,S1;检测是否短路，过流。
+JB P3.6,T;减键
+JB P3.7,V3;增键
+JB P3.5,s1;关机
+JMP B1
+T:LJMP V12;因为程序太长，不能直接转移，所以要用长调用命令！
+S1:LJMP STOP;因为程序太长，不能直接转移，所以要用长调用命令！
+
+V3:;3伏
+LCALL DELAY2
+MOV P1,#1bH;3V数据量
+B2:
+MOV P0,#11000000B;显示0
+clr P2.6
+CLR  P2.7
+LCALL delay
+MOV P0,#10110000B;显示3
+CLR P2.6
+SETB P2.7
+LCALL delay
+JNB P2.4,S2;检测是否短路，过流。
+JB P3.5,s2;关机
+JB P3.6,V15;减
+JB P3.7,V42;增
+JMP B2
+S2:LJMP STOP
+
+
+V42:;4.2伏
+LCALL DELAY2
+MOV P1,#2FH;4.2V数据量
+B3:
+MOV P0,#00011001B;显示4和小数点
+SETB P2.6
+CLR  P2.7
+LCALL delay
+MOV P0,#00100100B;显示2
+CLR P2.6
+SETB P2.7
+LCALL delay
+JNB P2.4,S3;检测是否短路，过流。
+JB P3.5,s3;关机
+JB P3.6,V3;减
+JB P3.7,V5;增
+JMP B3
+S3:LJMP STOP
+
+
+V5:;5伏
+LCALL DELAY2
+MOV P1,#3FH;5V数据量
+B4:
+MOV P0,#11000000B;显示0
+clr P2.6
+CLR  P2.7
+LCALL delay
+MOV P0,#10010010B;5
+CLR P2.6
+SETB P2.7
+LCALL delay
+JNB P2.4,S4;检测是否短路
+JB P3.5,s4;关机
+JB P3.6,V42;减
+JB P3.7,V6;增
+JMP B4
+S4:LJMP STOP
+
+
+V6:;6伏
+LCALL DELAY2
+MOV P1,#4EH;6V数据量
+B5:
+MOV P0,#11000000B;显示0
+clr P2.6
+CLR  P2.7
+LCALL delay
+MOV P0,#10000010B;显示6
+CLR P2.6
+SETB P2.7
+LCALL delay
+JNB P2.4,S5;检测是否短路
+JB P3.5,S5;关机
+JB P3.6,V5;减
+JB P3.7,V84;增
+JMP B5
+S5:LJMP STOP
+
+V84:;8.4伏
+LCALL DELAY2
+MOV P1,#78H;8.4V数据量
+B6:
+MOV P0,#00000000B;显示8
+SETB P2.6
+CLR  P2.7
+LCALL delay
+MOV P0,#00011001B;显示4
+CLR P2.6
+SETB P2.7
+LCALL delay
+JNB P2.4,STOP;检测是否短路
+JB P3.5,STOP;关机
+JB P3.6,V6;减
+JB P3.7,V12;增
+JMP B6
+
+V12:;12伏
+LCALL DELAY2
+MOV P1,#0B4H;12V数据量
+B7:
+MOV P0,#11111001B;显示1
+SETB P2.6
+CLR  P2.7
+LCALL delay
+MOV P0,#10100100B;显示2
+CLR P2.6
+SETB P2.7
+LCALL delay
+JNB P2.4,STOP;检测是否短路
+JB P3.5,STOP;关机
+JB P3.6,V84;减
+JB P3.7,T2;增
+JMP B7
+T2:JMP V15
+
+STOP:;关机
+LCALL DELAY2
+MOV P1,#00H;令LM317电压最低
+STOP2:
+SETB P2.5;关闭输出
+MOV P0,#11000000B;显示O
+SETB P2.6
+CLR  P2.7
+LCALL delay
+MOV P0,#10001110B;显示F
+SETB P2.7
+CLR  P2.6
+LCALL delay
+JB P3.5,ST;再次开机
+jb p3.6,st;再次开机
+jb p3.7,st;再次开机
+JMP STOP2
+ST:LJMP V15
+
+
+delay: MOV R2,#5;延时子程序
+L1001:  mov R3,#250
+       DJNZ R3,$
+       DJNZ R2, L1001
+       ret
+
+DELAY2:;延时子程序
+MOV R6,#3
+D2:MOV R4,#200 
+D3:MOV R5,#248
+       DJNZ R5,$
+       DJNZ R4,D3
+       djnz r6,d2
+       RET
+
+end 

@@ -1,0 +1,111 @@
+BL51 BANKED LINKER/LOCATER V6.00                                                        08/11/2007  16:14:48  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.00, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE main.obj TO SimulateSerialOutput
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  main.obj (MAIN)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  SimulateSerialOutput (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0008H     UNIT         ?DT?MAIN
+            IDATA   0010H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     008CH     UNIT         ?C_C51STARTUP
+            CODE    008FH     0025H     UNIT         ?PR?_VSHOWONENUM?MAIN
+            CODE    00B4H     0022H     UNIT         ?PR?MAIN?MAIN
+            CODE    00D6H     000BH     UNIT         ?C_INITSEG
+            CODE    00E1H     000AH     UNIT         ?CO?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   SimulateSerialOutput (MAIN)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN
+  +--> ?PR?_VSHOWONENUM?MAIN
+
+?PR?_VSHOWONENUM?MAIN
+  +--> ?CO?MAIN
+
+
+
+SYMBOL TABLE OF MODULE:  SimulateSerialOutput (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+BL51 BANKED LINKER/LOCATER V6.00                                                      08/11/2007  16:14:48  PAGE 2
+
+
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  B:00A0H.0       PUBLIC        P2_0
+  B:00A0H.1       PUBLIC        P2_1
+  D:0008H         PUBLIC        uca_BitPosition
+  C:00B4H         PUBLIC        main
+  C:00E1H         PUBLIC        uca_LEDCode
+  C:008FH         PUBLIC        _vShowOneNum
+  -------         PROC          _VSHOWONENUM
+  D:0007H         SYMBOL        ucNumber
+  -------         DO            
+  D:0006H         SYMBOL        ucCount
+  -------         ENDDO         
+  C:008FH         LINE#         28
+  C:008FH         LINE#         29
+  C:008FH         LINE#         32
+  C:0095H         LINE#         33
+  C:0095H         LINE#         34
+  C:0097H         LINE#         35
+  C:0097H         LINE#         36
+  C:0099H         LINE#         38
+  C:00A7H         LINE#         39
+  C:00ABH         LINE#         40
+  C:00ADH         LINE#         42
+  C:00AFH         LINE#         43
+  C:00B3H         LINE#         44
+  C:00B3H         LINE#         45
+  -------         ENDPROC       _VSHOWONENUM
+  -------         PROC          MAIN
+  -------         DO            
+  D:0002H         SYMBOL        uiCount
+  D:0004H         SYMBOL        ucShowNumber
+  -------         ENDDO         
+  C:00B4H         LINE#         50
+  C:00B4H         LINE#         51
+  C:00B4H         LINE#         53
+  C:00B6H         LINE#         55
+  C:00B6H         LINE#         56
+  C:00B6H         LINE#         57
+  C:00BBH         LINE#         59
+  C:00BEH         LINE#         60
+  C:00C2H         LINE#         62
+  C:00C3H         LINE#         64
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+Program Size: data=17.0 xdata=0 code=235
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,86 @@
+C51 COMPILER V7.50   MAIN                                                                  10/04/2005 11:58:05 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<regx52.h>
+   2          #include<intrins.h>
+   3          #include<absacc.h>
+   4          #define uchar unsigned char
+   5          #define uint unsigned int
+   6          #define PA XBYTE[0x3fff]
+   7          #define PB XBYTE[0x7fff]
+   8          #define PC1 XBYTE[0xbfff]
+   9          #define CTL XBYTE[0xffff]
+  10          sbit reset=P2^5;
+  11          void delay(uchar t);
+  12          void display();
+  13          void main()
+  14          {
+  15   1       EA=1;
+  16   1       ET0=1;
+  17   1       TMOD=0x01;
+  18   1       reset=1;
+  19   1       _nop_();
+  20   1       reset=0;
+  21   1       CTL=0x80;     //写8255控制字，设置PA,PB,PC为输出口
+  22   1       while(1)
+  23   1       {
+  24   2        display();}
+  25   1      }
+  26          void display()
+  27          {
+  28   1       uchar outdata=0xfe,i;
+  29   1       for(i=0;i<8;i++)
+  30   1        {PA=outdata;
+  31   2         delay(200);
+  32   2         outdata=_crol_(outdata,1);
+  33   2        }
+  34   1        PA=0xff;
+  35   1        outdata=0xfe;
+  36   1       for(i=0;i<8;i++)
+  37   1        {PB=outdata;
+  38   2         delay(200);
+  39   2         outdata=_crol_(outdata,1);}
+  40   1        PB=0xff;
+  41   1        outdata=0xfe;
+  42   1       for(i=0;i<8;i++)
+  43   1        {PC1=outdata;
+  44   2         delay(200);
+  45   2         outdata=_crol_(outdata,1);}
+  46   1       
+  47   1        PC1=0xff;
+  48   1      }
+  49          
+  50          void delay(uchar t)
+  51          {
+  52   1        for(;t>0;t--)
+  53   1         {
+  54   2               TH0=(65536-1000)/256;
+  55   2               TL0=(65536-1000)%256;
+C51 COMPILER V7.50   MAIN                                                                  10/04/2005 11:58:05 PAGE 2   
+
+  56   2               TR0=1;
+  57   2               while(TF0==0) ;
+  58   2               TF0=0;
+  59   2          }
+  60   1         TR0=0;
+  61   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    174    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,150 @@
+C51 COMPILER V8.02   SERIAL                                                                10/13/2008 11:41:32 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE SERIAL
+OBJECT MODULE PLACED IN serial.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE serial.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>
+   2          #include"main.h"
+   3          #include"serial.h"
+   4          #include"iic.h"
+   5          #include"LCD.h"
+   6          
+   7          extern uint idata time;
+   8          extern uchar idata recive_buffer[];
+   9          extern uchar recive_tept;
+  10          extern bit flag;
+  11          extern uchar m_count;
+  12          
+  13          uchar temp2[1];
+  14          uchar rt_count;
+  15          uchar read_buffer[1];
+  16          //extern uchar m_count;
+  17          
+  18          void init_mcu(void)
+  19          {
+  20   1      /*
+  21   1              TMOD=0x21;
+  22   1              SCON=0x50;      
+  23   1              TH1=0xfd;                         //9600
+  24   1              TL1=0xfd;
+  25   1              TR1=1;
+  26   1              ES=1; 
+  27   1              //RI=0;TI=0;    
+  28   1              TH0=0xfc;
+  29   1              TL0=0x6c;
+  30   1              TR0=1;
+  31   1              ET0=1;
+  32   1              EA=1;
+  33   1              */
+  34   1              TMOD=0x21;        
+  35   1              TL1=0xfd;
+  36   1              TH1=0xfd;
+  37   1              TH0=0xfc;
+  38   1              TL0=0x6c;
+  39   1              SCON=0xd8;        
+  40   1              PCON=0x00;
+  41   1              TR1=1;
+  42   1              TR0=1;
+  43   1              EA=1; ES=1; ET0=1;      //开中断，允许串行口中断
+  44   1              REN=1;    
+  45   1      }
+  46          
+  47          ///*
+  48          void dir() interrupt 1                   //定时器1
+  49          {
+  50   1          TH0=0xfc;
+  51   1          TL0=0x6c;
+  52   1              //time++;
+  53   1              if(time>0)
+  54   1              {               
+  55   2                      time--;         
+C51 COMPILER V8.02   SERIAL                                                                10/13/2008 11:41:32 PAGE 2   
+
+  56   2              }
+  57   1      }
+  58          //*/
+  59          
+  60          /*接收一字符*/
+  61          ///*
+  62          void serial() interrupt 4 
+  63          {
+  64   1        
+  65   1        if (RI) //判断是不是收完字符
+  66   1        {
+  67   2                 /*
+  68   2                 recive_buffer[recive_tept]=SBUF;        
+  69   2                 recive_tept++;
+  70   2                 if(recive_tept>63)
+  71   2                 {
+  72   2                              recive_tept=0;
+  73   2                              flag=1;
+  74   2                 }
+  75   2                 */
+  76   2                 ///*
+  77   2                 if(recive_tept<64)
+  78   2                 {
+  79   3                              recive_buffer[recive_tept]=SBUF;           
+  80   3                              recive_tept++;
+  81   3                 }
+  82   2                 //*/
+  83   2         }   
+  84   1         
+  85   1         RI = 0; 
+  86   1         
+  87   1      }
+  88          //*/
+  89          /*
+  90          void send_char(uchar send)
+  91          {
+  92                   SBUF=send;
+  93               while ( TI ==0 );
+  94               TI=0;            
+  95          }
+  96          
+  97          void send_string(uchar * string , uint len)
+  98          {
+  99              uint k=0;
+ 100                  do
+ 101                  {
+ 102                      send_char( *(string + k) );
+ 103                          k++;
+ 104                  }while( k < len );
+ 105          }
+ 106          */
+ 107          void recive_string()
+ 108          {
+ 109   1              rt_count++;
+ 110   1              if((rt_count>60)&&(recive_tept>0))
+ 111   1              {                       
+ 112   2                      RdFromROM(temp2,2000,1);
+ 113   2                      m_count=temp2[0];               
+ 114   2                      WrToROM(recive_buffer,m_count*64,64);
+ 115   2                      m_count++;
+ 116   2                      read_buffer[0]=m_count;
+ 117   2                      WrToROM(read_buffer,2000,1);
+C51 COMPILER V8.02   SERIAL                                                                10/13/2008 11:41:32 PAGE 3   
+
+ 118   2                      disp_string("                    收到新信息                                          "); 
+ 119   2                      time=1500;              
+ 120   2                      recive_tept=0;
+ 121   2                      rt_count=0;
+ 122   2              }               
+ 123   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    205    ----
+   CONSTANT SIZE    =     73    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

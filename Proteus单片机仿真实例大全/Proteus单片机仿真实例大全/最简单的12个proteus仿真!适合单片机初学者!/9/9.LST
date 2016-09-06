@@ -1,0 +1,83 @@
+C51 COMPILER V7.50   9                                                                     04/16/2006 13:51:01 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE 9
+OBJECT MODULE PLACED IN 9.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 9.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.H>
+   2          
+   3          sbit P1_0=P1^0;
+   4          sbit P1_1=P1^1;
+   5          sbit P1_2=P1^2;
+   6          sbit P1_3=P1^3;
+   7          sbit P3_7=P3^7;
+   8          unsigned char ID;
+   9          
+  10          void delay10ms(void)
+  11          {
+  12   1        unsigned char i,j;
+  13   1        for(i=20;i>0;i--)
+  14   1        for(j=248;j>0;j--);
+  15   1      }
+  16          
+  17          void delay02s(void)
+  18          {
+  19   1        unsigned char i;
+  20   1        for(i=20;i>0;i--)
+  21   1          {delay10ms();
+  22   2          }
+  23   1      }
+  24          
+  25          void main(void)
+  26          { while(1)
+  27   1          { if(P3_7==0)
+  28   2              {delay10ms();
+  29   3                if(P3_7==0)
+  30   3                  {
+  31   4                    ID++;
+  32   4                    if(ID==4)
+  33   4                      {
+  34   5                        ID=0;
+  35   5                      }
+  36   4                    while(P3_7==0);
+  37   4                  }
+  38   3              }
+  39   2            switch(ID)
+  40   2              { case 0:
+  41   3                  P1_0=~P1_0;
+  42   3                  delay02s();
+  43   3                  break;
+  44   3                case 1:
+  45   3                  P1_1=~P1_1;
+  46   3                  delay02s();
+  47   3                  break;
+  48   3                case 2:
+  49   3                  P1_2=~P1_2;
+  50   3                  delay02s();
+  51   3                  break;
+  52   3                case 3:
+  53   3                  P1_3=~P1_3;
+  54   3                  delay02s();
+  55   3                  break;
+C51 COMPILER V7.50   9                                                                     04/16/2006 13:51:01 PAGE 2   
+
+  56   3              }
+  57   2          }
+  58   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     76    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,118 @@
+#include <absacc.h>
+#include <reg51.h>
+#include <stdio.h>
+bit flag=1;
+unsigned char pwm=0;
+sbit P21=P2^1;
+sbit P20=P2^0;
+unsigned char k1;
+unsigned char k2,k3;
+unsigned char BJ; //正负的标志位；
+unsigned char EK_num[3],EK_flag[3]; //误差和符号。
+unsigned char kp,ki,kd;
+unsigned char UK;      //控制输出。
+unsigned char negsum=0,possum=0;    //正数和与负数和。  
+unsigned char temp[3]; //中间变量。
+unsigned int  tmp[3];
+unsigned char Highlevel=0xff;//上限输出。
+unsigned char Lowlevel=0x00; //下限输出。
+unsigned char AD_in=153,AD_out;   //指令和反馈。
+unsigned char a,b;
+unsigned char m=0,n=0;  
+void PWM_generator() interrupt 3 using 0    //定时255us,0.063s。
+{
+
+if(flag==1)
+ {a--;
+  if(a==0)
+    {flag=0;
+	a=0xff-UK;
+	}
+   else
+   {P21=0;}
+ }
+if(flag==0)
+ {b--;
+  if(b==0)
+    {flag=1;
+	b=UK;
+    } 
+  else
+ {P21=1;}
+ } 
+
+}
+void PID_generator() interrupt 1 using 0  //PID定时，250us*380~0.1秒。
+{ m++;
+ if(m==10) 
+   { m=0;     
+     n++;
+     
+	  AD_out=P1;
+	     if( AD_in>AD_out)
+	     {
+		 temp[0]=AD_in-AD_out;
+		  BJ=0; //正负标志位。
+		 }
+   		   
+       else
+          {
+		  temp[0]=AD_out-AD_in;
+		  BJ=1; //正负标志位。
+		  }
+	
+     }     OV=0;
+           k1=temp[0]*kp;
+           if(OV==1)
+	      {OV=0;k1=0xfe;}
+}
+void PID_work2()
+{negsum=0;possum=0;
+ if(BJ==0)
+  {possum+=k1;
+   temp[2]=temp[2]+temp[0];}
+ else
+  {negsum+=k1;
+   temp[2]=temp[2]-temp[0];}
+ k3=temp[2]/10;
+ if(possum>negsum)
+  {k2=possum-negsum; //用8位数据存储结果
+  CY=0;
+ temp[1]=k3+k1;  //误差积累，
+ {if(CY==1)  //16位判断。
+  UK=0xfe;
+  else
+  UK=k1+k3;}//
+ }
+else
+{
+
+UK=1;
+}P3=UK;
+}
+
+
+main()
+{kp=5;
+ki=1;
+kd=1;
+TMOD=0x22;
+TH0=0x06; //对TH0 TL0赋值
+TL0=0x06;
+TH1=0x06; //对TH1 TL1赋值
+TL1=0x06;
+P20=1;
+ET0=1;
+TF0=0;
+ET1=1;
+TF1=0;
+TR1=1;
+TR0=1;
+EA=1;
+while(1)
+{
+ 
+ PID_work2();
+}
+
+} 

@@ -1,0 +1,63 @@
+C51 COMPILER V8.05a   MAIN                                                                 08/11/2007 15:59:53 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sources\main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\main.lst) OBJECT(main.obj)
+
+line level    source
+
+   1          //*************************************************************************************************
+   2          //*************************************************************************************************
+   3          //**<程序名>：串口输出                                                                                                                                                   **
+   4          //**<功能>：通过串口把数据传给LED                                                                                                                                **
+   5          //**<作者>：LastRitter                                                                                                                                                   **
+   6          //**<完成时间>：2007年7月30日                                                                                                                                    **
+   7          //**<联系方式>：E-Mail:superyongzhe@163.com;QQ:314665345。                                                                               **
+   8          //*************************************************************************************************
+   9          //*************************************************************************************************
+  10          #include <at89x51.h>
+  11          
+  12          
+  13          unsigned  char code uca_LCDCode[]=
+  14                                                  {0x03,0x9F,0x25,0x0D,0x99,0x49,0x41,0x1F,0x01,0x09};
+  15                                                  //74LS164的LED编码：0,1,2,3,4,5,6,7,8,9
+  16          void main()
+  17          {
+  18   1              unsigned char ucSelect=0;
+  19   1              unsigned int uiCount;
+  20   1      
+  21   1              SM0=0;     // 设置串口模式：模式0。
+  22   1              SM1=0;
+  23   1      
+  24   1              SBUF=0xFF;
+  25   1              while(TI==0); //等待发送。
+  26   1              TI=0;             //发送完毕，把TI置零。
+  27   1      
+  28   1              while(1)
+  29   1              {
+  30   2              if(ucSelect==9)
+  31   2                      ucSelect=0;
+  32   2              else ucSelect++;
+  33   2      
+  34   2              SBUF=uca_LCDCode[ucSelect];
+  35   2              while(TI==0);
+  36   2              TI=0;
+  37   2      
+  38   2              for(uiCount=0;uiCount<30000;uiCount++);            //延时。
+  39   2              }
+  40   1      } 
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     53    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

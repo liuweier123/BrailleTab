@@ -1,0 +1,258 @@
+C51 COMPILER V7.08   LCD_18B20                                                             05/14/2007 10:50:25 PAGE 1   
+
+
+C51 COMPILER V7.08, COMPILATION OF MODULE LCD_18B20
+OBJECT MODULE PLACED IN LCD_18b20.OBJ
+COMPILER INVOKED BY: D:\工具安装目录二\Keil C51\C51\BIN\C51.EXE LCD_18b20.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          //#include <at89x51.h>//用AT89C51时就用这个头文件
+   2          #include <reg52.h>//用华邦W78E58B时必须用这个头文件
+   3          //#include <absacc.h>
+   4          //#include <ctype.h>
+   5          //#include <math.h>
+   6          //#include <stdio.h>
+   7          //#include <string.h>
+   8          #include <DS18B20.h>                    //测温头文件
+   9          #include <LCD1602.h>                    //液晶显示头文件
+  10          #include <keyscan.h>                    //键盘扫描头文件
+  11          sbit alarm=P2^6;                                        //报警信号
+  12          //sbit DQ = P3^7;                                       //定义DQ引脚为P3.7
+  13          unsigned char key_value;            //存放键盘扫描值
+  14          bit up_one,down_one;                            //加1和减1标志
+  15          bit alarm_up_flag,alarm_down_flag;      //上限报警和下限报警设置标志
+  16          bit set_temper_flag;                            //设置控制标志温度标志
+  17          bit alarm_switch;                                       //报警开关
+  18          
+  19          unsigned char user_temper;                       //用户标定温度 
+  20          unsigned char TH=110,TL=-20,RS=0x3f; //上限温度110,下限-20,分辨率10位,也就是0.25C
+  21          unsigned char t[2],*pt;                         //用来存放温度值,测温程序就是通过这个数组与主函数通信的
+  22          unsigned char  TempBuffer1[17]={0x2b,0x20,0x30,0x30,0x2e,0x30,0x30,0x20,
+  23                                                                          0x53,0x45,0x54,0x2b,0x20,0x30,0x30,0x43,'\0'};
+  24                                                                          //显示实时温度,上电时显示+ 00.00 SET+ 00C
+  25          unsigned char  TempBuffer0[17]={0x54,0x48,0x3a,0x2b,0x20,0x30,0x30,0x20,
+  26                                                                          0x54,0x4c,0x3a,0x2b,0x20,0x30,0x30,0x43,'\0'};
+  27                                                                          //显示温度上下限,上电时显示TH:+ 00 TL:+ 00C                                                     
+  28          unsigned char code dotcode[4]={0,25,50,75};
+  29          /***因显示分辨率为0.25,但小数运算比较麻烦,故采用查表的方法*******
+  30          再将表值分离出十位和个位后送到十分位和百分位********************/
+  31          
+  32          
+  33          
+  34          /***********用户设定温度转换为LCD显示数据**************
+  35          *功能:将用户设定温度user_temper,分离出符号位,百、十、个位
+  36                    并将它们转化为ACSII码,送到液晶显示缓冲区
+  37          ******************************************************/
+  38          void user_temper_LCD(unsigned char temper)
+  39          {
+  40   1              if(temper>0x7f)                         //判断正负,如果为负温,将其转化为其绝对值
+  41   1              {
+  42   2                      TempBuffer1[11]=0x2d;   //0x2d为"-"的ASCII码
+  43   2                      temper=~temper;                 //将负数的补码转换成绝对值
+  44   2                      temper++;
+  45   2              }
+  46   1              else TempBuffer1[11]=0x2b;      ////0x2B为"+"的ASCII码
+  47   1              TempBuffer1[12]=temper/100+0x30;                             //分离出temper的百十个位
+  48   1              if( TempBuffer1[12]==0x30) TempBuffer1[12]=0xfe;     //百位数消隐
+  49   1              TempBuffer1[13]=(temper%100)/10+0x30;                                //分离出十位
+  50   1              TempBuffer1[14]=(temper%100)%10+0x30;                                //分离出个位
+  51   1      }
+  52          
+  53          
+  54          
+  55          /***************温度上下限转换为LCD显示数据************
+C51 COMPILER V7.08   LCD_18B20                                                             05/14/2007 10:50:25 PAGE 2   
+
+  56          *功能:将上下限报警温度,分离出符号位,百、十、个位
+  57                    并将它们转化为ACSII码,送到液晶显示缓冲区
+  58          ******************************************************/
+  59          void alarm_LCD( unsigned char TH, unsigned char TL)     
+  60          { 
+  61   1         if(TH>0x7F)                    //判断正负,如果为负温,将其转化为其绝对值
+  62   1         {
+  63   2          TempBuffer0[3]=0x2d;             //0x2d为"-"的ASCII码
+  64   2              TH=~TH;                                          //将负数的补码转换成绝对值
+  65   2              TH++;
+  66   2         }
+  67   1         else TempBuffer0[3]=0x2b;    //0x2B为"+"的ASCII码
+  68   1      
+  69   1         if(TL>0x7f)
+  70   1         {
+  71   2         TempBuffer0[11]=0x2d;             //0x2d为"-"的ASCII码
+  72   2         TL=~TL+1;
+  73   2         }
+  74   1         else TempBuffer0[11]=0x2b;   //0x2B为"+"的ASCII码
+  75   1      
+  76   1        TempBuffer0[4]=TH/100+0x30;                        //分离出TH的百十个位
+  77   1        if( TempBuffer0[4]==0x30) TempBuffer0[4]=0xfe; //百位数消隐
+  78   1        TempBuffer0[5]=(TH%100)/10+0x30;                              //分离出十位
+  79   1        TempBuffer0[6]=(TH%100)%10+0x30;                              //分离出个位
+  80   1        TempBuffer0[12]=TL/100+0x30;                       //分离出TL的百十个位
+  81   1        if( TempBuffer0[12]==0x30) TempBuffer0[12]=0xfe; //百位数消隐
+  82   1        TempBuffer0[13]=(TL%100)/10+0x30;                             //分离出十位
+  83   1        TempBuffer0[14]=(TL%100)%10+0x30;                             //分离出个位
+  84   1      }
+  85          
+  86          /**********温度转换为LCD显示数据****************
+  87          *功能:将两个字节的温度值,分离出符号位,整数及小数
+  88                    并将它们转化为ACSII码,送到液晶显示缓冲区
+  89          ************************************************/
+  90          void temper_LCD(void)   
+  91          {
+  92   1         unsigned char x=0x00,y=0x00;
+  93   1         t[0]=*pt;
+  94   1         pt++;
+  95   1         t[1]=*pt;
+  96   1         if(t[1]>0x07)                    //判断正负温度
+  97   1         {
+  98   2          TempBuffer1[0]=0x2d;             //0x2d为"-"的ASCII码
+  99   2              t[1]=~t[1];                      /*下面几句把负数的补码*/
+ 100   2              t[0]=~t[0];              /* 换算成绝对值*********/
+ 101   2              x=t[0]+1;                                /***********************/
+ 102   2              t[0]=x;                                  /***********************/
+ 103   2              if(x>255)                /**********************/
+ 104   2              t[1]++;                          /*********************/
+ 105   2         }
+ 106   1         else TempBuffer1[0]=0x2b;    //0xfe为变"+"的ASCII码
+ 107   1        t[1]<<=4;             //将高字节左移4位
+ 108   1        t[1]=t[1]&0x70;               //取出高字节的3个有效数字位
+ 109   1        x=t[0];                                       //将t[0]暂存到X,因为取小数部分还要用到它
+ 110   1        x>>=4;                                        //右移4位
+ 111   1        x=x&0x0f;                                     //和前面两句就是取出t[0]的高四位        
+ 112   1        t[1]=t[1]|x;                  //将高低字节的有效值的整数部分拼成一个字节
+ 113   1        TempBuffer1[1]=t[1]/100+0x30;                      //+0x30 为变 0~9 ASCII码
+ 114   1         if( TempBuffer1[1]==0x30) TempBuffer1[1]=0xfe; //百位数消隐
+ 115   1        TempBuffer1[2]=(t[1]%100)/10+0x30;                            //分离出十位
+ 116   1        TempBuffer1[3]=(t[1]%100)%10+0x30;                            //分离出个位
+ 117   1        t[0]=t[0]&0x0c;                                                       //取有效的两位小数
+C51 COMPILER V7.08   LCD_18B20                                                             05/14/2007 10:50:25 PAGE 3   
+
+ 118   1        t[0]>>=2;                                                                     //左移两位,以便查表
+ 119   1        x=t[0];                                                                               
+ 120   1        y=dotcode[x];                                                                 //查表换算成实际的小数
+ 121   1        TempBuffer1[5]=y/10+0x30;                                             //分离出十分位
+ 122   1        TempBuffer1[6]=y%10+0x30;                                             //分离出百分位
+ 123   1      }                       
+ 124          
+ 125          /*********键盘命令处理函数************
+ 126          *功能:把键盘值转化成相应的功能标志位
+ 127          *备注:为了提高程序的健壮性,在功能标志位无效时,
+ 128          **up_one和down_one都无效,并且各功能标志之间
+ 129          **采用互锁处理,虽然这样麻烦,特别是功能标志较多时
+ 130          **更是麻烦,但各功能标志之间是同级别的;
+ 131          **也可采用多重if else方法,虽然简单,
+ 132          **但各功能标志之间有了明显的优先级差别
+ 133          **************************************/
+ 134          void key_command(unsigned char x)                               
+ 135          {
+ 136   1              switch(x)
+ 137   1              {
+ 138   2                      case 1: up_one=1;break;
+ 139   2                      case 2: down_one=1;break;
+ 140   2                      case 5: alarm_up_flag=!alarm_up_flag;break;
+ 141   2                      case 6: alarm_down_flag=!alarm_down_flag;break;
+ 142   2                      case 7: set_temper_flag=!set_temper_flag;break;
+ 143   2                      case 8: alarm_switch=!alarm_switch;break;
+ 144   2                      default: break;
+ 145   2              }
+ 146   1              if(!(alarm_up_flag||alarm_down_flag||set_temper_flag))
+ 147   1              {
+ 148   2                      up_one=0x00;            //在没有相应功能标志有效时
+ 149   2                      down_one=0x00;          //up_one和down_one都被锁定
+ 150   2              }
+ 151   1              if(alarm_up_flag&&(!alarm_down_flag)&&(!set_temper_flag))//设置上限报警
+ 152   1              {
+ 153   2                      if(up_one)//上限报警加1
+ 154   2                      {
+ 155   3                              TH++;up_one=0;
+ 156   3                              if(TH>=100)//超过100度,回零到20度
+ 157   3                              TH=20;
+ 158   3                      }
+ 159   2                      if(down_one)//上限报警减1
+ 160   2                      {
+ 161   3                              TH--;down_one=0;
+ 162   3                              if(TH<=20)//小于20度,回零到20度
+ 163   3                              TH=20;
+ 164   3                      }
+ 165   2              }
+ 166   1              if((!alarm_up_flag)&&(alarm_down_flag)&&(!set_temper_flag))//设置下限报警
+ 167   1              {
+ 168   2                      if(up_one)
+ 169   2                      {
+ 170   3                              TL++;up_one=0;
+ 171   3                              if(TL>=20)//高于20度,回零到0度
+ 172   3                              TL=0;
+ 173   3                      }
+ 174   2                      if(down_one)
+ 175   2                      {
+ 176   3                              TL--;down_one=0;
+ 177   3                              if(TL<=0)//低于0度,回零到0度
+ 178   3                              TL=0;
+ 179   3                      }
+C51 COMPILER V7.08   LCD_18B20                                                             05/14/2007 10:50:25 PAGE 4   
+
+ 180   2              }
+ 181   1              
+ 182   1              if((!alarm_up_flag)&&(!alarm_down_flag)&&(set_temper_flag))//设置用户标定温度
+ 183   1              {
+ 184   2                      if(up_one)
+ 185   2                      {
+ 186   3                              user_temper++;up_one=0;
+ 187   3                              if(user_temper>=60)//高于60度,回零到0度
+ 188   3                              user_temper=0;
+ 189   3                      }
+ 190   2                      if(down_one)
+ 191   2                      {
+ 192   3                              user_temper--;down_one=0;
+ 193   3                              if(user_temper<=0)//低于0度,回零到0度
+ 194   3                              user_temper=0;
+ 195   3                      }                       
+ 196   2              }
+ 197   1              //if(alarm_switch)
+ 198   1                                      
+ 199   1      }
+ 200          
+ 201          
+ 202          main()
+ 203          {                                                                                               
+ 204   1       setds18b20(TH,TL,RS);                                  //设置上下限报警温度和分辨率
+ 205   1       delay(100);                                     
+ 206   1       while(1)
+ 207   1       {                                                                                      
+ 208   2          pt=ReadTemperature();                                //测温函数返回这个数组的头地址
+ 209   2                                                                                       //读取温度,温度值存放在一个两个字节的数组中,
+ 210   2              temper_LCD();                                            //实测温度转化为ACSII码,并送液晶显示缓冲区
+ 211   2              user_temper_LCD(user_temper);            //用户设定温度转化为ACSII码,并送液晶显示缓冲区
+ 212   2              alarm_LCD(TH,TL);                                        //上下限报警温度转化为ASCII码,并送液晶显示缓冲区
+ 213   2              LCD_Initial();                                                  //第一个参数列号,第二个为行号,为0表示第一行
+ 214   2                                                                                              //为1表示第二行,第三个参数为显示数据的首地址
+ 215   2              LCD_Print(0,0,TempBuffer0);     
+ 216   2              LCD_Print(0,1,TempBuffer1); 
+ 217   2                      
+ 218   2              scan_full();                     //看有无键按下
+ 219   2              if(key_ok)                                              //如有键按下则看到底哪个键按下
+ 220   2              {
+ 221   3              key_value=key_scan();                    //调用键盘扫描程序
+ 222   3              key_command(key_value);                  //键盘命令处理函数
+ 223   3              }                       
+ 224   2       }
+ 225   1      }
+ 226            
+ 227          
+ 228          
+ 229          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1056    ----
+   CONSTANT SIZE    =      4    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     44       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      7       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

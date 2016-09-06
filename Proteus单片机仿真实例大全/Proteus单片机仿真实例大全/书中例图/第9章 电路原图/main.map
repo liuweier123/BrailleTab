@@ -1,0 +1,563 @@
+Archive member included because of file (symbol)
+
+C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_udivmodhi4.o)
+                              main.o (__udivmodhi4)
+C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_divmodhi4.o)
+                              ds18x20.o (__divmodhi4)
+C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_copy_data.o)
+                              main.o (__do_copy_data)
+C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_clear_bss.o)
+                              main.o (__do_clear_bss)
+C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5\libc.a(itoa.o)
+                              main.o (itoa)
+C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5\libc.a(strrev.o)
+                              C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5\libc.a(itoa.o) (strrev)
+
+Allocating common symbols
+Common symbol       size              file
+
+OW_OUT              0x2               onewire.o
+OW_PIN_MASK         0x1               onewire.o
+OW_IN               0x2               onewire.o
+OW_DDR              0x2               onewire.o
+gSensorIDs          0x28              main.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00020000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+LOAD main.o
+LOAD onewire.o
+LOAD delay.o
+LOAD ds18x20.o
+LOAD uart.o
+LOAD crc8.o
+LOAD C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5\libm.a
+LOAD C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a
+LOAD C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5\libc.a
+LOAD C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000     0x18a4
+ *(.vectors)
+ .vectors       0x00000000       0x54 C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+                0x00000000                __vectors
+                0x00000000                __vector_default
+                0x00000054                __ctors_start = .
+ *(.ctors)
+                0x00000054                __ctors_end = .
+                0x00000054                __dtors_start = .
+ *(.dtors)
+                0x00000054                __dtors_end = .
+ *(.progmem.gcc*)
+ *(.progmem*)
+ .progmem.data  0x00000054      0x38a main.o
+ .progmem.data  0x000003de      0x177 ds18x20.o
+                0x00000556                . = ALIGN (0x2)
+ *fill*         0x00000555        0x1 00
+ *(.init0)
+ *(.init1)
+ *(.init2)
+ .init2         0x00000556        0xc C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+ *(.init3)
+ *(.init4)
+ .init4         0x00000562       0x16 C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_copy_data.o)
+                0x00000562                __do_copy_data
+ .init4         0x00000578       0x10 C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_clear_bss.o)
+                0x00000578                __do_clear_bss
+ *(.init5)
+ *(.init6)
+ *(.init7)
+ *(.init8)
+ *(.init9)
+ .init9         0x00000588        0x4 C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+ *(.text)
+ .text          0x0000058c        0x4 C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+                0x0000058c                __vector_1
+                0x0000058c                __vector_12
+                0x0000058c                __bad_interrupt
+                0x0000058c                __vector_6
+                0x0000058c                __vector_3
+                0x0000058c                __vector_11
+                0x0000058c                __vector_17
+                0x0000058c                __vector_19
+                0x0000058c                __vector_7
+                0x0000058c                __vector_5
+                0x0000058c                __vector_4
+                0x0000058c                __vector_9
+                0x0000058c                __vector_2
+                0x0000058c                __vector_15
+                0x0000058c                __vector_8
+                0x0000058c                __vector_10
+                0x0000058c                __vector_16
+                0x0000058c                __vector_18
+                0x0000058c                __vector_20
+ .text          0x00000590      0x532 main.o
+                0x0000071e                main
+                0x00000620                uart_put_temp
+                0x00000590                search_sensors
+ .text          0x00000ac2      0x2a4 onewire.o
+                0x00000d28                ow_command
+                0x00000ac2                ow_reset
+                0x00000b7a                ow_input_pin_state
+                0x00000c88                ow_byte_rd
+                0x00000c92                ow_rom_search
+                0x00000bb4                ow_parasite_disable
+                0x00000b8e                ow_parasite_enable
+                0x00000b4a                ow_set_bus
+                0x00000c64                ow_byte_wr
+                0x00000bde                ow_bit_io
+ .text          0x00000d66       0x1a delay.o
+                0x00000d66                delayloop32
+ .text          0x00000d80      0x86a ds18x20.o
+                0x00000f0a                show_sp_uart
+                0x000014b0                DS18X20_write_scratchpad
+                0x00000e52                DS18X20_show_id_uart
+                0x00001558                DS18X20_copy_scratchpad
+                0x00000d80                DS18X20_uart_put_temp
+                0x00001000                DS18X20_read_meas_all_verbose
+                0x00001328                DS18X20_read_meas
+                0x000013f0                DS18X20_read_meas_single
+                0x000011b0                DS18X20_temp_to_decicel
+                0x000012e8                DS18X20_start_meas
+                0x000012b8                DS18X20_get_power_status
+                0x0000150c                DS18X20_read_scratchpad
+                0x0000124a                DS18X20_temp_cmp
+                0x000015ac                DS18X20_recall_E2
+                0x00000f68                DS18X20_meas_to_cel
+                0x0000127e                DS18X20_find_sensor
+ .text          0x000015ea      0x1c2 uart.o
+                0x00001796                uart_puthex_byte
+                0x0000170a                uart_puts
+                0x00001728                uart_puts_p
+                0x000015ea                __vector_13
+                0x00001784                uart_puthex_nibble
+                0x00001688                uart_init
+                0x000016ac                uart_getc
+                0x000016e6                uart_putc
+                0x0000163c                __vector_14
+                0x0000174c                uart_puti
+ .text          0x000017ac       0x40 crc8.o
+                0x000017ac                crc8
+ .text          0x000017ec       0x4a C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5\libc.a(itoa.o)
+                0x000017ec                itoa
+ .text          0x00001836       0x20 C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5\libc.a(strrev.o)
+                0x00001836                strrev
+                0x00001856                . = ALIGN (0x2)
+ *(.text.*)
+ .text.libgcc   0x00001856       0x28 C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_udivmodhi4.o)
+                0x00001856                __udivmodhi4
+ .text.libgcc   0x0000187e       0x26 C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_divmodhi4.o)
+                0x0000187e                __divmodhi4
+                0x0000187e                _div
+                0x000018a4                . = ALIGN (0x2)
+ *(.fini9)
+ *(.fini8)
+ *(.fini7)
+ *(.fini6)
+ *(.fini5)
+ *(.fini4)
+ *(.fini3)
+ *(.fini2)
+ *(.fini1)
+ *(.fini0)
+                0x000018a4                _etext = .
+
+.data           0x00800060        0xa load address 0x000018a4
+                0x00800060                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800060        0xa ds18x20.o
+ *(.gnu.linkonce.d*)
+                0x0080006a                . = ALIGN (0x2)
+                0x0080006a                _edata = .
+                0x0080006a                PROVIDE (__data_end, .)
+
+.bss            0x0080006a       0x74
+                0x0080006a                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x0080006a       0x45 uart.o
+ *(COMMON)
+ COMMON         0x008000af       0x28 main.o
+                                  0x0 (size before relaxing)
+                0x008000af                gSensorIDs
+ COMMON         0x008000d7        0x7 onewire.o
+                                  0x0 (size before relaxing)
+                0x008000d7                OW_OUT
+                0x008000d9                OW_PIN_MASK
+                0x008000da                OW_IN
+                0x008000dc                OW_DDR
+                0x008000de                PROVIDE (__bss_end, .)
+                0x000018a4                __data_load_start = LOADADDR (.data)
+                0x000018ae                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x008000de        0x0
+                0x008000de                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x008000de                PROVIDE (__noinit_end, .)
+                0x008000de                _end = .
+                0x008000de                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment
+ *(.comment)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000       0x78
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x14 main.o
+ .debug_aranges
+                0x00000014       0x14 onewire.o
+ .debug_aranges
+                0x00000028       0x14 delay.o
+ .debug_aranges
+                0x0000003c       0x14 ds18x20.o
+ .debug_aranges
+                0x00000050       0x14 uart.o
+ .debug_aranges
+                0x00000064       0x14 crc8.o
+
+.debug_pubnames
+                0x00000000      0x3dc
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000       0x4f main.o
+ .debug_pubnames
+                0x0000004f       0xf1 onewire.o
+ .debug_pubnames
+                0x00000140       0x22 delay.o
+ .debug_pubnames
+                0x00000162      0x1ab ds18x20.o
+ .debug_pubnames
+                0x0000030d       0xb4 uart.o
+ .debug_pubnames
+                0x000003c1       0x1b crc8.o
+
+.debug_info     0x00000000     0x139a
+ *(.debug_info)
+ .debug_info    0x00000000      0x417 main.o
+ .debug_info    0x00000417      0x388 onewire.o
+ .debug_info    0x0000079f       0x94 delay.o
+ .debug_info    0x00000833      0x6c1 ds18x20.o
+ .debug_info    0x00000ef4      0x3a7 uart.o
+ .debug_info    0x0000129b       0xff crc8.o
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev   0x00000000      0x59b
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000      0x114 main.o
+ .debug_abbrev  0x00000114      0x13c onewire.o
+ .debug_abbrev  0x00000250       0x5b delay.o
+ .debug_abbrev  0x000002ab      0x148 ds18x20.o
+ .debug_abbrev  0x000003f3      0x122 uart.o
+ .debug_abbrev  0x00000515       0x86 crc8.o
+
+.debug_line     0x00000000      0xf52
+ *(.debug_line)
+ .debug_line    0x00000000      0x3dd main.o
+ .debug_line    0x000003dd      0x2a2 onewire.o
+ .debug_line    0x0000067f       0x96 delay.o
+ .debug_line    0x00000715      0x52a ds18x20.o
+ .debug_line    0x00000c3f      0x222 uart.o
+ .debug_line    0x00000e61       0xf1 crc8.o
+
+.debug_frame
+ *(.debug_frame)
+
+.debug_str      0x00000000      0x502
+ *(.debug_str)
+ .debug_str     0x00000000       0xe0 main.o
+                                0x12c (size before relaxing)
+ .debug_str     0x000000e0       0xcc onewire.o
+                                0x18f (size before relaxing)
+ .debug_str     0x000001ac       0x23 delay.o
+                                 0xc2 (size before relaxing)
+ .debug_str     0x000001cf      0x1bc ds18x20.o
+                                0x2a2 (size before relaxing)
+ .debug_str     0x0000038b      0x127 uart.o
+                                0x20b (size before relaxing)
+ .debug_str     0x000004b2       0x50 crc8.o
+                                0x105 (size before relaxing)
+
+.debug_loc
+ *(.debug_loc)
+
+.debug_macinfo
+ *(.debug_macinfo)
+OUTPUT(main.elf elf32-avr)
+
+.debug_ranges   0x000018a4        0xc
+ .debug_ranges  0x000018a4        0xc uart.o
+
+Cross Reference Table
+
+Symbol                                            File
+DS18X20_copy_scratchpad                           ds18x20.o
+                                                  main.o
+DS18X20_find_sensor                               ds18x20.o
+                                                  main.o
+DS18X20_get_power_status                          ds18x20.o
+                                                  main.o
+DS18X20_meas_to_cel                               ds18x20.o
+DS18X20_read_meas                                 ds18x20.o
+                                                  main.o
+DS18X20_read_meas_all_verbose                     ds18x20.o
+                                                  main.o
+DS18X20_read_meas_single                          ds18x20.o
+                                                  main.o
+DS18X20_read_scratchpad                           ds18x20.o
+                                                  main.o
+DS18X20_recall_E2                                 ds18x20.o
+                                                  main.o
+DS18X20_show_id_uart                              ds18x20.o
+                                                  main.o
+DS18X20_start_meas                                ds18x20.o
+                                                  main.o
+DS18X20_temp_cmp                                  ds18x20.o
+DS18X20_temp_to_decicel                           ds18x20.o
+                                                  main.o
+DS18X20_uart_put_temp                             ds18x20.o
+DS18X20_write_scratchpad                          ds18x20.o
+                                                  main.o
+OW_DDR                                            onewire.o
+OW_IN                                             onewire.o
+OW_OUT                                            onewire.o
+OW_PIN_MASK                                       onewire.o
+__bad_interrupt                                   C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__bss_end                                         C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_clear_bss.o)
+__bss_start                                       C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_clear_bss.o)
+__data_end                                        C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_copy_data.o)
+__data_load_start                                 C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_copy_data.o)
+__data_start                                      C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_copy_data.o)
+__divmodhi4                                       C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_divmodhi4.o)
+                                                  ds18x20.o
+__do_clear_bss                                    C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_clear_bss.o)
+                                                  crc8.o
+                                                  uart.o
+                                                  ds18x20.o
+                                                  delay.o
+                                                  onewire.o
+                                                  main.o
+__do_copy_data                                    C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_copy_data.o)
+                                                  crc8.o
+                                                  uart.o
+                                                  ds18x20.o
+                                                  delay.o
+                                                  onewire.o
+                                                  main.o
+__heap_end                                        C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__init                                            C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__stack                                           C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+                                                  main.o
+__udivmodhi4                                      C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_udivmodhi4.o)
+                                                  C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5\libc.a(itoa.o)
+                                                  C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_divmodhi4.o)
+                                                  main.o
+__vector_1                                        C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_10                                       C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_11                                       C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_12                                       C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_13                                       uart.o
+                                                  C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_14                                       uart.o
+                                                  C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_15                                       C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_16                                       C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_17                                       C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_18                                       C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_19                                       C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_2                                        C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_20                                       C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_3                                        C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_4                                        C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_5                                        C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_6                                        C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_7                                        C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_8                                        C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_9                                        C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vector_default                                  C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+__vectors                                         C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+_div                                              C:/WinAVR/bin/../lib/gcc/avr/3.4.3/avr5\libgcc.a(_divmodhi4.o)
+crc8                                              crc8.o
+                                                  ds18x20.o
+delayloop32                                       delay.o
+                                                  ds18x20.o
+                                                  main.o
+gSensorIDs                                        main.o
+itoa                                              C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5\libc.a(itoa.o)
+                                                  uart.o
+                                                  ds18x20.o
+                                                  main.o
+main                                              main.o
+                                                  C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5/crtm32.o
+ow_bit_io                                         onewire.o
+                                                  ds18x20.o
+ow_byte_rd                                        onewire.o
+                                                  ds18x20.o
+ow_byte_wr                                        onewire.o
+                                                  ds18x20.o
+ow_command                                        onewire.o
+                                                  ds18x20.o
+ow_input_pin_state                                onewire.o
+                                                  ds18x20.o
+ow_parasite_disable                               onewire.o
+                                                  ds18x20.o
+ow_parasite_enable                                onewire.o
+                                                  ds18x20.o
+ow_reset                                          onewire.o
+                                                  ds18x20.o
+ow_rom_search                                     onewire.o
+                                                  ds18x20.o
+ow_set_bus                                        onewire.o
+                                                  main.o
+search_sensors                                    main.o
+show_sp_uart                                      ds18x20.o
+strrev                                            C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5\libc.a(strrev.o)
+                                                  C:/WinAVR/bin/../lib/gcc/avr/3.4.3/../../../../avr/lib/avr5\libc.a(itoa.o)
+uart_getc                                         uart.o
+uart_init                                         uart.o
+                                                  main.o
+uart_put_temp                                     main.o
+uart_putc                                         uart.o
+                                                  ds18x20.o
+                                                  main.o
+uart_puthex_byte                                  uart.o
+                                                  ds18x20.o
+uart_puthex_nibble                                uart.o
+uart_puti                                         uart.o
+                                                  ds18x20.o
+                                                  main.o
+uart_puts                                         uart.o
+                                                  ds18x20.o
+                                                  main.o
+uart_puts_p                                       uart.o
+                                                  ds18x20.o
+                                                  main.o

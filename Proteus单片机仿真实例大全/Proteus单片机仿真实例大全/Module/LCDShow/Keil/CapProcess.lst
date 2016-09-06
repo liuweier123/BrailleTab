@@ -1,0 +1,97 @@
+C51 COMPILER V8.05a   CAPPROCESS                                                           08/08/2007 08:55:17 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE CAPPROCESS
+OBJECT MODULE PLACED IN CapProcess.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sources\CapProcess.c BROWSE INCDIR(.\include;.\include) DEBUG OBJECTEXTEND 
+                    -PRINT(.\CapProcess.lst) OBJECT(CapProcess.obj)
+
+line level    source
+
+   1          //*************************************************************************************************
+   2          //*                                                                                                                                                                                               *
+   3          //*                      ******************************大写字母处理函数**************************                         *
+   4          //*                                                                                                                                                                                               *
+   5          //*************************************************************************************************
+   6          
+   7          
+   8          extern unsigned char uc_ClickCount;
+   9          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  10          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<按键第1个字母处理函数>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  11          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  12          unsigned char ucCapOne(unsigned char ucKeyCode)
+  13          {
+  14   1              switch(ucKeyCode)
+  15   1                      {
+  16   2                      case 11:return 'A';break;
+  17   2                      case 12:return 'D';break;
+  18   2                      case 13:return 'G';break;
+  19   2                      case 21:return 'J';break;
+  20   2                      case 22:return 'M';break;
+  21   2                      case 23:return 'P';break;
+  22   2                      case 31:return 'S';break;
+  23   2                      case 32:return 'V';break;
+  24   2                      case 33:return 'Y';break;
+  25   2                      default:break;
+  26   2                      }
+  27   1              return 0xFF;
+  28   1      }
+  29          
+  30          
+  31          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  32          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<按键第2个字母处理函数>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  33          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  34          unsigned char ucCapTwo(unsigned char ucKeyCode)
+  35          {
+  36   1              switch(ucKeyCode)
+  37   1                      {
+  38   2                      case 11:return 'B';break;
+  39   2                      case 12:return 'E';break;
+  40   2                      case 13:return 'H';break;
+  41   2                      case 21:return 'K';break;
+  42   2                      case 22:return 'N';break;
+  43   2                      case 23:return 'Q';break;
+  44   2                      case 31:return 'T';break;
+  45   2                      case 32:return 'W';break;
+  46   2                      case 33:uc_ClickCount=2;return 'Z';break;
+  47   2                      default:break;
+  48   2                      }
+  49   1              return 0xFF;
+  50   1      }
+  51          
+  52          
+  53          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  54          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<按键第3个字母处理函数>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+C51 COMPILER V8.05a   CAPPROCESS                                                           08/08/2007 08:55:17 PAGE 2   
+
+  55          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  56          unsigned char ucCapThree(unsigned char ucKeyCode)
+  57          {
+  58   1              switch(ucKeyCode)
+  59   1                      {
+  60   2                      case 11:return 'C';break;
+  61   2                      case 12:return 'F';break;
+  62   2                      case 13:return 'I';break;
+  63   2                      case 21:return 'L';break;
+  64   2                      case 22:return 'O';break;
+  65   2                      case 23:return 'R';break;
+  66   2                      case 31:return 'U';break;
+  67   2                      case 32:return 'X';break;
+  68   2                      default:break;
+  69   2                      }
+  70   1              return 0xFF;
+  71   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    189    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

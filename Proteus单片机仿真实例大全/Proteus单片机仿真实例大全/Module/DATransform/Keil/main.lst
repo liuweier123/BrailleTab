@@ -1,0 +1,62 @@
+C51 COMPILER V8.05a   MAIN                                                                 08/11/2007 14:09:29 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sources\main.c BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\main.lst
+                    -) OBJECT(main.obj)
+
+line level    source
+
+   1          #include <at89x51.h>
+   2          
+   3          #define TIME0H 0x9C             //0.1ms
+   4          
+   5          unsigned char uca_SinaCode[]=
+   6                                                                  {0x7F,0x8C,0x9A,0xA6,0xB3,0xBF,0xCA,0xD4,0xDE,0xE6,
+   7                                                                  0xED,0xF3,0xF8,0xFC,0xFE,0xFE
+   8          ,0xFE,0xFC,0xF8,0xF3,0xED,0xE6,0xDE,0xD4,0xCA,0xBF,0xB3,0xA6,0x9A,0x8C,0x7F,0x72
+   9          ,0x64,0x58,0x4B,0x3F,0x34,0x2A,0x20,0x18,0x11,0x0B,0x06,0x02,0x00,0x00,0x00,0x02
+  10          ,0x06,0x0B,0x11,0x18,0x20,0x2A,0x34,0x3F,0x4B,0x58,0x64,0x72,0x7F};
+  11          
+  12          
+  13                  unsigned char ucCount=0;
+  14          
+  15          
+  16          void main()
+  17          {
+  18   1              TMOD=0x02;
+  19   1              TH0=TIME0H;
+  20   1      
+  21   1              TR0=1;
+  22   1              ET0=1;
+  23   1              EA=1;
+  24   1              
+  25   1              P2_0=0;
+  26   1      
+  27   1              while(1);
+  28   1      }
+  29          
+  30          
+  31          void Time0() interrupt 1
+  32          {
+  33   1              P0=uca_SinaCode[ucCount];
+  34   1              if(ucCount==61)
+  35   1                      ucCount=0;
+  36   1              else
+  37   1                      ucCount++;
+  38   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     52    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     62    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

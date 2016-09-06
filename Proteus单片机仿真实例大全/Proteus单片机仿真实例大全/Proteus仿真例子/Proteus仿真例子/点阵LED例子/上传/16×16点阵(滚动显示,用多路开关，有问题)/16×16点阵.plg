@@ -1,0 +1,17 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+G:\Benny的文档\Proteus\点阵LED\上传\16×16点阵(滚动显示,用多路开关)\16×16点阵.uv2
+Project File Date:  04/23/2006
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling 1616.C...
+1616.C(85): warning C280: 'j': unreferenced local variable
+linking...
+Program Size: data=18.0 xdata=0 code=1980
+creating hex file from "16×16点阵"...
+"16×16点阵" - 0 Error(s), 1 Warning(s).

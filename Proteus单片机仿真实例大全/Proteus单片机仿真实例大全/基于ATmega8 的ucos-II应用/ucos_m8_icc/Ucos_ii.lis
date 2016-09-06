@@ -1,0 +1,2192 @@
+                        .module Ucos_ii.c
+                        .area lit(rom, con, rel)
+ 0000           _OSMapTbl::
+ 0000 0102              .byte 1,2
+ 0002 0408              .byte 4,8
+ 0004 1020              .byte 16,32
+ 0006 4080              .byte 64,128
+ 0008                   .dbfile F:\ICC\project\ucos_m8_icc\source/os_core.c
+ 0008                   .dbsym e OSMapTbl _OSMapTbl A[8:8]kc
+ 0008           _OSUnMapTbl::
+ 0008 0000              .byte 0,0
+ 000A 0100              .byte 1,0
+ 000C 0200              .byte 2,0
+ 000E 0100              .byte 1,0
+ 0010 0300              .byte 3,0
+ 0012 0100              .byte 1,0
+ 0014 0200              .byte 2,0
+ 0016 0100              .byte 1,0
+ 0018 0400              .byte 4,0
+ 001A 0100              .byte 1,0
+ 001C 0200              .byte 2,0
+ 001E 0100              .byte 1,0
+ 0020 0300              .byte 3,0
+ 0022 0100              .byte 1,0
+ 0024 0200              .byte 2,0
+ 0026 0100              .byte 1,0
+ 0028 0500              .byte 5,0
+ 002A 0100              .byte 1,0
+ 002C 0200              .byte 2,0
+ 002E 0100              .byte 1,0
+ 0030 0300              .byte 3,0
+ 0032 0100              .byte 1,0
+ 0034 0200              .byte 2,0
+ 0036 0100              .byte 1,0
+ 0038 0400              .byte 4,0
+ 003A 0100              .byte 1,0
+ 003C 0200              .byte 2,0
+ 003E 0100              .byte 1,0
+ 0040 0300              .byte 3,0
+ 0042 0100              .byte 1,0
+ 0044 0200              .byte 2,0
+ 0046 0100              .byte 1,0
+ 0048 0600              .byte 6,0
+ 004A 0100              .byte 1,0
+ 004C 0200              .byte 2,0
+ 004E 0100              .byte 1,0
+ 0050 0300              .byte 3,0
+ 0052 0100              .byte 1,0
+ 0054 0200              .byte 2,0
+ 0056 0100              .byte 1,0
+ 0058 0400              .byte 4,0
+ 005A 0100              .byte 1,0
+ 005C 0200              .byte 2,0
+ 005E 0100              .byte 1,0
+ 0060 0300              .byte 3,0
+ 0062 0100              .byte 1,0
+ 0064 0200              .byte 2,0
+ 0066 0100              .byte 1,0
+ 0068 0500              .byte 5,0
+ 006A 0100              .byte 1,0
+ 006C 0200              .byte 2,0
+ 006E 0100              .byte 1,0
+ 0070 0300              .byte 3,0
+ 0072 0100              .byte 1,0
+ 0074 0200              .byte 2,0
+ 0076 0100              .byte 1,0
+ 0078 0400              .byte 4,0
+ 007A 0100              .byte 1,0
+ 007C 0200              .byte 2,0
+ 007E 0100              .byte 1,0
+ 0080 0300              .byte 3,0
+ 0082 0100              .byte 1,0
+ 0084 0200              .byte 2,0
+ 0086 0100              .byte 1,0
+ 0088 0700              .byte 7,0
+ 008A 0100              .byte 1,0
+ 008C 0200              .byte 2,0
+ 008E 0100              .byte 1,0
+ 0090 0300              .byte 3,0
+ 0092 0100              .byte 1,0
+ 0094 0200              .byte 2,0
+ 0096 0100              .byte 1,0
+ 0098 0400              .byte 4,0
+ 009A 0100              .byte 1,0
+ 009C 0200              .byte 2,0
+ 009E 0100              .byte 1,0
+ 00A0 0300              .byte 3,0
+ 00A2 0100              .byte 1,0
+ 00A4 0200              .byte 2,0
+ 00A6 0100              .byte 1,0
+ 00A8 0500              .byte 5,0
+ 00AA 0100              .byte 1,0
+ 00AC 0200              .byte 2,0
+ 00AE 0100              .byte 1,0
+ 00B0 0300              .byte 3,0
+ 00B2 0100              .byte 1,0
+ 00B4 0200              .byte 2,0
+ 00B6 0100              .byte 1,0
+ 00B8 0400              .byte 4,0
+ 00BA 0100              .byte 1,0
+ 00BC 0200              .byte 2,0
+ 00BE 0100              .byte 1,0
+ 00C0 0300              .byte 3,0
+ 00C2 0100              .byte 1,0
+ 00C4 0200              .byte 2,0
+ 00C6 0100              .byte 1,0
+ 00C8 0600              .byte 6,0
+ 00CA 0100              .byte 1,0
+ 00CC 0200              .byte 2,0
+ 00CE 0100              .byte 1,0
+ 00D0 0300              .byte 3,0
+ 00D2 0100              .byte 1,0
+ 00D4 0200              .byte 2,0
+ 00D6 0100              .byte 1,0
+ 00D8 0400              .byte 4,0
+ 00DA 0100              .byte 1,0
+ 00DC 0200              .byte 2,0
+ 00DE 0100              .byte 1,0
+ 00E0 0300              .byte 3,0
+ 00E2 0100              .byte 1,0
+ 00E4 0200              .byte 2,0
+ 00E6 0100              .byte 1,0
+ 00E8 0500              .byte 5,0
+ 00EA 0100              .byte 1,0
+ 00EC 0200              .byte 2,0
+ 00EE 0100              .byte 1,0
+ 00F0 0300              .byte 3,0
+ 00F2 0100              .byte 1,0
+ 00F4 0200              .byte 2,0
+ 00F6 0100              .byte 1,0
+ 00F8 0400              .byte 4,0
+ 00FA 0100              .byte 1,0
+ 00FC 0200              .byte 2,0
+ 00FE 0100              .byte 1,0
+ 0100 0300              .byte 3,0
+ 0102 0100              .byte 1,0
+ 0104 0200              .byte 2,0
+ 0106 0100              .byte 1,0
+ 0108                   .dbsym e OSUnMapTbl _OSUnMapTbl A[256:256]kc
+                        .area text(rom, con, rel)
+ 0000                   .dbfile F:\ICC\project\ucos_m8_icc\source/os_core.c
+ 0000                   .dbfunc e OSInit _OSInit fV
+ 0000           ;              i -> R10,R11
+                        .even
+ 0000           _OSInit::
+ 0000 00D0              rcall push_gset3x
+ 0002 2397              sbiw R28,3
+ 0004                   .dbline -1
+ 0004                   .dbline 77
+ 0004           ; /*
+ 0004           ; *********************************************************************************************************
+ 0004           ; *                                                uC/OS-II
+ 0004           ; *                                          The Real-Time Kernel
+ 0004           ; *
+ 0004           ; *                        (c) Copyright 1992-1998, Jean J. Labrosse, Plantation, FL
+ 0004           ; *                                           All Rights Reserved
+ 0004           ; *
+ 0004           ; *                                                  V2.00
+ 0004           ; *
+ 0004           ; * File : uCOS_II.C
+ 0004           ; * By   : Jean J. Labrosse
+ 0004           ; *********************************************************************************************************
+ 0004           ; */
+ 0004           ; 
+ 0004           ; #define  OS_GLOBALS                           /* Declare GLOBAL variables                              */
+ 0004           ; #include "includes.h"
+ 0004           ; 
+ 0004           ; 
+ 0004           ; #define  OS_MASTER_FILE                       /* Prevent the following files from including includes.h */
+ 0004           ; #include "os_core.c"
+ 0004           ; #include "os_task.c"
+ 0004           ; #include "os_time.c"
+ 0004           ; #include "74164.c"
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004                   .dbline 81
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004           ; 
+ 0004 80E0              ldi R24,0
+ 0006 90E0              ldi R25,0
+ 0008 A0E0              ldi R26,0
+ 000A B0E0              ldi R27,0
+ 000C 9093BA00          sts _OSTime+1,R25
+ 0010 8093B900          sts _OSTime,R24
+ 0014 B093BC00          sts _OSTime+2+1,R27
+ 0018 A093BB00          sts _OSTime+2,R26
+ 001C                   .dbline 82
+ 001C           ; 
+ 001C 2224              clr R2
+ 001E 2092ED00          sts _OSIntNesting,R2
+ 0022                   .dbline 83
+ 0022           ; 
+ 0022 2092EC00          sts _OSLockNesting,R2
+ 0026                   .dbline 85
+ 0026           ; 
+ 0026           ; 
+ 0026 2092E500          sts _OSTaskCtr,R2
+ 002A                   .dbline 87
+ 002A           ; 
+ 002A           ; 
+ 002A 2092E600          sts _OSRunning,R2
+ 002E                   .dbline 88
+ 002E           ; 
+ 002E 80E0              ldi R24,0
+ 0030 90E0              ldi R25,0
+ 0032 A0E0              ldi R26,0
+ 0034 B0E0              ldi R27,0
+ 0036 9093EF00          sts _OSIdleCtr+1,R25
+ 003A 8093EE00          sts _OSIdleCtr,R24
+ 003E B093F100          sts _OSIdleCtr+2+1,R27
+ 0042 A093F000          sts _OSIdleCtr+2,R26
+ 0046                   .dbline 90
+ 0046           ; 
+ 0046           ; 
+ 0046 80E0              ldi R24,0
+ 0048 90E0              ldi R25,0
+ 004A A0E0              ldi R26,0
+ 004C B0E0              ldi R27,0
+ 004E 90930501          sts _OSCtxSwCtr+1,R25
+ 0052 80930401          sts _OSCtxSwCtr,R24
+ 0056 B0930701          sts _OSCtxSwCtr+2+1,R27
+ 005A A0930601          sts _OSCtxSwCtr+2,R26
+ 005E                   .dbline 91
+ 005E           ; 
+ 005E 2092E900          sts _OSRdyGrp,R2
+ 0062                   .dbline 92
+ 0062 AA24              clr R10
+ 0064 BB24              clr R11
+ 0066 0AC0              rjmp L6
+ 0068           L3:
+ 0068                   .dbline 92
+ 0068                   .dbline 93
+ 0068 80E0              ldi R24,<_OSRdyTbl
+ 006A 90E0              ldi R25,>_OSRdyTbl
+ 006C F501              movw R30,R10
+ 006E E80F              add R30,R24
+ 0070 F91F              adc R31,R25
+ 0072 2224              clr R2
+ 0074 2082              std z+0,R2
+ 0076                   .dbline 94
+ 0076           L4:
+ 0076                   .dbline 92
+ 0076 C501              movw R24,R10
+ 0078 0196              adiw R24,1
+ 007A 5C01              movw R10,R24
+ 007C           L6:
+ 007C                   .dbline 92
+ 007C           ; 
+ 007C C501              movw R24,R10
+ 007E 8230              cpi R24,2
+ 0080 E0E0              ldi R30,0
+ 0082 9E07              cpc R25,R30
+ 0084 88F3              brlo L3
+ 0086                   .dbline 96
+ 0086           ; 
+ 0086           ; 
+ 0086           ; 
+ 0086           ; 
+ 0086 2224              clr R2
+ 0088 2092EB00          sts _OSPrioCur,R2
+ 008C                   .dbline 97
+ 008C           ; 
+ 008C 2092EA00          sts _OSPrioHighRdy,R2
+ 0090                   .dbline 98
+ 0090           ; 
+ 0090 3324              clr R3
+ 0092 3092E000          sts _OSTCBHighRdy+1,R3
+ 0096 2092DF00          sts _OSTCBHighRdy,R2
+ 009A                   .dbline 99
+ 009A           ; 
+ 009A 3092E400          sts _OSTCBCur+1,R3
+ 009E 2092E300          sts _OSTCBCur,R2
+ 00A2                   .dbline 100
+ 00A2           ; 
+ 00A2 3092DE00          sts _OSTCBList+1,R3
+ 00A6 2092DD00          sts _OSTCBList,R2
+ 00AA                   .dbline 101
+ 00AA AA24              clr R10
+ 00AC BB24              clr R11
+ 00AE 10C0              rjmp L10
+ 00B0           L7:
+ 00B0                   .dbline 101
+ 00B0                   .dbline 102
+ 00B0 02E0              ldi R16,2
+ 00B2 10E0              ldi R17,0
+ 00B4 9501              movw R18,R10
+ 00B6 00D0              rcall empy16s
+ 00B8 F801              movw R30,R16
+ 00BA 80E0              ldi R24,<_OSTCBPrioTbl
+ 00BC 90E0              ldi R25,>_OSTCBPrioTbl
+ 00BE E80F              add R30,R24
+ 00C0 F91F              adc R31,R25
+ 00C2 2224              clr R2
+ 00C4 3324              clr R3
+ 00C6 3182              std z+1,R3
+ 00C8 2082              std z+0,R2
+ 00CA                   .dbline 103
+ 00CA           L8:
+ 00CA                   .dbline 101
+ 00CA C501              movw R24,R10
+ 00CC 0196              adiw R24,1
+ 00CE 5C01              movw R10,R24
+ 00D0           L10:
+ 00D0                   .dbline 101
+ 00D0           ; 
+ 00D0 C501              movw R24,R10
+ 00D2 8031              cpi R24,16
+ 00D4 E0E0              ldi R30,0
+ 00D6 9E07              cpc R25,R30
+ 00D8 58F3              brlo L7
+ 00DA                   .dbline 104
+ 00DA AA24              clr R10
+ 00DC BB24              clr R11
+ 00DE 19C0              rjmp L14
+ 00E0           L11:
+ 00E0                   .dbline 104
+ 00E0                   .dbline 105
+ 00E0 9501              movw R18,R10
+ 00E2 2F5F              subi R18,255  ; offset = 1
+ 00E4 3F4F              sbci R19,255
+ 00E6 0EE0              ldi R16,14
+ 00E8 10E0              ldi R17,0
+ 00EA 00D0              rcall empy16s
+ 00EC 1801              movw R2,R16
+ 00EE 80E0              ldi R24,<_OSTCBTbl
+ 00F0 90E0              ldi R25,>_OSTCBTbl
+ 00F2 280E              add R2,R24
+ 00F4 391E              adc R3,R25
+ 00F6 0EE0              ldi R16,14
+ 00F8 10E0              ldi R17,0
+ 00FA 9501              movw R18,R10
+ 00FC 00D0              rcall empy16s
+ 00FE F801              movw R30,R16
+ 0100 80E0              ldi R24,<_OSTCBTbl+2
+ 0102 90E0              ldi R25,>_OSTCBTbl+2
+ 0104 E80F              add R30,R24
+ 0106 F91F              adc R31,R25
+ 0108 3182              std z+1,R3
+ 010A 2082              std z+0,R2
+ 010C                   .dbline 106
+ 010C           L12:
+ 010C                   .dbline 104
+ 010C C501              movw R24,R10
+ 010E 0196              adiw R24,1
+ 0110 5C01              movw R10,R24
+ 0112           L14:
+ 0112                   .dbline 104
+ 0112           ; 
+ 0112           ; 
+ 0112           ; 
+ 0112 C501              movw R24,R10
+ 0114 8530              cpi R24,5
+ 0116 E0E0              ldi R30,0
+ 0118 9E07              cpc R25,R30
+ 011A 10F3              brlo L11
+ 011C                   .dbline 107
+ 011C           ; 
+ 011C           ; 
+ 011C           ; 
+ 011C 2224              clr R2
+ 011E 3324              clr R3
+ 0120 30924900          sts _OSTCBTbl+70+2+1,R3
+ 0124 20924800          sts _OSTCBTbl+70+2,R2
+ 0128                   .dbline 108
+ 0128           ; 
+ 0128 80E0              ldi R24,<_OSTCBTbl
+ 012A 90E0              ldi R25,>_OSTCBTbl
+ 012C 9093E200          sts _OSTCBFreeList+1,R25
+ 0130 8093E100          sts _OSTCBFreeList,R24
+ 0134                   .dbline 111
+ 0134 AA24              clr R10
+ 0136 BB24              clr R11
+ 0138 19C0              rjmp L21
+ 013A           L18:
+ 013A                   .dbline 111
+ 013A                   .dbline 112
+ 013A 9501              movw R18,R10
+ 013C 2F5F              subi R18,255  ; offset = 1
+ 013E 3F4F              sbci R19,255
+ 0140 08E0              ldi R16,8
+ 0142 10E0              ldi R17,0
+ 0144 00D0              rcall empy16s
+ 0146 1801              movw R2,R16
+ 0148 80E0              ldi R24,<_OSEventTbl
+ 014A 90E0              ldi R25,>_OSEventTbl
+ 014C 280E              add R2,R24
+ 014E 391E              adc R3,R25
+ 0150 08E0              ldi R16,8
+ 0152 10E0              ldi R17,0
+ 0154 9501              movw R18,R10
+ 0156 00D0              rcall empy16s
+ 0158 F801              movw R30,R16
+ 015A 80E0              ldi R24,<_OSEventTbl
+ 015C 90E0              ldi R25,>_OSEventTbl
+ 015E E80F              add R30,R24
+ 0160 F91F              adc R31,R25
+ 0162 3182              std z+1,R3
+ 0164 2082              std z+0,R2
+ 0166                   .dbline 113
+ 0166           L19:
+ 0166                   .dbline 111
+ 0166 C501              movw R24,R10
+ 0168 0196              adiw R24,1
+ 016A 5C01              movw R10,R24
+ 016C           L21:
+ 016C                   .dbline 111
+ 016C           ; 
+ 016C           ; 
+ 016C           ; 
+ 016C C501              movw R24,R10
+ 016E 8130              cpi R24,1
+ 0170 E0E0              ldi R30,0
+ 0172 9E07              cpc R25,R30
+ 0174 10F3              brlo L18
+ 0176                   .dbline 114
+ 0176           ; 
+ 0176           ; 
+ 0176           ; 
+ 0176 2224              clr R2
+ 0178 3324              clr R3
+ 017A 3092FB00          sts _OSEventTbl+8+1,R3
+ 017E 2092FA00          sts _OSEventTbl+8,R2
+ 0182                   .dbline 115
+ 0182           ; 
+ 0182 80E0              ldi R24,<_OSEventTbl
+ 0184 90E0              ldi R25,>_OSEventTbl
+ 0186 90930301          sts _OSEventFreeList+1,R25
+ 018A 80930201          sts _OSEventFreeList,R24
+ 018E                   .dbline 119
+ 018E           ; 
+ 018E           ; 
+ 018E           ; 
+ 018E           ; 
+ 018E 8FE0              ldi R24,15
+ 0190 8A83              std y+2,R24
+ 0192 80E0              ldi R24,<_OSTaskIdleStk+99
+ 0194 90E0              ldi R25,>_OSTaskIdleStk+99
+ 0196 9983              std y+1,R25
+ 0198 8883              std y+0,R24
+ 019A 2227              clr R18
+ 019C 3327              clr R19
+ 019E 00E0              ldi R16,<PL_OSTaskIdle
+ 01A0 10E0              ldi R17,>PL_OSTaskIdle
+ 01A2 20D3              rcall _OSTaskCreate
+ 01A4                   .dbline -2
+ 01A4                   .dbline 124
+ 01A4           ; 
+ 01A4           ; 
+ 01A4           ; 
+ 01A4           ; 
+ 01A4           ; 
+ 01A4           L2:
+ 01A4 2396              adiw R28,3
+ 01A6 00D0              rcall pop_gset3x
+ 01A8                   .dbline 0 ; func end
+ 01A8 0895              ret
+ 01AA                   .dbsym r i 10 i
+ 01AA                   .dbend
+ 01AA                   .dbfunc e OSIntExit _OSIntExit fV
+                        .even
+ 01AA           _OSIntExit::
+ 01AA                   .dbline -1
+ 01AA                   .dbline 146
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA           ; 
+ 01AA                   .dbline 147
+ 01AA           ; 
+ 01AA 0A93              st -y,r16
+ 01AC 0FB7              in r16,0x3F
+ 01AE F894              cli
+ 01B0 0F93              push r16
+ 01B2 0991              ld r16,y+
+ 01B4                   .dbline 147
+ 01B4                   .dbline 148
+ 01B4           ; 
+ 01B4 8091ED00          lds R24,_OSIntNesting
+ 01B8 8150              subi R24,1
+ 01BA 282E              mov R2,R24
+ 01BC 2092ED00          sts _OSIntNesting,R2
+ 01C0 4090EC00          lds R4,_OSLockNesting
+ 01C4 2428              or R2,R4
+ 01C6 09F0              breq X0
+ 01C8 4FC0              rjmp L25
+ 01CA           X0:
+ 01CA                   .dbline 148
+ 01CA                   .dbline 149
+ 01CA           ; 
+ 01CA 80E0              ldi R24,<_OSUnMapTbl
+ 01CC 90E0              ldi R25,>_OSUnMapTbl
+ 01CE E091E900          lds R30,_OSRdyGrp
+ 01D2 FF27              clr R31
+ 01D4 E80F              add R30,R24
+ 01D6 F91F              adc R31,R25
+ 01D8 E491              lpm R30,Z
+ 01DA E093B800          sts _OSIntExitY,R30
+ 01DE                   .dbline 150
+ 01DE           ; 
+ 01DE 80E0              ldi R24,<_OSRdyTbl
+ 01E0 90E0              ldi R25,>_OSRdyTbl
+ 01E2 FF27              clr R31
+ 01E4 E80F              add R30,R24
+ 01E6 F91F              adc R31,R25
+ 01E8 E081              ldd R30,z+0
+ 01EA FF27              clr R31
+ 01EC 80E0              ldi R24,<_OSUnMapTbl
+ 01EE 90E0              ldi R25,>_OSUnMapTbl
+ 01F0 E80F              add R30,R24
+ 01F2 F91F              adc R31,R25
+ 01F4 2490              lpm R2,Z
+ 01F6 3324              clr R3
+ 01F8 4090B800          lds R4,_OSIntExitY
+ 01FC 5524              clr R5
+ 01FE 440C              lsl R4
+ 0200 551C              rol R5
+ 0202 440C              lsl R4
+ 0204 551C              rol R5
+ 0206 440C              lsl R4
+ 0208 551C              rol R5
+ 020A 420C              add R4,R2
+ 020C 531C              adc R5,R3
+ 020E 4092EA00          sts _OSPrioHighRdy,R4
+ 0212                   .dbline 151
+ 0212           ; 
+ 0212 2090EB00          lds R2,_OSPrioCur
+ 0216 4214              cp R4,R2
+ 0218 39F1              breq L27
+ 021A                   .dbline 151
+ 021A                   .dbline 152
+ 021A           ; 
+ 021A 242C              mov R2,R4
+ 021C 82E0              ldi R24,2
+ 021E 829D              mul R24,R2
+ 0220 F001              movw R30,R0
+ 0222 80E0              ldi R24,<_OSTCBPrioTbl
+ 0224 90E0              ldi R25,>_OSTCBPrioTbl
+ 0226 E80F              add R30,R24
+ 0228 F91F              adc R31,R25
+ 022A 2080              ldd R2,z+0
+ 022C 3180              ldd R3,z+1
+ 022E 3092E000          sts _OSTCBHighRdy+1,R3
+ 0232 2092DF00          sts _OSTCBHighRdy,R2
+ 0236                   .dbline 153
+ 0236           ; 
+ 0236 81E0              ldi R24,1
+ 0238 90E0              ldi R25,0
+ 023A A0E0              ldi R26,0
+ 023C B0E0              ldi R27,0
+ 023E 40900601          lds R4,_OSCtxSwCtr+2
+ 0242 50900701          lds R5,_OSCtxSwCtr+2+1
+ 0246 20900401          lds R2,_OSCtxSwCtr
+ 024A 30900501          lds R3,_OSCtxSwCtr+1
+ 024E 280E              add R2,R24
+ 0250 391E              adc R3,R25
+ 0252 4A1E              adc R4,R26
+ 0254 5B1E              adc R5,R27
+ 0256 30920501          sts _OSCtxSwCtr+1,R3
+ 025A 20920401          sts _OSCtxSwCtr,R2
+ 025E 50920701          sts _OSCtxSwCtr+2+1,R5
+ 0262 40920601          sts _OSCtxSwCtr+2,R4
+ 0266                   .dbline 154
+ 0266           ; 
+ 0266 00D0              rcall _OSIntCtxSw
+ 0268                   .dbline 155
+ 0268           ; 
+ 0268           L27:
+ 0268                   .dbline 156
+ 0268           ; 
+ 0268           L25:
+ 0268                   .dbline 157
+ 0268           ; 
+ 0268 0A93              st -y,r16
+ 026A 0F91              pop r16
+ 026C 0FBF              out 0x3F,r16
+ 026E 0991              ld r16,y+
+ 0270                   .dbline 157
+ 0270                   .dbline -2
+ 0270                   .dbline 158
+ 0270           ; 
+ 0270           L24:
+ 0270                   .dbline 0 ; func end
+ 0270 0895              ret
+ 0272                   .dbend
+ 0272                   .dbfunc e OSSched _OSSched fV
+ 0272           ;              y -> R10
+                        .even
+ 0272           _OSSched::
+ 0272 00D0              rcall push_gset3x
+ 0274                   .dbline -1
+ 0274                   .dbline 178
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274                   .dbline 182
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274           ; 
+ 0274 0A93              st -y,r16
+ 0276 0FB7              in r16,0x3F
+ 0278 F894              cli
+ 027A 0F93              push r16
+ 027C 0991              ld r16,y+
+ 027E                   .dbline 182
+ 027E                   .dbline 183
+ 027E           ; 
+ 027E 2090ED00          lds R2,_OSIntNesting
+ 0282 3090EC00          lds R3,_OSLockNesting
+ 0286 3228              or R3,R2
+ 0288 09F0              breq X1
+ 028A 4DC0              rjmp L30
+ 028C           X1:
+ 028C                   .dbline 183
+ 028C                   .dbline 184
+ 028C           ; 
+ 028C 80E0              ldi R24,<_OSUnMapTbl
+ 028E 90E0              ldi R25,>_OSUnMapTbl
+ 0290 E091E900          lds R30,_OSRdyGrp
+ 0294 FF27              clr R31
+ 0296 E80F              add R30,R24
+ 0298 F91F              adc R31,R25
+ 029A A490              lpm R10,Z
+ 029C                   .dbline 185
+ 029C           ; 
+ 029C 80E0              ldi R24,<_OSRdyTbl
+ 029E 90E0              ldi R25,>_OSRdyTbl
+ 02A0 EA2D              mov R30,R10
+ 02A2 FF27              clr R31
+ 02A4 E80F              add R30,R24
+ 02A6 F91F              adc R31,R25
+ 02A8 E081              ldd R30,z+0
+ 02AA FF27              clr R31
+ 02AC 80E0              ldi R24,<_OSUnMapTbl
+ 02AE 90E0              ldi R25,>_OSUnMapTbl
+ 02B0 E80F              add R30,R24
+ 02B2 F91F              adc R31,R25
+ 02B4 2490              lpm R2,Z
+ 02B6 3324              clr R3
+ 02B8 4A2C              mov R4,R10
+ 02BA 5524              clr R5
+ 02BC 440C              lsl R4
+ 02BE 551C              rol R5
+ 02C0 440C              lsl R4
+ 02C2 551C              rol R5
+ 02C4 440C              lsl R4
+ 02C6 551C              rol R5
+ 02C8 420C              add R4,R2
+ 02CA 531C              adc R5,R3
+ 02CC 4092EA00          sts _OSPrioHighRdy,R4
+ 02D0                   .dbline 186
+ 02D0           ; 
+ 02D0 2090EB00          lds R2,_OSPrioCur
+ 02D4 4214              cp R4,R2
+ 02D6 39F1              breq L32
+ 02D8                   .dbline 186
+ 02D8                   .dbline 187
+ 02D8           ; 
+ 02D8 242C              mov R2,R4
+ 02DA 82E0              ldi R24,2
+ 02DC 829D              mul R24,R2
+ 02DE F001              movw R30,R0
+ 02E0 80E0              ldi R24,<_OSTCBPrioTbl
+ 02E2 90E0              ldi R25,>_OSTCBPrioTbl
+ 02E4 E80F              add R30,R24
+ 02E6 F91F              adc R31,R25
+ 02E8 2080              ldd R2,z+0
+ 02EA 3180              ldd R3,z+1
+ 02EC 3092E000          sts _OSTCBHighRdy+1,R3
+ 02F0 2092DF00          sts _OSTCBHighRdy,R2
+ 02F4                   .dbline 188
+ 02F4           ; 
+ 02F4 81E0              ldi R24,1
+ 02F6 90E0              ldi R25,0
+ 02F8 A0E0              ldi R26,0
+ 02FA B0E0              ldi R27,0
+ 02FC 40900601          lds R4,_OSCtxSwCtr+2
+ 0300 50900701          lds R5,_OSCtxSwCtr+2+1
+ 0304 20900401          lds R2,_OSCtxSwCtr
+ 0308 30900501          lds R3,_OSCtxSwCtr+1
+ 030C 280E              add R2,R24
+ 030E 391E              adc R3,R25
+ 0310 4A1E              adc R4,R26
+ 0312 5B1E              adc R5,R27
+ 0314 30920501          sts _OSCtxSwCtr+1,R3
+ 0318 20920401          sts _OSCtxSwCtr,R2
+ 031C 50920701          sts _OSCtxSwCtr+2+1,R5
+ 0320 40920601          sts _OSCtxSwCtr+2,R4
+ 0324                   .dbline 189
+ 0324           ; 
+ 0324 00D0              rcall _OSCtxSw
+ 0326                   .dbline 190
+ 0326           ; 
+ 0326           L32:
+ 0326                   .dbline 191
+ 0326           ; 
+ 0326           L30:
+ 0326                   .dbline 192
+ 0326           ; 
+ 0326 0A93              st -y,r16
+ 0328 0F91              pop r16
+ 032A 0FBF              out 0x3F,r16
+ 032C 0991              ld r16,y+
+ 032E                   .dbline 192
+ 032E                   .dbline -2
+ 032E                   .dbline 193
+ 032E           ; 
+ 032E           L29:
+ 032E 00D0              rcall pop_gset3x
+ 0330                   .dbline 0 ; func end
+ 0330 0895              ret
+ 0332                   .dbsym r y 10 c
+ 0332                   .dbend
+ 0332                   .dbfunc e OSStart _OSStart fV
+ 0332           ;              x -> R12
+ 0332           ;              y -> R10
+                        .even
+ 0332           _OSStart::
+ 0332 00D0              rcall push_gset4x
+ 0334                   .dbline -1
+ 0334                   .dbline 214
+ 0334                   .dbline 219
+ 0334 2090E600          lds R2,_OSRunning
+ 0338 2220              tst R2
+ 033A 09F0              breq X2
+ 033C 38C0              rjmp L35
+ 033E           X2:
+ 033E                   .dbline 219
+ 033E                   .dbline 220
+ 033E 80E0              ldi R24,<_OSUnMapTbl
+ 0340 90E0              ldi R25,>_OSUnMapTbl
+ 0342 E091E900          lds R30,_OSRdyGrp
+ 0346 FF27              clr R31
+ 0348 E80F              add R30,R24
+ 034A F91F              adc R31,R25
+ 034C A490              lpm R10,Z
+ 034E                   .dbline 221
+ 034E 80E0              ldi R24,<_OSRdyTbl
+ 0350 90E0              ldi R25,>_OSRdyTbl
+ 0352 EA2D              mov R30,R10
+ 0354 FF27              clr R31
+ 0356 E80F              add R30,R24
+ 0358 F91F              adc R31,R25
+ 035A E081              ldd R30,z+0
+ 035C FF27              clr R31
+ 035E 80E0              ldi R24,<_OSUnMapTbl
+ 0360 90E0              ldi R25,>_OSUnMapTbl
+ 0362 E80F              add R30,R24
+ 0364 F91F              adc R31,R25
+ 0366 C490              lpm R12,Z
+ 0368                   .dbline 222
+ 0368 2C2C              mov R2,R12
+ 036A 3324              clr R3
+ 036C 4A2C              mov R4,R10
+ 036E 5524              clr R5
+ 0370 440C              lsl R4
+ 0372 551C              rol R5
+ 0374 440C              lsl R4
+ 0376 551C              rol R5
+ 0378 440C              lsl R4
+ 037A 551C              rol R5
+ 037C 420C              add R4,R2
+ 037E 531C              adc R5,R3
+ 0380 4092EA00          sts _OSPrioHighRdy,R4
+ 0384                   .dbline 223
+ 0384 242C              mov R2,R4
+ 0386 2092EB00          sts _OSPrioCur,R2
+ 038A                   .dbline 224
+ 038A 82E0              ldi R24,2
+ 038C 829D              mul R24,R2
+ 038E F001              movw R30,R0
+ 0390 80E0              ldi R24,<_OSTCBPrioTbl
+ 0392 90E0              ldi R25,>_OSTCBPrioTbl
+ 0394 E80F              add R30,R24
+ 0396 F91F              adc R31,R25
+ 0398 2080              ldd R2,z+0
+ 039A 3180              ldd R3,z+1
+ 039C 3092E000          sts _OSTCBHighRdy+1,R3
+ 03A0 2092DF00          sts _OSTCBHighRdy,R2
+ 03A4                   .dbline 225
+ 03A4 3092E400          sts _OSTCBCur+1,R3
+ 03A8 2092E300          sts _OSTCBCur,R2
+ 03AC                   .dbline 226
+ 03AC 00D0              rcall _OSStartHighRdy
+ 03AE                   .dbline 227
+ 03AE           L35:
+ 03AE                   .dbline -2
+ 03AE                   .dbline 228
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           ; 
+ 03AE           L34:
+ 03AE 00D0              rcall pop_gset4x
+ 03B0                   .dbline 0 ; func end
+ 03B0 0895              ret
+ 03B2                   .dbsym r x 12 c
+ 03B2                   .dbsym r y 10 c
+ 03B2                   .dbend
+ 03B2                   .dbfunc e OSTaskIdle _OSTaskIdle fV
+ 03B2           ;          pdata -> R16,R17
+                        .even
+ 03B2           _OSTaskIdle::
+ 03B2                   .dbline -1
+ 03B2                   .dbline 244
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2           ; 
+ 03B2                   .dbline 245
+ 03B2           ; 
+ 03B2                   .dbline 246
+ 03B2           L38:
+ 03B2                   .dbline 246
+ 03B2                   .dbline 247
+ 03B2 0A93              st -y,r16
+ 03B4 0FB7              in r16,0x3F
+ 03B6 F894              cli
+ 03B8 0F93              push r16
+ 03BA 0991              ld r16,y+
+ 03BC                   .dbline 247
+ 03BC                   .dbline 248
+ 03BC 81E0              ldi R24,1
+ 03BE 90E0              ldi R25,0
+ 03C0 A0E0              ldi R26,0
+ 03C2 B0E0              ldi R27,0
+ 03C4 4090F000          lds R4,_OSIdleCtr+2
+ 03C8 5090F100          lds R5,_OSIdleCtr+2+1
+ 03CC 2090EE00          lds R2,_OSIdleCtr
+ 03D0 3090EF00          lds R3,_OSIdleCtr+1
+ 03D4 280E              add R2,R24
+ 03D6 391E              adc R3,R25
+ 03D8 4A1E              adc R4,R26
+ 03DA 5B1E              adc R5,R27
+ 03DC 3092EF00          sts _OSIdleCtr+1,R3
+ 03E0 2092EE00          sts _OSIdleCtr,R2
+ 03E4 5092F100          sts _OSIdleCtr+2+1,R5
+ 03E8 4092F000          sts _OSIdleCtr+2,R4
+ 03EC                   .dbline 249
+ 03EC 0A93              st -y,r16
+ 03EE 0F91              pop r16
+ 03F0 0FBF              out 0x3F,r16
+ 03F2 0991              ld r16,y+
+ 03F4                   .dbline 249
+ 03F4                   .dbline 250
+ 03F4                   .dbline 246
+ 03F4                   .dbline 246
+ 03F4 DECF              rjmp L38
+ 03F6           X3:
+ 03F6                   .dbline -2
+ 03F6           L37:
+ 03F6                   .dbline 0 ; func end
+ 03F6 0895              ret
+ 03F8                   .dbsym r pdata 16 pV
+ 03F8                   .dbend
+ 03F8                   .dbfunc e OSTCBInit _OSTCBInit fc
+ 03F8           ;           ptcb -> R10,R11
+ 03F8           ;            opt -> y+10
+ 03F8           ;           pext -> y+8
+ 03F8           ;       stk_size -> y+6
+ 03F8           ;             id -> y+4
+ 03F8           ;           pbos -> y+2
+ 03F8           ;           ptos -> R18,R19
+ 03F8           ;           prio -> R16
+                        .even
+ 03F8           _OSTCBInit::
+ 03F8 00D0              rcall push_gset3x
+ 03FA                   .dbline -1
+ 03FA                   .dbline 297
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA                   .dbline 301
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA           ; 
+ 03FA 0A93              st -y,r16
+ 03FC 0FB7              in r16,0x3F
+ 03FE F894              cli
+ 0400 0F93              push r16
+ 0402 0991              ld r16,y+
+ 0404                   .dbline 301
+ 0404                   .dbline 302
+ 0404           ; 
+ 0404 A090E100          lds R10,_OSTCBFreeList
+ 0408 B090E200          lds R11,_OSTCBFreeList+1
+ 040C                   .dbline 303
+ 040C           ; 
+ 040C AA20              tst R10
+ 040E 19F4              brne X4
+ 0410 BB20              tst R11
+ 0412 09F4              brne X6
+ 0414 7CC0              rjmp L43
+ 0416           X6:
+ 0416           X4:
+ 0416                   .dbline 303
+ 0416                   .dbline 304
+ 0416           ; 
+ 0416 F501              movw R30,R10
+ 0418 2280              ldd R2,z+2
+ 041A 3380              ldd R3,z+3
+ 041C 3092E200          sts _OSTCBFreeList+1,R3
+ 0420 2092E100          sts _OSTCBFreeList,R2
+ 0424                   .dbline 305
+ 0424           ; 
+ 0424 0A93              st -y,r16
+ 0426 0F91              pop r16
+ 0428 0FBF              out 0x3F,r16
+ 042A 0991              ld r16,y+
+ 042C                   .dbline 305
+ 042C                   .dbline 306
+ 042C           ; 
+ 042C F501              movw R30,R10
+ 042E 3183              std z+1,R19
+ 0430 2083              std z+0,R18
+ 0432                   .dbline 307
+ 0432           ; 
+ 0432 0187              std z+9,R16
+ 0434                   .dbline 308
+ 0434           ; 
+ 0434 2224              clr R2
+ 0436 F501              movw R30,R10
+ 0438 2086              std z+8,R2
+ 043A                   .dbline 309
+ 043A           ; 
+ 043A 3324              clr R3
+ 043C F501              movw R30,R10
+ 043E 3782              std z+7,R3
+ 0440 2682              std z+6,R2
+ 0442                   .dbline 311
+ 0442           ; 
+ 0442           ; 
+ 0442                   .dbline 312
+ 0442           ; 
+ 0442                   .dbline 313
+ 0442           ; 
+ 0442                   .dbline 314
+ 0442           ; 
+ 0442                   .dbline 315
+ 0442           ; 
+ 0442                   .dbline 317
+ 0442           ; 
+ 0442           ; 
+ 0442 202E              mov R2,R16
+ 0444 2694              lsr R2
+ 0446 2694              lsr R2
+ 0448 2694              lsr R2
+ 044A F501              movw R30,R10
+ 044C 2386              std z+11,R2
+ 044E                   .dbline 318
+ 044E           ; 
+ 044E 80E0              ldi R24,<_OSMapTbl
+ 0450 90E0              ldi R25,>_OSMapTbl
+ 0452 F501              movw R30,R10
+ 0454 E385              ldd R30,z+11
+ 0456 FF27              clr R31
+ 0458 E80F              add R30,R24
+ 045A F91F              adc R31,R25
+ 045C E491              lpm R30,Z
+ 045E D501              movw R26,R10
+ 0460 1D96              adiw R26,13
+ 0462 EC93              st x,R30
+ 0464                   .dbline 319
+ 0464           ; 
+ 0464 802F              mov R24,R16
+ 0466 8770              andi R24,7
+ 0468 F501              movw R30,R10
+ 046A 8287              std z+10,R24
+ 046C                   .dbline 320
+ 046C           ; 
+ 046C 80E0              ldi R24,<_OSMapTbl
+ 046E 90E0              ldi R25,>_OSMapTbl
+ 0470 F501              movw R30,R10
+ 0472 E285              ldd R30,z+10
+ 0474 FF27              clr R31
+ 0476 E80F              add R30,R24
+ 0478 F91F              adc R31,R25
+ 047A E491              lpm R30,Z
+ 047C D501              movw R26,R10
+ 047E 1C96              adiw R26,12
+ 0480 EC93              st x,R30
+ 0482                   .dbline 322
+ 0482           ; 
+ 0482           ; 
+ 0482 0A93              st -y,r16
+ 0484 0FB7              in r16,0x3F
+ 0486 F894              cli
+ 0488 0F93              push r16
+ 048A 0991              ld r16,y+
+ 048C                   .dbline 322
+ 048C                   .dbline 323
+ 048C           ; 
+ 048C 82E0              ldi R24,2
+ 048E 809F              mul R24,R16
+ 0490 F001              movw R30,R0
+ 0492 80E0              ldi R24,<_OSTCBPrioTbl
+ 0494 90E0              ldi R25,>_OSTCBPrioTbl
+ 0496 E80F              add R30,R24
+ 0498 F91F              adc R31,R25
+ 049A B182              std z+1,R11
+ 049C A082              std z+0,R10
+ 049E                   .dbline 324
+ 049E           ; 
+ 049E 2090DD00          lds R2,_OSTCBList
+ 04A2 3090DE00          lds R3,_OSTCBList+1
+ 04A6 F501              movw R30,R10
+ 04A8 3382              std z+3,R3
+ 04AA 2282              std z+2,R2
+ 04AC                   .dbline 325
+ 04AC           ; 
+ 04AC 2224              clr R2
+ 04AE 3324              clr R3
+ 04B0 F501              movw R30,R10
+ 04B2 3582              std z+5,R3
+ 04B4 2482              std z+4,R2
+ 04B6                   .dbline 326
+ 04B6           ; 
+ 04B6 2090DD00          lds R2,_OSTCBList
+ 04BA 3090DE00          lds R3,_OSTCBList+1
+ 04BE 2220              tst R2
+ 04C0 11F4              brne X5
+ 04C2 3320              tst R3
+ 04C4 31F0              breq L45
+ 04C6           X5:
+ 04C6                   .dbline 326
+ 04C6                   .dbline 327
+ 04C6           ; 
+ 04C6 E091DD00          lds R30,_OSTCBList
+ 04CA F091DE00          lds R31,_OSTCBList+1
+ 04CE B582              std z+5,R11
+ 04D0 A482              std z+4,R10
+ 04D2                   .dbline 328
+ 04D2           ; 
+ 04D2           L45:
+ 04D2                   .dbline 329
+ 04D2           ; 
+ 04D2 B092DE00          sts _OSTCBList+1,R11
+ 04D6 A092DD00          sts _OSTCBList,R10
+ 04DA                   .dbline 330
+ 04DA           ; 
+ 04DA F501              movw R30,R10
+ 04DC 2584              ldd R2,z+13
+ 04DE 3090E900          lds R3,_OSRdyGrp
+ 04E2 3228              or R3,R2
+ 04E4 3092E900          sts _OSRdyGrp,R3
+ 04E8                   .dbline 331
+ 04E8           ; 
+ 04E8 80E0              ldi R24,<_OSRdyTbl
+ 04EA 90E0              ldi R25,>_OSRdyTbl
+ 04EC F501              movw R30,R10
+ 04EE 2384              ldd R2,z+11
+ 04F0 3324              clr R3
+ 04F2 280E              add R2,R24
+ 04F4 391E              adc R3,R25
+ 04F6 F501              movw R30,R10
+ 04F8 4484              ldd R4,z+12
+ 04FA F101              movw R30,R2
+ 04FC 5080              ldd R5,z+0
+ 04FE 5428              or R5,R4
+ 0500 5082              std z+0,R5
+ 0502                   .dbline 332
+ 0502           ; 
+ 0502 0A93              st -y,r16
+ 0504 0F91              pop r16
+ 0506 0FBF              out 0x3F,r16
+ 0508 0991              ld r16,y+
+ 050A                   .dbline 332
+ 050A                   .dbline 333
+ 050A           ; 
+ 050A 0027              clr R16
+ 050C 05C0              rjmp L42
+ 050E           L43:
+ 050E                   .dbline 334
+ 050E           ; 
+ 050E                   .dbline 335
+ 050E           ; 
+ 050E 0A93              st -y,r16
+ 0510 0F91              pop r16
+ 0512 0FBF              out 0x3F,r16
+ 0514 0991              ld r16,y+
+ 0516                   .dbline 335
+ 0516                   .dbline 336
+ 0516           ; 
+ 0516 06E4              ldi R16,70
+ 0518                   .dbline -2
+ 0518           L42:
+ 0518 00D0              rcall pop_gset3x
+ 051A                   .dbline 0 ; func end
+ 051A 0895              ret
+ 051C                   .dbsym r ptcb 10 pX
+ 051C                   .dbsym l opt 10 i
+ 051C                   .dbsym l pext 8 pV
+ 051C                   .dbsym l stk_size 6 i
+ 051C                   .dbsym l id 4 i
+ 051C                   .dbsym l pbos 2 pc
+ 051C                   .dbsym r ptos 18 pc
+ 051C                   .dbsym r prio 16 c
+ 051C                   .dbend
+ 051C                   .dbfunc e OSTimeTick _OSTimeTick fV
+ 051C           ;           ptcb -> R16,R17
+                        .even
+ 051C           _OSTimeTick::
+ 051C                   .dbline -1
+ 051C                   .dbline 355
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C                   .dbline 358
+ 051C           ; 
+ 051C           ; 
+ 051C           ; 
+ 051C 0091DD00          lds R16,_OSTCBList
+ 0520 1091DE00          lds R17,_OSTCBList+1
+ 0524 3FC0              rjmp L49
+ 0526           L48:
+ 0526                   .dbline 359
+ 0526           ; 
+ 0526                   .dbline 360
+ 0526           ; 
+ 0526 0A93              st -y,r16
+ 0528 0FB7              in r16,0x3F
+ 052A F894              cli
+ 052C 0F93              push r16
+ 052E 0991              ld r16,y+
+ 0530                   .dbline 360
+ 0530                   .dbline 361
+ 0530           ; 
+ 0530 F801              movw R30,R16
+ 0532 2680              ldd R2,z+6
+ 0534 3780              ldd R3,z+7
+ 0536 2220              tst R2
+ 0538 19F4              brne X7
+ 053A 3320              tst R3
+ 053C 09F4              brne X9
+ 053E 2BC0              rjmp L51
+ 0540           X9:
+ 0540           X7:
+ 0540                   .dbline 361
+ 0540                   .dbline 362
+ 0540           ; 
+ 0540 C801              movw R24,R16
+ 0542 0696              adiw R24,6
+ 0544 FC01              movw R30,R24
+ 0546 8081              ldd R24,z+0
+ 0548 9181              ldd R25,z+1
+ 054A 0197              sbiw R24,1
+ 054C 2C01              movw R4,R24
+ 054E 5182              std z+1,R5
+ 0550 4082              std z+0,R4
+ 0552 8030              cpi R24,0
+ 0554 8907              cpc R24,R25
+ 0556 09F0              breq X10
+ 0558 1EC0              rjmp L53
+ 055A           X10:
+ 055A           X8:
+ 055A                   .dbline 362
+ 055A                   .dbline 363
+ 055A           ; 
+ 055A F801              movw R30,R16
+ 055C 2084              ldd R2,z+8
+ 055E 23FC              sbrc R2,3
+ 0560 15C0              rjmp L55
+ 0562                   .dbline 363
+ 0562                   .dbline 364
+ 0562           ; 
+ 0562 F801              movw R30,R16
+ 0564 2584              ldd R2,z+13
+ 0566 3090E900          lds R3,_OSRdyGrp
+ 056A 3228              or R3,R2
+ 056C 3092E900          sts _OSRdyGrp,R3
+ 0570                   .dbline 365
+ 0570           ; 
+ 0570 80E0              ldi R24,<_OSRdyTbl
+ 0572 90E0              ldi R25,>_OSRdyTbl
+ 0574 F801              movw R30,R16
+ 0576 2384              ldd R2,z+11
+ 0578 3324              clr R3
+ 057A 280E              add R2,R24
+ 057C 391E              adc R3,R25
+ 057E F801              movw R30,R16
+ 0580 4484              ldd R4,z+12
+ 0582 F101              movw R30,R2
+ 0584 5080              ldd R5,z+0
+ 0586 5428              or R5,R4
+ 0588 5082              std z+0,R5
+ 058A                   .dbline 366
+ 058A 05C0              rjmp L56
+ 058C           L55:
+ 058C                   .dbline 366
+ 058C           ; 
+ 058C                   .dbline 367
+ 058C           ; 
+ 058C 81E0              ldi R24,1
+ 058E 90E0              ldi R25,0
+ 0590 F801              movw R30,R16
+ 0592 9783              std z+7,R25
+ 0594 8683              std z+6,R24
+ 0596                   .dbline 368
+ 0596           ; 
+ 0596           L56:
+ 0596                   .dbline 369
+ 0596           ; 
+ 0596           L53:
+ 0596                   .dbline 370
+ 0596           ; 
+ 0596           L51:
+ 0596                   .dbline 371
+ 0596 F801              movw R30,R16
+ 0598 0281              ldd R16,z+2
+ 059A 1381              ldd R17,z+3
+ 059C                   .dbline 372
+ 059C 0A93              st -y,r16
+ 059E 0F91              pop r16
+ 05A0 0FBF              out 0x3F,r16
+ 05A2 0991              ld r16,y+
+ 05A4                   .dbline 372
+ 05A4                   .dbline 373
+ 05A4           L49:
+ 05A4                   .dbline 359
+ 05A4 F801              movw R30,R16
+ 05A6 8185              ldd R24,z+9
+ 05A8 8F30              cpi R24,15
+ 05AA 09F0              breq X11
+ 05AC BCCF              rjmp L48
+ 05AE           X11:
+ 05AE                   .dbline 374
+ 05AE           ; 
+ 05AE           ; 
+ 05AE           ; 
+ 05AE           ; 
+ 05AE 0A93              st -y,r16
+ 05B0 0FB7              in r16,0x3F
+ 05B2 F894              cli
+ 05B4 0F93              push r16
+ 05B6 0991              ld r16,y+
+ 05B8                   .dbline 374
+ 05B8                   .dbline 375
+ 05B8           ; 
+ 05B8 81E0              ldi R24,1
+ 05BA 90E0              ldi R25,0
+ 05BC A0E0              ldi R26,0
+ 05BE B0E0              ldi R27,0
+ 05C0 4090BB00          lds R4,_OSTime+2
+ 05C4 5090BC00          lds R5,_OSTime+2+1
+ 05C8 2090B900          lds R2,_OSTime
+ 05CC 3090BA00          lds R3,_OSTime+1
+ 05D0 280E              add R2,R24
+ 05D2 391E              adc R3,R25
+ 05D4 4A1E              adc R4,R26
+ 05D6 5B1E              adc R5,R27
+ 05D8 3092BA00          sts _OSTime+1,R3
+ 05DC 2092B900          sts _OSTime,R2
+ 05E0 5092BC00          sts _OSTime+2+1,R5
+ 05E4 4092BB00          sts _OSTime+2,R4
+ 05E8                   .dbline 376
+ 05E8           ; 
+ 05E8 0A93              st -y,r16
+ 05EA 0F91              pop r16
+ 05EC 0FBF              out 0x3F,r16
+ 05EE 0991              ld r16,y+
+ 05F0                   .dbline 376
+ 05F0                   .dbline -2
+ 05F0                   .dbline 377
+ 05F0           ; 
+ 05F0           L47:
+ 05F0                   .dbline 0 ; func end
+ 05F0 0895              ret
+ 05F2                   .dbsym r ptcb 16 pX
+ 05F2                   .dbend
+ 05F2                   .dbfile F:\ICC\project\ucos_m8_icc\source/os_task.c
+ 05F2                   .dbfunc e OSTaskStkInit _OSTaskStkInit fpc
+ 05F2           ;           stks -> R14,R15
+ 05F2           ;            tmp -> R12,R13
+ 05F2           ;            stk -> R10,R11
+ 05F2           ;            opt -> y+8
+ 05F2           ;           ptos -> y+6
+ 05F2           ;          pdata -> R18,R19
+ 05F2           ;           task -> R16,R17
+                        .even
+ 05F2           _OSTaskStkInit::
+ 05F2 00D0              rcall push_gset5x
+ 05F4                   .dbline -1
+ 05F4                   .dbline 47
+ 05F4                   .dbline 54
+ 05F4                   .dbline 55
+ 05F4 AE80              ldd R10,y+6
+ 05F6 BF80              ldd R11,y+7
+ 05F8                   .dbline 57
+ 05F8 C501              movw R24,R10
+ 05FA 8454              subi R24,68
+ 05FC 9040              sbci R25,0
+ 05FE                   .dbline 62
+ 05FE F801              movw R30,R16
+ 0600 C590              lpm R12,Z+
+ 0602 D490              lpm R13,Z
+ 0604                   .dbline 65
+ 0604 1C01              movw R2,R24
+ 0606 0197              sbiw R24,1
+ 0608 F101              movw R30,R2
+ 060A C082              std z+0,R12
+ 060C                   .dbline 66
+ 060C 1C01              movw R2,R24
+ 060E 0197              sbiw R24,1
+ 0610 7C01              movw R14,R24
+ 0612 2601              movw R4,R12
+ 0614 452C              mov R4,R5
+ 0616 5524              clr R5
+ 0618 F101              movw R30,R2
+ 061A 4082              std z+0,R4
+ 061C                   .dbline 68
+ 061C 1501              movw R2,R10
+ 061E C101              movw R24,R2
+ 0620 0197              sbiw R24,1
+ 0622 4424              clr R4
+ 0624 F101              movw R30,R2
+ 0626 4082              std z+0,R4
+ 0628                   .dbline 69
+ 0628 1C01              movw R2,R24
+ 062A 0197              sbiw R24,1
+ 062C 5C01              movw R10,R24
+ 062E 81E0              ldi R24,1
+ 0630 F101              movw R30,R2
+ 0632 8083              std z+0,R24
+ 0634                   .dbline 70
+ 0634 1501              movw R2,R10
+ 0636 C101              movw R24,R2
+ 0638 0197              sbiw R24,1
+ 063A 5C01              movw R10,R24
+ 063C 82E0              ldi R24,2
+ 063E F101              movw R30,R2
+ 0640 8083              std z+0,R24
+ 0642                   .dbline 71
+ 0642 1501              movw R2,R10
+ 0644 C101              movw R24,R2
+ 0646 0197              sbiw R24,1
+ 0648 5C01              movw R10,R24
+ 064A 83E0              ldi R24,3
+ 064C F101              movw R30,R2
+ 064E 8083              std z+0,R24
+ 0650                   .dbline 72
+ 0650 1501              movw R2,R10
+ 0652 C101              movw R24,R2
+ 0654 0197              sbiw R24,1
+ 0656 5C01              movw R10,R24
+ 0658 84E0              ldi R24,4
+ 065A F101              movw R30,R2
+ 065C 8083              std z+0,R24
+ 065E                   .dbline 73
+ 065E 1501              movw R2,R10
+ 0660 C101              movw R24,R2
+ 0662 0197              sbiw R24,1
+ 0664 5C01              movw R10,R24
+ 0666 85E0              ldi R24,5
+ 0668 F101              movw R30,R2
+ 066A 8083              std z+0,R24
+ 066C                   .dbline 74
+ 066C 1501              movw R2,R10
+ 066E C101              movw R24,R2
+ 0670 0197              sbiw R24,1
+ 0672 5C01              movw R10,R24
+ 0674 86E0              ldi R24,6
+ 0676 F101              movw R30,R2
+ 0678 8083              std z+0,R24
+ 067A                   .dbline 75
+ 067A 1501              movw R2,R10
+ 067C C101              movw R24,R2
+ 067E 0197              sbiw R24,1
+ 0680 5C01              movw R10,R24
+ 0682 87E0              ldi R24,7
+ 0684 F101              movw R30,R2
+ 0686 8083              std z+0,R24
+ 0688                   .dbline 76
+ 0688 1501              movw R2,R10
+ 068A C101              movw R24,R2
+ 068C 0197              sbiw R24,1
+ 068E 5C01              movw R10,R24
+ 0690 88E0              ldi R24,8
+ 0692 F101              movw R30,R2
+ 0694 8083              std z+0,R24
+ 0696                   .dbline 77
+ 0696 1501              movw R2,R10
+ 0698 C101              movw R24,R2
+ 069A 0197              sbiw R24,1
+ 069C 5C01              movw R10,R24
+ 069E 89E0              ldi R24,9
+ 06A0 F101              movw R30,R2
+ 06A2 8083              std z+0,R24
+ 06A4                   .dbline 78
+ 06A4 1501              movw R2,R10
+ 06A6 C101              movw R24,R2
+ 06A8 0197              sbiw R24,1
+ 06AA 5C01              movw R10,R24
+ 06AC 80E1              ldi R24,16
+ 06AE F101              movw R30,R2
+ 06B0 8083              std z+0,R24
+ 06B2                   .dbline 79
+ 06B2 1501              movw R2,R10
+ 06B4 C101              movw R24,R2
+ 06B6 0197              sbiw R24,1
+ 06B8 5C01              movw R10,R24
+ 06BA 81E1              ldi R24,17
+ 06BC F101              movw R30,R2
+ 06BE 8083              std z+0,R24
+ 06C0                   .dbline 80
+ 06C0 1501              movw R2,R10
+ 06C2 C101              movw R24,R2
+ 06C4 0197              sbiw R24,1
+ 06C6 5C01              movw R10,R24
+ 06C8 82E1              ldi R24,18
+ 06CA F101              movw R30,R2
+ 06CC 8083              std z+0,R24
+ 06CE                   .dbline 81
+ 06CE 1501              movw R2,R10
+ 06D0 C101              movw R24,R2
+ 06D2 0197              sbiw R24,1
+ 06D4 5C01              movw R10,R24
+ 06D6 83E1              ldi R24,19
+ 06D8 F101              movw R30,R2
+ 06DA 8083              std z+0,R24
+ 06DC                   .dbline 82
+ 06DC 1501              movw R2,R10
+ 06DE C101              movw R24,R2
+ 06E0 0197              sbiw R24,1
+ 06E2 5C01              movw R10,R24
+ 06E4 84E1              ldi R24,20
+ 06E6 F101              movw R30,R2
+ 06E8 8083              std z+0,R24
+ 06EA                   .dbline 83
+ 06EA 1501              movw R2,R10
+ 06EC C101              movw R24,R2
+ 06EE 0197              sbiw R24,1
+ 06F0 5C01              movw R10,R24
+ 06F2 85E1              ldi R24,21
+ 06F4 F101              movw R30,R2
+ 06F6 8083              std z+0,R24
+ 06F8                   .dbline 84
+ 06F8 6901              movw R12,R18
+ 06FA                   .dbline 85
+ 06FA 1501              movw R2,R10
+ 06FC C101              movw R24,R2
+ 06FE 0197              sbiw R24,1
+ 0700 F101              movw R30,R2
+ 0702 C082              std z+0,R12
+ 0704                   .dbline 86
+ 0704 1C01              movw R2,R24
+ 0706 0197              sbiw R24,1
+ 0708 2601              movw R4,R12
+ 070A 452C              mov R4,R5
+ 070C 5524              clr R5
+ 070E F101              movw R30,R2
+ 0710 4082              std z+0,R4
+ 0712                   .dbline 87
+ 0712 1C01              movw R2,R24
+ 0714 0197              sbiw R24,1
+ 0716 5C01              movw R10,R24
+ 0718 88E1              ldi R24,24
+ 071A F101              movw R30,R2
+ 071C 8083              std z+0,R24
+ 071E                   .dbline 88
+ 071E 1501              movw R2,R10
+ 0720 C101              movw R24,R2
+ 0722 0197              sbiw R24,1
+ 0724 5C01              movw R10,R24
+ 0726 89E1              ldi R24,25
+ 0728 F101              movw R30,R2
+ 072A 8083              std z+0,R24
+ 072C                   .dbline 89
+ 072C 1501              movw R2,R10
+ 072E C101              movw R24,R2
+ 0730 0197              sbiw R24,1
+ 0732 5C01              movw R10,R24
+ 0734 80E2              ldi R24,32
+ 0736 F101              movw R30,R2
+ 0738 8083              std z+0,R24
+ 073A                   .dbline 90
+ 073A 1501              movw R2,R10
+ 073C C101              movw R24,R2
+ 073E 0197              sbiw R24,1
+ 0740 5C01              movw R10,R24
+ 0742 81E2              ldi R24,33
+ 0744 F101              movw R30,R2
+ 0746 8083              std z+0,R24
+ 0748                   .dbline 91
+ 0748 1501              movw R2,R10
+ 074A C101              movw R24,R2
+ 074C 0197              sbiw R24,1
+ 074E 5C01              movw R10,R24
+ 0750 82E2              ldi R24,34
+ 0752 F101              movw R30,R2
+ 0754 8083              std z+0,R24
+ 0756                   .dbline 92
+ 0756 1501              movw R2,R10
+ 0758 C101              movw R24,R2
+ 075A 0197              sbiw R24,1
+ 075C 5C01              movw R10,R24
+ 075E 83E2              ldi R24,35
+ 0760 F101              movw R30,R2
+ 0762 8083              std z+0,R24
+ 0764                   .dbline 93
+ 0764 1501              movw R2,R10
+ 0766 C101              movw R24,R2
+ 0768 0197              sbiw R24,1
+ 076A 5C01              movw R10,R24
+ 076C 84E2              ldi R24,36
+ 076E F101              movw R30,R2
+ 0770 8083              std z+0,R24
+ 0772                   .dbline 94
+ 0772 1501              movw R2,R10
+ 0774 C101              movw R24,R2
+ 0776 0197              sbiw R24,1
+ 0778 5C01              movw R10,R24
+ 077A 85E2              ldi R24,37
+ 077C F101              movw R30,R2
+ 077E 8083              std z+0,R24
+ 0780                   .dbline 95
+ 0780 1501              movw R2,R10
+ 0782 C101              movw R24,R2
+ 0784 0197              sbiw R24,1
+ 0786 5C01              movw R10,R24
+ 0788 86E2              ldi R24,38
+ 078A F101              movw R30,R2
+ 078C 8083              std z+0,R24
+ 078E                   .dbline 96
+ 078E 1501              movw R2,R10
+ 0790 C101              movw R24,R2
+ 0792 0197              sbiw R24,1
+ 0794 5C01              movw R10,R24
+ 0796 87E2              ldi R24,39
+ 0798 F101              movw R30,R2
+ 079A 8083              std z+0,R24
+ 079C                   .dbline 98
+ 079C 1501              movw R2,R10
+ 079E C101              movw R24,R2
+ 07A0 0197              sbiw R24,1
+ 07A2 5C01              movw R10,R24
+ 07A4 80E3              ldi R24,48
+ 07A6 F101              movw R30,R2
+ 07A8 8083              std z+0,R24
+ 07AA                   .dbline 99
+ 07AA 1501              movw R2,R10
+ 07AC C101              movw R24,R2
+ 07AE 0197              sbiw R24,1
+ 07B0 5C01              movw R10,R24
+ 07B2 81E3              ldi R24,49
+ 07B4 F101              movw R30,R2
+ 07B6 8083              std z+0,R24
+ 07B8                   .dbline 101
+ 07B8 1501              movw R2,R10
+ 07BA C101              movw R24,R2
+ 07BC 0197              sbiw R24,1
+ 07BE 5C01              movw R10,R24
+ 07C0 80E8              ldi R24,128
+ 07C2 F101              movw R30,R2
+ 07C4 8083              std z+0,R24
+ 07C6                   .dbline 103
+ 07C6 6701              movw R12,R14
+ 07C8                   .dbline 104
+ 07C8 1501              movw R2,R10
+ 07CA C101              movw R24,R2
+ 07CC 0197              sbiw R24,1
+ 07CE 5C01              movw R10,R24
+ 07D0 2601              movw R4,R12
+ 07D2 452C              mov R4,R5
+ 07D4 5524              clr R5
+ 07D6 F101              movw R30,R2
+ 07D8 4082              std z+0,R4
+ 07DA                   .dbline 105
+ 07DA FC01              movw R30,R24
+ 07DC C082              std z+0,R12
+ 07DE                   .dbline 106
+ 07DE 8C01              movw R16,R24
+ 07E0                   .dbline -2
+ 07E0           L57:
+ 07E0 00D0              rcall pop_gset5x
+ 07E2                   .dbline 0 ; func end
+ 07E2 0895              ret
+ 07E4                   .dbsym r stks 14 pc
+ 07E4                   .dbsym r tmp 12 i
+ 07E4                   .dbsym r stk 10 pc
+ 07E4                   .dbsym l opt 8 i
+ 07E4                   .dbsym l ptos 6 pc
+ 07E4                   .dbsym r pdata 18 pV
+ 07E4                   .dbsym r task 16 pfV
+ 07E4                   .dbend
+ 07E4                   .dbfunc e OSTaskCreate _OSTaskCreate fc
+ 07E4           ;            psp -> R10,R11
+ 07E4           ;            err -> R10
+ 07E4           ;           prio -> R12
+ 07E4           ;           ptos -> y+16
+ 07E4           ;          pdata -> R14,R15
+ 07E4           ;           task -> R10,R11
+                        .even
+ 07E4           _OSTaskCreate::
+ 07E4 00D0              rcall push_gset5x
+ 07E6 7901              movw R14,R18
+ 07E8 5801              movw R10,R16
+ 07EA 2A97              sbiw R28,10
+ 07EC CA88              ldd R12,y+18
+ 07EE                   .dbline -1
+ 07EE                   .dbline 110
+ 07EE                   .dbline 115
+ 07EE 8FE0              ldi R24,15
+ 07F0 8C15              cp R24,R12
+ 07F2 10F4              brsh L59
+ 07F4                   .dbline 115
+ 07F4                   .dbline 116
+ 07F4 0AE2              ldi R16,42
+ 07F6 70C0              rjmp L58
+ 07F8           L59:
+ 07F8                   .dbline 118
+ 07F8 0A93              st -y,r16
+ 07FA 0FB7              in r16,0x3F
+ 07FC F894              cli
+ 07FE 0F93              push r16
+ 0800 0991              ld r16,y+
+ 0802                   .dbline 118
+ 0802                   .dbline 119
+ 0802 82E0              ldi R24,2
+ 0804 8C9D              mul R24,R12
+ 0806 F001              movw R30,R0
+ 0808 80E0              ldi R24,<_OSTCBPrioTbl
+ 080A 90E0              ldi R25,>_OSTCBPrioTbl
+ 080C E80F              add R30,R24
+ 080E F91F              adc R31,R25
+ 0810 2080              ldd R2,z+0
+ 0812 3180              ldd R3,z+1
+ 0814 2220              tst R2
+ 0816 09F0              breq X13
+ 0818 5AC0              rjmp L61
+ 081A           X13:
+ 081A 3320              tst R3
+ 081C 09F0              breq X14
+ 081E 57C0              rjmp L61
+ 0820           X14:
+ 0820           X12:
+ 0820                   .dbline 119
+ 0820                   .dbline 120
+ 0820 82E0              ldi R24,2
+ 0822 8C9D              mul R24,R12
+ 0824 F001              movw R30,R0
+ 0826 80E0              ldi R24,<_OSTCBPrioTbl
+ 0828 90E0              ldi R25,>_OSTCBPrioTbl
+ 082A E80F              add R30,R24
+ 082C F91F              adc R31,R25
+ 082E 81E0              ldi R24,1
+ 0830 90E0              ldi R25,0
+ 0832 9183              std z+1,R25
+ 0834 8083              std z+0,R24
+ 0836                   .dbline 122
+ 0836 0A93              st -y,r16
+ 0838 0F91              pop r16
+ 083A 0FBF              out 0x3F,r16
+ 083C 0991              ld r16,y+
+ 083E                   .dbline 122
+ 083E                   .dbline 123
+ 083E 2224              clr R2
+ 0840 3324              clr R3
+ 0842 3B82              std y+3,R3
+ 0844 2A82              std y+2,R2
+ 0846 0888              ldd R0,y+16
+ 0848 1988              ldd R1,y+17
+ 084A 1982              std y+1,R1
+ 084C 0882              std y+0,R0
+ 084E 9701              movw R18,R14
+ 0850 8501              movw R16,R10
+ 0852 CFDE              rcall _OSTaskStkInit
+ 0854 5801              movw R10,R16
+ 0856                   .dbline 124
+ 0856 2224              clr R2
+ 0858 3324              clr R3
+ 085A 3986              std y+9,R3
+ 085C 2886              std y+8,R2
+ 085E 3F82              std y+7,R3
+ 0860 2E82              std y+6,R2
+ 0862 3D82              std y+5,R3
+ 0864 2C82              std y+4,R2
+ 0866 3B82              std y+3,R3
+ 0868 2A82              std y+2,R2
+ 086A 3982              std y+1,R3
+ 086C 2882              std y+0,R2
+ 086E 9501              movw R18,R10
+ 0870 0C2D              mov R16,R12
+ 0872 C2DD              rcall _OSTCBInit
+ 0874 A02E              mov R10,R16
+ 0876                   .dbline 125
+ 0876 0023              tst R16
+ 0878 A1F4              brne L63
+ 087A                   .dbline 125
+ 087A                   .dbline 126
+ 087A 0A93              st -y,r16
+ 087C 0FB7              in r16,0x3F
+ 087E F894              cli
+ 0880 0F93              push r16
+ 0882 0991              ld r16,y+
+ 0884                   .dbline 126
+ 0884                   .dbline 127
+ 0884 8091E500          lds R24,_OSTaskCtr
+ 0888 8F5F              subi R24,255    ; addi 1
+ 088A 8093E500          sts _OSTaskCtr,R24
+ 088E                   .dbline 128
+ 088E 0A93              st -y,r16
+ 0890 0F91              pop r16
+ 0892 0FBF              out 0x3F,r16
+ 0894 0991              ld r16,y+
+ 0896                   .dbline 128
+ 0896                   .dbline 129
+ 0896 2090E600          lds R2,_OSRunning
+ 089A 2220              tst R2
+ 089C B1F0              breq L64
+ 089E                   .dbline 129
+ 089E                   .dbline 130
+ 089E E9DC              rcall _OSSched
+ 08A0                   .dbline 131
+ 08A0                   .dbline 132
+ 08A0 14C0              rjmp L64
+ 08A2           L63:
+ 08A2                   .dbline 132
+ 08A2                   .dbline 133
+ 08A2 0A93              st -y,r16
+ 08A4 0FB7              in r16,0x3F
+ 08A6 F894              cli
+ 08A8 0F93              push r16
+ 08AA 0991              ld r16,y+
+ 08AC                   .dbline 133
+ 08AC                   .dbline 134
+ 08AC 82E0              ldi R24,2
+ 08AE 8C9D              mul R24,R12
+ 08B0 F001              movw R30,R0
+ 08B2 80E0              ldi R24,<_OSTCBPrioTbl
+ 08B4 90E0              ldi R25,>_OSTCBPrioTbl
+ 08B6 E80F              add R30,R24
+ 08B8 F91F              adc R31,R25
+ 08BA 2224              clr R2
+ 08BC 3324              clr R3
+ 08BE 3182              std z+1,R3
+ 08C0 2082              std z+0,R2
+ 08C2                   .dbline 135
+ 08C2 0A93              st -y,r16
+ 08C4 0F91              pop r16
+ 08C6 0FBF              out 0x3F,r16
+ 08C8 0991              ld r16,y+
+ 08CA                   .dbline 135
+ 08CA                   .dbline 136
+ 08CA           L64:
+ 08CA                   .dbline 137
+ 08CA 0A2D              mov R16,R10
+ 08CC 05C0              rjmp L58
+ 08CE           L61:
+ 08CE                   .dbline 138
+ 08CE                   .dbline 139
+ 08CE 0A93              st -y,r16
+ 08D0 0F91              pop r16
+ 08D2 0FBF              out 0x3F,r16
+ 08D4 0991              ld r16,y+
+ 08D6                   .dbline 139
+ 08D6                   .dbline 140
+ 08D6 08E2              ldi R16,40
+ 08D8                   .dbline -2
+ 08D8           L58:
+ 08D8 2A96              adiw R28,10
+ 08DA 00D0              rcall pop_gset5x
+ 08DC                   .dbline 0 ; func end
+ 08DC 0895              ret
+ 08DE                   .dbsym r psp 10 pV
+ 08DE                   .dbsym r err 10 c
+ 08DE                   .dbsym r prio 12 c
+ 08DE                   .dbsym l ptos 16 pc
+ 08DE                   .dbsym r pdata 14 pV
+ 08DE                   .dbsym r task 10 pfV
+ 08DE                   .dbend
+ 08DE                   .dbfile F:\ICC\project\ucos_m8_icc\source/os_time.c
+ 08DE                   .dbfunc e OSTimeDly _OSTimeDly fV
+ 08DE           ;          ticks -> R10,R11
+                        .even
+ 08DE           _OSTimeDly::
+ 08DE 00D0              rcall push_gset3x
+ 08E0 5801              movw R10,R16
+ 08E2                   .dbline -1
+ 08E2                   .dbline 23
+ 08E2                   .dbline 24
+ 08E2 AA20              tst R10
+ 08E4 19F4              brne X15
+ 08E6 BB20              tst R11
+ 08E8 09F4              brne X16
+ 08EA 32C0              rjmp L68
+ 08EC           X16:
+ 08EC           X15:
+ 08EC                   .dbline 24
+ 08EC                   .dbline 25
+ 08EC 0A93              st -y,r16
+ 08EE 0FB7              in r16,0x3F
+ 08F0 F894              cli
+ 08F2 0F93              push r16
+ 08F4 0991              ld r16,y+
+ 08F6                   .dbline 25
+ 08F6                   .dbline 26
+ 08F6 80E0              ldi R24,<_OSRdyTbl
+ 08F8 90E0              ldi R25,>_OSRdyTbl
+ 08FA E091E300          lds R30,_OSTCBCur
+ 08FE F091E400          lds R31,_OSTCBCur+1
+ 0902 2384              ldd R2,z+11
+ 0904 3324              clr R3
+ 0906 280E              add R2,R24
+ 0908 391E              adc R3,R25
+ 090A E091E300          lds R30,_OSTCBCur
+ 090E F091E400          lds R31,_OSTCBCur+1
+ 0912 4484              ldd R4,z+12
+ 0914 4094              com R4
+ 0916 F101              movw R30,R2
+ 0918 5080              ldd R5,z+0
+ 091A 5420              and R5,R4
+ 091C 452C              mov R4,R5
+ 091E 4082              std z+0,R4
+ 0920 5520              tst R5
+ 0922 59F4              brne L70
+ 0924                   .dbline 26
+ 0924                   .dbline 27
+ 0924 E091E300          lds R30,_OSTCBCur
+ 0928 F091E400          lds R31,_OSTCBCur+1
+ 092C 2584              ldd R2,z+13
+ 092E 2094              com R2
+ 0930 3090E900          lds R3,_OSRdyGrp
+ 0934 3220              and R3,R2
+ 0936 3092E900          sts _OSRdyGrp,R3
+ 093A                   .dbline 28
+ 093A           L70:
+ 093A                   .dbline 29
+ 093A E091E300          lds R30,_OSTCBCur
+ 093E F091E400          lds R31,_OSTCBCur+1
+ 0942 B782              std z+7,R11
+ 0944 A682              std z+6,R10
+ 0946                   .dbline 30
+ 0946 0A93              st -y,r16
+ 0948 0F91              pop r16
+ 094A 0FBF              out 0x3F,r16
+ 094C 0991              ld r16,y+
+ 094E                   .dbline 30
+ 094E                   .dbline 31
+ 094E 91DC              rcall _OSSched
+ 0950                   .dbline 32
+ 0950           L68:
+ 0950                   .dbline -2
+ 0950                   .dbline 33
+ 0950           L67:
+ 0950 00D0              rcall pop_gset3x
+ 0952                   .dbline 0 ; func end
+ 0952 0895              ret
+ 0954                   .dbsym r ticks 10 i
+ 0954                   .dbend
+ 0954                   .dbfile F:\ICC\project\ucos_m8_icc\source/74164.c
+ 0954                   .dbfunc e init164 _init164 fV
+                        .even
+ 0954           _init164::
+ 0954                   .dbline -1
+ 0954                   .dbline 6
+ 0954                   .dbline 7
+ 0954 B89A              sbi 0x17,0
+ 0956                   .dbline 8
+ 0956 81B3              in R24,0x11
+ 0958 806C              ori R24,192
+ 095A 81BB              out 0x11,R24
+ 095C                   .dbline -2
+ 095C                   .dbline 9
+ 095C           L72:
+ 095C                   .dbline 0 ; func end
+ 095C 0895              ret
+ 095E                   .dbend
+ 095E                   .dbfunc e write164 _write164 fV
+ 095E           ;             ch -> R10
+ 095E           ;              i -> R12
+ 095E           ;              x -> R16
+                        .even
+ 095E           _write164::
+ 095E 00D0              rcall push_gset4x
+ 0960                   .dbline -1
+ 0960                   .dbline 11
+ 0960                   .dbline 14
+ 0960 A02E              mov R10,R16
+ 0962                   .dbline 15
+ 0962 C098              cbi 0x18,0
+ 0964                   .dbline 16
+ 0964 9698              cbi 0x12,6
+ 0966                   .dbline 17
+ 0966 CC24              clr R12
+ 0968 0AC0              rjmp L77
+ 096A           L74:
+ 096A                   .dbline 17
+ 096A                   .dbline 18
+ 096A A7FE              sbrs R10,7
+ 096C 02C0              rjmp L78
+ 096E                   .dbline 19
+ 096E 979A              sbi 0x12,7
+ 0970 01C0              rjmp L79
+ 0972           L78:
+ 0972                   .dbline 21
+ 0972 9798              cbi 0x12,7
+ 0974           L79:
+ 0974                   .dbline 22
+ 0974 AA0C              lsl R10
+ 0976                   .dbline 23
+ 0976 969A              sbi 0x12,6
+ 0978                   .dbline 24
+ 0978 0000              nop
+ 097A                   .dbline 25
+ 097A 9698              cbi 0x12,6
+ 097C                   .dbline 26
+ 097C           L75:
+ 097C                   .dbline 17
+ 097C C394              inc R12
+ 097E           L77:
+ 097E                   .dbline 17
+ 097E 8C2D              mov R24,R12
+ 0980 8830              cpi R24,8
+ 0982 98F3              brlo L74
+ 0984                   .dbline 27
+ 0984 C09A              sbi 0x18,0
+ 0986                   .dbline -2
+ 0986                   .dbline 28
+ 0986           L73:
+ 0986 00D0              rcall pop_gset4x
+ 0988                   .dbline 0 ; func end
+ 0988 0895              ret
+ 098A                   .dbsym r ch 10 c
+ 098A                   .dbsym r i 12 c
+ 098A                   .dbsym r x 16 c
+ 098A                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile F:\ICC\project\ucos_m8_icc\source/74164.c
+ 0000           _OSTCBTbl:
+ 0000                   .blkb 84
+ 0054                   .dbfile F:\ICC\project\ucos_m8_icc\source/os_core.c
+ 0054                   .dbsym s OSTCBTbl _OSTCBTbl A[84:6]X
+ 0054           _OSTaskIdleStk:
+ 0054                   .blkb 100
+ 00B8                   .dbsym s OSTaskIdleStk _OSTaskIdleStk A[100:100]c
+ 00B8           _OSIntExitY:
+ 00B8                   .blkb 1
+ 00B9                   .dbsym s OSIntExitY _OSIntExitY c
+ 00B9           _OSTime::
+ 00B9                   .blkb 4
+ 00BD                   .dbfile F:\ICC\project\ucos_m8_icc\source/UCOS_II.H
+ 00BD                   .dbsym e OSTime _OSTime l
+ 00BD           _OSTCBPrioTbl::
+ 00BD                   .blkb 32
+ 00DD                   .dbsym e OSTCBPrioTbl _OSTCBPrioTbl A[32:16]pX
+ 00DD           _OSTCBList::
+ 00DD                   .blkb 2
+ 00DF                   .dbsym e OSTCBList _OSTCBList pX
+ 00DF           _OSTCBHighRdy::
+ 00DF                   .blkb 2
+ 00E1                   .dbsym e OSTCBHighRdy _OSTCBHighRdy pX
+ 00E1           _OSTCBFreeList::
+ 00E1                   .blkb 2
+ 00E3                   .dbsym e OSTCBFreeList _OSTCBFreeList pX
+ 00E3           _OSTCBCur::
+ 00E3                   .blkb 2
+ 00E5                   .dbsym e OSTCBCur _OSTCBCur pX
+ 00E5           _OSTaskCtr::
+ 00E5                   .blkb 1
+ 00E6                   .dbsym e OSTaskCtr _OSTaskCtr c
+ 00E6           _OSRunning::
+ 00E6                   .blkb 1
+ 00E7                   .dbsym e OSRunning _OSRunning c
+ 00E7           _OSRdyTbl::
+ 00E7                   .blkb 2
+ 00E9                   .dbsym e OSRdyTbl _OSRdyTbl A[2:2]c
+ 00E9           _OSRdyGrp::
+ 00E9                   .blkb 1
+ 00EA                   .dbsym e OSRdyGrp _OSRdyGrp c
+ 00EA           _OSPrioHighRdy::
+ 00EA                   .blkb 1
+ 00EB                   .dbsym e OSPrioHighRdy _OSPrioHighRdy c
+ 00EB           _OSPrioCur::
+ 00EB                   .blkb 1
+ 00EC                   .dbsym e OSPrioCur _OSPrioCur c
+ 00EC           _OSLockNesting::
+ 00EC                   .blkb 1
+ 00ED                   .dbsym e OSLockNesting _OSLockNesting c
+ 00ED           _OSIntNesting::
+ 00ED                   .blkb 1
+ 00EE                   .dbsym e OSIntNesting _OSIntNesting c
+ 00EE           _OSIdleCtr::
+ 00EE                   .blkb 4
+ 00F2                   .dbsym e OSIdleCtr _OSIdleCtr l
+ 00F2           _OSEventTbl::
+ 00F2                   .blkb 16
+ 0102                   .dbsym e OSEventTbl _OSEventTbl A[16:2]X
+ 0102           _OSEventFreeList::
+ 0102                   .blkb 2
+ 0104                   .dbsym e OSEventFreeList _OSEventFreeList pX
+ 0104           _OSCtxSwCtr::
+ 0104                   .blkb 4
+ 0108                   .dbsym e OSCtxSwCtr _OSCtxSwCtr l
+                        .area func_lit
+ 0000 D901      PL_OSTaskIdle:  .word `_OSTaskIdle

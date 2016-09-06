@@ -1,0 +1,7 @@
+1.安装好Proteus 6.9 SP4,需要用Keil for ARM的或IAR的同样需要安装好。
+2.安装Proteus VSM Simulator驱动(可以在官方网站上下载到)。Keil装Vdmagdi.exe,IAR装Vdmcspy.exe
+3.将附件中的Prospice.dll和Licence.dll文件Copy到..\bin目录下，MCS8051.dll和ARM7TDMI.dll文件拷贝到..\MODELS目录下。分别替换原有的文件。
+4.打开原理图模型和程序。记得要在ISIS中选"Use Remote Debug Monitor"。在Keil for ARM中选择"Proteus VSM Simulator"。IAR中选择Debugger-->Setup-->Drver-->Third-Party Driver，然后在Third-Party Driver中指向Vdmcspy.dll文件。
+5.在IDE中点击Debug进入仿真模式。一个精彩的Proteus for ARM时代来临。
+6.Enjoy!
+附件中有两个例程：一个是IAR的例程。一个是Keil for ARM例程，是利用ADS1.2编译实现的。也就是说所有ADS的工程也可以转到Keil for ARM上来运行，方便联机调试，只需要修改很小的部分。(因为ADS不能和Proteus联调,目录下的那个*.mcp文件即是原有的ADS工程文件)

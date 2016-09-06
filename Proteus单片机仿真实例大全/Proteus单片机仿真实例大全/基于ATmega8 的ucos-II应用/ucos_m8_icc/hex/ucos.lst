@@ -1,0 +1,2893 @@
+__text_start:
+__start:
+    009A E5CF      LDI	R28,0x5F
+    009B E0D4      LDI	R29,4
+    009C BFCD      OUT	P3D,R28
+    009D BFDE      OUT	P3E,R29
+    009E 51C0      SUBI	R28,0x10
+    009F 40D0      SBCI	R29,0
+    00A0 EA0A      LDI	R16,0xAA
+    00A1 8308      STD	R16,0+Y
+    00A2 2400      CLR	R0
+    00A3 E6E0      LDI	R30,0x60
+    00A4 E0F0      LDI	R31,0
+    00A5 E012      LDI	R17,2
+    00A6 33EB      CPI	R30,0x3B
+    00A7 07F1      CPC	R31,R17
+    00A8 F011      BEQ	0x00AB
+    00A9 9201      ST	R0,Z+
+    00AA CFFB      RJMP	0x00A6
+    00AB 8300      STD	R16,0+Z
+    00AC E3E4      LDI	R30,0x34
+    00AD E0F1      LDI	R31,1
+    00AE E6A0      LDI	R26,0x60
+    00AF E0B0      LDI	R27,0
+    00B0 E011      LDI	R17,1
+    00B1 33E4      CPI	R30,0x34
+    00B2 07F1      CPC	R31,R17
+    00B3 F021      BEQ	0x00B8
+    00B4 95C8      LPM
+    00B5 9631      ADIW	R30,1
+    00B6 920D      ST	R0,X+
+    00B7 CFF9      RJMP	0x00B1
+    00B8 D019      RCALL	_main
+_exit:
+    00B9 CFFF      RJMP	_exit
+FILE: D:\job\avrtest\光盘\开发板\iccavr\test\test2.c
+(0001) 
+(0002) #define Test1_GLOBALS
+(0003) #include "includes.h"
+(0004) 
+(0005) //******************************************************************************
+(0006) // Constants
+(0007) #define TaskStartPrio	10		// Task-Prioritaeten
+(0008) //*****************************************************************************
+(0009) // Variablen
+(0010) INT8U    display[5];
+(0011) INT8U    h,m,s,state;
+(0012) OS_STK	Task1Stack[OS_TASK_DEF_STK_SIZE];		// startup task stack
+(0013) OS_STK	Task2Stack[OS_TASK_DEF_STK_SIZE];
+(0014) //ICC-AVR application builder : 2003-12-28 21:52:56
+(0015) // Target : M8
+(0016) // Crystal: 8.0000Mhz
+(0017) 
+(0018) #include <iom8v.h>
+(0019) #include <macros.h>
+(0020) #include <stdio.h>
+(0021) 
+(0022) 
+(0023) //UART0 initialisation
+(0024) // desired baud rate: 9600
+(0025) // actual: baud rate:9615 (0.2%)
+(0026) // char size: 8 bit
+(0027) // parity: Disabled
+(0028) void uart0_init(void)
+(0029) {
+(0030)  UCSRB = 0x00; //disable while setting baud rate
+_uart0_init:
+    00BA 2422      CLR	R2
+    00BB B82A      OUT	P0A,R2
+(0031)  UCSRA = 0x00;
+    00BC B82B      OUT	P0B,R2
+(0032)  UCSRC = 0x86;
+    00BD E886      LDI	R24,0x86
+    00BE BD80      OUT	P20,R24
+(0033)  UBRRL = 0x33; //set baud rate lo
+    00BF E383      LDI	R24,0x33
+    00C0 B989      OUT	P09,R24
+(0034)  UBRRH = 0x00; //set baud rate hi
+    00C1 BC20      OUT	P20,R2
+(0035)  UCSRB = 0x08;
+    00C2 E088      LDI	R24,0x8
+    00C3 B98A      OUT	P0A,R24
+(0036) }
+    00C4 9508      RET
+(0037) 
+(0038) //*****************************************************************************
+(0039) // Prototypes
+(0040) 
+(0041) //*****************************************************************************
+(0042) //			TickISR
+(0043) //*****************************************************************************
+(0044) // Init Timer/Counter2 fuer Takterzeugung
+(0045) void TC2_Init (void){	
+(0046) 	/* Only uses TIMER2 overflow for tick interrupt. Timer compare
+(0047)      * can also be used.
+(0048)      */
+(0049) 	TIMSK &= ~(BIT(TOIE2)/* | BIT(OCIE2) */);	//disable TC2 interrupts
+_TC2_Init:
+    00C5 B789      IN	R24,P39
+    00C6 7B8F      ANDI	R24,0xBF
+    00C7 BF89      OUT	P39,R24
+(0050) 	TCCR2 = 0x00;		// interner Takt, /1024
+    00C8 2422      CLR	R2
+    00C9 BC25      OUT	P25,R2
+(0051) 	TCNT2 = 0; 	// Counter ruecksetzen, 2ms @ 8MHz
+    00CA BC24      OUT	P24,R2
+(0052)     TCCR2 = 0x04;   // 64
+    00CB E084      LDI	R24,4
+    00CC BD85      OUT	P25,R24
+(0053) 	// OCR2 = 180;			// OutputCompareRegister
+(0054) 	TIMSK |= BIT(TOIE2);	// enable OVF-interrupt
+    00CD B789      IN	R24,P39
+    00CE 6480      ORI	R24,0x40
+    00CF BF89      OUT	P39,R24
+(0055) 	                                                                                                                                //TIMSK |= OCIE2;		// enable COMP-interrupt
+(0056) 	
+(0057)     SEI();	// enable global interrupt     
+    00D0 9478      BSET	7
+(0058) }
+    00D1 9508      RET
+_main:
+    00D2 9723      SBIW	R28,3
+(0059) 
+(0060) //*****************************************************************************
+(0061) // Interrupt Timer/Counter0 Overflow
+(0062) // OVF_Takt:  4MHz / 1024 / 39 = 10ms
+(0063) #pragma interrupt_handler OSTickISR:5
+(0064) 
+(0065) void Task1(void *pdata);
+(0066) void Task2(void *pdata);
+(0067) 
+(0068) //*****************************************************************************
+(0069) // Start
+(0070) void main(void){
+(0071) 	OSInit();		// OS init
+    00D3 D116      RCALL	_OSInit
+(0072) 	OSTaskCreate(Task1,
+    00D4 E087      LDI	R24,7
+    00D5 838A      STD	R24,2+Y
+    00D6 E287      LDI	R24,0x27
+    00D7 E091      LDI	R25,1
+    00D8 8388      STD	R24,0+Y
+    00D9 8399      STD	R25,1+Y
+    00DA 2722      CLR	R18
+    00DB 2733      CLR	R19
+    00DC E208      LDI	R16,0x28
+    00DD E010      LDI	R17,0
+    00DE D4F2      RCALL	_OSTaskCreate
+(0073) 				(void *)0,
+(0074) 				&Task1Stack[OS_TASK_DEF_STK_SIZE-1],
+(0075) 				7);
+(0076) 	OSTaskCreate(Task2,
+    00DF E088      LDI	R24,0x8
+    00E0 838A      STD	R24,2+Y
+    00E1 EC83      LDI	R24,0xC3
+    00E2 E090      LDI	R25,0
+    00E3 8388      STD	R24,0+Y
+    00E4 8399      STD	R25,1+Y
+    00E5 2722      CLR	R18
+    00E6 2733      CLR	R19
+    00E7 E206      LDI	R16,0x26
+    00E8 E010      LDI	R17,0
+    00E9 D4E7      RCALL	_OSTaskCreate
+(0077) 				(void *)0,
+(0078) 				&Task2Stack[OS_TASK_DEF_STK_SIZE-1],
+(0079) 				8); 
+(0080) 	// init und start tick
+(0081)     TC2_Init();			// Timer/Counter#2 Overflow and Comp init
+    00EA DFDA      RCALL	_TC2_Init
+(0082)     uart0_init();
+    00EB DFCE      RCALL	_uart0_init
+(0083)     OSStart();		// start multitasking
+    00EC D296      RCALL	_OSStart
+(0084) }
+    00ED 9623      ADIW	R28,3
+    00EE 9508      RET
+_Task1:
+  key2                 --> R12
+  i                    --> R14
+  key1                 --> Y+0
+  data                 --> R10
+    00EF D703      RCALL	push_gset5x
+    00F0 0158      MOVW	R10,R16
+    00F1 9721      SBIW	R28,1
+(0085) 
+(0086) //*****************************************************************************
+(0087) void Task1(void *data){
+(0088)     unsigned char i,key1,key2;
+(0089) 	data = data;
+(0090) 	PORTD |= 0x1C;    //  key
+    00F2 B382      IN	R24,P12
+    00F3 618C      ORI	R24,0x1C
+    00F4 BB82      OUT	P12,R24
+(0091) 	DDRD  &= ~0x1C;
+    00F5 B381      IN	R24,P11
+    00F6 7E83      ANDI	R24,0xE3
+    00F7 BB81      OUT	P11,R24
+(0092) 	PORTD |= 0x20;    //  bell
+    00F8 9A95      SBI	P12,5
+(0093) 	DDRD  |= 0x20;
+    00F9 9A8D      SBI	P11,5
+(0094) 	init164();        //  显示  初始化
+    00FA D58A      RCALL	_init164
+(0095) 	state = 1;
+    00FB E081      LDI	R24,1
+    00FC 93800128  STS	_state,R24
+(0096) 	for (;;){
+(0097) //  key
+(0098)         key1 = PIND & 0x1C;
+    00FE B380      IN	R24,P10
+    00FF 718C      ANDI	R24,0x1C
+    0100 8388      STD	R24,0+Y
+(0099) 		if(key1 == 0x1C){
+    0101 318C      CPI	R24,0x1C
+    0102 F559      BNE	0x012E
+(0100) 		    PORTD &= ~0x20;
+    0103 9895      CBI	P12,5
+(0101) 			if(key2 == 0x0C){
+    0104 2D8C      MOV	R24,R12
+    0105 308C      CPI	R24,0xC
+    0106 F431      BNE	0x010D
+(0102) 				state ^= 0x01;
+    0107 E081      LDI	R24,1
+    0108 90200128  LDS	R2,_state
+    010A 2628      EOR	R2,R24
+    010B 92200128  STS	_state,R2
+(0103) 			}
+(0104) 			if(state == 0){
+    010D 90200128  LDS	R2,_state
+    010F 2022      TST	R2
+    0110 F4F1      BNE	0x012F
+(0105) 			    if(key2 == 0x18){
+    0111 2D8C      MOV	R24,R12
+    0112 3188      CPI	R24,0x18
+    0113 F459      BNE	0x011F
+(0106) 			        if(++s == 60) s = 0;
+    0114 91800129  LDS	R24,_s
+    0116 5F8F      SUBI	R24,0xFF
+    0117 2E28      MOV	R2,R24
+    0118 92200129  STS	_s,R2
+    011A 338C      CPI	R24,0x3C
+    011B F419      BNE	0x011F
+    011C 2422      CLR	R2
+    011D 92200129  STS	_s,R2
+(0107) 			    }
+(0108) 			    if(key2 == 0x14){
+    011F 2D8C      MOV	R24,R12
+    0120 3184      CPI	R24,0x14
+    0121 F469      BNE	0x012F
+(0109) 				    if(++m == 60) m = 0;
+    0122 9180012A  LDS	R24,_m
+    0124 5F8F      SUBI	R24,0xFF
+    0125 2E28      MOV	R2,R24
+    0126 9220012A  STS	_m,R2
+    0128 338C      CPI	R24,0x3C
+    0129 F429      BNE	0x012F
+    012A 2422      CLR	R2
+    012B 9220012A  STS	_m,R2
+(0110) 			    }
+(0111) 			}
+(0112) 		}
+    012D C001      RJMP	0x012F
+(0113) 		else{
+(0114) 			PORTD |= 0x20;
+    012E 9A95      SBI	P12,5
+(0115) 		}
+(0116) 		key2 = key1;
+    012F 80C8      LDD	R12,0+Y
+(0117) //  end  key
+(0118) 
+(0119) //  display
+(0120)         display[0] = s%10;
+    0130 E01A      LDI	R17,0xA
+    0131 91000129  LDS	R16,_s
+    0133 D685      RCALL	mod8u
+    0134 9300012C  STS	_display,R16
+(0121) 		display[1] = s/10;
+    0136 E01A      LDI	R17,0xA
+    0137 91000129  LDS	R16,_s
+    0139 D681      RCALL	div8u
+    013A 9300012D  STS	_display+1,R16
+(0122) 		display[2] = m%10;
+    013C E01A      LDI	R17,0xA
+    013D 9100012A  LDS	R16,_m
+    013F D679      RCALL	mod8u
+    0140 9300012E  STS	_display+2,R16
+(0123) 		display[3] = m/10;
+    0142 E01A      LDI	R17,0xA
+    0143 9100012A  LDS	R16,_m
+    0145 D675      RCALL	div8u
+    0146 9300012F  STS	_display+3,R16
+(0124) 		switch(i){
+    0148 2CAE      MOV	R10,R14
+    0149 24BB      CLR	R11
+    014A 20AA      TST	R10
+    014B F411      BNE	0x014E
+    014C 20BB      TST	R11
+    014D F071      BEQ	0x015C
+    014E 01C5      MOVW	R24,R10
+    014F 3081      CPI	R24,1
+    0150 E0E0      LDI	R30,0
+    0151 079E      CPC	R25,R30
+    0152 F099      BEQ	0x0166
+    0153 3082      CPI	R24,2
+    0154 E0E0      LDI	R30,0
+    0155 079E      CPC	R25,R30
+    0156 F0C9      BEQ	0x0170
+    0157 3083      CPI	R24,3
+    0158 E0E0      LDI	R30,0
+    0159 079E      CPC	R25,R30
+    015A F0F9      BEQ	0x017A
+    015B C027      RJMP	0x0183
+(0125) 		    case  0:  write164(display[i] | 0x70);  break;
+    015C E28C      LDI	R24,0x2C
+    015D E091      LDI	R25,1
+    015E 2DEE      MOV	R30,R14
+    015F 27FF      CLR	R31
+    0160 0FE8      ADD	R30,R24
+    0161 1FF9      ADC	R31,R25
+    0162 8100      LDD	R16,0+Z
+    0163 6700      ORI	R16,0x70
+    0164 D525      RCALL	_write164
+    0165 C01D      RJMP	0x0183
+(0126) 		    case  1:  write164(display[i] | 0xB0);  break;
+    0166 E28C      LDI	R24,0x2C
+    0167 E091      LDI	R25,1
+    0168 2DEE      MOV	R30,R14
+    0169 27FF      CLR	R31
+    016A 0FE8      ADD	R30,R24
+    016B 1FF9      ADC	R31,R25
+    016C 8100      LDD	R16,0+Z
+    016D 6B00      ORI	R16,0xB0
+    016E D51B      RCALL	_write164
+    016F C013      RJMP	0x0183
+(0127) 		    case  2:  write164(display[i] | 0xD0);  break;
+    0170 E28C      LDI	R24,0x2C
+    0171 E091      LDI	R25,1
+    0172 2DEE      MOV	R30,R14
+    0173 27FF      CLR	R31
+    0174 0FE8      ADD	R30,R24
+    0175 1FF9      ADC	R31,R25
+    0176 8100      LDD	R16,0+Z
+    0177 6D00      ORI	R16,0xD0
+    0178 D511      RCALL	_write164
+    0179 C009      RJMP	0x0183
+(0128) 		    case  3:  write164(display[i] | 0xE0);  break;
+    017A E28C      LDI	R24,0x2C
+    017B E091      LDI	R25,1
+    017C 2DEE      MOV	R30,R14
+    017D 27FF      CLR	R31
+    017E 0FE8      ADD	R30,R24
+    017F 1FF9      ADC	R31,R25
+    0180 8100      LDD	R16,0+Z
+    0181 6E00      ORI	R16,0xE0
+    0182 D507      RCALL	_write164
+(0129) 		}
+(0130) 		if(++i > 3) i = 0;
+    0183 2D8E      MOV	R24,R14
+    0184 5F8F      SUBI	R24,0xFF
+    0185 2E28      MOV	R2,R24
+    0186 2EE8      MOV	R14,R24
+    0187 E083      LDI	R24,3
+    0188 1582      CP	R24,R2
+    0189 F408      BCC	0x018B
+    018A 24EE      CLR	R14
+(0131) //end  display		
+(0132) 		OSTimeDly (2);
+    018B E002      LDI	R16,2
+    018C E010      LDI	R17,0
+    018D D4C0      RCALL	_OSTimeDly
+    018E CF6F      RJMP	0x00FE
+    018F 9621      ADIW	R28,1
+    0190 D65A      RCALL	pop_gset5x
+    0191 9508      RET
+_Task2:
+  data                 --> R10
+    0192 D65A      RCALL	push_gset3x
+    0193 0158      MOVW	R10,R16
+(0133) 	}
+(0134) }
+(0135) void Task2(void *data){
+(0136)     data = data;
+(0137) 	OSTimeDly(5);
+    0194 E005      LDI	R16,5
+    0195 E010      LDI	R17,0
+    0196 D4B7      RCALL	_OSTimeDly
+(0138) 	s = EEPROMread(1);
+    0197 E001      LDI	R16,1
+    0198 E010      LDI	R17,0
+    0199 D672      RCALL	_EEPROMread
+    019A 93000129  STS	_s,R16
+(0139) 	m = EEPROMread(2);
+    019C E002      LDI	R16,2
+    019D E010      LDI	R17,0
+    019E D66D      RCALL	_EEPROMread
+    019F 9300012A  STS	_m,R16
+(0140) 	for (;;){
+(0141) 	    if(state == 1){
+    01A1 91800128  LDS	R24,_state
+    01A3 3081      CPI	R24,1
+    01A4 F559      BNE	0x01D0
+(0142) 	        if(++s == 60){
+    01A5 91800129  LDS	R24,_s
+    01A7 5F8F      SUBI	R24,0xFF
+    01A8 2E28      MOV	R2,R24
+    01A9 92200129  STS	_s,R2
+    01AB 338C      CPI	R24,0x3C
+    01AC F4C9      BNE	0x01C6
+(0143) 		        s = 0;
+    01AD 2422      CLR	R2
+    01AE 92200129  STS	_s,R2
+(0144) 			    if(++m == 60){
+    01B0 9180012A  LDS	R24,_m
+    01B2 5F8F      SUBI	R24,0xFF
+    01B3 2E28      MOV	R2,R24
+    01B4 9220012A  STS	_m,R2
+    01B6 338C      CPI	R24,0x3C
+    01B7 F471      BNE	0x01C6
+(0145) 			        m = 0;
+    01B8 2422      CLR	R2
+    01B9 9220012A  STS	_m,R2
+(0146) 				    if(++h == 24) h=0;
+    01BB 9180012B  LDS	R24,_h
+    01BD 5F8F      SUBI	R24,0xFF
+    01BE 2E28      MOV	R2,R24
+    01BF 9220012B  STS	_h,R2
+    01C1 3188      CPI	R24,0x18
+    01C2 F419      BNE	0x01C6
+    01C3 2422      CLR	R2
+    01C4 9220012B  STS	_h,R2
+(0147) 			    }
+(0148) 		    }
+(0149) 			EEPROMwrite(1,s);
+    01C6 91200129  LDS	R18,_s
+    01C8 E001      LDI	R16,1
+    01C9 E010      LDI	R17,0
+    01CA D64A      RCALL	_EEPROMwrite
+(0150) 			EEPROMwrite(2,m);
+    01CB 9120012A  LDS	R18,_m
+    01CD E002      LDI	R16,2
+    01CE E010      LDI	R17,0
+    01CF D645      RCALL	_EEPROMwrite
+(0151) 		}
+(0152) 		putchar('\n');
+    01D0 E00A      LDI	R16,0xA
+    01D1 D624      RCALL	_putchar
+(0153) 		putchar(display[3]+'0');
+    01D2 9100012F  LDS	R16,_display+3
+    01D4 5D00      SUBI	R16,0xD0
+    01D5 D620      RCALL	_putchar
+(0154) 		putchar(display[2]+'0');
+    01D6 9100012E  LDS	R16,_display+2
+    01D8 5D00      SUBI	R16,0xD0
+    01D9 D61C      RCALL	_putchar
+(0155) 		putchar(':');
+    01DA E30A      LDI	R16,0x3A
+    01DB D61A      RCALL	_putchar
+(0156) 		putchar(display[1]+'0');
+    01DC 9100012D  LDS	R16,_display+1
+    01DE 5D00      SUBI	R16,0xD0
+    01DF D616      RCALL	_putchar
+(0157) 		putchar(display[0]+'0');
+    01E0 9100012C  LDS	R16,_display
+    01E2 5D00      SUBI	R16,0xD0
+    01E3 D612      RCALL	_putchar
+(0158) 		OSTimeDly (500);
+    01E4 EF04      LDI	R16,0xF4
+    01E5 E011      LDI	R17,1
+    01E6 D467      RCALL	_OSTimeDly
+    01E7 CFB9      RJMP	0x01A1
+    01E8 D5F4      RCALL	pop_gset3x
+    01E9 9508      RET
+_OSInit:
+  i                    --> R10
+    01EA D602      RCALL	push_gset3x
+    01EB 9723      SBIW	R28,3
+FILE: D:\job\avrtest\光盘\开发板\iccavr\source\os_core.c
+(0001) 
+(0002) #ifndef  OS_MASTER_FILE
+(0003) #define  OS_GLOBALS
+(0004) #include "includes.h"
+(0005) #endif
+(0006) 
+(0007) /*
+(0008) *********************************************************************************************************
+(0009) *                                         LOCAL GLOBAL VARIABLES
+(0010) *********************************************************************************************************
+(0011) */
+(0012)                                        
+(0013) static  INT8U        OSIntExitY;               /* Variable used by 'OSIntExit' to prevent using locals */
+(0014) static  OS_STK       OSTaskIdleStk[OS_TASK_IDLE_STK_SIZE];       /* Idle       task stack              */
+(0015) 
+(0016) #if     OS_TASK_STAT_EN
+(0017) static  OS_STK       OSTaskStatStk[OS_TASK_STAT_STK_SIZE];      /* Statistics task stack               */
+(0018) #endif
+(0019) 
+(0020) static  OS_TCB       OSTCBTbl[OS_MAX_TASKS + OS_N_SYS_TASKS];   /* Table of TCBs                       */
+(0021) 
+(0022) /*$PAGE*/
+(0023) /*
+(0024) *********************************************************************************************************
+(0025) *                              MAPPING TABLE TO MAP BIT POSITION TO BIT MASK
+(0026) *
+(0027) * Note: Index into table is desired bit position, 0..7
+(0028) *       Indexed value corresponds to bit mask
+(0029) *********************************************************************************************************
+(0030) */
+(0031) 
+(0032) INT8U const OSMapTbl[]   = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+(0033) 
+(0034) /*
+(0035) *********************************************************************************************************
+(0036) *                                       PRIORITY RESOLUTION TABLE
+(0037) *
+(0038) * Note: Index into table is bit pattern to resolve highest priority
+(0039) *       Indexed value corresponds to highest priority bit position (i.e. 0..7)
+(0040) *********************************************************************************************************
+(0041) */
+(0042) 
+(0043) INT8U const OSUnMapTbl[] = {
+(0044)     0, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0045)     4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0046)     5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0047)     4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0048)     6, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0049)     4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0050)     5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0051)     4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0052)     7, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0053)     4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0054)     5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0055)     4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0056)     6, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0057)     4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0058)     5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+(0059)     4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0
+(0060) };
+(0061) 
+(0062) /*$PAGE*/
+(0063) /*
+(0064) *********************************************************************************************************
+(0065) *                                             INITIALIZATION
+(0066) *
+(0067) * Description: This function is used to initialize the internals of uC/OS-II and MUST be called prior to
+(0068) *              creating any uC/OS-II object and, prior to calling OSStart().
+(0069) *
+(0070) * Arguments  : none
+(0071) *
+(0072) * Returns    : none
+(0073) *********************************************************************************************************
+(0074) */
+(0075) 
+(0076) void OSInit (void)
+(0077) {
+(0078)     INT16U i;
+(0079) 
+(0080) 
+(0081)     OSTime        = 0L;                                    /* Clear the 32-bit system clock            */
+    01EC E080      LDI	R24,0
+    01ED E090      LDI	R25,0
+    01EE E0A0      LDI	R26,0
+    01EF E0B0      LDI	R27,0
+    01F0 939001EB  STS	_OSTime+1,R25
+    01F2 938001EA  STS	_OSTime,R24
+    01F4 93B001ED  STS	_OSTime+3,R27
+    01F6 93A001EC  STS	_OSTime+2,R26
+(0082)     OSIntNesting  = 0;                                     /* Clear the interrupt nesting counter      */
+    01F8 2422      CLR	R2
+    01F9 9220021E  STS	_OSIntNesting,R2
+(0083)     OSLockNesting = 0;                                     /* Clear the scheduling lock counter        */
+    01FB 9220021D  STS	_OSLockNesting,R2
+(0084) #if OS_TASK_CREATE_EN  || OS_TASK_CREATE_EXT_EN || OS_TASK_DEL_EN
+(0085)     OSTaskCtr     = 0;                                     /* Clear the number of tasks                */
+    01FD 92200216  STS	_OSTaskCtr,R2
+(0086) #endif
+(0087)     OSRunning     = FALSE;                                 /* Indicate that multitasking not started   */
+    01FF 92200217  STS	_OSRunning,R2
+(0088)     OSIdleCtr     = 0L;                                    /* Clear the 32-bit idle counter            */
+    0201 E080      LDI	R24,0
+    0202 E090      LDI	R25,0
+    0203 E0A0      LDI	R26,0
+    0204 E0B0      LDI	R27,0
+    0205 93900220  STS	_OSIdleCtr+1,R25
+    0207 9380021F  STS	_OSIdleCtr,R24
+    0209 93B00222  STS	_OSIdleCtr+3,R27
+    020B 93A00221  STS	_OSIdleCtr+2,R26
+(0089) 
+(0090)     OSCtxSwCtr    = 0;                                     /* Clear the context switch counter         */
+    020D E080      LDI	R24,0
+    020E E090      LDI	R25,0
+    020F E0A0      LDI	R26,0
+    0210 E0B0      LDI	R27,0
+    0211 93900236  STS	_OSCtxSwCtr+1,R25
+    0213 93800235  STS	_OSCtxSwCtr,R24
+    0215 93B00238  STS	_OSCtxSwCtr+3,R27
+    0217 93A00237  STS	_OSCtxSwCtr+2,R26
+(0091)     OSRdyGrp      = 0;                                     /* Clear the ready list                     */
+    0219 9220021A  STS	_OSRdyGrp,R2
+(0092)     for (i = 0; i < OS_RDY_TBL_SIZE; i++) {
+    021B 24AA      CLR	R10
+    021C 24BB      CLR	R11
+    021D C00A      RJMP	0x0228
+(0093)         OSRdyTbl[i] = 0;
+    021E E188      LDI	R24,0x18
+    021F E092      LDI	R25,2
+    0220 01F5      MOVW	R30,R10
+    0221 0FE8      ADD	R30,R24
+    0222 1FF9      ADC	R31,R25
+    0223 2422      CLR	R2
+    0224 8220      STD	R2,0+Z
+    0225 01C5      MOVW	R24,R10
+    0226 9601      ADIW	R24,1
+    0227 015C      MOVW	R10,R24
+    0228 01C5      MOVW	R24,R10
+    0229 3082      CPI	R24,2
+    022A E0E0      LDI	R30,0
+    022B 079E      CPC	R25,R30
+    022C F388      BCS	0x021E
+(0094)     }
+(0095)                 
+(0096)     OSPrioCur     = 0;
+    022D 2422      CLR	R2
+    022E 9220021C  STS	_OSPrioCur,R2
+(0097)     OSPrioHighRdy = 0;                                           
+    0230 9220021B  STS	_OSPrioHighRdy,R2
+(0098)     OSTCBHighRdy  = (OS_TCB *)0;                                 /* TCB Initialization                 */
+    0232 2433      CLR	R3
+    0233 92300211  STS	_OSTCBHighRdy+1,R3
+    0235 92200210  STS	_OSTCBHighRdy,R2
+(0099)     OSTCBCur      = (OS_TCB *)0;
+    0237 92300215  STS	_OSTCBCur+1,R3
+    0239 92200214  STS	_OSTCBCur,R2
+(0100)     OSTCBList     = (OS_TCB *)0;
+    023B 9230020F  STS	_OSTCBList+1,R3
+    023D 9220020E  STS	_OSTCBList,R2
+(0101)     for (i = 0; i < (OS_LOWEST_PRIO + 1); i++) {                 /* Clear the priority table           */
+    023F 24AA      CLR	R10
+    0240 24BB      CLR	R11
+    0241 C010      RJMP	0x0252
+(0102)         OSTCBPrioTbl[i] = (OS_TCB *)0;
+    0242 E002      LDI	R16,2
+    0243 E010      LDI	R17,0
+    0244 0195      MOVW	R18,R10
+    0245 D587      RCALL	empy16s
+    0246 01F8      MOVW	R30,R16
+    0247 EE8E      LDI	R24,0xEE
+    0248 E091      LDI	R25,1
+    0249 0FE8      ADD	R30,R24
+    024A 1FF9      ADC	R31,R25
+    024B 2422      CLR	R2
+    024C 2433      CLR	R3
+    024D 8220      STD	R2,0+Z
+    024E 8231      STD	R3,1+Z
+    024F 01C5      MOVW	R24,R10
+    0250 9601      ADIW	R24,1
+    0251 015C      MOVW	R10,R24
+    0252 01C5      MOVW	R24,R10
+    0253 3180      CPI	R24,0x10
+    0254 E0E0      LDI	R30,0
+    0255 079E      CPC	R25,R30
+    0256 F358      BCS	0x0242
+(0103)     }
+(0104)     for (i = 0; i < (OS_MAX_TASKS + OS_N_SYS_TASKS - 1); i++) {  /* Init. list of free TCBs            */
+    0257 24AA      CLR	R10
+    0258 24BB      CLR	R11
+    0259 C019      RJMP	0x0273
+(0105)         OSTCBTbl[i].OSTCBNext = &OSTCBTbl[i + 1];
+    025A 0195      MOVW	R18,R10
+    025B 5F2F      SUBI	R18,0xFF
+    025C 4F3F      SBCI	R19,0xFF
+    025D E00E      LDI	R16,0xE
+    025E E010      LDI	R17,0
+    025F D56D      RCALL	empy16s
+    0260 0118      MOVW	R2,R16
+    0261 E381      LDI	R24,0x31
+    0262 E091      LDI	R25,1
+    0263 0E28      ADD	R2,R24
+    0264 1E39      ADC	R3,R25
+    0265 E00E      LDI	R16,0xE
+    0266 E010      LDI	R17,0
+    0267 0195      MOVW	R18,R10
+    0268 D564      RCALL	empy16s
+    0269 01F8      MOVW	R30,R16
+    026A E383      LDI	R24,0x33
+    026B E091      LDI	R25,1
+    026C 0FE8      ADD	R30,R24
+    026D 1FF9      ADC	R31,R25
+    026E 8220      STD	R2,0+Z
+    026F 8231      STD	R3,1+Z
+    0270 01C5      MOVW	R24,R10
+    0271 9601      ADIW	R24,1
+    0272 015C      MOVW	R10,R24
+    0273 01C5      MOVW	R24,R10
+    0274 3085      CPI	R24,5
+    0275 E0E0      LDI	R30,0
+    0276 079E      CPC	R25,R30
+    0277 F310      BCS	0x025A
+(0106)     }
+(0107)     OSTCBTbl[OS_MAX_TASKS + OS_N_SYS_TASKS - 1].OSTCBNext = (OS_TCB *)0;    /* Last OS_TCB             */
+    0278 2422      CLR	R2
+    0279 2433      CLR	R3
+    027A 9230017A  STS	0x17A,R3
+    027C 92200179  STS	0x179,R2
+(0108)     OSTCBFreeList                                         = &OSTCBTbl[0];
+    027E E381      LDI	R24,0x31
+    027F E091      LDI	R25,1
+    0280 93900213  STS	_OSTCBFreeList+1,R25
+    0282 93800212  STS	_OSTCBFreeList,R24
+(0109) 
+(0110) #if OS_MAX_EVENTS >= 2
+(0111)     for (i = 0; i < (OS_MAX_EVENTS - 1); i++) {            /* Init. list of free EVENT control blocks  */
+    0284 24AA      CLR	R10
+    0285 24BB      CLR	R11
+    0286 C019      RJMP	0x02A0
+(0112)         OSEventTbl[i].OSEventPtr = (OS_EVENT *)&OSEventTbl[i + 1];
+    0287 0195      MOVW	R18,R10
+    0288 5F2F      SUBI	R18,0xFF
+    0289 4F3F      SBCI	R19,0xFF
+    028A E008      LDI	R16,0x8
+    028B E010      LDI	R17,0
+    028C D540      RCALL	empy16s
+    028D 0118      MOVW	R2,R16
+    028E E283      LDI	R24,0x23
+    028F E092      LDI	R25,2
+    0290 0E28      ADD	R2,R24
+    0291 1E39      ADC	R3,R25
+    0292 E008      LDI	R16,0x8
+    0293 E010      LDI	R17,0
+    0294 0195      MOVW	R18,R10
+    0295 D537      RCALL	empy16s
+    0296 01F8      MOVW	R30,R16
+    0297 E283      LDI	R24,0x23
+    0298 E092      LDI	R25,2
+    0299 0FE8      ADD	R30,R24
+    029A 1FF9      ADC	R31,R25
+    029B 8220      STD	R2,0+Z
+    029C 8231      STD	R3,1+Z
+    029D 01C5      MOVW	R24,R10
+    029E 9601      ADIW	R24,1
+    029F 015C      MOVW	R10,R24
+    02A0 01C5      MOVW	R24,R10
+    02A1 3081      CPI	R24,1
+    02A2 E0E0      LDI	R30,0
+    02A3 079E      CPC	R25,R30
+    02A4 F310      BCS	0x0287
+(0113)     }
+(0114)     OSEventTbl[OS_MAX_EVENTS - 1].OSEventPtr = (OS_EVENT *)0;
+    02A5 2422      CLR	R2
+    02A6 2433      CLR	R3
+    02A7 9230022C  STS	0x22C,R3
+    02A9 9220022B  STS	0x22B,R2
+(0115)     OSEventFreeList                          = &OSEventTbl[0];    
+    02AB E283      LDI	R24,0x23
+    02AC E092      LDI	R25,2
+    02AD 93900234  STS	_OSEventFreeList+1,R25
+    02AF 93800233  STS	_OSEventFreeList,R24
+(0116) #endif
+(0117) 
+(0118) #if OS_STK_GROWTH == 1
+(0119)     OSTaskCreate(OSTaskIdle, (void *)0, &OSTaskIdleStk[OS_TASK_IDLE_STK_SIZE - 1], OS_IDLE_PRIO);
+    02B1 E08F      LDI	R24,0xF
+    02B2 838A      STD	R24,2+Y
+    02B3 EE88      LDI	R24,0xE8
+    02B4 E091      LDI	R25,1
+    02B5 8388      STD	R24,0+Y
+    02B6 8399      STD	R25,1+Y
+    02B7 2722      CLR	R18
+    02B8 2733      CLR	R19
+    02B9 E20A      LDI	R16,0x2A
+    02BA E010      LDI	R17,0
+    02BB D315      RCALL	_OSTaskCreate
+(0120) #else
+(0121)     OSTaskCreate(OSTaskIdle, (void *)0, &OSTaskIdleStk[0], OS_IDLE_PRIO);
+(0122) #endif
+(0123) 
+(0124) }
+    02BC 9623      ADIW	R28,3
+    02BD D51F      RCALL	pop_gset3x
+    02BE 9508      RET
+(0125) /*$PAGE*/
+(0126) /*
+(0127) *********************************************************************************************************
+(0128) *                                               EXIT ISR
+(0129) *
+(0130) * Description: This function is used to notify uC/OS-II that you have completed serviving an ISR.  When 
+(0131) *              the last nested ISR has completed, uC/OS-II will call the scheduler to determine whether
+(0132) *              a new, high-priority task, is ready to run.
+(0133) *
+(0134) * Arguments  : none
+(0135) *
+(0136) * Returns    : none
+(0137) *
+(0138) * Notes      : 1) You MUST invoke OSIntEnter() and OSIntExit() in pair.  In other words, for every call
+(0139) *                 to OSIntEnter() at the beginning of the ISR you MUST have a call to OSIntExit() at the
+(0140) *                 end of the ISR.
+(0141) *              2) Rescheduling is prevented when the scheduler is locked (see OSSchedLock())
+(0142) *********************************************************************************************************
+(0143) */
+(0144) 
+(0145) void OSIntExit (void)
+(0146) {
+(0147)     OS_ENTER_CRITICAL();
+_OSIntExit:
+    02BF 930A      ST	R16,-Y
+    02C0 B70F      IN	R16,P3F
+    02C1 94F8      BCLR	7
+    02C2 930F      PUSH	R16
+    02C3 9109      LD	R16,Y+
+(0148)     if ((--OSIntNesting | OSLockNesting) == 0) { /* Reschedule only if all ISRs completed & not locked */
+    02C4 9180021E  LDS	R24,_OSIntNesting
+    02C6 5081      SUBI	R24,1
+    02C7 2E28      MOV	R2,R24
+    02C8 9220021E  STS	_OSIntNesting,R2
+    02CA 9040021D  LDS	R4,_OSLockNesting
+    02CC 2824      OR	R2,R4
+    02CD F009      BEQ	0x02CF
+    02CE C04F      RJMP	0x031E
+(0149)         OSIntExitY    = OSUnMapTbl[OSRdyGrp];
+    02CF E384      LDI	R24,0x34
+    02D0 E090      LDI	R25,0
+    02D1 91E0021A  LDS	R30,_OSRdyGrp
+    02D3 27FF      CLR	R31
+    02D4 0FE8      ADD	R30,R24
+    02D5 1FF9      ADC	R31,R25
+    02D6 91E4      LPM	R30,0(Z)
+    02D7 93E001E9  STS	0x1E9,R30
+(0150)         OSPrioHighRdy = (INT8U)((OSIntExitY << 3) + OSUnMapTbl[OSRdyTbl[OSIntExitY]]);
+    02D9 E188      LDI	R24,0x18
+    02DA E092      LDI	R25,2
+    02DB 27FF      CLR	R31
+    02DC 0FE8      ADD	R30,R24
+    02DD 1FF9      ADC	R31,R25
+    02DE 81E0      LDD	R30,0+Z
+    02DF 27FF      CLR	R31
+    02E0 E384      LDI	R24,0x34
+    02E1 E090      LDI	R25,0
+    02E2 0FE8      ADD	R30,R24
+    02E3 1FF9      ADC	R31,R25
+    02E4 9024      LPM	R2,0(Z)
+    02E5 2433      CLR	R3
+    02E6 904001E9  LDS	R4,0x1E9
+    02E8 2455      CLR	R5
+    02E9 0C44      LSL	R4
+    02EA 1C55      ROL	R5
+    02EB 0C44      LSL	R4
+    02EC 1C55      ROL	R5
+    02ED 0C44      LSL	R4
+    02EE 1C55      ROL	R5
+    02EF 0C42      ADD	R4,R2
+    02F0 1C53      ADC	R5,R3
+    02F1 9240021B  STS	_OSPrioHighRdy,R4
+(0151)         if (OSPrioHighRdy != OSPrioCur) {        /* No context switch if current task is highest ready */
+    02F3 9020021C  LDS	R2,_OSPrioCur
+    02F5 1442      CP	R4,R2
+    02F6 F139      BEQ	0x031E
+(0152)             OSTCBHighRdy  = OSTCBPrioTbl[OSPrioHighRdy];
+    02F7 2C24      MOV	R2,R4
+    02F8 E082      LDI	R24,2
+    02F9 9D82      MUL	R24,R2
+    02FA 01F0      MOVW	R30,R0
+    02FB EE8E      LDI	R24,0xEE
+    02FC E091      LDI	R25,1
+    02FD 0FE8      ADD	R30,R24
+    02FE 1FF9      ADC	R31,R25
+    02FF 8020      LDD	R2,0+Z
+    0300 8031      LDD	R3,1+Z
+    0301 92300211  STS	_OSTCBHighRdy+1,R3
+    0303 92200210  STS	_OSTCBHighRdy,R2
+(0153)             OSCtxSwCtr++;                        /* Keep track of the number of context switches       */
+    0305 E081      LDI	R24,1
+    0306 E090      LDI	R25,0
+    0307 E0A0      LDI	R26,0
+    0308 E0B0      LDI	R27,0
+    0309 90400237  LDS	R4,_OSCtxSwCtr+2
+    030B 90500238  LDS	R5,_OSCtxSwCtr+3
+    030D 90200235  LDS	R2,_OSCtxSwCtr
+    030F 90300236  LDS	R3,_OSCtxSwCtr+1
+    0311 0E28      ADD	R2,R24
+    0312 1E39      ADC	R3,R25
+    0313 1E4A      ADC	R4,R26
+    0314 1E5B      ADC	R5,R27
+    0315 92300236  STS	_OSCtxSwCtr+1,R3
+    0317 92200235  STS	_OSCtxSwCtr,R2
+    0319 92500238  STS	_OSCtxSwCtr+3,R5
+    031B 92400237  STS	_OSCtxSwCtr+2,R4
+(0154)             OSIntCtxSw();                        /* Perform interrupt level context switch             */
+    031D D40F      RCALL	_OSIntCtxSw
+(0155)         }
+(0156)     }
+(0157)     OS_EXIT_CRITICAL();
+    031E 930A      ST	R16,-Y
+    031F 910F      POP	R16
+    0320 BF0F      OUT	P3F,R16
+    0321 9109      LD	R16,Y+
+(0158) }
+    0322 9508      RET
+_OSSched:
+  y                    --> R10
+    0323 D4C9      RCALL	push_gset3x
+(0159) /*$PAGE*/
+(0160) /*
+(0161) *********************************************************************************************************
+(0162) *                                              SCHEDULER
+(0163) *
+(0164) * Description: This function is called by other uC/OS-II services to determine whether a new, high
+(0165) *              priority task has been made ready to run.  This function is invoked by TASK level code
+(0166) *              and is not used to reschedule tasks from ISRs (see OSIntExit() for ISR rescheduling).
+(0167) *
+(0168) * Arguments  : none
+(0169) *
+(0170) * Returns    : none
+(0171) *
+(0172) * Notes      : 1) This function is INTERNAL to uC/OS-II and your application should not call it.
+(0173) *              2) Rescheduling is prevented when the scheduler is locked (see OSSchedLock())
+(0174) *********************************************************************************************************
+(0175) */
+(0176) 
+(0177) void OSSched (void)
+(0178) {
+(0179)     INT8U y;
+(0180) 
+(0181) 
+(0182)     OS_ENTER_CRITICAL();
+    0324 930A      ST	R16,-Y
+    0325 B70F      IN	R16,P3F
+    0326 94F8      BCLR	7
+    0327 930F      PUSH	R16
+    0328 9109      LD	R16,Y+
+(0183)     if ((OSLockNesting | OSIntNesting) == 0) {   /* Task scheduling must be enabled and not ISR level  */
+    0329 9020021E  LDS	R2,_OSIntNesting
+    032B 9030021D  LDS	R3,_OSLockNesting
+    032D 2832      OR	R3,R2
+    032E F009      BEQ	0x0330
+    032F C04D      RJMP	0x037D
+(0184)         y             = OSUnMapTbl[OSRdyGrp];    /* Get pointer to highest priority task ready to run  */
+    0330 E384      LDI	R24,0x34
+    0331 E090      LDI	R25,0
+    0332 91E0021A  LDS	R30,_OSRdyGrp
+    0334 27FF      CLR	R31
+    0335 0FE8      ADD	R30,R24
+    0336 1FF9      ADC	R31,R25
+    0337 90A4      LPM	R10,0(Z)
+(0185)         OSPrioHighRdy = (INT8U)((y << 3) + OSUnMapTbl[OSRdyTbl[y]]);
+    0338 E188      LDI	R24,0x18
+    0339 E092      LDI	R25,2
+    033A 2DEA      MOV	R30,R10
+    033B 27FF      CLR	R31
+    033C 0FE8      ADD	R30,R24
+    033D 1FF9      ADC	R31,R25
+    033E 81E0      LDD	R30,0+Z
+    033F 27FF      CLR	R31
+    0340 E384      LDI	R24,0x34
+    0341 E090      LDI	R25,0
+    0342 0FE8      ADD	R30,R24
+    0343 1FF9      ADC	R31,R25
+    0344 9024      LPM	R2,0(Z)
+    0345 2433      CLR	R3
+    0346 2C4A      MOV	R4,R10
+    0347 2455      CLR	R5
+    0348 0C44      LSL	R4
+    0349 1C55      ROL	R5
+    034A 0C44      LSL	R4
+    034B 1C55      ROL	R5
+    034C 0C44      LSL	R4
+    034D 1C55      ROL	R5
+    034E 0C42      ADD	R4,R2
+    034F 1C53      ADC	R5,R3
+    0350 9240021B  STS	_OSPrioHighRdy,R4
+(0186)         if (OSPrioHighRdy != OSPrioCur) {         /* No context switch if current task is highest ready */
+    0352 9020021C  LDS	R2,_OSPrioCur
+    0354 1442      CP	R4,R2
+    0355 F139      BEQ	0x037D
+(0187)             OSTCBHighRdy = OSTCBPrioTbl[OSPrioHighRdy];
+    0356 2C24      MOV	R2,R4
+    0357 E082      LDI	R24,2
+    0358 9D82      MUL	R24,R2
+    0359 01F0      MOVW	R30,R0
+    035A EE8E      LDI	R24,0xEE
+    035B E091      LDI	R25,1
+    035C 0FE8      ADD	R30,R24
+    035D 1FF9      ADC	R31,R25
+    035E 8020      LDD	R2,0+Z
+    035F 8031      LDD	R3,1+Z
+    0360 92300211  STS	_OSTCBHighRdy+1,R3
+    0362 92200210  STS	_OSTCBHighRdy,R2
+(0188)             OSCtxSwCtr++;                        /* Increment context switch counter                   */
+    0364 E081      LDI	R24,1
+    0365 E090      LDI	R25,0
+    0366 E0A0      LDI	R26,0
+    0367 E0B0      LDI	R27,0
+    0368 90400237  LDS	R4,_OSCtxSwCtr+2
+    036A 90500238  LDS	R5,_OSCtxSwCtr+3
+    036C 90200235  LDS	R2,_OSCtxSwCtr
+    036E 90300236  LDS	R3,_OSCtxSwCtr+1
+    0370 0E28      ADD	R2,R24
+    0371 1E39      ADC	R3,R25
+    0372 1E4A      ADC	R4,R26
+    0373 1E5B      ADC	R5,R27
+    0374 92300236  STS	_OSCtxSwCtr+1,R3
+    0376 92200235  STS	_OSCtxSwCtr,R2
+    0378 92500238  STS	_OSCtxSwCtr+3,R5
+    037A 92400237  STS	_OSCtxSwCtr+2,R4
+(0189)             OS_TASK_SW();                        /* Perform a context switch                           */
+    037C D353      RCALL	_OSCtxSw
+(0190)         }
+(0191)     }
+(0192)     OS_EXIT_CRITICAL();
+    037D 930A      ST	R16,-Y
+    037E 910F      POP	R16
+    037F BF0F      OUT	P3F,R16
+    0380 9109      LD	R16,Y+
+(0193) }
+    0381 D45B      RCALL	pop_gset3x
+    0382 9508      RET
+_OSStart:
+  x                    --> R12
+  y                    --> R10
+    0383 D46C      RCALL	push_gset4x
+(0194) /*$PAGE*/
+(0195) /*
+(0196) *********************************************************************************************************
+(0197) *                                          START MULTITASKING
+(0198) *
+(0199) * Description: This function is used to start the multitasking process which lets uC/OS-II manages the
+(0200) *              task that you have created.  Before you can call OSStart(), you MUST have called OSInit()
+(0201) *              and you MUST have created at least one task.
+(0202) *
+(0203) * Arguments  : none
+(0204) *
+(0205) * Returns    : none
+(0206) *
+(0207) * Note       : OSStartHighRdy() MUST:
+(0208) *                 a) Call OSTaskSwHook() then,
+(0209) *                 b) Set OSRunning to TRUE.
+(0210) *********************************************************************************************************
+(0211) */
+(0212) 
+(0213) void OSStart (void)
+(0214) {
+(0215)     INT8U y;
+(0216)     INT8U x;
+(0217) 
+(0218) 
+(0219)     if (OSRunning == FALSE) {
+    0384 90200217  LDS	R2,_OSRunning
+    0386 2022      TST	R2
+    0387 F009      BEQ	0x0389
+    0388 C038      RJMP	0x03C1
+(0220)         y             = OSUnMapTbl[OSRdyGrp];        /* Find highest priority's task priority number   */
+    0389 E384      LDI	R24,0x34
+    038A E090      LDI	R25,0
+    038B 91E0021A  LDS	R30,_OSRdyGrp
+    038D 27FF      CLR	R31
+    038E 0FE8      ADD	R30,R24
+    038F 1FF9      ADC	R31,R25
+    0390 90A4      LPM	R10,0(Z)
+(0221)         x             = OSUnMapTbl[OSRdyTbl[y]];
+    0391 E188      LDI	R24,0x18
+    0392 E092      LDI	R25,2
+    0393 2DEA      MOV	R30,R10
+    0394 27FF      CLR	R31
+    0395 0FE8      ADD	R30,R24
+    0396 1FF9      ADC	R31,R25
+    0397 81E0      LDD	R30,0+Z
+    0398 27FF      CLR	R31
+    0399 E384      LDI	R24,0x34
+    039A E090      LDI	R25,0
+    039B 0FE8      ADD	R30,R24
+    039C 1FF9      ADC	R31,R25
+    039D 90C4      LPM	R12,0(Z)
+(0222)         OSPrioHighRdy = (INT8U)((y << 3) + x);
+    039E 2C2C      MOV	R2,R12
+    039F 2433      CLR	R3
+    03A0 2C4A      MOV	R4,R10
+    03A1 2455      CLR	R5
+    03A2 0C44      LSL	R4
+    03A3 1C55      ROL	R5
+    03A4 0C44      LSL	R4
+    03A5 1C55      ROL	R5
+    03A6 0C44      LSL	R4
+    03A7 1C55      ROL	R5
+    03A8 0C42      ADD	R4,R2
+    03A9 1C53      ADC	R5,R3
+    03AA 9240021B  STS	_OSPrioHighRdy,R4
+(0223)         OSPrioCur     = OSPrioHighRdy;
+    03AC 2C24      MOV	R2,R4
+    03AD 9220021C  STS	_OSPrioCur,R2
+(0224)         OSTCBHighRdy  = OSTCBPrioTbl[OSPrioHighRdy]; /* Point to highest priority task ready to run    */
+    03AF E082      LDI	R24,2
+    03B0 9D82      MUL	R24,R2
+    03B1 01F0      MOVW	R30,R0
+    03B2 EE8E      LDI	R24,0xEE
+    03B3 E091      LDI	R25,1
+    03B4 0FE8      ADD	R30,R24
+    03B5 1FF9      ADC	R31,R25
+    03B6 8020      LDD	R2,0+Z
+    03B7 8031      LDD	R3,1+Z
+    03B8 92300211  STS	_OSTCBHighRdy+1,R3
+    03BA 92200210  STS	_OSTCBHighRdy,R2
+(0225)         OSTCBCur      = OSTCBHighRdy;
+    03BC 92300215  STS	_OSTCBCur+1,R3
+    03BE 92200214  STS	_OSTCBCur,R2
+(0226)         OSStartHighRdy();                            /* Execute target specific code to start task     */
+    03C0 D2DF      RCALL	_OSStartHighRdy
+(0227)     }
+(0228) }
+    03C1 D427      RCALL	pop_gset4x
+    03C2 9508      RET
+(0229) /*$PAGE*/
+(0230) /*
+(0231) *********************************************************************************************************
+(0232) *                                              IDLE TASK
+(0233) *
+(0234) * Description: This task is internal to uC/OS-II and executes whenever no other higher priority tasks
+(0235) *              executes because they are waiting for event(s) to occur.
+(0236) *
+(0237) * Arguments  : none
+(0238) *
+(0239) * Returns    : none
+(0240) *********************************************************************************************************
+(0241) */
+(0242) 
+(0243) void OSTaskIdle (void *pdata)
+(0244) {
+(0245)     pdata = pdata;                               /* Prevent compiler warning for not using 'pdata'     */
+(0246)     for (;;) {
+(0247)         OS_ENTER_CRITICAL();
+_OSTaskIdle:
+  pdata                --> R16
+    03C3 930A      ST	R16,-Y
+    03C4 B70F      IN	R16,P3F
+    03C5 94F8      BCLR	7
+    03C6 930F      PUSH	R16
+    03C7 9109      LD	R16,Y+
+(0248)         OSIdleCtr++;
+    03C8 E081      LDI	R24,1
+    03C9 E090      LDI	R25,0
+    03CA E0A0      LDI	R26,0
+    03CB E0B0      LDI	R27,0
+    03CC 90400221  LDS	R4,_OSIdleCtr+2
+    03CE 90500222  LDS	R5,_OSIdleCtr+3
+    03D0 9020021F  LDS	R2,_OSIdleCtr
+    03D2 90300220  LDS	R3,_OSIdleCtr+1
+    03D4 0E28      ADD	R2,R24
+    03D5 1E39      ADC	R3,R25
+    03D6 1E4A      ADC	R4,R26
+    03D7 1E5B      ADC	R5,R27
+    03D8 92300220  STS	_OSIdleCtr+1,R3
+    03DA 9220021F  STS	_OSIdleCtr,R2
+    03DC 92500222  STS	_OSIdleCtr+3,R5
+    03DE 92400221  STS	_OSIdleCtr+2,R4
+(0249)         OS_EXIT_CRITICAL();
+    03E0 930A      ST	R16,-Y
+    03E1 910F      POP	R16
+    03E2 BF0F      OUT	P3F,R16
+    03E3 9109      LD	R16,Y+
+    03E4 CFDE      RJMP	_OSTaskIdle
+    03E5 9508      RET
+_OSTCBInit:
+  ptcb                 --> R10
+  opt                  --> Y+10
+  pext                 --> Y+8
+  stk_size             --> Y+6
+  id                   --> Y+4
+  pbos                 --> Y+2
+  ptos                 --> R18
+  prio                 --> R16
+    03E6 D406      RCALL	push_gset3x
+(0250)     }
+(0251) }
+(0252) /*$PAGE*/
+(0253) /*
+(0254) *********************************************************************************************************
+(0255) *                                            INITIALIZE TCB
+(0256) *
+(0257) * Description: This function is internal to uC/OS-II and is used to initialize a Task Control Block when
+(0258) *              a task is created (see OSTaskCreate() and OSTaskCreateExt()).
+(0259) *
+(0260) * Arguments  : prio          is the priority of the task being created
+(0261) *
+(0262) *              ptos          is a pointer to the task's top-of-stack assuming that the CPU registers
+(0263) *                            have been placed on the stack.  Note that the top-of-stack corresponds to a 
+(0264) *                            'high' memory location is OS_STK_GROWTH is set to 1 and a 'low' memory
+(0265) *                            location if OS_STK_GROWTH is set to 0.  Note that stack growth is CPU
+(0266) *                            specific.
+(0267) *
+(0268) *              pbos          is a pointer to the bottom of stack.  A NULL pointer is passed if called by
+(0269) *                            'OSTaskCreate()'.
+(0270) *
+(0271) *              id            is the task's ID (0..65535)
+(0272) *
+(0273) *              stk_size      is the size of the stack (in 'stack units').  If the stack units are INT8Us
+(0274) *                            then, 'stk_size' contains the number of bytes for the stack.  If the stack
+(0275) *                            units are INT32Us then, the stack contains '4 * stk_size' bytes.  The stack
+(0276) *                            units are established by the #define constant OS_STK which is CPU
+(0277) *                            specific.  'stk_size' is 0 if called by 'OSTaskCreate()'.
+(0278) *
+(0279) *              pext          is a pointer to a user supplied memory area that is used to extend the task
+(0280) *                            control block.  This allows you to store the contents of floating-point
+(0281) *                            registers, MMU registers or anything else you could find useful during a 
+(0282) *                            context switch.  You can even assign a name to each task and store this name
+(0283) *                            in this TCB extension.  A NULL pointer is passed if called by OSTaskCreate().
+(0284) *
+(0285) *              opt           options as passed to 'OSTaskCreateExt()' or, 
+(0286) *                            0 if called from 'OSTaskCreate()'.
+(0287) *
+(0288) * Returns    : OS_NO_ERR         if the call was successful
+(0289) *              OS_NO_MORE_TCB    if there are no more free TCBs to be allocated and thus, the task cannot
+(0290) *                                be created.
+(0291) *
+(0292) * Note       : This function is INTERNAL to uC/OS-II and your application should not call it.
+(0293) *********************************************************************************************************
+(0294) */
+(0295) 
+(0296) INT8U OSTCBInit (INT8U prio, OS_STK *ptos, OS_STK *pbos, INT16U id, INT16U stk_size, void *pext, INT16U opt)
+(0297) {
+(0298)     OS_TCB *ptcb;
+(0299) 
+(0300) 
+(0301)     OS_ENTER_CRITICAL();
+    03E7 930A      ST	R16,-Y
+    03E8 B70F      IN	R16,P3F
+    03E9 94F8      BCLR	7
+    03EA 930F      PUSH	R16
+    03EB 9109      LD	R16,Y+
+(0302)     ptcb = OSTCBFreeList;                                  /* Get a free TCB from the free TCB list    */
+    03EC 90A00212  LDS	R10,_OSTCBFreeList
+    03EE 90B00213  LDS	R11,_OSTCBFreeList+1
+(0303)     if (ptcb != (OS_TCB *)0) {
+    03F0 20AA      TST	R10
+    03F1 F419      BNE	0x03F5
+    03F2 20BB      TST	R11
+    03F3 F409      BNE	0x03F5
+    03F4 C073      RJMP	0x0468
+(0304)         OSTCBFreeList        = ptcb->OSTCBNext;            /* Update pointer to free TCB list          */
+    03F5 01F5      MOVW	R30,R10
+    03F6 8022      LDD	R2,2+Z
+    03F7 8033      LDD	R3,3+Z
+    03F8 92300213  STS	_OSTCBFreeList+1,R3
+    03FA 92200212  STS	_OSTCBFreeList,R2
+(0305)         OS_EXIT_CRITICAL();
+    03FC 930A      ST	R16,-Y
+    03FD 910F      POP	R16
+    03FE BF0F      OUT	P3F,R16
+    03FF 9109      LD	R16,Y+
+(0306)         ptcb->OSTCBStkPtr    = ptos;                       /* Load Stack pointer in TCB                */
+    0400 8320      STD	R18,0+Z
+    0401 8331      STD	R19,1+Z
+(0307)         ptcb->OSTCBPrio      = (INT8U)prio;                /* Load task priority into TCB              */
+    0402 8701      STD	R16,9+Z
+(0308)         ptcb->OSTCBStat      = OS_STAT_RDY;                /* Task is ready to run                     */
+    0403 2422      CLR	R2
+    0404 8620      STD	R2,8+Z
+(0309)         ptcb->OSTCBDly       = 0;                          /* Task is not delayed                      */
+    0405 2433      CLR	R3
+    0406 8226      STD	R2,6+Z
+    0407 8237      STD	R3,7+Z
+(0310) 
+(0311)         pext                 = pext;                       /* Prevent compiler warning if not used     */
+(0312)         stk_size             = stk_size;
+(0313)         pbos                 = pbos;
+(0314)         opt                  = opt;
+(0315)         id                   = id;
+(0316) 
+(0317)         ptcb->OSTCBY         = prio >> 3;                  /* Pre-compute X, Y, BitX and BitY          */
+    0408 2E20      MOV	R2,R16
+    0409 9426      LSR	R2
+    040A 9426      LSR	R2
+    040B 9426      LSR	R2
+    040C 8623      STD	R2,11+Z
+(0318)         ptcb->OSTCBBitY      = OSMapTbl[ptcb->OSTCBY];
+    040D E28C      LDI	R24,0x2C
+    040E E090      LDI	R25,0
+    040F 85E3      LDD	R30,11+Z
+    0410 27FF      CLR	R31
+    0411 0FE8      ADD	R30,R24
+    0412 1FF9      ADC	R31,R25
+    0413 91E4      LPM	R30,0(Z)
+    0414 01D5      MOVW	R26,R10
+    0415 961D      ADIW	R26,0xD
+    0416 93EC      ST	R30,0(X)
+(0319)         ptcb->OSTCBX         = prio & 0x07;
+    0417 2F80      MOV	R24,R16
+    0418 7087      ANDI	R24,7
+    0419 01F5      MOVW	R30,R10
+    041A 8782      STD	R24,10+Z
+(0320)         ptcb->OSTCBBitX      = OSMapTbl[ptcb->OSTCBX];
+    041B E28C      LDI	R24,0x2C
+    041C E090      LDI	R25,0
+    041D 85E2      LDD	R30,10+Z
+    041E 27FF      CLR	R31
+    041F 0FE8      ADD	R30,R24
+    0420 1FF9      ADC	R31,R25
+    0421 91E4      LPM	R30,0(Z)
+    0422 01D5      MOVW	R26,R10
+    0423 961C      ADIW	R26,0xC
+    0424 93EC      ST	R30,0(X)
+(0321) 
+(0322)         OS_ENTER_CRITICAL();
+    0425 930A      ST	R16,-Y
+    0426 B70F      IN	R16,P3F
+    0427 94F8      BCLR	7
+    0428 930F      PUSH	R16
+    0429 9109      LD	R16,Y+
+(0323)         OSTCBPrioTbl[prio]   = ptcb;
+    042A E082      LDI	R24,2
+    042B 9F80      MUL	R24,R16
+    042C 01F0      MOVW	R30,R0
+    042D EE8E      LDI	R24,0xEE
+    042E E091      LDI	R25,1
+    042F 0FE8      ADD	R30,R24
+    0430 1FF9      ADC	R31,R25
+    0431 82A0      STD	R10,0+Z
+    0432 82B1      STD	R11,1+Z
+(0324)         ptcb->OSTCBNext      = OSTCBList;                  /* Link into TCB chain                      */
+    0433 9020020E  LDS	R2,_OSTCBList
+    0435 9030020F  LDS	R3,_OSTCBList+1
+    0437 01F5      MOVW	R30,R10
+    0438 8222      STD	R2,2+Z
+    0439 8233      STD	R3,3+Z
+(0325)         ptcb->OSTCBPrev      = (OS_TCB *)0;
+    043A 2422      CLR	R2
+    043B 2433      CLR	R3
+    043C 8224      STD	R2,4+Z
+    043D 8235      STD	R3,5+Z
+(0326)         if (OSTCBList != (OS_TCB *)0) {
+    043E 9020020E  LDS	R2,_OSTCBList
+    0440 9030020F  LDS	R3,_OSTCBList+1
+    0442 2022      TST	R2
+    0443 F411      BNE	0x0446
+    0444 2033      TST	R3
+    0445 F031      BEQ	0x044C
+(0327)             OSTCBList->OSTCBPrev = ptcb;
+    0446 91E0020E  LDS	R30,_OSTCBList
+    0448 91F0020F  LDS	R31,_OSTCBList+1
+    044A 82A4      STD	R10,4+Z
+    044B 82B5      STD	R11,5+Z
+(0328)         }
+(0329)         OSTCBList               = ptcb;
+    044C 92B0020F  STS	_OSTCBList+1,R11
+    044E 92A0020E  STS	_OSTCBList,R10
+(0330)         OSRdyGrp               |= ptcb->OSTCBBitY;         /* Make task ready to run                   */
+    0450 01F5      MOVW	R30,R10
+    0451 8425      LDD	R2,13+Z
+    0452 9030021A  LDS	R3,_OSRdyGrp
+    0454 2832      OR	R3,R2
+    0455 9230021A  STS	_OSRdyGrp,R3
+(0331)         OSRdyTbl[ptcb->OSTCBY] |= ptcb->OSTCBBitX;
+    0457 E188      LDI	R24,0x18
+    0458 E092      LDI	R25,2
+    0459 8423      LDD	R2,11+Z
+    045A 2433      CLR	R3
+    045B 0E28      ADD	R2,R24
+    045C 1E39      ADC	R3,R25
+    045D 8444      LDD	R4,12+Z
+    045E 01F1      MOVW	R30,R2
+    045F 8050      LDD	R5,0+Z
+    0460 2854      OR	R5,R4
+    0461 8250      STD	R5,0+Z
+(0332)         OS_EXIT_CRITICAL();
+    0462 930A      ST	R16,-Y
+    0463 910F      POP	R16
+    0464 BF0F      OUT	P3F,R16
+    0465 9109      LD	R16,Y+
+(0333)         return (OS_NO_ERR);
+    0466 2700      CLR	R16
+    0467 C005      RJMP	0x046D
+(0334)     } else {
+(0335)         OS_EXIT_CRITICAL();
+    0468 930A      ST	R16,-Y
+    0469 910F      POP	R16
+    046A BF0F      OUT	P3F,R16
+    046B 9109      LD	R16,Y+
+(0336)         return (OS_NO_MORE_TCB);
+    046C E406      LDI	R16,0x46
+    046D D36F      RCALL	pop_gset3x
+    046E 9508      RET
+(0337)     }
+(0338) }
+(0339) /*$PAGE*/
+(0340) /*
+(0341) *********************************************************************************************************
+(0342) *                                         PROCESS SYSTEM TICK
+(0343) *
+(0344) * Description: This function is used to signal to uC/OS-II the occurrence of a 'system tick' (also known
+(0345) *              as a 'clock tick').  This function should be called by the ticker ISR but, can also be
+(0346) *              called by a high priority task.
+(0347) *
+(0348) * Arguments  : none
+(0349) *
+(0350) * Returns    : none
+(0351) *********************************************************************************************************
+(0352) */
+(0353) 
+(0354) void OSTimeTick (void)
+(0355) {
+(0356)     OS_TCB *ptcb;
+(0357) 
+(0358)     ptcb = OSTCBList;                                      /* Point at first TCB in TCB list           */
+_OSTimeTick:
+  ptcb                 --> R16
+    046F 9100020E  LDS	R16,_OSTCBList
+    0471 9110020F  LDS	R17,_OSTCBList+1
+    0473 C03B      RJMP	0x04AF
+(0359)     while (ptcb->OSTCBPrio != OS_IDLE_PRIO) {              /* Go through all TCBs in TCB list          */
+(0360)         OS_ENTER_CRITICAL();
+    0474 930A      ST	R16,-Y
+    0475 B70F      IN	R16,P3F
+    0476 94F8      BCLR	7
+    0477 930F      PUSH	R16
+    0478 9109      LD	R16,Y+
+(0361)         if (ptcb->OSTCBDly != 0) {                         /* Delayed or waiting for event with TO     */
+    0479 01F8      MOVW	R30,R16
+    047A 8026      LDD	R2,6+Z
+    047B 8037      LDD	R3,7+Z
+    047C 2022      TST	R2
+    047D F419      BNE	0x0481
+    047E 2033      TST	R3
+    047F F409      BNE	0x0481
+    0480 C027      RJMP	0x04A8
+(0362)             if (--ptcb->OSTCBDly == 0) {                   /* Decrement nbr of ticks to end of delay   */
+    0481 01C8      MOVW	R24,R16
+    0482 9606      ADIW	R24,6
+    0483 01FC      MOVW	R30,R24
+    0484 8180      LDD	R24,0+Z
+    0485 8191      LDD	R25,1+Z
+    0486 9701      SBIW	R24,1
+    0487 012C      MOVW	R4,R24
+    0488 8240      STD	R4,0+Z
+    0489 8251      STD	R5,1+Z
+    048A 3080      CPI	R24,0
+    048B 0789      CPC	R24,R25
+    048C F4D9      BNE	0x04A8
+(0363)                 if (!(ptcb->OSTCBStat & OS_STAT_SUSPEND)) {    /* Is task suspended?                   */
+    048D 01F8      MOVW	R30,R16
+    048E 8420      LDD	R2,8+Z
+    048F FC23      SBRC	R2,3
+    0490 C012      RJMP	0x04A3
+(0364)                     OSRdyGrp               |= ptcb->OSTCBBitY; /* No,  Make task Rdy to Run (timed out)*/
+    0491 8425      LDD	R2,13+Z
+    0492 9030021A  LDS	R3,_OSRdyGrp
+    0494 2832      OR	R3,R2
+    0495 9230021A  STS	_OSRdyGrp,R3
+(0365)                     OSRdyTbl[ptcb->OSTCBY] |= ptcb->OSTCBBitX;
+    0497 E188      LDI	R24,0x18
+    0498 E092      LDI	R25,2
+    0499 8423      LDD	R2,11+Z
+    049A 2433      CLR	R3
+    049B 0E28      ADD	R2,R24
+    049C 1E39      ADC	R3,R25
+    049D 8444      LDD	R4,12+Z
+    049E 01F1      MOVW	R30,R2
+    049F 8050      LDD	R5,0+Z
+    04A0 2854      OR	R5,R4
+    04A1 8250      STD	R5,0+Z
+(0366)                 } else {                                       /* Yes, Leave 1 tick to prevent ...     */
+    04A2 C005      RJMP	0x04A8
+(0367)                     ptcb->OSTCBDly = 1;                        /* ... loosing the task when the ...    */
+    04A3 E081      LDI	R24,1
+    04A4 E090      LDI	R25,0
+    04A5 01F8      MOVW	R30,R16
+    04A6 8386      STD	R24,6+Z
+    04A7 8397      STD	R25,7+Z
+(0368)                 }                                              /* ... suspension is removed.           */
+(0369)             }
+(0370)         }
+(0371)         ptcb = ptcb->OSTCBNext;                            /* Point at next TCB in TCB list            */
+    04A8 01F8      MOVW	R30,R16
+    04A9 8102      LDD	R16,2+Z
+    04AA 8113      LDD	R17,3+Z
+(0372)         OS_EXIT_CRITICAL();
+    04AB 930A      ST	R16,-Y
+    04AC 910F      POP	R16
+    04AD BF0F      OUT	P3F,R16
+    04AE 9109      LD	R16,Y+
+    04AF 01F8      MOVW	R30,R16
+    04B0 8581      LDD	R24,9+Z
+    04B1 308F      CPI	R24,0xF
+    04B2 F009      BEQ	0x04B4
+    04B3 CFC0      RJMP	0x0474
+(0373)     }
+(0374)     OS_ENTER_CRITICAL();                                   /* Update the 32-bit tick counter           */
+    04B4 930A      ST	R16,-Y
+    04B5 B70F      IN	R16,P3F
+    04B6 94F8      BCLR	7
+    04B7 930F      PUSH	R16
+    04B8 9109      LD	R16,Y+
+(0375)     OSTime++;
+    04B9 E081      LDI	R24,1
+    04BA E090      LDI	R25,0
+    04BB E0A0      LDI	R26,0
+    04BC E0B0      LDI	R27,0
+    04BD 904001EC  LDS	R4,_OSTime+2
+    04BF 905001ED  LDS	R5,_OSTime+3
+    04C1 902001EA  LDS	R2,_OSTime
+    04C3 903001EB  LDS	R3,_OSTime+1
+    04C5 0E28      ADD	R2,R24
+    04C6 1E39      ADC	R3,R25
+    04C7 1E4A      ADC	R4,R26
+    04C8 1E5B      ADC	R5,R27
+    04C9 923001EB  STS	_OSTime+1,R3
+    04CB 922001EA  STS	_OSTime,R2
+    04CD 925001ED  STS	_OSTime+3,R5
+    04CF 924001EC  STS	_OSTime+2,R4
+(0376)     OS_EXIT_CRITICAL();
+    04D1 930A      ST	R16,-Y
+    04D2 910F      POP	R16
+    04D3 BF0F      OUT	P3F,R16
+    04D4 9109      LD	R16,Y+
+(0377) }
+    04D5 9508      RET
+_OSTaskStkInit:
+  stks                 --> R14
+  tmp                  --> R12
+  stk                  --> R10
+  opt                  --> Y+8
+  ptos                 --> Y+6
+  pdata                --> R18
+  task                 --> R16
+    04D6 D31C      RCALL	push_gset5x
+FILE: D:\job\avrtest\光盘\开发板\iccavr\source\os_task.c
+(0001) 
+(0002) #ifndef  OS_MASTER_FILE
+(0003) #include "includes.h"
+(0004) #endif
+(0005) 
+(0006) /*$PAGE*/
+(0007) /*
+(0008) *********************************************************************************************************
+(0009) *                                            CREATE A TASK
+(0010) *
+(0011) * Description: This function is used to have uC/OS-II manage the execution of a task.  Tasks can either
+(0012) *              be created prior to the start of multitasking or by a running task.  A task cannot be
+(0013) *              created by an ISR.
+(0014) *
+(0015) * Arguments  : task     is a pointer to the task's code
+(0016) *
+(0017) *              pdata    is a pointer to an optional data area which can be used to pass parameters to
+(0018) *                       the task when the task first executes.  Where the task is concerned it thinks
+(0019) *                       it was invoked and passed the argument 'pdata' as follows:
+(0020) *
+(0021) *                           void Task (void *pdata)
+(0022) *                           {
+(0023) *                               for (;;) {
+(0024) *                                   Task code;
+(0025) *                               }
+(0026) *                           }
+(0027) *
+(0028) *              ptos     is a pointer to the task's top of stack.  If the configuration constant 
+(0029) *                       OS_STK_GROWTH is set to 1, the stack is assumed to grow downward (i.e. from high
+(0030) *                       memory to low memory).  'pstk' will thus point to the highest (valid) memory 
+(0031) *                       location of the stack.  If OS_STK_GROWTH is set to 0, 'pstk' will point to the 
+(0032) *                       lowest memory location of the stack and the stack will grow with increasing
+(0033) *                       memory locations.
+(0034) *
+(0035) *              prio     is the task's priority.  A unique priority MUST be assigned to each task and the
+(0036) *                       lower the number, the higher the priority.
+(0037) *
+(0038) * Returns    : OS_NO_ERR        if the function was successful.
+(0039) *              OS_PRIO_EXIT     if the task priority already exist 
+(0040) *                               (each task MUST have a unique priority).
+(0041) *              OS_PRIO_INVALID  if the priority you specify is higher that the maximum allowed 
+(0042) *                               (i.e. >= OS_LOWEST_PRIO)
+(0043) *********************************************************************************************************
+(0044) */
+(0045) 
+(0046) #if OS_TASK_CREATE_EN
+(0047) OS_STK *OSTaskStkInit (void (*task)(void *pd), void *pdata, OS_STK *ptos, INT16U opt){
+(0048) 
+(0049)     INT8U  *stk;
+(0050)     INT8U  *stks;		// Temp. variable used for setting up AVR hardware stack
+(0051)     INT16U tmp;
+(0052) 
+(0053) 
+(0054)     opt     = opt;			// 'opt' is not used, prevent warning
+(0055)     stk     = (INT8U *)ptos;		// Wandlung von ptos in Bytezeiger
+    04D7 80AE      LDD	R10,6+Y
+    04D8 80BF      LDD	R11,7+Y
+(0056) 	// AVR return stack ("hardware stack")
+(0057)     stks    = (INT8U *)(ptos)-(OS_TASK_DEF_STK_SIZE-32);
+    04D9 818E      LDD	R24,6+Y
+    04DA 819F      LDD	R25,7+Y
+    04DB 5484      SUBI	R24,0x44
+    04DC 4090      SBCI	R25,0
+(0058) 
+(0059) 	// the function address has an extra level of indirection. Fetch the
+(0060)     // actual address.
+(0061)     //    
+(0062)     tmp = *(INT16U const *)task;
+    04DD 01F8      MOVW	R30,R16
+    04DE 90C5      LPM	R12,Z+
+    04DF 90D4      LPM	R13,0(Z)
+(0063)    
+(0064) 	// 36 Bytes
+(0065)     *stks-- = (INT8U)tmp;	//Put task start address on top of hardware stack
+    04E0 011C      MOVW	R2,R24
+    04E1 9701      SBIW	R24,1
+    04E2 01F1      MOVW	R30,R2
+    04E3 82C0      STD	R12,0+Z
+(0066)     *stks-- = (INT8U)(tmp >> 8);
+    04E4 011C      MOVW	R2,R24
+    04E5 9701      SBIW	R24,1
+    04E6 017C      MOVW	R14,R24
+    04E7 0126      MOVW	R4,R12
+    04E8 2C45      MOV	R4,R5
+    04E9 2455      CLR	R5
+    04EA 01F1      MOVW	R30,R2
+    04EB 8240      STD	R4,0+Z
+(0067) 
+(0068)     *stk-- = (INT8U)0x00;		// R0  = 0x00
+    04EC 0115      MOVW	R2,R10
+    04ED 01C1      MOVW	R24,R2
+    04EE 9701      SBIW	R24,1
+    04EF 2444      CLR	R4
+    04F0 01F1      MOVW	R30,R2
+    04F1 8240      STD	R4,0+Z
+(0069)     *stk-- = (INT8U)0x01; 
+    04F2 011C      MOVW	R2,R24
+    04F3 9701      SBIW	R24,1
+    04F4 015C      MOVW	R10,R24
+    04F5 E081      LDI	R24,1
+    04F6 01F1      MOVW	R30,R2
+    04F7 8380      STD	R24,0+Z
+(0070)     *stk-- = (INT8U)0x02;
+    04F8 0115      MOVW	R2,R10
+    04F9 01C1      MOVW	R24,R2
+    04FA 9701      SBIW	R24,1
+    04FB 015C      MOVW	R10,R24
+    04FC E082      LDI	R24,2
+    04FD 01F1      MOVW	R30,R2
+    04FE 8380      STD	R24,0+Z
+(0071)     *stk-- = (INT8U)0x03;
+    04FF 0115      MOVW	R2,R10
+    0500 01C1      MOVW	R24,R2
+    0501 9701      SBIW	R24,1
+    0502 015C      MOVW	R10,R24
+    0503 E083      LDI	R24,3
+    0504 01F1      MOVW	R30,R2
+    0505 8380      STD	R24,0+Z
+(0072)     *stk-- = (INT8U)0x04;
+    0506 0115      MOVW	R2,R10
+    0507 01C1      MOVW	R24,R2
+    0508 9701      SBIW	R24,1
+    0509 015C      MOVW	R10,R24
+    050A E084      LDI	R24,4
+    050B 01F1      MOVW	R30,R2
+    050C 8380      STD	R24,0+Z
+(0073)     *stk-- = (INT8U)0x05;
+    050D 0115      MOVW	R2,R10
+    050E 01C1      MOVW	R24,R2
+    050F 9701      SBIW	R24,1
+    0510 015C      MOVW	R10,R24
+    0511 E085      LDI	R24,5
+    0512 01F1      MOVW	R30,R2
+    0513 8380      STD	R24,0+Z
+(0074)     *stk-- = (INT8U)0x06;
+    0514 0115      MOVW	R2,R10
+    0515 01C1      MOVW	R24,R2
+    0516 9701      SBIW	R24,1
+    0517 015C      MOVW	R10,R24
+    0518 E086      LDI	R24,6
+    0519 01F1      MOVW	R30,R2
+    051A 8380      STD	R24,0+Z
+(0075)     *stk-- = (INT8U)0x07;
+    051B 0115      MOVW	R2,R10
+    051C 01C1      MOVW	R24,R2
+    051D 9701      SBIW	R24,1
+    051E 015C      MOVW	R10,R24
+    051F E087      LDI	R24,7
+    0520 01F1      MOVW	R30,R2
+    0521 8380      STD	R24,0+Z
+(0076)     *stk-- = (INT8U)0x08;
+    0522 0115      MOVW	R2,R10
+    0523 01C1      MOVW	R24,R2
+    0524 9701      SBIW	R24,1
+    0525 015C      MOVW	R10,R24
+    0526 E088      LDI	R24,0x8
+    0527 01F1      MOVW	R30,R2
+    0528 8380      STD	R24,0+Z
+(0077)     *stk-- = (INT8U)0x09;
+    0529 0115      MOVW	R2,R10
+    052A 01C1      MOVW	R24,R2
+    052B 9701      SBIW	R24,1
+    052C 015C      MOVW	R10,R24
+    052D E089      LDI	R24,0x9
+    052E 01F1      MOVW	R30,R2
+    052F 8380      STD	R24,0+Z
+(0078)     *stk-- = (INT8U)0x10;
+    0530 0115      MOVW	R2,R10
+    0531 01C1      MOVW	R24,R2
+    0532 9701      SBIW	R24,1
+    0533 015C      MOVW	R10,R24
+    0534 E180      LDI	R24,0x10
+    0535 01F1      MOVW	R30,R2
+    0536 8380      STD	R24,0+Z
+(0079)     *stk-- = (INT8U)0x11;
+    0537 0115      MOVW	R2,R10
+    0538 01C1      MOVW	R24,R2
+    0539 9701      SBIW	R24,1
+    053A 015C      MOVW	R10,R24
+    053B E181      LDI	R24,0x11
+    053C 01F1      MOVW	R30,R2
+    053D 8380      STD	R24,0+Z
+(0080)     *stk-- = (INT8U)0x12;
+    053E 0115      MOVW	R2,R10
+    053F 01C1      MOVW	R24,R2
+    0540 9701      SBIW	R24,1
+    0541 015C      MOVW	R10,R24
+    0542 E182      LDI	R24,0x12
+    0543 01F1      MOVW	R30,R2
+    0544 8380      STD	R24,0+Z
+(0081)     *stk-- = (INT8U)0x13;
+    0545 0115      MOVW	R2,R10
+    0546 01C1      MOVW	R24,R2
+    0547 9701      SBIW	R24,1
+    0548 015C      MOVW	R10,R24
+    0549 E183      LDI	R24,0x13
+    054A 01F1      MOVW	R30,R2
+    054B 8380      STD	R24,0+Z
+(0082)     *stk-- = (INT8U)0x14;
+    054C 0115      MOVW	R2,R10
+    054D 01C1      MOVW	R24,R2
+    054E 9701      SBIW	R24,1
+    054F 015C      MOVW	R10,R24
+    0550 E184      LDI	R24,0x14
+    0551 01F1      MOVW	R30,R2
+    0552 8380      STD	R24,0+Z
+(0083)     *stk-- = (INT8U)0x15;
+    0553 0115      MOVW	R2,R10
+    0554 01C1      MOVW	R24,R2
+    0555 9701      SBIW	R24,1
+    0556 015C      MOVW	R10,R24
+    0557 E185      LDI	R24,0x15
+    0558 01F1      MOVW	R30,R2
+    0559 8380      STD	R24,0+Z
+(0084)     tmp    = (INT16U)pdata;
+    055A 0169      MOVW	R12,R18
+(0085)     *stk-- = (INT8U)tmp;	//Simulate call to function with argument
+    055B 0115      MOVW	R2,R10
+    055C 01C1      MOVW	R24,R2
+    055D 9701      SBIW	R24,1
+    055E 01F1      MOVW	R30,R2
+    055F 82C0      STD	R12,0+Z
+(0086)     *stk-- = (INT8U)(tmp >> 8);
+    0560 011C      MOVW	R2,R24
+    0561 9701      SBIW	R24,1
+    0562 0126      MOVW	R4,R12
+    0563 2C45      MOV	R4,R5
+    0564 2455      CLR	R5
+    0565 01F1      MOVW	R30,R2
+    0566 8240      STD	R4,0+Z
+(0087)     *stk-- = (INT8U)0x18;
+    0567 011C      MOVW	R2,R24
+    0568 9701      SBIW	R24,1
+    0569 015C      MOVW	R10,R24
+    056A E188      LDI	R24,0x18
+    056B 01F1      MOVW	R30,R2
+    056C 8380      STD	R24,0+Z
+(0088)     *stk-- = (INT8U)0x19;
+    056D 0115      MOVW	R2,R10
+    056E 01C1      MOVW	R24,R2
+    056F 9701      SBIW	R24,1
+    0570 015C      MOVW	R10,R24
+    0571 E189      LDI	R24,0x19
+    0572 01F1      MOVW	R30,R2
+    0573 8380      STD	R24,0+Z
+(0089)     *stk-- = (INT8U)0x20;
+    0574 0115      MOVW	R2,R10
+    0575 01C1      MOVW	R24,R2
+    0576 9701      SBIW	R24,1
+    0577 015C      MOVW	R10,R24
+    0578 E280      LDI	R24,0x20
+    0579 01F1      MOVW	R30,R2
+    057A 8380      STD	R24,0+Z
+(0090)     *stk-- = (INT8U)0x21;
+    057B 0115      MOVW	R2,R10
+    057C 01C1      MOVW	R24,R2
+    057D 9701      SBIW	R24,1
+    057E 015C      MOVW	R10,R24
+    057F E281      LDI	R24,0x21
+    0580 01F1      MOVW	R30,R2
+    0581 8380      STD	R24,0+Z
+(0091)     *stk-- = (INT8U)0x22;
+    0582 0115      MOVW	R2,R10
+    0583 01C1      MOVW	R24,R2
+    0584 9701      SBIW	R24,1
+    0585 015C      MOVW	R10,R24
+    0586 E282      LDI	R24,0x22
+    0587 01F1      MOVW	R30,R2
+    0588 8380      STD	R24,0+Z
+(0092)     *stk-- = (INT8U)0x23;
+    0589 0115      MOVW	R2,R10
+    058A 01C1      MOVW	R24,R2
+    058B 9701      SBIW	R24,1
+    058C 015C      MOVW	R10,R24
+    058D E283      LDI	R24,0x23
+    058E 01F1      MOVW	R30,R2
+    058F 8380      STD	R24,0+Z
+(0093)     *stk-- = (INT8U)0x24;
+    0590 0115      MOVW	R2,R10
+    0591 01C1      MOVW	R24,R2
+    0592 9701      SBIW	R24,1
+    0593 015C      MOVW	R10,R24
+    0594 E284      LDI	R24,0x24
+    0595 01F1      MOVW	R30,R2
+    0596 8380      STD	R24,0+Z
+(0094)     *stk-- = (INT8U)0x25;
+    0597 0115      MOVW	R2,R10
+    0598 01C1      MOVW	R24,R2
+    0599 9701      SBIW	R24,1
+    059A 015C      MOVW	R10,R24
+    059B E285      LDI	R24,0x25
+    059C 01F1      MOVW	R30,R2
+    059D 8380      STD	R24,0+Z
+(0095)     *stk-- = (INT8U)0x26;
+    059E 0115      MOVW	R2,R10
+    059F 01C1      MOVW	R24,R2
+    05A0 9701      SBIW	R24,1
+    05A1 015C      MOVW	R10,R24
+    05A2 E286      LDI	R24,0x26
+    05A3 01F1      MOVW	R30,R2
+    05A4 8380      STD	R24,0+Z
+(0096)     *stk-- = (INT8U)0x27;
+    05A5 0115      MOVW	R2,R10
+    05A6 01C1      MOVW	R24,R2
+    05A7 9701      SBIW	R24,1
+    05A8 015C      MOVW	R10,R24
+    05A9 E287      LDI	R24,0x27
+    05AA 01F1      MOVW	R30,R2
+    05AB 8380      STD	R24,0+Z
+(0097) 	// the heap pointer Y=R29:R28 will not be stored
+(0098)     *stk-- = (INT8U)0x30;
+    05AC 0115      MOVW	R2,R10
+    05AD 01C1      MOVW	R24,R2
+    05AE 9701      SBIW	R24,1
+    05AF 015C      MOVW	R10,R24
+    05B0 E380      LDI	R24,0x30
+    05B1 01F1      MOVW	R30,R2
+    05B2 8380      STD	R24,0+Z
+(0099)     *stk-- = (INT8U)0x31;
+    05B3 0115      MOVW	R2,R10
+    05B4 01C1      MOVW	R24,R2
+    05B5 9701      SBIW	R24,1
+    05B6 015C      MOVW	R10,R24
+    05B7 E381      LDI	R24,0x31
+    05B8 01F1      MOVW	R30,R2
+    05B9 8380      STD	R24,0+Z
+(0100) //    *stk-- = (INT8U)0x3B;
+(0101)     *stk-- = (INT8U)0x80;	//SREG = Interrupts enabled
+    05BA 0115      MOVW	R2,R10
+    05BB 01C1      MOVW	R24,R2
+    05BC 9701      SBIW	R24,1
+    05BD 015C      MOVW	R10,R24
+    05BE E880      LDI	R24,0x80
+    05BF 01F1      MOVW	R30,R2
+    05C0 8380      STD	R24,0+Z
+(0102) 
+(0103)     tmp    = (INT16U)(stks);
+    05C1 0167      MOVW	R12,R14
+(0104)     *stk-- = (INT8U)(tmp >> 8);
+    05C2 0115      MOVW	R2,R10
+    05C3 01C1      MOVW	R24,R2
+    05C4 9701      SBIW	R24,1
+    05C5 015C      MOVW	R10,R24
+    05C6 0126      MOVW	R4,R12
+    05C7 2C45      MOV	R4,R5
+    05C8 2455      CLR	R5
+    05C9 01F1      MOVW	R30,R2
+    05CA 8240      STD	R4,0+Z
+(0105)     *stk   = (INT8U)(tmp);
+    05CB 01FC      MOVW	R30,R24
+    05CC 82C0      STD	R12,0+Z
+(0106)     return ((void *)stk);
+    05CD 2F08      MOV	R16,R24
+    05CE 2F19      MOV	R17,R25
+    05CF D21B      RCALL	pop_gset5x
+    05D0 9508      RET
+_OSTaskCreate:
+  psp                  --> R10
+  err                  --> R10
+  prio                 --> R12
+  ptos                 --> Y+16
+  pdata                --> R14
+  task                 --> R10
+    05D1 D221      RCALL	push_gset5x
+    05D2 0179      MOVW	R14,R18
+    05D3 0158      MOVW	R10,R16
+    05D4 972A      SBIW	R28,0xA
+    05D5 88CA      LDD	R12,18+Y
+(0107) }
+(0108) 
+(0109) INT8U OSTaskCreate (void (*task)(void *pd), void *pdata, OS_STK *ptos, INT8U prio)
+(0110) {
+(0111)     void   *psp;
+(0112)     INT8U   err;
+(0113) 
+(0114) 
+(0115)     if (prio > OS_LOWEST_PRIO) {             /* Make sure priority is within allowable range           */
+    05D6 E08F      LDI	R24,0xF
+    05D7 158C      CP	R24,R12
+    05D8 F410      BCC	0x05DB
+(0116)         return (OS_PRIO_INVALID);
+    05D9 E20A      LDI	R16,0x2A
+    05DA C070      RJMP	0x064B
+(0117)     }
+(0118)     OS_ENTER_CRITICAL();
+    05DB 930A      ST	R16,-Y
+    05DC B70F      IN	R16,P3F
+    05DD 94F8      BCLR	7
+    05DE 930F      PUSH	R16
+    05DF 9109      LD	R16,Y+
+(0119)     if (OSTCBPrioTbl[prio] == (OS_TCB *)0) { /* Make sure task doesn't already exist at this priority  */
+    05E0 E082      LDI	R24,2
+    05E1 9D8C      MUL	R24,R12
+    05E2 01F0      MOVW	R30,R0
+    05E3 EE8E      LDI	R24,0xEE
+    05E4 E091      LDI	R25,1
+    05E5 0FE8      ADD	R30,R24
+    05E6 1FF9      ADC	R31,R25
+    05E7 8020      LDD	R2,0+Z
+    05E8 8031      LDD	R3,1+Z
+    05E9 2022      TST	R2
+    05EA F009      BEQ	0x05EC
+    05EB C05A      RJMP	0x0646
+    05EC 2033      TST	R3
+    05ED F009      BEQ	0x05EF
+    05EE C057      RJMP	0x0646
+(0120)         OSTCBPrioTbl[prio] = (OS_TCB *)1;    /* Reserve the priority to prevent others from doing ...  */
+    05EF E082      LDI	R24,2
+    05F0 9D8C      MUL	R24,R12
+    05F1 01F0      MOVW	R30,R0
+    05F2 EE8E      LDI	R24,0xEE
+    05F3 E091      LDI	R25,1
+    05F4 0FE8      ADD	R30,R24
+    05F5 1FF9      ADC	R31,R25
+    05F6 E081      LDI	R24,1
+    05F7 E090      LDI	R25,0
+    05F8 8380      STD	R24,0+Z
+    05F9 8391      STD	R25,1+Z
+(0121)                                              /* ... the same thing until task is created.              */
+(0122)         OS_EXIT_CRITICAL();
+    05FA 930A      ST	R16,-Y
+    05FB 910F      POP	R16
+    05FC BF0F      OUT	P3F,R16
+    05FD 9109      LD	R16,Y+
+(0123)         psp = (void *)OSTaskStkInit(task, pdata, ptos, 0); /* Initialize the task's stack              */
+    05FE 2422      CLR	R2
+    05FF 2433      CLR	R3
+    0600 822A      STD	R2,2+Y
+    0601 823B      STD	R3,3+Y
+    0602 8808      LDD	R0,16+Y
+    0603 8819      LDD	R1,17+Y
+    0604 8208      STD	R0,0+Y
+    0605 8219      STD	R1,1+Y
+    0606 0197      MOVW	R18,R14
+    0607 0185      MOVW	R16,R10
+    0608 DECD      RCALL	_OSTaskStkInit
+    0609 0158      MOVW	R10,R16
+(0124)         err = OSTCBInit(prio, psp, (void *)0, 0, 0, (void *)0, 0);         
+    060A 2422      CLR	R2
+    060B 2433      CLR	R3
+    060C 8628      STD	R2,8+Y
+    060D 8639      STD	R3,9+Y
+    060E 822E      STD	R2,6+Y
+    060F 823F      STD	R3,7+Y
+    0610 822C      STD	R2,4+Y
+    0611 823D      STD	R3,5+Y
+    0612 822A      STD	R2,2+Y
+    0613 823B      STD	R3,3+Y
+    0614 8228      STD	R2,0+Y
+    0615 8239      STD	R3,1+Y
+    0616 0195      MOVW	R18,R10
+    0617 2D0C      MOV	R16,R12
+    0618 DDCD      RCALL	_OSTCBInit
+    0619 2EA0      MOV	R10,R16
+(0125)         if (err == OS_NO_ERR) {
+    061A 2300      TST	R16
+    061B F4A1      BNE	0x0630
+(0126)             OS_ENTER_CRITICAL();
+    061C 930A      ST	R16,-Y
+    061D B70F      IN	R16,P3F
+    061E 94F8      BCLR	7
+    061F 930F      PUSH	R16
+    0620 9109      LD	R16,Y+
+(0127)             OSTaskCtr++;                                   /* Increment the #tasks counter             */
+    0621 91800216  LDS	R24,_OSTaskCtr
+    0623 5F8F      SUBI	R24,0xFF
+    0624 93800216  STS	_OSTaskCtr,R24
+(0128)             OS_EXIT_CRITICAL();
+    0626 930A      ST	R16,-Y
+    0627 910F      POP	R16
+    0628 BF0F      OUT	P3F,R16
+    0629 9109      LD	R16,Y+
+(0129)             if (OSRunning) {                 /* Find highest priority task if multitasking has started */
+    062A 90200217  LDS	R2,_OSRunning
+    062C 2022      TST	R2
+    062D F0B1      BEQ	0x0644
+(0130)                 OSSched();
+    062E DCF4      RCALL	_OSSched
+(0131)             }
+(0132)         } else {
+    062F C014      RJMP	0x0644
+(0133)             OS_ENTER_CRITICAL();
+    0630 930A      ST	R16,-Y
+    0631 B70F      IN	R16,P3F
+    0632 94F8      BCLR	7
+    0633 930F      PUSH	R16
+    0634 9109      LD	R16,Y+
+(0134)             OSTCBPrioTbl[prio] = (OS_TCB *)0;/* Make this priority available to others                 */
+    0635 E082      LDI	R24,2
+    0636 9D8C      MUL	R24,R12
+    0637 01F0      MOVW	R30,R0
+    0638 EE8E      LDI	R24,0xEE
+    0639 E091      LDI	R25,1
+    063A 0FE8      ADD	R30,R24
+    063B 1FF9      ADC	R31,R25
+    063C 2422      CLR	R2
+    063D 2433      CLR	R3
+    063E 8220      STD	R2,0+Z
+    063F 8231      STD	R3,1+Z
+(0135)             OS_EXIT_CRITICAL();
+    0640 930A      ST	R16,-Y
+    0641 910F      POP	R16
+    0642 BF0F      OUT	P3F,R16
+    0643 9109      LD	R16,Y+
+(0136)         }
+(0137)         return (err);
+    0644 2D0A      MOV	R16,R10
+    0645 C005      RJMP	0x064B
+(0138)     } else {
+(0139)         OS_EXIT_CRITICAL();
+    0646 930A      ST	R16,-Y
+    0647 910F      POP	R16
+    0648 BF0F      OUT	P3F,R16
+    0649 9109      LD	R16,Y+
+(0140)         return (OS_PRIO_EXIST);
+    064A E208      LDI	R16,0x28
+    064B 962A      ADIW	R28,0xA
+    064C D19E      RCALL	pop_gset5x
+    064D 9508      RET
+_OSTimeDly:
+  ticks                --> R10
+    064E D19E      RCALL	push_gset3x
+    064F 0158      MOVW	R10,R16
+FILE: D:\job\avrtest\光盘\开发板\iccavr\source\os_time.c
+(0001) 
+(0002) #ifndef  OS_MASTER_FILE
+(0003) #include "includes.h"
+(0004) #endif
+(0005) 
+(0006) /*
+(0007) *********************************************************************************************************
+(0008) *                                DELAY TASK 'n' TICKS   (n from 0 to 65535)
+(0009) *
+(0010) * Description: This function is called to delay execution of the currently running task until the 
+(0011) *              specified number of system ticks expires.  This, of course, directly equates to delaying
+(0012) *              the current task for some time to expire.  No delay will result If the specified delay is 
+(0013) *              0.  If the specified delay is greater than 0 then, a context switch will result.
+(0014) *
+(0015) * Arguments  : ticks     is the time delay that the task will be suspended in number of clock 'ticks'.  
+(0016) *                        Note that by specifying 0, the task will not be delayed.
+(0017) *
+(0018) * Returns    : none
+(0019) *********************************************************************************************************
+(0020) */
+(0021) 
+(0022) void OSTimeDly (INT16U ticks)
+(0023) {
+(0024)     if (ticks > 0) {                                                      /* 0 means no delay!         */
+    0650 20AA      TST	R10
+    0651 F419      BNE	0x0655
+    0652 20BB      TST	R11
+    0653 F409      BNE	0x0655
+    0654 C02E      RJMP	0x0683
+(0025)         OS_ENTER_CRITICAL();
+    0655 930A      ST	R16,-Y
+    0656 B70F      IN	R16,P3F
+    0657 94F8      BCLR	7
+    0658 930F      PUSH	R16
+    0659 9109      LD	R16,Y+
+(0026)         if ((OSRdyTbl[OSTCBCur->OSTCBY] &= ~OSTCBCur->OSTCBBitX) == 0) {  /* Delay current task        */
+    065A E188      LDI	R24,0x18
+    065B E092      LDI	R25,2
+    065C 91E00214  LDS	R30,_OSTCBCur
+    065E 91F00215  LDS	R31,_OSTCBCur+1
+    0660 8423      LDD	R2,11+Z
+    0661 2433      CLR	R3
+    0662 0E28      ADD	R2,R24
+    0663 1E39      ADC	R3,R25
+    0664 8444      LDD	R4,12+Z
+    0665 9440      COM	R4
+    0666 01F1      MOVW	R30,R2
+    0667 8050      LDD	R5,0+Z
+    0668 2054      AND	R5,R4
+    0669 2C45      MOV	R4,R5
+    066A 8240      STD	R4,0+Z
+    066B 2055      TST	R5
+    066C F459      BNE	0x0678
+(0027)             OSRdyGrp &= ~OSTCBCur->OSTCBBitY;
+    066D 91E00214  LDS	R30,_OSTCBCur
+    066F 91F00215  LDS	R31,_OSTCBCur+1
+    0671 8425      LDD	R2,13+Z
+    0672 9420      COM	R2
+    0673 9030021A  LDS	R3,_OSRdyGrp
+    0675 2032      AND	R3,R2
+    0676 9230021A  STS	_OSRdyGrp,R3
+(0028)         }
+(0029)         OSTCBCur->OSTCBDly = ticks;                                       /* Load ticks in TCB         */
+    0678 91E00214  LDS	R30,_OSTCBCur
+    067A 91F00215  LDS	R31,_OSTCBCur+1
+    067C 82A6      STD	R10,6+Z
+    067D 82B7      STD	R11,7+Z
+(0030)         OS_EXIT_CRITICAL();
+    067E 930A      ST	R16,-Y
+    067F 910F      POP	R16
+    0680 BF0F      OUT	P3F,R16
+    0681 9109      LD	R16,Y+
+(0031)         OSSched();                                                        /* Find next task to run!    */
+    0682 DCA0      RCALL	_OSSched
+(0032)     }
+(0033) }
+    0683 D159      RCALL	pop_gset3x
+    0684 9508      RET
+FILE: D:\job\avrtest\光盘\开发板\iccavr\source\74164.c
+(0001) 
+(0002) #ifndef  OS_MASTER_FILE
+(0003) #include "includes.h"
+(0004) #endif
+(0005) 
+(0006) void  init164(void){
+(0007)     DDRB |= 0x01;
+_init164:
+    0685 9AB8      SBI	P17,0
+(0008)     DDRD |= 0xC0;
+    0686 B381      IN	R24,P11
+    0687 6C80      ORI	R24,0xC0
+    0688 BB81      OUT	P11,R24
+(0009) }
+    0689 9508      RET
+_write164:
+  ch                   --> R10
+  i                    --> R12
+  x                    --> R16
+    068A D165      RCALL	push_gset4x
+(0010) 
+(0011) void  write164(unsigned char  x){
+(0012)     unsigned char  i,ch;
+(0013) 
+(0014)     ch = x;
+    068B 2EA0      MOV	R10,R16
+(0015)     PORTB &= ~0x01;      //  消隐
+    068C 98C0      CBI	P18,0
+(0016)     PORTD &= ~0x40;      //  CLK
+    068D 9896      CBI	P12,6
+(0017)     for(i=0; i<8; i++){
+    068E 24CC      CLR	R12
+    068F C00A      RJMP	0x069A
+(0018)         if(ch & 0x80)
+    0690 FEA7      SBRS	R10,7
+    0691 C002      RJMP	0x0694
+(0019)             PORTD |= 0x80;
+    0692 9A97      SBI	P12,7
+    0693 C001      RJMP	0x0695
+(0020)         else
+(0021)             PORTD &= ~0x80;
+    0694 9897      CBI	P12,7
+(0022)         ch <<= 1;
+    0695 0CAA      LSL	R10
+(0023)         PORTD |= 0x40;
+    0696 9A96      SBI	P12,6
+(0024)         asm("nop");
+    0697 0000      NOP
+(0025)         PORTD &= ~0x40;
+    0698 9896      CBI	P12,6
+    0699 94C3      INC	R12
+    069A 2D8C      MOV	R24,R12
+    069B 3088      CPI	R24,0x8
+    069C F398      BCS	0x0690
+(0026)     }
+(0027)     PORTB |= 0x01;      //  显示
+    069D 9AC0      SBI	P18,0
+(0028) }
+    069E D14A      RCALL	pop_gset4x
+    069F 9508      RET
+FILE: D:\job\avrtest\光盘\开发板\iccavr\test\os_cpu_a.s
+(0001) ;*******************************************************************************
+(0002) ;                                   uC/OS-II
+(0003) ;                             The Real-Time Kernel
+(0004) ;
+(0005) ;                         ATmega103 Specific code
+(0006) ;                               (ICC V6.21)
+(0007) ;
+(0008) ;
+(0009) ; File:			OS_CPU_A.S
+(0010) ; By:			Ole Saether
+(0011) ; Modified by:	Joerg Meyer
+(0012) ; Port Version:	V1.00
+(0013) ;
+(0014) ;
+(0015) ;*******************************************************************************
+(0016) 
+(0017) ;include 
+(0018) 
+(0019) ;*******************************************************************************
+(0020) ;                 I/O PORT ADDRESSES
+(0021) ;*******************************************************************************
+(0022) 
+(0023) 
+(0024) SREG    = 0x3F
+(0025) SPH     = 0x3E
+(0026) SPL     = 0x3D
+(0027) RAMPZ   = 0x3B
+(0028) TCNT0   = 0x32
+(0029) TCNT2   = 0x24
+(0030) 
+(0031) 
+(0032) ;*******************************************************************************
+(0033) ;                MACROS
+(0034) ;*******************************************************************************
+(0035) 
+(0036) 				; Push registers
+(0037) 				.macro PUSHRS
+(0038)                 ST      -Y,R0	
+(0039)                 ST      -Y,R1
+(0040)                 ST      -Y,R2
+(0041)                 ST      -Y,R3
+(0042)                 ST      -Y,R4
+(0043)                 ST      -Y,R5
+(0044)                 ST      -Y,R6
+(0045)                 ST      -Y,R7
+(0046)                 ST      -Y,R8
+(0047)                 ST      -Y,R9
+(0048)                 ST      -Y,R10
+(0049)                 ST      -Y,R11
+(0050)                 ST      -Y,R12
+(0051)                 ST      -Y,R13
+(0052)                 ST      -Y,R14
+(0053)                 ST      -Y,R15
+(0054)                 ST      -Y,R16
+(0055)                 ST      -Y,R17
+(0056)                 ST      -Y,R18
+(0057)                 ST      -Y,R19
+(0058)                 ST      -Y,R20
+(0059)                 ST      -Y,R21
+(0060)                 ST      -Y,R22
+(0061)                 ST      -Y,R23
+(0062)                 ST      -Y,R24
+(0063)                 ST      -Y,R25
+(0064)                 ST      -Y,R26
+(0065)                 ST      -Y,R27
+(0066)                 ST      -Y,R30
+(0067)                 ST      -Y,R31
+(0068) 				.endmacro
+(0069) 
+(0070) 				; Pop registers
+(0071)                 .macro POPRS
+(0072)                 LD      R31,Y+
+(0073)                 LD      R30,Y+
+(0074)                 LD      R27,Y+
+(0075)                 LD      R26,Y+
+(0076)                 LD      R25,Y+
+(0077)                 LD      R24,Y+
+(0078)                 LD      R23,Y+
+(0079)                 LD      R22,Y+
+(0080)                 LD      R21,Y+
+(0081)                 LD      R20,Y+
+(0082)                 LD      R19,Y+
+(0083)                 LD      R18,Y+
+(0084)                 LD      R17,Y+
+(0085)                 LD      R16,Y+
+(0086)                 LD      R15,Y+
+(0087)                 LD      R14,Y+
+(0088)                 LD      R13,Y+
+(0089)                 LD      R12,Y+
+(0090)                 LD      R11,Y+
+(0091)                 LD      R10,Y+
+(0092)                 LD      R9,Y+
+(0093)                 LD      R8,Y+
+(0094)                 LD      R7,Y+
+(0095)                 LD      R6,Y+
+(0096)                 LD      R5,Y+
+(0097)                 LD      R4,Y+
+(0098)                 LD      R3,Y+
+(0099)                 LD      R2,Y+
+(0100)                 LD      R1,Y+
+(0101)                 LD      R0,Y+
+(0102)                 .endmacro
+(0103) 
+(0104) 				; Push stack pointer
+(0105)                 .macro PUSHSP
+(0106)                 IN      R16,SPH
+(0107)                 ST      -Y,R16
+(0108)                 IN      R16,SPL
+(0109)                 ST      -Y,R16
+(0110)                 .endmacro
+(0111) 
+(0112) 				; Pop stack pointer
+(0113)                 .macro POPSP
+(0114)                 LD      R16,Y+
+(0115)                 OUT     SPL,R16
+(0116)                 LD      R16,Y+
+(0117)                 OUT     SPH,R16
+(0118)                 .endmacro
+(0119) 
+(0120) 				;Push SREG
+(0121) 		.macro PUSHSREG
+(0122)                 IN      R16,SREG
+(0123)                 ST      -Y,R16
+(0124)                 .endmacro
+(0125) 
+(0126) 				; Pop SREG
+(0127)                 .macro POPSREG
+(0128)                 LD      R16,Y+
+(0129)                 OUT     SREG,R16
+(0130) 				.endmacro
+(0131) 
+(0132)                 .area    text(rel)
+(0133) 
+(0134) ;*******************************************************************************
+(0135) ;               START HIGHEST PRIORITY TASK READY-TO-RUN
+(0136) ;
+(0137) ; Description : This function is called by OSStart() to start the highest
+(0138) ; priority task that was created by your application before calling OSStart().
+(0139) ;
+(0140) ; Note(s):
+(0141) ;	1) The (data)stack frame is assumed to look as follows:
+(0142) ;
+(0143) ;		OSTCBHighRdy->OSTCBStkPtr --> LSB of (return) stack pointer (Low memory)
+(0144) ;										MSB of (return) stack pointer
+(0145) ;										Flags to load in status register
+(0146) ;										R31
+(0147) ;										R30
+(0148) ;										R7
+(0149) ;										.
+(0150) ;										.
+(0151) ;										.
+(0152) ;										R0  (High memory)
+(0153) ;
+(0154) ;		where the stack pointer points to the task start address.
+(0155) ;
+(0156) ;
+(0157) ;	2) OSStartHighRdy() MUST:
+(0158) ;		a) Call OSTaskSwHook() then,
+(0159) ;		b) Set OSRunning to TRUE,
+(0160) ;		c) Switch to the highest priority task.
+(0161) ;*******************************************************************************
+(0162) 
+(0163) _OSStartHighRdy:: 
+(0164) 	LDS     R16,_OSRunning		; Indicate that we are multitasking
+_OSStartHighRdy:
+    06A0 91000217  LDS	R16,_OSRunning
+(0165) 	INC     R16					
+    06A2 9503      INC	R16
+(0166) 	STS     _OSRunning,R16		;
+    06A3 93000217  STS	_OSRunning,R16
+(0167) 
+(0168) 	LDS     R30,_OSTCBHighRdy	; Let Z point to TCB of highest priority task
+    06A5 91E00210  LDS	R30,_OSTCBHighRdy
+(0169) 	LDS     R31,_OSTCBHighRdy+1	; ready to run
+    06A7 91F00211  LDS	R31,_OSTCBHighRdy+1
+(0170) 	LD      R28,Z+				; Load Y (R29:R28) pointer
+    06A9 91C1      LD	R28,Z+
+(0171) 	LD      R29,Z+				;
+    06AA 91D1      LD	R29,Z+
+(0172) 
+(0173) 	POPSP		; restore stack pointer
+    06AB 9109      LD	R16,Y+
+    06AC BF0D      OUT	P3D,R16
+    06AD 9109      LD	R16,Y+
+    06AE BF0E      OUT	P3E,R16
+(0174) 	POPSREG		; restore SREG
+    06AF 9109      LD	R16,Y+
+    06B0 BF0F      OUT	P3F,R16
+(0175) 	POPRS		; restore registers
+    06B1 91F9      LD	R31,Y+
+    06B2 91E9      LD	R30,Y+
+    06B3 91B9      LD	R27,Y+
+    06B4 91A9      LD	R26,Y+
+    06B5 9199      LD	R25,Y+
+    06B6 9189      LD	R24,Y+
+    06B7 9179      LD	R23,Y+
+    06B8 9169      LD	R22,Y+
+    06B9 9159      LD	R21,Y+
+    06BA 9149      LD	R20,Y+
+    06BB 9139      LD	R19,Y+
+    06BC 9129      LD	R18,Y+
+    06BD 9119      LD	R17,Y+
+    06BE 9109      LD	R16,Y+
+    06BF 90F9      LD	R15,Y+
+    06C0 90E9      LD	R14,Y+
+    06C1 90D9      LD	R13,Y+
+    06C2 90C9      LD	R12,Y+
+    06C3 90B9      LD	R11,Y+
+    06C4 90A9      LD	R10,Y+
+    06C5 9099      LD	R9,Y+
+    06C6 9089      LD	R8,Y+
+    06C7 9079      LD	R7,Y+
+    06C8 9069      LD	R6,Y+
+    06C9 9059      LD	R5,Y+
+    06CA 9049      LD	R4,Y+
+    06CB 9039      LD	R3,Y+
+    06CC 9029      LD	R2,Y+
+    06CD 9019      LD	R1,Y+
+    06CE 9009      LD	R0,Y+
+(0176) 	RET			; start task
+    06CF 9508      RET
+(0177) 
+(0178) ;*******************************************************************************
+(0179) ;                 TASK LEVEL CONTEXT SWITCH
+(0180) ;
+(0181) ; Description : This function is called when a task makes a higher priority task
+(0182) ; ready-to-run.
+(0183) ;
+(0184) ; Note(s):
+(0185) ;	1) Upon entry,
+(0186) ;		OSTCBCur     points to the OS_TCB of the task to suspend
+(0187) ;		OSTCBHighRdy points to the OS_TCB of the task to resume
+(0188) ;
+(0189) ;	2) The stack frame of the task to suspend looks as follows:
+(0190) ;
+(0191) ;		SP	+0 --> LSB of task code address
+(0192) ;			+1     MSB of task code address	(High memory)
+(0193) ;
+(0194) ;	3) The saved context of the task to resume looks as follows:
+(0195) ;
+(0196) ;		OSTCBHighRdy->OSTCBStkPtr --> LSB of (return) stack pointer (Low memory)
+(0197) ;                                     MSB of (return) stack pointer
+(0198) ;                                     Flags to load in status register
+(0199) ;                                     R31
+(0200) ;                                     R30
+(0201) ;                                     R7
+(0202) ;                                     .
+(0203) ;                                     .
+(0204) ;                                     .
+(0205) ;                                     R0    (High memory)
+(0206) ;*******************************************************************************
+(0207) 
+(0208) _OSCtxSw::
+(0209) 		PUSHRS						; Save current task's context
+_OSCtxSw:
+    06D0 920A      ST	R0,-Y
+    06D1 921A      ST	R1,-Y
+    06D2 922A      ST	R2,-Y
+    06D3 923A      ST	R3,-Y
+    06D4 924A      ST	R4,-Y
+    06D5 925A      ST	R5,-Y
+    06D6 926A      ST	R6,-Y
+    06D7 927A      ST	R7,-Y
+    06D8 928A      ST	R8,-Y
+    06D9 929A      ST	R9,-Y
+    06DA 92AA      ST	R10,-Y
+    06DB 92BA      ST	R11,-Y
+    06DC 92CA      ST	R12,-Y
+    06DD 92DA      ST	R13,-Y
+    06DE 92EA      ST	R14,-Y
+    06DF 92FA      ST	R15,-Y
+    06E0 930A      ST	R16,-Y
+    06E1 931A      ST	R17,-Y
+    06E2 932A      ST	R18,-Y
+    06E3 933A      ST	R19,-Y
+    06E4 934A      ST	R20,-Y
+    06E5 935A      ST	R21,-Y
+    06E6 936A      ST	R22,-Y
+    06E7 937A      ST	R23,-Y
+    06E8 938A      ST	R24,-Y
+    06E9 939A      ST	R25,-Y
+    06EA 93AA      ST	R26,-Y
+    06EB 93BA      ST	R27,-Y
+    06EC 93EA      ST	R30,-Y
+    06ED 93FA      ST	R31,-Y
+(0210) 		PUSHSREG
+    06EE B70F      IN	R16,P3F
+    06EF 930A      ST	R16,-Y
+(0211) 		PUSHSP
+    06F0 B70E      IN	R16,P3E
+    06F1 930A      ST	R16,-Y
+    06F2 B70D      IN	R16,P3D
+    06F3 930A      ST	R16,-Y
+(0212) 
+(0213) 		LDS     R30,_OSTCBCur		; Z = OSTCBCur->OSTCBStkPtr
+    06F4 91E00214  LDS	R30,_OSTCBCur
+(0214) 		LDS     R31,_OSTCBCur+1		;
+    06F6 91F00215  LDS	R31,_OSTCBCur+1
+(0215) 		ST      Z+,R28				; Save Y (R29:R28) pointer
+    06F8 93C1      ST	R28,Z+
+(0216) 		ST      Z+,R29				;
+    06F9 93D1      ST	R29,Z+
+(0217) 	
+(0218) 		LDS     R16,_OSPrioHighRdy	; OSPrioCur = OSPrioHighRdy
+    06FA 9100021B  LDS	R16,_OSPrioHighRdy
+(0219) 		STS     _OSPrioCur,R16
+    06FC 9300021C  STS	_OSPrioCur,R16
+(0220) 	
+(0221) 		LDS     R30,_OSTCBHighRdy ; Let Z point to TCB of highest priority task
+    06FE 91E00210  LDS	R30,_OSTCBHighRdy
+(0222) 		LDS     R31,_OSTCBHighRdy+1	; ready to run
+    0700 91F00211  LDS	R31,_OSTCBHighRdy+1
+(0223) 		STS     _OSTCBCur,R30		; OSTCBCur = OSTCBHighRdy
+    0702 93E00214  STS	_OSTCBCur,R30
+(0224) 		STS     _OSTCBCur+1,R31 	;
+    0704 93F00215  STS	_OSTCBCur+1,R31
+(0225) 
+(0226) 		LD      R28,Z+		; Restore Y pointer
+    0706 91C1      LD	R28,Z+
+(0227) 		LD      R29,Z+		;
+    0707 91D1      LD	R29,Z+
+(0228) 
+(0229) 		POPSP				; restore stack pointer
+    0708 9109      LD	R16,Y+
+    0709 BF0D      OUT	P3D,R16
+    070A 9109      LD	R16,Y+
+    070B BF0E      OUT	P3E,R16
+(0230) 		POPSREG				; restore SREG
+    070C 9109      LD	R16,Y+
+    070D BF0F      OUT	P3F,R16
+(0231) 		POPRS				; restore registers
+    070E 91F9      LD	R31,Y+
+    070F 91E9      LD	R30,Y+
+    0710 91B9      LD	R27,Y+
+    0711 91A9      LD	R26,Y+
+    0712 9199      LD	R25,Y+
+    0713 9189      LD	R24,Y+
+    0714 9179      LD	R23,Y+
+    0715 9169      LD	R22,Y+
+    0716 9159      LD	R21,Y+
+    0717 9149      LD	R20,Y+
+    0718 9139      LD	R19,Y+
+    0719 9129      LD	R18,Y+
+    071A 9119      LD	R17,Y+
+    071B 9109      LD	R16,Y+
+    071C 90F9      LD	R15,Y+
+    071D 90E9      LD	R14,Y+
+    071E 90D9      LD	R13,Y+
+    071F 90C9      LD	R12,Y+
+    0720 90B9      LD	R11,Y+
+    0721 90A9      LD	R10,Y+
+    0722 9099      LD	R9,Y+
+    0723 9089      LD	R8,Y+
+    0724 9079      LD	R7,Y+
+    0725 9069      LD	R6,Y+
+    0726 9059      LD	R5,Y+
+    0727 9049      LD	R4,Y+
+    0728 9039      LD	R3,Y+
+    0729 9029      LD	R2,Y+
+    072A 9019      LD	R1,Y+
+    072B 9009      LD	R0,Y+
+(0232) 		RET
+    072C 9508      RET
+(0233) 
+(0234) 
+(0235) ;*******************************************************************************
+(0236) ;               INTERRUPT LEVEL CONTEXT SWITCH
+(0237) ;
+(0238) ; Description : This function is called by OSIntExit() to perform a context
+(0239) ; switch to a task that has been made ready-to-run by an ISR.
+(0240) ;
+(0241) ; Note(s):
+(0242) ;	1) Upon entry,
+(0243) ;		OSTCBCur     points to the OS_TCB of the task to suspend
+(0244) ;		OSTCBHighRdy points to the OS_TCB of the task to resume
+(0245) ;
+(0246) ;	2) The stack frame of the task to suspend looks as follows:
+(0247) ;
+(0248) ;		SP	+0 --> LSB of return address of OSIntCtxSw()   (Low memory)
+(0249) ;			+1     MSB of return address of OSIntCtxSw()
+(0250) ;			+2     LSB of return address of OSIntExit()
+(0251) ;			+3     MSB of return address of OSIntExit()
+(0252) ;			+4     LSB of task code address
+(0253) ;			+5     MSB of task code address		(High memory)
+(0254) ;
+(0255) ;	3) The saved context of the task to resume looks as follows:
+(0256) ;
+(0257) ;		OSTCBHighRdy->OSTCBStkPtr --> 	LSB of (return) stack pointer (Low mem)
+(0258) ;										MSB of (return) stack pointer
+(0259) ;										Flags to load in status register
+(0260) ;										R31
+(0261) ;										R30
+(0262) ;										R7
+(0263) ;										.
+(0264) ;										.
+(0265) ;										.
+(0266) ;										R0		(High memory)
+(0267) ;*******************************************************************************
+(0268) 
+(0269) _OSIntCtxSw::
+(0270) 		IN      R30,SPL				; Z = SP
+_OSIntCtxSw:
+    072D B7ED      IN	R30,P3D
+(0271) 		IN      R31,SPH
+    072E B7FE      IN	R31,P3E
+(0272) 	;	ADIW    R30,4	; (Uncomment if OS_CRITICAL_METHOD is 1, see OS_CPU.H)
+(0273) 		ADIW    R30,5				; Adjust Z to point to task return address
+    072F 9635      ADIW	R30,5
+(0274) 		ST      -Y,R31				; Save SP
+    0730 93FA      ST	R31,-Y
+(0275) 		ST      -Y,R30				;
+    0731 93EA      ST	R30,-Y
+(0276) 	
+(0277) 		LDS     R30,_OSTCBCur		; Z = OSTCBCur->OSTCBStkPtr
+    0732 91E00214  LDS	R30,_OSTCBCur
+(0278) 		LDS     R31,_OSTCBCur+1		;
+    0734 91F00215  LDS	R31,_OSTCBCur+1
+(0279) 		ST      Z+,R28				; Save Y pointer
+    0736 93C1      ST	R28,Z+
+(0280) 		ST      Z+,R29				;
+    0737 93D1      ST	R29,Z+
+(0281) 
+(0282) 		LDS     R16,_OSPrioHighRdy	; OSPrioCur = OSPrioHighRdy
+    0738 9100021B  LDS	R16,_OSPrioHighRdy
+(0283) 		STS     _OSPrioCur,R16	;
+    073A 9300021C  STS	_OSPrioCur,R16
+(0284) 
+(0285) 		LDS     R30,_OSTCBHighRdy	; Z = OSTCBHighRdy->OSTCBStkPtr
+    073C 91E00210  LDS	R30,_OSTCBHighRdy
+(0286) 		LDS     R31,_OSTCBHighRdy+1	;
+    073E 91F00211  LDS	R31,_OSTCBHighRdy+1
+(0287) 		STS     _OSTCBCur,R30		; OSTCBCur = OSTCBHighRdy
+    0740 93E00214  STS	_OSTCBCur,R30
+(0288) 		STS     _OSTCBCur+1,R31		;
+    0742 93F00215  STS	_OSTCBCur+1,R31
+(0289) 
+(0290) 		LD      R28,Z+				; Restore Y pointer
+    0744 91C1      LD	R28,Z+
+(0291) 		LD      R29,Z+				;
+    0745 91D1      LD	R29,Z+
+(0292) 		POPSP						; restore stack pointer
+    0746 9109      LD	R16,Y+
+    0747 BF0D      OUT	P3D,R16
+    0748 9109      LD	R16,Y+
+    0749 BF0E      OUT	P3E,R16
+(0293) 		POPSREG						; restore SREG
+    074A 9109      LD	R16,Y+
+    074B BF0F      OUT	P3F,R16
+(0294) 		POPRS						; restore registers
+    074C 91F9      LD	R31,Y+
+    074D 91E9      LD	R30,Y+
+    074E 91B9      LD	R27,Y+
+    074F 91A9      LD	R26,Y+
+    0750 9199      LD	R25,Y+
+    0751 9189      LD	R24,Y+
+    0752 9179      LD	R23,Y+
+    0753 9169      LD	R22,Y+
+    0754 9159      LD	R21,Y+
+    0755 9149      LD	R20,Y+
+    0756 9139      LD	R19,Y+
+    0757 9129      LD	R18,Y+
+    0758 9119      LD	R17,Y+
+    0759 9109      LD	R16,Y+
+    075A 90F9      LD	R15,Y+
+    075B 90E9      LD	R14,Y+
+    075C 90D9      LD	R13,Y+
+    075D 90C9      LD	R12,Y+
+    075E 90B9      LD	R11,Y+
+    075F 90A9      LD	R10,Y+
+    0760 9099      LD	R9,Y+
+    0761 9089      LD	R8,Y+
+    0762 9079      LD	R7,Y+
+    0763 9069      LD	R6,Y+
+    0764 9059      LD	R5,Y+
+    0765 9049      LD	R4,Y+
+    0766 9039      LD	R3,Y+
+    0767 9029      LD	R2,Y+
+    0768 9019      LD	R1,Y+
+    0769 9009      LD	R0,Y+
+(0295) 		RET
+    076A 9508      RET
+(0296) 
+(0297) ;******************************************************************************
+(0298) ;                          SYSTEM TICK ISR
+(0299) ;
+(0300) ; Description: This function is the ISR used to notify uC/OS-II that a system
+(0301) ; tick has occurred.
+(0302) ;
+(0303) ;
+(0304) ;*******************************************************************************
+(0305) ; 
+(0306) _OSTickISR::    
+(0307)         NOP
+_OSTickISR:
+    076B 0000      NOP
+(0308) 		PUSHRS				; save all registers
+    076C 920A      ST	R0,-Y
+    076D 921A      ST	R1,-Y
+    076E 922A      ST	R2,-Y
+    076F 923A      ST	R3,-Y
+    0770 924A      ST	R4,-Y
+    0771 925A      ST	R5,-Y
+    0772 926A      ST	R6,-Y
+    0773 927A      ST	R7,-Y
+    0774 928A      ST	R8,-Y
+    0775 929A      ST	R9,-Y
+    0776 92AA      ST	R10,-Y
+    0777 92BA      ST	R11,-Y
+    0778 92CA      ST	R12,-Y
+    0779 92DA      ST	R13,-Y
+    077A 92EA      ST	R14,-Y
+    077B 92FA      ST	R15,-Y
+    077C 930A      ST	R16,-Y
+    077D 931A      ST	R17,-Y
+    077E 932A      ST	R18,-Y
+    077F 933A      ST	R19,-Y
+    0780 934A      ST	R20,-Y
+    0781 935A      ST	R21,-Y
+    0782 936A      ST	R22,-Y
+    0783 937A      ST	R23,-Y
+    0784 938A      ST	R24,-Y
+    0785 939A      ST	R25,-Y
+    0786 93AA      ST	R26,-Y
+    0787 93BA      ST	R27,-Y
+    0788 93EA      ST	R30,-Y
+    0789 93FA      ST	R31,-Y
+(0309) 		IN	R16, SREG
+    078A B70F      IN	R16,P3F
+(0310) 		SBR	R16, 0x80		; bei Aufruf dieser ISR geloeschtes I-Flag setzen 
+    078B 6800      ORI	R16,0x80
+(0311) 		ST	-Y, R16
+    078C 930A      ST	R16,-Y
+(0312) 
+(0313) 		; TimerCounter aufrischen
+(0314) 		LDI     R16,6; Reload TC_2, 2ms bei 8MHz
+    078D E006      LDI	R16,6
+(0315) 		OUT     TCNT2,R16
+    078E BD04      OUT	P24,R16
+(0316) 
+(0317) 		LDS     R16,_OSIntNesting           ; Notify uC/OS-II of ISR
+    078F 9100021E  LDS	R16,_OSIntNesting
+(0318) 		INC     R16                         ;
+    0791 9503      INC	R16
+(0319) 		STS     _OSIntNesting,R16           ;
+    0792 9300021E  STS	_OSIntNesting,R16
+(0320) 
+(0321) 		CALL    _OSTimeTick		; Call uC/OS-II's tick updating function
+    0794 940E046F  CALL	_OSTimeTick
+(0322) 		; bearbeitet die tasktimer, wenn 0 --> deren Prio in Aufruftab stellen
+(0323) 
+(0324) 		CALL    _OSIntExit		; Notify uC/OS-II about end of ISR
+    0796 940E02BF  CALL	_OSIntExit
+(0325) 		; fuehrt gegebenfalls einen Context-Switch aus
+(0326) 
+(0327) 		POPSREG		; restore SREG
+    0798 9109      LD	R16,Y+
+    0799 BF0F      OUT	P3F,R16
+(0328) 		POPRS		; restore all registers
+    079A 91F9      LD	R31,Y+
+    079B 91E9      LD	R30,Y+
+    079C 91B9      LD	R27,Y+
+    079D 91A9      LD	R26,Y+
+    079E 9199      LD	R25,Y+
+    079F 9189      LD	R24,Y+
+    07A0 9179      LD	R23,Y+
+    07A1 9169      LD	R22,Y+
+    07A2 9159      LD	R21,Y+
+    07A3 9149      LD	R20,Y+
+    07A4 9139      LD	R19,Y+
+    07A5 9129      LD	R18,Y+
+    07A6 9119      LD	R17,Y+
+    07A7 9109      LD	R16,Y+
+    07A8 90F9      LD	R15,Y+
+    07A9 90E9      LD	R14,Y+
+    07AA 90D9      LD	R13,Y+
+    07AB 90C9      LD	R12,Y+
+    07AC 90B9      LD	R11,Y+
+    07AD 90A9      LD	R10,Y+
+    07AE 9099      LD	R9,Y+
+    07AF 9089      LD	R8,Y+
+    07B0 9079      LD	R7,Y+
+    07B1 9069      LD	R6,Y+
+    07B2 9059      LD	R5,Y+
+    07B3 9049      LD	R4,Y+
+    07B4 9039      LD	R3,Y+
+    07B5 9029      LD	R2,Y+
+    07B6 9019      LD	R1,Y+
+    07B7 9009      LD	R0,Y+
+(0329) 		RET			; Note: RET instead of RETI
+FILE: <library>
+    07B8 9508      RET
+mod8u:
+    07B9 9468      BSET	6
+    07BA C001      RJMP	xdiv8u
+div8u:
+    07BB 94E8      BCLR	6
+xdiv8u:
+    07BC 932A      ST	R18,-Y
+    07BD 92FA      ST	R15,-Y
+    07BE 24FF      CLR	R15
+    07BF E028      LDI	R18,0x8
+    07C0 0F00      LSL	R16
+    07C1 1CFF      ROL	R15
+    07C2 16F1      CP	R15,R17
+    07C3 F010      BCS	0x07C6
+    07C4 1AF1      SUB	R15,R17
+    07C5 9503      INC	R16
+    07C6 952A      DEC	R18
+    07C7 F7C1      BNE	0x07C0
+    07C8 F40E      BRTC	0x07CA
+    07C9 2D0F      MOV	R16,R15
+    07CA 90F9      LD	R15,Y+
+    07CB 9129      LD	R18,Y+
+    07CC 9508      RET
+empy16s:
+    07CD 920A      ST	R0,-Y
+    07CE 921A      ST	R1,-Y
+    07CF 938A      ST	R24,-Y
+    07D0 939A      ST	R25,-Y
+    07D1 9F02      MUL	R16,R18
+    07D2 01C0      MOVW	R24,R0
+    07D3 9F12      MUL	R17,R18
+    07D4 0D90      ADD	R25,R0
+    07D5 9F03      MUL	R16,R19
+    07D6 0D90      ADD	R25,R0
+    07D7 018C      MOVW	R16,R24
+    07D8 9199      LD	R25,Y+
+    07D9 9189      LD	R24,Y+
+    07DA 9019      LD	R1,Y+
+    07DB 9009      LD	R0,Y+
+    07DC 9508      RET
+pop_gset3x:
+    07DD E0E4      LDI	R30,4
+popx:
+    07DE 90A9      LD	R10,Y+
+    07DF 90B9      LD	R11,Y+
+    07E0 FDE2      SBRC	R30,2
+    07E1 9508      RET
+    07E2 90C9      LD	R12,Y+
+    07E3 90D9      LD	R13,Y+
+    07E4 FDE3      SBRC	R30,3
+    07E5 9508      RET
+    07E6 90E9      LD	R14,Y+
+    07E7 90F9      LD	R15,Y+
+    07E8 9508      RET
+pop_gset4x:
+    07E9 E0E8      LDI	R30,0x8
+    07EA CFF3      RJMP	popx
+pop_gset5x:
+    07EB 27EE      CLR	R30
+    07EC CFF1      RJMP	popx
+push_gset3x:
+    07ED 92BA      ST	R11,-Y
+    07EE 92AA      ST	R10,-Y
+    07EF 9508      RET
+push_gset4x:
+    07F0 92DA      ST	R13,-Y
+    07F1 92CA      ST	R12,-Y
+    07F2 CFFA      RJMP	push_gset3x
+push_gset5x:
+    07F3 92FA      ST	R15,-Y
+    07F4 92EA      ST	R14,-Y
+    07F5 CFFA      RJMP	push_gset4x
+_putchar:
+    07F6 DFF6      RCALL	push_gset3x
+    07F7 2EA0      MOV	R10,R16
+    07F8 90200239  LDS	R2,__textmode
+    07FA 9030023A  LDS	R3,__textmode+1
+    07FC 2022      TST	R2
+    07FD F411      BNE	0x0800
+    07FE 2033      TST	R3
+    07FF F029      BEQ	0x0805
+    0800 2D8A      MOV	R24,R10
+    0801 308A      CPI	R24,0xA
+    0802 F411      BNE	0x0805
+    0803 E00D      LDI	R16,0xD
+    0804 DFF1      RCALL	_putchar
+    0805 9B5D      SBIS	P0B,5
+    0806 CFFE      RJMP	0x0805
+    0807 B8AC      OUT	P0C,R10
+    0808 2D0A      MOV	R16,R10
+    0809 2711      CLR	R17
+    080A DFD2      RCALL	pop_gset3x
+    080B 9508      RET
+_EEPROMread:
+    080C 99E1      SBIC	P1C,1
+    080D CFFE      RJMP	_EEPROMread
+    080E 9310003F  STS	0x3F,R17
+    0810 9300003E  STS	0x3E,R16
+    0812 9AE0      SBI	P1C,0
+    0813 B30D      IN	R16,P1D
+    0814 9508      RET
+_EEPROMwrite:
+    0815 DFD7      RCALL	push_gset3x
+    0816 99E1      SBIC	P1C,1
+    0817 CFFE      RJMP	0x0816
+    0818 9310003F  STS	0x3F,R17
+    081A 9300003E  STS	0x3E,R16
+    081C BB2D      OUT	P1D,R18
+    081D B6AF      IN	R10,P3F
+    081E 94F8      BCLR	7
+    081F 9AE2      SBI	P1C,2
+    0820 9AE1      SBI	P1C,1
+    0821 BEAF      OUT	P3F,R10
+    0822 2700      CLR	R16
+    0823 2711      CLR	R17
+    0824 DFB8      RCALL	pop_gset3x
+    0825 9508      RET

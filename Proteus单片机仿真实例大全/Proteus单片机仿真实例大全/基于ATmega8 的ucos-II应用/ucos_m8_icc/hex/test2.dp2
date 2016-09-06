@@ -1,0 +1,2 @@
+test2.o: D:\job\avrtest\光盘\开发板\iccavr\test/includes.h C:/AVR/ICC/include/iom8v.h D:\job\avrtest\光盘\开发板\iccavr\test/OS_CPU.H C:/AVR/ICC/include/macros.h D:\job\avrtest\光盘\开发板\iccavr\test/OS_CFG.H ../source/UCOS_II.H\
+ C:/AVR/ICC/include/eeprom.h C:/AVR/ICC/include/iom8v.h C:/AVR/ICC/include/macros.h C:/AVR/ICC/include/stdio.h C:/AVR/ICC/include/stdarg.h C:/AVR/ICC/include/_const.h

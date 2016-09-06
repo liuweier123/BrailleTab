@@ -1,0 +1,93 @@
+A51 MACRO ASSEMBLER  PWM                                                                  05/31/2007 08:55:54 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.00
+OBJECT MODULE PLACED IN PWM.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE PWM.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0035                 1     ADC             EQU             35H
+  0037                 2     PWMH    EQU     37H
+  0036                 3     PWML    EQU     36H
+  00A4                 4     CLOCK   BIT             P2.4                    ;定义ADC0808时钟位
+  00A5                 5     ST              BIT     P2.5
+  00A6                 6     EOC     BIT     P2.6
+  00A7                 7     OE              BIT     P2.7
+  00B7                 8     PWM             BIT             P3.7
+0000                   9                     ORG     00H
+0000 800C             10                     SJMP    START
+000B                  11                     ORG             0BH
+000B 020037           12                     LJMP    INT_T0
+                      13     
+000E 758902           14     START:  MOV             TMOD,#02H               ;
+0011 758CFF           15                     MOV             TH0,#0FFH
+0014 758A00           16                     MOV             TL0,#00H
+0017 75A882           17                     MOV             IE,#82H
+001A D28C             18                     SETB    TR0
+                      19     
+001C C2A5             20     WAIT:   CLR     ST                              
+001E D2A5             21                     SETB    ST
+0020 C2A5             22                     CLR     ST                              ;启动AD转换
+0022 30A6FD           23                     JNB     EOC,$                   ;等待转换结束
+0025 D2A7             24                     SETB    OE 
+0027 859035           25                     MOV     ADC,P1                  ;读取AD转换结果
+002A C2A7             26                     CLR     OE
+002C E535             27                     MOV     A,ADC
+002E F536             28                     MOV     PWML,A
+0030 F4               29                     CPL     A
+0031 2401             30                     ADD     A,#1
+0033 F537             31                     MOV     PWMH,A
+0035 80E5             32             SJMP    WAIT
+0037 30B709           33     INT_T0: JNB     PWM,SGAO       ;PWM不是高就输出补码
+003A C2B7             34             CLR     PWM                        ;PWM输出
+003C 85368C           35                     MOV     TH0,PWML
+003F 85368A           36                     MOV     TL0,PWML
+0042 32               37             RETI
+0043 D2B7             38     SGAO:   SETB    PWM
+0045 85378C           39                     MOV     TH0,PWMH
+0048 85378A           40                     MOV     TL0,PWMH
+004B 32               41             RETI
+004C 7E01             42     DELAY:  MOV             R6,#1
+004E DEFE             43     D1:             DJNZ    R6,D1
+0050 D5E0FB           44                     DJNZ    ACC,D1
+0053 22               45                     RET
+                      46     
+                      47                     END
+A51 MACRO ASSEMBLER  PWM                                                                  05/31/2007 08:55:54 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+ADC. . . . . . . .  N NUMB   0035H   A   
+CLOCK. . . . . . .  B ADDR   00A0H.4 A   
+D1 . . . . . . . .  C ADDR   004EH   A   
+DELAY. . . . . . .  C ADDR   004CH   A   
+EOC. . . . . . . .  B ADDR   00A0H.6 A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INT_T0 . . . . . .  C ADDR   0037H   A   
+OE . . . . . . . .  B ADDR   00A0H.7 A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+PWM. . . . . . . .  B ADDR   00B0H.7 A   
+PWMH . . . . . . .  N NUMB   0037H   A   
+PWML . . . . . . .  N NUMB   0036H   A   
+SGAO . . . . . . .  C ADDR   0043H   A   
+ST . . . . . . . .  B ADDR   00A0H.5 A   
+START. . . . . . .  C ADDR   000EH   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+WAIT . . . . . . .  C ADDR   001CH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

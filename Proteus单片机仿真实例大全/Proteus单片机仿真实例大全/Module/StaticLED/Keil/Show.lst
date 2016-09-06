@@ -1,0 +1,83 @@
+C51 COMPILER V8.05a   SHOW                                                                 08/11/2007 16:36:41 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE SHOW
+OBJECT MODULE PLACED IN Show.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sources\Show.c BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\Show.lst
+                    -) OBJECT(Show.obj)
+
+line level    source
+
+   1          //*************************************************************************************************
+   2          //*                                                                                                                                                                                               *
+   3          //*                       ********************************主函数******************************                            *
+   4          //*                                                                                                                                                                                               *
+   5          //*************************************************************************************************
+   6          
+   7          //*************************************************************************************************
+   8          //*                                                                                                                                                                                               *
+   9          //*                      ******************************头文件及宏定义**************************                           *
+  10          //*                                                                                                                                                                                               *
+  11          //*************************************************************************************************
+  12          #include <at89x51.h>
+  13          
+  14          
+  15          //*************************************************************************************************
+  16          //*                                                                                                                                                                                               *
+  17          //*                       ********************************全局变量******************************                          *
+  18          //*                                                                                                                                                                                               *
+  19          //*************************************************************************************************
+  20          unsigned  char code uca_LEDCode[]=
+  21                                                  {0x03,0x9F,0x25,0x0D,0x99,0x49,0x41,0x1F,0x01,0x09};
+  22                                                  //74LS164编码：0,1,2,3,4,5,6,7,8,9
+  23          
+  24          
+  25          //*************************************************************************************************
+  26          //*                                                                                                                                                                                               *
+  27          //*                       ***********************把一个4位数通过串口输出给LED**********************                       *
+  28          //*                                                                                                                                                                                               *
+  29          //*************************************************************************************************
+  30          void vShowNumber(unsigned int uiNumber)
+  31          {
+  32   1              unsigned char ucSelect;
+  33   1              unsigned char ucaNumber[4];
+  34   1              unsigned char ucNumFront;
+  35   1      
+  36   1              if(uiNumber>9999)
+  37   1                      uiNumber=9999;
+  38   1              ucaNumber[0]=uiNumber/1000;                                                              //最高位
+  39   1              ucaNumber[1]=(uiNumber-1000*(int)ucaNumber[0])/100;
+  40   1              ucaNumber[2]=(uiNumber-1000*(int)ucaNumber[0]-100*(int)ucaNumber[1])/10;
+  41   1              ucaNumber[3]=(uiNumber-1000*(int)ucaNumber[0]-100*(int)ucaNumber[1]-10*(int)ucaNumber[2]);
+  42   1      
+  43   1              for(ucNumFront=0;ucNumFront<3;ucNumFront++)                             //查找非零首位。
+  44   1                      if(ucaNumber[ucNumFront]!=0)
+  45   1                              break;
+  46   1      
+  47   1              for(ucSelect=0;ucSelect<4;ucSelect++)                                   //向串口输出数据。
+  48   1                      {
+  49   2                      if(ucSelect<ucNumFront)
+  50   2                              SBUF=0xFF;
+  51   2                      else
+  52   2                              SBUF=uca_LEDCode[ucaNumber[ucSelect]];
+  53   2      
+  54   2                      while(TI==0);
+C51 COMPILER V8.05a   SHOW                                                                 08/11/2007 16:36:41 PAGE 2   
+
+  55   2                      TI=0;
+  56   2                      }
+  57   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    187    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

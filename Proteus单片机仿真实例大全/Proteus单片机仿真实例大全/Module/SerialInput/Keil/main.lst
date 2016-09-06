@@ -1,0 +1,56 @@
+C51 COMPILER V8.05a   MAIN                                                                 08/11/2007 15:52:53 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE source\main.c BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\main.lst)
+                    - OBJECT(main.obj)
+
+line level    source
+
+   1          //*************************************************************************************************
+   2          //*************************************************************************************************
+   3          //**<程序名>：串口输入                                                                                                                                                   **
+   4          //**<功能>：将开关上电位通过串口输入然后显示在数码管上。                                                                                 **
+   5          //**<作者>：LastRitter                                                                                                                                                   **
+   6          //**<完成时间>：2007年8月9日                                                                                                                                     **
+   7          //**<联系方式>：E-Mail:superyongzhe@163.com;QQ:314665345。                                                                               **
+   8          //*************************************************************************************************
+   9          //*************************************************************************************************
+  10          #include "includes.h"
+  11          
+  12          #define SL P3_7                                 //串口接收启动端口：0->1启动。
+  13          #define LEDPORT P2
+  14          
+  15          void main()
+  16          {
+  17   1              unsigned char ucCount;
+  18   1      
+  19   1              SCON=0x10;                                 //设置串口模式：模式0，允许接收。
+  20   1      
+  21   1              while(1)
+  22   1                      {
+  23   2                      SL=0;
+  24   2                      SL=1;                             //启动接收。
+  25   2      
+  26   2                      while(RI==0);
+  27   2                      LEDPORT=SBUF;                     //转存数据。
+  28   2                      RI=0;
+  29   2      
+  30   2                      for(ucCount=0;ucCount<250;ucCount++);
+  31   2                      }
+  32   1      } 
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     26    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

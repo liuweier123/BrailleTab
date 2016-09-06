@@ -1,0 +1,11 @@
+[Files]
+test\test2.c
+source\Ucos_ii.c
+test\os_cpu_a.s
+[Headers]
+test\os_cpu.h
+test\os_cfg.h
+test\includes.h
+source\Ucos_ii.h
+[Documents]
+readme.txt

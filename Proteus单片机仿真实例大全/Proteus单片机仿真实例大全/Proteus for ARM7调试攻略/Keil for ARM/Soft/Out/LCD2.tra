@@ -1,0 +1,19 @@
+*** Creating Trace Output File '.\Out\LCD2.tra' Ok.
+### Preparing for ADS-LD.
+### Creating ADS-LD Command Line
+### List of Objects: adding '".\out\irq.o"'
+### List of Objects: adding '".\out\startup.o"'
+### List of Objects: adding '".\out\target.o"'
+### List of Objects: adding '".\out\main.o"'
+### ADS-LD Command completed:
+".\out\irq.o" ".\out\startup.o" ".\out\target.o" ".\out\main.o" -strict -scatter ".\src\mem_c.scf" -entry 0x00000000 -map -xref -callgraph -symbols -info sizes -info totals -info unused -info veneers -list ".\Out\LCD2.map" -o ".\Out\LCD2.axf"### Preparing Environment (PrepEnvAds)
+### ADS-LD Output File: '.\Out\LCD2.axf'
+### ADS-LD Command File: '.\Out\LCD2.lnp'
+### Checking for dirty Components...
+### Creating CmdFile '.\Out\LCD2.lnp', Handle=0x0000026C
+### Writing '.lnp' file
+### ADS-LD Command file '.\Out\LCD2.lnp' is ready.
+### ADS-LD: About to start ADS-LD Thread.
+### ADS-LD: executed with 0 errors
+### Updating obj list
+### LDADS_file() completed.

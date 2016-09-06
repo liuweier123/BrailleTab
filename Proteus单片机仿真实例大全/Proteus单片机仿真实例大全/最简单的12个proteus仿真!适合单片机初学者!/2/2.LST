@@ -1,0 +1,41 @@
+C51 COMPILER V7.50   2                                                                     04/16/2006 09:15:58 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE 2
+OBJECT MODULE PLACED IN 2.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 2.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.H>
+   2          sbit K1=P3^0;
+   3          sbit L1=P1^0;
+   4          
+   5          void main(void)
+   6          {
+   7   1        while(1)
+   8   1          {
+   9   2            if(K1==0)
+  10   2              {
+  11   3                L1=0;         //µÆÁÁ
+  12   3              }
+  13   2              else
+  14   2                {
+  15   3                  L1=1;               //µÆÃð
+  16   3                }
+  17   2          }
+  18   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     11    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

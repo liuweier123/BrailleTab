@@ -1,0 +1,61 @@
+C51 COMPILER V7.50   10                                                                    04/16/2006 14:13:37 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE 10
+OBJECT MODULE PLACED IN 10.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 10.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.H>
+   2          
+   3          sbit P3_7=P3^7;
+   4          unsigned char code table[]={0x3f,0x06,0x5b,0x4f,0x66,
+   5                                      0x6d,0x7d,0x07,0x7f,0x6f};
+   6          unsigned char Count;
+   7          
+   8          void delay10ms(void)
+   9          {
+  10   1        unsigned char i,j;
+  11   1        for(i=20;i>0;i--)
+  12   1        for(j=248;j>0;j--);
+  13   1      }
+  14          
+  15          void main(void)
+  16          {
+  17   1        Count=0;
+  18   1        P0=table[Count/10];
+  19   1        P2=table[Count%10];
+  20   1        while(1)
+  21   1          {
+  22   2            if(P3_7==0)
+  23   2              {
+  24   3                delay10ms();
+  25   3                if(P3_7==0)
+  26   3                  {
+  27   4                    Count++;
+  28   4                    if(Count==100)
+  29   4                      {
+  30   5                        Count=0;
+  31   5                      }
+  32   4                    P0=table[Count/10];
+  33   4                    P2=table[Count%10];
+  34   4                    while(P3_7==0);
+  35   4                  }
+  36   3              }
+  37   2          }
+  38   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     82    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,94 @@
+C51 COMPILER V8.05a   INTRODUCE                                                            08/08/2007 08:55:17 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE INTRODUCE
+OBJECT MODULE PLACED IN Introduce.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sources\Introduce.c BROWSE INCDIR(.\include;.\include;.\include) DEBUG OBJE
+                    -CTEXTEND PRINT(.\Introduce.lst) OBJECT(Introduce.obj)
+
+line level    source
+
+   1          //*************************************************************************************************
+   2          //*                                                                                                                                                                                               *
+   3          //*             **************************************显示介绍！*************************************     *
+   4          //*                                                                                                                                                                                               *
+   5          //*************************************************************************************************
+   6          #include "SMC1602.h"
+   7          
+   8          //在使用介绍时，注意：b_Introduce必须和vIntroduce（）配合使用。
+   9          
+  10          bit b_Introduce=1;                                      //用于关闭介绍。1--滚动介绍；0--退出介绍。
+  11          
+  12          extern unsigned char uca_CharBox[];
+  13          extern unsigned char uc_CharPointer;
+  14          extern bit b_CapStatus;
+  15          extern bit b_InputMode;
+  16          
+  17          void vIntroduce()
+  18          {
+  19   1              unsigned int uiCount;                                                                                    //循环滚动显示:
+  20   1              unsigned char ucCount;                                                                                   //  Hello.Sir! I
+  21   1              unsigned char ucaIntroduce[5][16]=                                                               //am clear ! I Can 
+  22   1                                                      {"                ","Hello. Sir! I am",          //show what you
+  23   1                                                       "clear!I can show","what you press !",          //press!    ^-^
+  24   1                                                       "       ^-^      "
+  25   1                                                      };
+  26   1      
+  27   1              vWriteCMD(0x0C);                                                  //改变显示模式：文字不动，光标自动右移。
+  28   1      
+  29   1              for(ucCount=0;b_Introduce==1;ucCount++)
+  30   1                      {
+  31   2                      vWriteCMD(0x80);                                          //刷新第一行。
+  32   2                      vShowChar(ucaIntroduce[ucCount]);
+  33   2      
+  34   2                      vWriteCMD(0xC0);                                          //刷新第二行。
+  35   2                      if(ucCount==4)
+  36   2                              ucCount=0;
+  37   2                      vShowChar(ucaIntroduce[ucCount+1]);
+  38   2      
+  39   2                      for(uiCount=0;uiCount<35000;uiCount++);
+  40   2                      }
+  41   1      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  42   1      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<结束介绍，恢复屏幕>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  43   1      //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  44   1              vWriteCMD(0x80);                                                 
+  45   1              vShowChar("Please Input: ");                    //恢复提示信息。
+  46   1      
+  47   1              if(b_InputMode==0)
+  48   1                      {                                                                       //恢复状态标志。
+  49   2                      vWriteCMD(0x8E);
+  50   2                      vShowChar(" N");
+  51   2                      }
+  52   1              else
+  53   1                      {
+  54   2                      vWriteCMD(0x8E);
+C51 COMPILER V8.05a   INTRODUCE                                                            08/08/2007 08:55:17 PAGE 2   
+
+  55   2                      if(b_CapStatus==0)
+  56   2                              vShowChar("BC");
+  57   2                      else
+  58   2                              vShowChar("SC");
+  59   2                      }
+  60   1      
+  61   1              vWriteCMD(0xC0);
+  62   1              vShowChar(uca_CharBox);                           //恢复介绍前数据。
+  63   1      
+  64   1              vWriteCMD(0xC0+uc_CharPointer);           //恢复介绍前光标位置。
+  65   1      
+  66   1              vWriteCMD(0x0F);                                          //恢复显示模式：显示器开、光标开、闪烁开。
+  67   1      
+  68   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    187    ----
+   CONSTANT SIZE    =    104    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      81
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

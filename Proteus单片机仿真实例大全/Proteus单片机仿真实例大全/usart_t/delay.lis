@@ -1,0 +1,137 @@
+                        .module delay.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile D:\AVR\ICC\usart_t\delay.c
+ 0000                   .dbfunc e delay_1us _delay_1us fV
+                        .even
+ 0000           _delay_1us::
+ 0000                   .dbline -1
+ 0000                   .dbline 6
+ 0000           ;    /*-----------------------------------------------------------------------
+ 0000           ; 延时函数
+ 0000           ; 系统时钟：8M
+ 0000           ; -----------------------------------------------------------------------*/
+ 0000           ; void delay_1us(void)                 //1us延时函数
+ 0000           ;   {
+ 0000                   .dbline 7
+ 0000           ;    asm("nop");
+ 0000 0000              nop
+ 0002                   .dbline -2
+ 0002           L1:
+ 0002                   .dbline 0 ; func end
+ 0002 0895              ret
+ 0004                   .dbend
+ 0004                   .dbfunc e delay_nus _delay_nus fV
+ 0004           ;              i -> R20,R21
+ 0004           ;              n -> R22,R23
+                        .even
+ 0004           _delay_nus::
+ 0004 0E940000          xcall push_gset2
+ 0008 B801              movw R22,R16
+ 000A                   .dbline -1
+ 000A                   .dbline 11
+ 000A           ;   }
+ 000A           ; 
+ 000A           ; void delay_nus(unsigned int n)       //N us延时函数
+ 000A           ;   {
+ 000A                   .dbline 12
+ 000A           ;    unsigned int i=0;
+ 000A 4427              clr R20
+ 000C 5527              clr R21
+ 000E                   .dbline 13
+ 000E           ;    for (i=0;i<n;i++)
+ 000E 03C0              xjmp L6
+ 0010           L3:
+ 0010                   .dbline 14
+ 0010 F7DF              xcall _delay_1us
+ 0012           L4:
+ 0012                   .dbline 13
+ 0012 4F5F              subi R20,255  ; offset = 1
+ 0014 5F4F              sbci R21,255
+ 0016           L6:
+ 0016                   .dbline 13
+ 0016 4617              cp R20,R22
+ 0018 5707              cpc R21,R23
+ 001A D0F3              brlo L3
+ 001C                   .dbline -2
+ 001C           L2:
+ 001C 0E940000          xcall pop_gset2
+ 0020                   .dbline 0 ; func end
+ 0020 0895              ret
+ 0022                   .dbsym r i 20 i
+ 0022                   .dbsym r n 22 i
+ 0022                   .dbend
+ 0022                   .dbfunc e delay_1ms _delay_1ms fV
+ 0022           ;              i -> R16,R17
+                        .even
+ 0022           _delay_1ms::
+ 0022                   .dbline -1
+ 0022                   .dbline 18
+ 0022           ;    delay_1us();
+ 0022           ;   }
+ 0022           ;   
+ 0022           ; void delay_1ms(void)                 //1ms延时函数
+ 0022           ;   {
+ 0022                   .dbline 20
+ 0022 0027              clr R16
+ 0024 1127              clr R17
+ 0026 02C0              xjmp L11
+ 0028           L8:
+ 0028                   .dbline 20
+ 0028           L9:
+ 0028                   .dbline 20
+ 0028 0F5F              subi R16,255  ; offset = 1
+ 002A 1F4F              sbci R17,255
+ 002C           L11:
+ 002C                   .dbline 20
+ 002C           ;    unsigned int i;
+ 002C           ;    for (i=0;i<1140;i++);
+ 002C 0437              cpi R16,116
+ 002E E4E0              ldi R30,4
+ 0030 1E07              cpc R17,R30
+ 0032 D0F3              brlo L8
+ 0034                   .dbline -2
+ 0034           L7:
+ 0034                   .dbline 0 ; func end
+ 0034 0895              ret
+ 0036                   .dbsym r i 16 i
+ 0036                   .dbend
+ 0036                   .dbfunc e delay_nms _delay_nms fV
+ 0036           ;              i -> R20,R21
+ 0036           ;              n -> R22,R23
+                        .even
+ 0036           _delay_nms::
+ 0036 0E940000          xcall push_gset2
+ 003A B801              movw R22,R16
+ 003C                   .dbline -1
+ 003C                   .dbline 24
+ 003C           ;   }
+ 003C           ;   
+ 003C           ; void delay_nms(unsigned int n)       //N ms延时函数
+ 003C           ;   {
+ 003C                   .dbline 25
+ 003C           ;    unsigned int i=0;
+ 003C 4427              clr R20
+ 003E 5527              clr R21
+ 0040                   .dbline 26
+ 0040           ;    for (i=0;i<n;i++)
+ 0040 03C0              xjmp L16
+ 0042           L13:
+ 0042                   .dbline 27
+ 0042 EFDF              xcall _delay_1ms
+ 0044           L14:
+ 0044                   .dbline 26
+ 0044 4F5F              subi R20,255  ; offset = 1
+ 0046 5F4F              sbci R21,255
+ 0048           L16:
+ 0048                   .dbline 26
+ 0048 4617              cp R20,R22
+ 004A 5707              cpc R21,R23
+ 004C D0F3              brlo L13
+ 004E                   .dbline -2
+ 004E           L12:
+ 004E 0E940000          xcall pop_gset2
+ 0052                   .dbline 0 ; func end
+ 0052 0895              ret
+ 0054                   .dbsym r i 20 i
+ 0054                   .dbsym r n 22 i
+ 0054                   .dbend

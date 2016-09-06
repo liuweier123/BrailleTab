@@ -1,0 +1,61 @@
+C51 COMPILER V7.50   6                                                                     04/16/2006 11:30:49 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE 6
+OBJECT MODULE PLACED IN 6.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 6.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.H>
+   2          #include <INTRINS.H>
+   3          
+   4          bit flag;
+   5          sbit P1_7=P1^7;
+   6          sbit P1_0=P1^0;
+   7          
+   8          unsigned char count;
+   9          
+  10          void dely500(void)
+  11          {
+  12   1        unsigned char i;
+  13   1        for(i=250;i>0;i--)
+  14   1          {
+  15   2            _nop_();
+  16   2          }
+  17   1      }
+  18          
+  19          void main(void)
+  20          {
+  21   1        while(1)
+  22   1          {
+  23   2            if(P1_7==0)
+  24   2              {
+  25   3                for(count=200;count>0;count--)
+  26   3                  {
+  27   4                    P1_0=~P1_0;
+  28   4                    dely500();
+  29   4                  }
+  30   3                for(count=200;count>0;count--)
+  31   3                  {
+  32   4                    P1_0=~P1_0;
+  33   4                    dely500();
+  34   4                    dely500();
+  35   4                  }
+  36   3              }
+  37   2          }
+  38   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     48    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

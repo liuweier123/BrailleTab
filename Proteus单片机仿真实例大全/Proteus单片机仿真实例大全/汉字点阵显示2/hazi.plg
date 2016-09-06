@@ -1,0 +1,14 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+F:\学习\电子研究杂烩\杂锦\冯文俊\单片机实例\汉字点阵显示2\hazi.uv2
+Project File Date:  03/21/2007
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling hazi.c...
+HAZI.C(10): error C141: syntax error near '{'
+HAZI.C(31): error C247: non-address/-constant initializer
+Target not created

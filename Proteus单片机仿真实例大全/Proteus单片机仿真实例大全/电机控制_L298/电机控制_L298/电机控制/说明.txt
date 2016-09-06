@@ -1,0 +1,30 @@
+本程序由AVR与虚拟仪器网站提供，免费共享，不记版权，欢迎转载，请注明出处。
+网址：http://www.avrvi.com  论坛：http://www.avrvi.com/bbs/
+
+本程序通过测试，实现预期效果，如果你在使用中遇到问题，请在论坛交流。
+程序编写整理：古欣
+
+软件环境：icc+avrstudio
+
+下载工具：PHYSICO AVR JTAG&stk500 仿真编程器 
+介绍：http://www.avrvi.com/bbs/read.php?tid-61-page-e.html
+
+硬件环境: mega32＋N298，你可以选择我们提供的运动控制开发板。
+
+硬件连结: 请参考  硬件连接电路图.jpg
+
+使用方法：直接将main.hex文件下载到单片机中就可以使用。你可以打开工程文件查看，motor.c已经是一个结构化的驱动程序，可以方便的调用。
+
+更改连接：请打开motor.h更改以下内容即可。
+
+//PD4,PD5 电机方向控制
+#define moto_en1 PORTD |= 0x10
+#define moto_en2 PORTD |= 0x20
+#define moto_uen1 PORTD &=~ 0x10
+#define moto_uen2 PORTD &=~ 0x20
+
+软件核心介绍：
+
+通过控制电机的IN1和IN2改变方向,	pwm控制速度。
+IN1和IN2不同时，电机转动;
+IN1和IN2相同时，电机急停。

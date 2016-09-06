@@ -1,0 +1,49 @@
+C51 COMPILER V7.01  FLASHLED                                                               03/21/2007 15:13:58 PAGE 1   
+
+
+C51 COMPILER V7.01, COMPILATION OF MODULE FLASHLED
+OBJECT MODULE PLACED IN FlashLED.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE FlashLED.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          void Delay1ms(unsigned int count)
+   4          {
+   5   1              unsigned int i,j;
+   6   1              for(i=0;i<count;i++)
+   7   1              for(j=0;j<0;j++);
+   8   1      }
+   9          
+  10          main()
+  11          {
+  12   1              unsigned char LEDIndex = 0;
+  13   1              bit LEDDirection = 1;
+  14   1      
+  15   1              while(1)
+  16   1              {
+  17   2                      if(LEDDirection)
+  18   2                              P2 = ~(0x01<<LEDIndex);
+  19   2                      else
+  20   2                              P0 = ~(0x80>>LEDIndex); 
+  21   2                      if(LEDIndex==7)
+  22   2                              LEDDirection = !LEDDirection;
+  23   2                      LEDIndex = (LEDIndex+1)%8;
+  24   2                      Delay1ms(1000);
+  25   2              }
+  26   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     90    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,171 @@
+BL51 BANKED LINKER/LOCATER V5.01                                                        03/21/2007  16:12:41  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.01, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE STARTUP.obj, hazi.obj TO hazi
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  hazi.obj (HAZI)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+
+
+LINK MAP OF MODULE:  hazi (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000CH     UNIT         ?DT?HAZI
+            IDATA   0014H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     009DH     UNIT         ?PR?MAIN?HAZI
+            CODE    00A0H     0080H     UNIT         ?CO?HAZI
+            CODE    0120H     0024H     UNIT         ?PR?_DELAY?HAZI
+            CODE    0144H     0019H     UNIT         ?C?LIB_CODE
+            CODE    015DH     000EH     UNIT         ?PR?_OUT_RXD?HAZI
+            CODE    016BH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   hazi (?C_STARTUP)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?HAZI
+
+?PR?MAIN?HAZI
+  +--> ?CO?HAZI
+  +--> ?PR?_OUT_RXD?HAZI
+
+
+
+SYMBOL TABLE OF MODULE:  hazi (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:016BH         SEGMENT       ?C_C51STARTUP
+  I:0014H         SEGMENT       ?STACK
+BL51 BANKED LINKER/LOCATER V5.01                                                      03/21/2007  16:12:41  PAGE 2
+
+
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:016EH         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0000H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:016BH         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         92
+  C:016BH         LINE#         99
+  C:016DH         LINE#         100
+  C:016EH         LINE#         101
+  C:016FH         LINE#         102
+  C:0171H         LINE#         151
+  C:0174H         LINE#         155
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        HAZI
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  C:00A0H         PUBLIC        hanzi
+  B:0098H.1       PUBLIC        TI
+  C:0003H         PUBLIC        main
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  B:00A0H.7       PUBLIC        STTP
+  D:0008H         PUBLIC        i
+  C:0160H         PUBLIC        _out_rxd
+  D:000AH         PUBLIC        j
+  D:000CH         PUBLIC        n
+  C:0120H         PUBLIC        _delay
+  D:000EH         PUBLIC        x
+  D:0010H         PUBLIC        y
+  D:0012H         PUBLIC        z
+  -------         PROC          MAIN
+  C:0003H         LINE#         43
+  C:0003H         LINE#         44
+  C:0003H         LINE#         45
+  C:0006H         LINE#         46
+  C:0006H         LINE#         47
+  C:0006H         LINE#         48
+  C:0009H         LINE#         49
+BL51 BANKED LINKER/LOCATER V5.01                                                      03/21/2007  16:12:41  PAGE 3
+
+
+  C:000DH         LINE#         50
+  C:000DH         LINE#         51
+  C:000FH         LINE#         52
+  C:001AH         LINE#         53
+  C:0025H         LINE#         54
+  C:0033H         LINE#         55
+  C:0041H         LINE#         56
+  C:004FH         LINE#         57
+  C:005DH         LINE#         58
+  C:006BH         LINE#         59
+  C:0079H         LINE#         60
+  C:007BH         LINE#         61
+  C:0084H         LINE#         62
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        n
+  C:0120H         LINE#         68
+  C:0120H         LINE#         69
+  C:0120H         LINE#         71
+  C:0129H         LINE#         72
+  C:0129H         LINE#         73
+  C:012EH         LINE#         74
+  C:013CH         LINE#         75
+  C:0143H         LINE#         77
+  -------         ENDPROC       _DELAY
+  -------         PROC          L?0019
+  -------         ENDPROC       L?0019
+  -------         PROC          _OUT_RXD
+  D:0001H         SYMBOL        d
+  C:0160H         LINE#         79
+  C:0160H         LINE#         80
+  C:0160H         LINE#         81
+  C:0165H         LINE#         82
+  C:0168H         LINE#         83
+  C:016AH         LINE#         84
+  -------         ENDPROC       _OUT_RXD
+  -------         ENDMOD        HAZI
+
+  -------         MODULE        ?C?CLDPTR
+  C:0144H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY?HAZI
+
+Program Size: data=21.0 xdata=0 code=375
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

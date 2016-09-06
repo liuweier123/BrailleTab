@@ -1,0 +1,50 @@
+C51 COMPILER V8.05a   DATRANSFORM                                                          08/08/2007 16:00:20 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE DATRANSFORM
+OBJECT MODULE PLACED IN DATransform.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sources\DATransform.c BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\D
+                    -ATransform.lst) OBJECT(DATransform.obj)
+
+line level    source
+
+   1          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   2          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<AD转换函数>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   3          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   4          #include <at89x51.h>
+   5          
+   6          #define START P3_4                         //ATART，ALE接口。0->1->0:启动AD转换。
+   7          #define EOC P3_3                           //转换完毕由0变1.
+   8          #define OUTPORT P2 
+   9          
+  10                                                                                                          //AD转换函数，返回转换结果。
+  11                                                                                                          //转换结果是3位数，小数点在百位与十位之间。
+  12          unsigned int uiADTransform()
+  13          {
+  14   1              unsigned int uiResult;
+  15   1      
+  16   1              START=1;                         //启动AD转换。
+  17   1              START=0;
+  18   1      
+  19   1              while(EOC==0);           //等待转换结束。
+  20   1      
+  21   1              uiResult=OUTPORT;        //出入转换结果。
+  22   1      
+  23   1              uiResult=(100*uiResult)/51;                //处理运算结果。
+  24   1      
+  25   1              return uiResult;
+  26   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     24    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

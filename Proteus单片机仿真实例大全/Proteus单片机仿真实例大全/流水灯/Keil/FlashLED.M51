@@ -1,0 +1,100 @@
+BL51 BANKED LINKER/LOCATER V5.01                                                        03/21/2007  15:13:59  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.01, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE FlashLED.obj TO FlashLED RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  FlashLED.obj (FLASHLED)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  FlashLED (FLASHLED)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+                    0008H     0018H                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         _BIT_GROUP_
+                    0020H.1   0000H.7                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0038H     UNIT         ?PR?MAIN?FLASHLED
+            CODE    003BH     0022H     UNIT         ?PR?_DELAY1MS?FLASHLED
+            CODE    005DH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   FlashLED (FLASHLED)
+
+
+SEGMENT                           BIT_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?FLASHLED
+
+?PR?MAIN?FLASHLED              0020H.0  0000H.1
+  +--> ?PR?_DELAY1MS?FLASHLED
+
+
+
+SYMBOL TABLE OF MODULE:  FlashLED (FLASHLED)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        FLASHLED
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  C:0003H         PUBLIC        main
+  C:003BH         PUBLIC        _Delay1ms
+BL51 BANKED LINKER/LOCATER V5.01                                                      03/21/2007  15:13:59  PAGE 2
+
+
+  -------         PROC          _DELAY1MS
+  D:0006H         SYMBOL        count
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0002H         SYMBOL        j
+  -------         ENDDO         
+  C:003BH         LINE#         3
+  C:003BH         LINE#         4
+  C:003BH         LINE#         6
+  C:0045H         LINE#         7
+  C:005CH         LINE#         8
+  -------         ENDPROC       _DELAY1MS
+  -------         PROC          MAIN
+  -------         DO            
+  D:0001H         SYMBOL        LEDIndex
+  B:0020H.0       SYMBOL        LEDDirection
+  -------         ENDDO         
+  C:0003H         LINE#         10
+  C:0003H         LINE#         11
+  C:0003H         LINE#         12
+  C:0005H         LINE#         13
+  C:0007H         LINE#         15
+  C:0007H         LINE#         16
+  C:0007H         LINE#         17
+  C:000AH         LINE#         18
+  C:001AH         LINE#         20
+  C:0028H         LINE#         21
+  C:002BH         LINE#         22
+  C:002DH         LINE#         23
+  C:0032H         LINE#         24
+  C:0039H         LINE#         25
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        FLASHLED
+
+Program Size: data=9.1 xdata=0 code=105
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

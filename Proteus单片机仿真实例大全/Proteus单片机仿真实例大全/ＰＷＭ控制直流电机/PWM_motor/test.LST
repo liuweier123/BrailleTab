@@ -1,0 +1,42 @@
+C51 COMPILER V8.02   TEST                                                                  08/15/2007 09:49:59 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE TEST
+OBJECT MODULE PLACED IN test.OBJ
+COMPILER INVOKED BY: C:\Program Files\keil\C51\BIN\C51.EXE test.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include"at89x51.h"
+   2          
+   3          main()
+   4          {
+   5   1       
+   6   1       P0=0x00;
+   7   1       if(P0_2==1)
+   8   1       {
+   9   2       P2_0=1;
+  10   2       P2_1=0;
+  11   2        }
+  12   1      
+  13   1       if(P0_3==1)
+  14   1       {
+  15   2       P2_0=0;
+  16   2       P2_1=1;
+  17   2       }
+  18   1      
+  19   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     18    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

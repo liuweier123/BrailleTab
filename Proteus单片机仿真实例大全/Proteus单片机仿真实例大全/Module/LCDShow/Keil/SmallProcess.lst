@@ -1,0 +1,94 @@
+C51 COMPILER V8.05a   SMALLPROCESS                                                         08/08/2007 08:55:17 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE SMALLPROCESS
+OBJECT MODULE PLACED IN SmallProcess.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sources\SmallProcess.c BROWSE INCDIR(.\include;.\include) DEBUG OBJECTEXTEN
+                    -D PRINT(.\SmallProcess.lst) OBJECT(SmallProcess.obj)
+
+line level    source
+
+   1          //*************************************************************************************************
+   2          //*                                                                                                                                                                                               *
+   3          //*                      ******************************小写字母处理函数**************************                         *
+   4          //*                                                                                                                                                                                               *
+   5          //*************************************************************************************************
+   6          
+   7          extern unsigned char uc_ClickCount;
+   8          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   9          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<按键第1个字母处理函数>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  10          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  11          unsigned char ucSmallOne(unsigned char ucKeyCode)
+  12          {
+  13   1              switch(ucKeyCode)
+  14   1                      {
+  15   2                      case 11:return 'a';break;
+  16   2                      case 12:return 'd';break;
+  17   2                      case 13:return 'g';break;
+  18   2                      case 21:return 'j';break;
+  19   2                      case 22:return 'm';break;
+  20   2                      case 23:return 'p';break;
+  21   2                      case 31:return 's';break;
+  22   2                      case 32:return 'v';break;
+  23   2                      case 33:return 'y';break;
+  24   2                      default:break;
+  25   2                      }
+  26   1              return 0xFF;
+  27   1      }
+  28          
+  29          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  30          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<按键第2个字母处理函数>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  31          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  32          unsigned char ucSmallTwo(unsigned char ucKeyCode)
+  33          {
+  34   1              switch(ucKeyCode)
+  35   1                      {
+  36   2                      case 11:return 'b';break;
+  37   2                      case 12:return 'e';break;
+  38   2                      case 13:return 'h';break;
+  39   2                      case 21:return 'k';break;
+  40   2                      case 22:return 'n';break;
+  41   2                      case 23:return 'q';break;
+  42   2                      case 31:return 't';break;
+  43   2                      case 32:return 'w';break;
+  44   2                      case 33:uc_ClickCount=2;return 'z';break;
+  45   2                      default:break;
+  46   2                      }
+  47   1              return 0xFF;
+  48   1      }
+  49          
+  50          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  51          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<按键第3个字母处理函数>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  52          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  53          unsigned char ucSmallThree(unsigned char ucKeyCode)
+  54          {
+C51 COMPILER V8.05a   SMALLPROCESS                                                         08/08/2007 08:55:17 PAGE 2   
+
+  55   1              switch(ucKeyCode)
+  56   1                      {
+  57   2                      case 11:return 'c';break;
+  58   2                      case 12:return 'f';break;
+  59   2                      case 13:return 'i';break;
+  60   2                      case 21:return 'l';break;
+  61   2                      case 22:return 'o';break;
+  62   2                      case 23:return 'r';break;
+  63   2                      case 31:return 'u';break;
+  64   2                      case 32:return 'x';break;
+  65   2                      default:break;
+  66   2                      }
+  67   1              return 0xFF;
+  68   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    189    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,20 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+F:\学习\电子研究杂烩\杂锦\冯文俊\单片机实例\走马灯\Keil\HurricaneLamp.uv2
+Project File Date:  03/15/2007
+
+<h2>Output:</h2>
+Build target 'Target 1'
+linking...
+Program Size: data=30.3 xdata=0 code=1326
+creating hex file from "HurricaneLamp"...
+"HurricaneLamp" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling HurricaneLamp.c...
+linking...
+Program Size: data=30.3 xdata=0 code=1326
+creating hex file from "HurricaneLamp"...
+"HurricaneLamp" - 0 Error(s), 0 Warning(s).

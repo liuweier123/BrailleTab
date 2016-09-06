@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    
+    <title>Braille Tab</title>
+    
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    
+    <link rel="stylesheet" href="./css/style.css" media="screen" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700" />
+    <link rel="stylesheet" href="./css/flexslider.css" media="screen" />
+
+    <script src="./js/jquery-1.7.2.min.js"></script>
+    <script src="./js/jQuery.BlackAndWhite.min.js"></script>
+    <script src="./js/jquery.easing-1.3.min.js"></script>
+    <script src="./js/jquery.flexslider-min.js"></script>
+    <script src="./js/jquery.isotope.min.js"></script>
+    <script src="./js/jquery.jcarousel.min.js"></script>
+    <script src="./js/jquery.touchSwipe.min.js"></script>
+    <script src="./js/respond.min.js"></script>
+    <script src="./js/selectnav.min.js"></script>
+    <script src="./js/custom.js"></script>
+    <script type="text/javascript" src="http://rework.reworkmedia.net/[JS library]"></script>
+    <!--[if (gte IE 6)&(lte IE 8)]>
+      <script type="text/javascript" src="./js/selectivizr-min.js"></script>
+      <noscript><link rel="stylesheet" href="http://rework.reworkmedia.net/[fallback css]" /></noscript>
+    <![endif]-->
+
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-32209063-3']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+
+<!-- Main Container -->
+<div id="body-wrapper">
+
+    <!-- Header -->
+    <div id="header" class="container clearfix">
+
+        <a href="./index.html" id="logo"><img src="./images/logo.png" alt="" /></a>
+
+        <!-- Navigation -->
+        <ul id="navigation">
+            <li class="current">
+                <a href="./index.html">Home</a>
+       
+            </li>
+            <li>
+                <a href="./about.html">About us</a>
+            </li>
+           
+            <li>
+                <a href="./index.html">Portfolio</a>
+                <ul>
+                    <li><a href="./index.html">2 Columns</a></li>
+                    <li><a href="./index.html">3 Columns</a></li>
+                    <li><a href="./index.html">4 Columns</a></li>
+                    <li><a href="./index.html">Single Project</a></li>
+                    <li><a href="./index.html">Alternative Version</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="./contact.html">Contact</a>
+            </li>
+        </ul>
+        <!-- /Navigation -->
+        
+    </div>
+    <!-- /Header -->
+	<div class="inner_copyright">Collect from <a href="http://www.cssmoban.com/" target="_blank" title="网站模板">网站模板</a></div>
+
+    <!-- Content -->
+    <div id="content" class="container clearfix">
+
+        <h1 class="page-title">Hello, <br/><span class="accent">We are glad to show our project</span></h1>
+
+        <!-- Slider -->
+        <div id="main-slider" class="flexslider">
+            <ul class="slides">
+              <li>
+                <img src="./images/content/slide_01.jpg" alt="" />
+                <div class="flex-caption">
+                    <h3>Braille Tab</h3> <p>With which they can read more book and extend their horizon</p> <input type="submit" value="Learn More" class="red" />
+                </div>
+              </li>
+              <li>
+                <img src="./images/content/slide_02.jpg" alt="" />
+                <div class="flex-caption">
+                    <h3>Our goal</h3> <p>..............................................................................</p> <input type="submit" value="Learn More" class="red" />
+                </div>
+              </li>
+              <li>
+                <img src="./images/content/slide_03.jpg" alt="" />
+                <div class="flex-caption">
+                    <h3>How it work</h3> <p>............................................................................</p> <input type="submit" value="Learn More" class="red" />
+                </div>
+              </li>
+            </ul>
+        </div>
+        <!-- /Slider -->
+
+        <!-- Project Carousel -->
+        <div id="project-wrapper" class="clearfix">
+
+            <div class="section-title one-fourth">
+                <h4>THE IDEA</h4>
+                <p>Watch the vedio and see why we are interested in this project.</p>
+                <p><a>View more videos</a></p>
+            </div>
+
+            <ul class="project-carousel" type="float:right">
+                
+            <iframe src="https://drive.google.com/file/d/0B9SqdYkEpE7kdk5TV0hsVjNUbzA/preview" width="640" height="480"></iframe>
+            </ul>
+        </div>
+        <!-- /Project Carousel -->
+
+        <!-- Blog Carousel -->
+        <div id="blog-wrapper" class="clearfix">
+
+            <div class="section-title one-fourth">
+                <h4>Detail of our conference</h4>
+                <p>In our schedule we have at least a half day for our project, we have conference once a week!</p>
+                <p><a href="./blog.html">Read the abstract of our conference</a></p>
+                <div class="carousel-nav">
+                    <a id="blog-prev" class="jcarousel-prev" href="./index.html"></a>
+                    <a id="blog-next" class="jcarousel-next" href="./index.html"></a>
+                </div>
+            </div>
+            
+            <ul class="blog-carousel">
+                <li>
+                    <a href="./blog_post.html">
+                        <h4>First conference</h4>
+                    </a>
+                    <span class="date">05 Jul 2016</span>
+                    <p>......................................................................................................................................................................................................................................</p>
+                </li>
+                <li>
+                    <a href="./blog_post.html">
+                        <h4>..........</h4>
+                    </a>
+                    <span class="date">04 Jul 2016</span>
+                    <p>.....................................................................................................................................................................</p>
+                </li>
+                <li>
+                    <a href="./blog_post.html">
+                        <h4>.....</h4>
+                    </a>
+                    <span class="date">02 Jul 2016</span>
+                    <p>.................................................................................................................................................................................</p>
+                </li>
+                <li>
+                    <a href="./blog_post.html">
+                        <h4>.............</h4>
+                    </a>
+                    <span class="date">05 Jul 2016</span>
+                    <p>....................................................................................................................................................................................................</p>
+                </li>
+               <li>
+                    <a href="./blog_post.html">
+                        <h4>.............</h4>
+                    </a>
+                    <span class="date">05 Jul 2016</span>
+                    <p>....................................................................................................................................................................................................</p>
+                </li>
+               <li>
+                    <a href="./blog_post.html">
+                        <h4>.............</h4>
+                    </a>
+                    <span class="date">05 Jul 2016</span>
+                    <p>....................................................................................................................................................................................................</p>
+                </li>
+				<li>
+                    <a href="./blog_post.html">
+                        <h4>.............</h4>
+                    </a>
+                    <span class="date">05 Jul 2016</span>
+                    <p>....................................................................................................................................................................................................</p>
+                </li>
+				<li>
+                    <a href="./blog_post.html">
+                        <h4>.............</h4>
+                    </a>
+                    <span class="date">05 Jul 2016</span>
+                    <p>....................................................................................................................................................................................................</p>
+                </li>
+            </ul>
+        </div>
+        <!-- /Blog Carousel -->
+
+        <!-- Logo List -->
+        <div class="logo-list">
+            <ul>
+                <li><a href="./index.html"><div class="bw-wrapper"><img src="./images/content/logo_list_01.png" alt="" /></div></a></li>
+                <li><a href="http://www.avh.asso.fr/index.php"><div class="bw-wrapper"><img src="./images/content/logo_list_02.png" alt="" /></div></a></li>
+                <li><a href="./index.html"><div class="bw-wrapper"><img src="./images/content/logo_list_03.png" alt="" /></div></a></li>
+                <li><a href="./index.html"><div class="bw-wrapper"><img src="./images/content/logo_list_04.png" alt="" /></div></a></li>
+                <li><a href="./index.html"><div class="bw-wrapper"><img src="./images/content/logo_list_05.png" alt="" /></div></a></li>
+            </ul>
+        </div>
+        <!-- /Logo List -->
+
+    </div>
+    <!-- /Content -->
+
+    <!-- Footer -->
+    <div id="footer">
+        <div class="container clearfix">
+
+            <!-- About -->
+            <div class="one-fourth">
+                <a href="./index.html" class="logo"><img src="./images/logo_footer.png" alt="" /></a>
+                <p>Nous somme edudiants de Centrale de Lille</p>
+            </div>
+            <!-- /About -->
+
+            <!-- Twitter Feed -->
+            <div class="one-fourth">
+                <h5>Latest News</h5>
+                <div class="twitter-feed">
+                    <p>
+                        We are now the in the final of the CGI, thanks for voting for us <br/> <a href="http://www.challenges-citoyens-cgi.com/site/20151123141232.html?type&votant">go and vote for Braille Tab</a>
+                        <span class="tweet-time">7 hours ago</span>
+                    </p>
+                </div>
+            </div>
+            <!-- /Twitter Feed -->
+
+            <!-- Contacts -->
+            <div class="one-fourth">
+                <h5>Contact Details</h5>
+            <p class="address">Villeneuve D'asq,59651  <br />Lille, France</p>
+            <p class="phone">Phone: (33)  06 51 67 22 22 </p>
+            <p class="email">pholasavalentine@gmail.com</p>
+      
+            </div>
+            <!-- /Contacts -->
+
+            <!-- Photo Stream -->
+      
+            <!-- /Photo Stream -->
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="info container clearfix">
+
+            <!-- Copyright -->
+            <ul class="copyright">
+                <li>© 2016 CAI Yu</a></li>
+                <li><a href="./index.html">Legal Notice</a></li>
+                <li><a href="./index.html">Terms & Conditions</a></li>
+            </ul>
+            <!-- /Copyright -->
+
+            <!-- Social Links -->
+            <ul class="social-links">
+                <li class="twitter"><a href="./index.html">Twitter</a></li>
+                <li class="facebook"><a href="./index.html">Facebook</a></li>
+                <li class="linkedin"><a href="./index.html">LinkedIn</a></li>
+                <li class="digg"><a href="./index.html">Digg</a></li>
+                <li class="vimeo"><a href="./index.html">Vimeo</a></li>
+            </ul>
+            <!-- /Social Links -->
+
+        </div>
+    </div>
+    <!-- /Footer -->
+
+</div>
+<!-- /Main Container -->
+
+</body>
+</html>

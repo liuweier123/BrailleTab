@@ -1,0 +1,34 @@
+[DisAssemblyWindow]
+NumStates=_ 1
+State 1=_ 1
+[Watch]
+Watch 1=
+Watch 2=
+Watch 3=
+[CodeCoverage]
+State=_ 0
+[Profiling]
+State=_ 0
+[TermIOSettings]
+Filename=_ ""
+InputMode=_ 1
+[Desktop-Debug]
+Wnd0=_ "Locals" "open" 44 0 1 -1 -1 -6 -25 516 318 771 476 100 100 100 100
+Wnd1=_ "Watch" "open" 44 0 1 -1 -1 -1 -1 510 158 765 316 100 100 100 100
+Wnd2=_ "Disassembly" "open" 44 0 2 0 608 -4 -23 46 301 301 511
+Wnd3=_ "Log" "open" 44 0 1 -1 -1 -4 -23 765 0 1020 158
+Wnd4=_ "CallStack" "open" 44 0 1 -1 -1 -4 -23 516 0 771 158 1
+Wnd5=_ "Register" "open" 44 0 1 -1 -1 -1 -1 565 137 1387 571 0 0 0 0
+Wnd6=_ "Terminal I/O" "open" 44 0 1 -1 -1 -4 -23 696 315 951 525
+Wnd7=_ "Editor-DebugSource" "open" 44 0 1 -1 -1 -4 -23 75 83 897 517 "G:\008 machao\IAR\4bit_lcd\4bit.c" 1 1 0 66 2281 2281 0 79 2460 2460
+Maximized=_ 0
+Count=_ 8
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[Breakpoints]
+Count=0

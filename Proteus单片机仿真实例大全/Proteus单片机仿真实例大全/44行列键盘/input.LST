@@ -1,0 +1,71 @@
+C51 COMPILER V7.09   INPUT                                                                 12/22/2005 15:20:13 PAGE 1   
+
+
+C51 COMPILER V7.09, COMPILATION OF MODULE INPUT
+OBJECT MODULE PLACED IN input.OBJ
+COMPILER INVOKED BY: D:\Program Files\C51\BIN\C51.EXE input.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg51.h>
+   2          unsigned char code tab[4][4]={{'1','4','7','#'},
+   3                                                  {'2','5','8','0'},
+   4                                                  {'3','6','9','*'},
+   5                                                  {'A','B','C','D'}};       //0µΩFµƒ16∏ˆº¸÷≤
+   6          
+   7          void delay(unsigned char a)
+   8                  {
+   9   1              unsigned char i;
+  10   1              while(a--)
+  11   1                      for(i=100;i>0;i--)
+  12   1                              ;
+  13   1              }
+  14          
+  15          char kbscan()          //º¸≈Ã…®√Ë
+  16                  {
+  17   1              unsigned char hang,lie;
+  18   1              if(P3!=0x0f)
+  19   1              delay(5);
+  20   1              if(P3!=0x0f)
+  21   1                      {
+  22   2                      switch(P3&0xf0)
+  23   2                                      {
+  24   3                                      case 0x10:hang=0;break;
+  25   3                                      case 0x20:hang=1;break;
+  26   3                                      case 0x40:hang=2;break;
+  27   3                                      case 0x80:hang=3;break;
+  28   3                                      }
+  29   2                      P3=0xf0;
+  30   2                      P3=0xf0;
+  31   2                      switch(P3&0x0f)
+  32   2                                      {
+  33   3                                      case 1:lie=0;break;
+  34   3                                      case 2:lie=1;break;
+  35   3                                      case 4:lie=2;break;
+  36   3                                      case 8:lie=3;break;
+  37   3                                      }
+  38   2                      P3=0x0f;
+  39   2                      while(P3!=0x0f);
+  40   2                      return (tab[hang][lie]);
+  41   2                      }
+  42   1              return 0;
+  43   1              }
+  44          
+  45          
+  46          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    158    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V7.09   INPUT                                                                 12/22/2005 15:20:13 PAGE 2   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

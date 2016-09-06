@@ -1,0 +1,50 @@
+XL
+H 1 areas 3 global symbols
+M device_init.c
+A text size 36 flags 0
+dbfile E:\avr\电机控制\电机控制\device_init.c
+dbfunc e port_init 0 fV
+dbline FFFFFFFF 0
+dbline 8 0
+dbline 9 0
+dbline A 4
+dbline B 6
+dbline C 8
+dbline D A
+dbline E C
+dbline F E
+dbline 10 10
+dbline FFFFFFFE 14
+dbline 0 14
+dbfunc e timer2_init 16 fV
+dbline FFFFFFFF 16
+dbline 16 16
+dbline 17 16
+dbline 18 1A
+dbline 19 1E
+dbline 1A 22
+dbline FFFFFFFE 26
+dbline 0 26
+dbfunc e init_devices 28 fV
+dbline FFFFFFFF 28
+dbline 21 28
+dbline 23 28
+dbline 24 2A
+dbline 25 2C
+dbline 26 2E
+dbline 27 32
+dbline FFFFFFFE 34
+dbline 0 34
+S _port_init Def0000
+S _init_devices Def0028
+S _timer2_init Def0016
+T 00 00 22 24 2B BA 2A BA 28 BA 27 BA 25 BA 24 BA
+R 00 00 00 00
+T 0E 00 22 BA 80 EB 81 BB 08 95
+R 00 00 00 00
+T 16 00 22 24 25 BC 81 E0 84 BD 86 E6 83 BD 8E E6
+R 00 00 00 00
+T 24 00 85 BD 08 95
+R 00 00 00 00
+T 28 00 F8 94 EA DF F4 DF 22 24 29 BE 78 94 08 95
+R 00 00 00 00

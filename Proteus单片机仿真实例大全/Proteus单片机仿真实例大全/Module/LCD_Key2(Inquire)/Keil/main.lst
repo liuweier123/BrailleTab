@@ -1,0 +1,59 @@
+C51 COMPILER V8.05a   MAIN                                                                 09/02/2007 11:53:10 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE source\main.c BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\main.lst)
+                    - OBJECT(main.obj)
+
+line level    source
+
+   1          //*************************************************************************************************
+   2          //*************************************************************************************************
+   3          //**<程序名>：键盘和LCD。                                                                                                                                                **
+   4          //**<功能>：LCD显示键盘输入。                                                                                                                                    **
+   5          //**<作者>：LastRitter                                                                                                                                                   **
+   6          //**<完成时间>：2007年8月8日                                                                                                                                     **
+   7          //**<联系方式>：E-Mail:superyongzhe@163.com;QQ:314665354                                                                                 **
+   8          //*************************************************************************************************
+   9          //*************************************************************************************************
+  10          #include "includes.h"
+  11          
+  12          #define SCANPORT P2
+  13          
+  14          void main()
+  15          {
+  16   1              unsigned char ucCount;
+  17   1              vdInitialize();
+  18   1      
+  19   1              vWriteCMD(0x81);
+  20   1      
+  21   1              vShowChar("In Your Order !");
+  22   1      
+  23   1              SCANPORT=0x0F;
+  24   1      
+  25   1              while(1)
+  26   1              {
+  27   2              if(SCANPORT!=0x0F)
+  28   2                      {
+  29   3                      for(ucCount=0;ucCount<200;ucCount++);
+  30   3                      
+  31   3                      if(SCANPORT!=0x0F)
+  32   3                              vKeyProcess(ucKeyScan());
+  33   3                      }
+  34   2              }
+  35   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     58    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

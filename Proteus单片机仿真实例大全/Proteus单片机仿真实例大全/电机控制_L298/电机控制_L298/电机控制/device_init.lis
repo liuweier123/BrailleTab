@@ -1,0 +1,115 @@
+                        .module device_init.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\avr\电机控制\电机控制\device_init.c
+ 0000                   .dbfunc e port_init _port_init fV
+                        .even
+ 0000           _port_init::
+ 0000                   .dbline -1
+ 0000                   .dbline 8
+ 0000           ; //ICC-AVR application builder : 2006-11-1 0:27:10
+ 0000           ; // Target : M32
+ 0000           ; // Crystal: 7.3728Mhz
+ 0000           ; //文件名：device_init.c 各种参数初始化
+ 0000           ; #include "config.h"
+ 0000           ; 
+ 0000           ; void port_init(void)
+ 0000           ; {
+ 0000                   .dbline 9
+ 0000           ;  PORTA = 0x00;
+ 0000 2224              clr R2
+ 0002 2BBA              out 0x1b,R2
+ 0004                   .dbline 10
+ 0004           ;  DDRA  = 0x00; 
+ 0004 2ABA              out 0x1a,R2
+ 0006                   .dbline 11
+ 0006           ;  PORTB = 0x00;
+ 0006 28BA              out 0x18,R2
+ 0008                   .dbline 12
+ 0008           ;  DDRB  = 0x00; 
+ 0008 27BA              out 0x17,R2
+ 000A                   .dbline 13
+ 000A           ;  PORTC = 0x00; 
+ 000A 25BA              out 0x15,R2
+ 000C                   .dbline 14
+ 000C           ;  DDRC  = 0x00;
+ 000C 24BA              out 0x14,R2
+ 000E                   .dbline 15
+ 000E           ;  PORTD = 0x00;
+ 000E 22BA              out 0x12,R2
+ 0010                   .dbline 16
+ 0010           ;  DDRD  = 0xB0; // D7 PWM   //参考芯片手册
+ 0010 80EB              ldi R24,176
+ 0012 81BB              out 0x11,R24
+ 0014                   .dbline -2
+ 0014           L1:
+ 0014                   .dbline 0 ; func end
+ 0014 0895              ret
+ 0016                   .dbend
+ 0016                   .dbfunc e timer2_init _timer2_init fV
+                        .even
+ 0016           _timer2_init::
+ 0016                   .dbline -1
+ 0016                   .dbline 22
+ 0016           ; }
+ 0016           ; 
+ 0016           ; /**************************采用timer2 产生波形***********************/
+ 0016           ; // PWM频率 = 系统时钟频率/（分频系数*2*计数器上限值）） 
+ 0016           ; void timer2_init(void)
+ 0016           ; {
+ 0016                   .dbline 23
+ 0016           ;  TCCR2 = 0x00;  //stop
+ 0016 2224              clr R2
+ 0018 25BC              out 0x25,R2
+ 001A                   .dbline 24
+ 001A           ;  TCNT2= 0x01;  //set count
+ 001A 81E0              ldi R24,1
+ 001C 84BD              out 0x24,R24
+ 001E                   .dbline 25
+ 001E           ;  OCR2 = 0x66;  //set compare
+ 001E 86E6              ldi R24,102
+ 0020 83BD              out 0x23,R24
+ 0022                   .dbline 26
+ 0022           ;  TCCR2 = (1<<WGM20)|(1<<WGM21)|(1<<COM21)|0x06; //  start timer 快速pwm模式，匹配清零，溢出置位 256分频
+ 0022 8EE6              ldi R24,110
+ 0024 85BD              out 0x25,R24
+ 0026                   .dbline -2
+ 0026           L2:
+ 0026                   .dbline 0 ; func end
+ 0026 0895              ret
+ 0028                   .dbend
+ 0028                   .dbfunc e init_devices _init_devices fV
+                        .even
+ 0028           _init_devices::
+ 0028                   .dbline -1
+ 0028                   .dbline 33
+ 0028           ; //占空比＝高比低为：(OCR2-0X01)/(0XFF-OCR2)    OX01++++++(OCR2)__________OXFF (+表示输出高，_表示输出低)
+ 0028           ; //即OCR2越大，输出越大
+ 0028           ; }
+ 0028           ; 
+ 0028           ; //call this routine to initialize all peripherals
+ 0028           ; void init_devices(void)
+ 0028           ; {
+ 0028                   .dbline 35
+ 0028           ;  //stop errant interrupts until set up
+ 0028           ;  CLI(); //disable all interrupts
+ 0028 F894              cli
+ 002A                   .dbline 36
+ 002A           ;  port_init();
+ 002A EADF              xcall _port_init
+ 002C                   .dbline 37
+ 002C           ;  timer2_init();
+ 002C F4DF              xcall _timer2_init
+ 002E                   .dbline 38
+ 002E           ;  TIMSK = 0x00; //timer interrupt sources
+ 002E 2224              clr R2
+ 0030 29BE              out 0x39,R2
+ 0032                   .dbline 39
+ 0032           ;  SEI(); //re-enable interrupts
+ 0032 7894              sei
+ 0034                   .dbline -2
+ 0034           L3:
+ 0034                   .dbline 0 ; func end
+ 0034 0895              ret
+ 0036                   .dbend
+ 0036           ;  //all peripherals are now initialized
+ 0036           ; }

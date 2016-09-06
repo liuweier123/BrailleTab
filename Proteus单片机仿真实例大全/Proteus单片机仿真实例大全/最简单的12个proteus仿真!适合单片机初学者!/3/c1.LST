@@ -1,0 +1,35 @@
+C51 COMPILER V7.50   C1                                                                    04/16/2006 10:10:50 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE C1
+OBJECT MODULE PLACED IN c1.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE c1.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.H>
+   2          unsigned char temp;
+   3          
+   4          void main(void)
+   5          {
+   6   1        while(1)
+   7   1          {
+   8   2            temp=P1>>4;
+   9   2            temp=temp | 0xf0;
+  10   2            P1=temp;
+  11   2          }
+  12   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     15    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

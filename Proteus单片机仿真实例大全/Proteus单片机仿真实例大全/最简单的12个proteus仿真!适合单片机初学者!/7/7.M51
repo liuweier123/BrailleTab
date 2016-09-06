@@ -1,0 +1,93 @@
+BL51 BANKED LINKER/LOCATER V5.12                                                        04/16/2006  13:22:27  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.12, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE 7.obj TO 7
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  7.obj (7)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  7 (7)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         ?DT?7
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0019H     UNIT         ?PR?MAIN?7
+            CODE    001CH     000DH     UNIT         ?PR?DELAY02S?7
+            CODE    0029H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0035H     000AH     UNIT         ?CO?7
+
+
+
+OVERLAY MAP OF MODULE:   7 (7)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?7
+
+?PR?MAIN?7
+  +--> ?CO?7
+  +--> ?PR?DELAY02S?7
+
+
+
+SYMBOL TABLE OF MODULE:  7 (7)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        7
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  C:0035H         PUBLIC        table
+  C:0003H         PUBLIC        main
+  D:0008H         PUBLIC        dispcount
+BL51 BANKED LINKER/LOCATER V5.12                                                      04/16/2006  13:22:27  PAGE 2
+
+
+  C:001CH         PUBLIC        delay02s
+  -------         PROC          DELAY02S
+  -------         DO            
+  D:0007H         SYMBOL        i
+  D:0006H         SYMBOL        j
+  D:0005H         SYMBOL        k
+  -------         ENDDO         
+  C:001CH         LINE#         6
+  C:001CH         LINE#         7
+  C:001CH         LINE#         9
+  C:001EH         LINE#         10
+  C:0020H         LINE#         11
+  C:0028H         LINE#         12
+  -------         ENDPROC       DELAY02S
+  -------         PROC          MAIN
+  C:0003H         LINE#         14
+  C:0003H         LINE#         15
+  C:0003H         LINE#         16
+  C:0003H         LINE#         17
+  C:0003H         LINE#         18
+  C:0006H         LINE#         19
+  C:0006H         LINE#         20
+  C:000EH         LINE#         21
+  C:0011H         LINE#         22
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        7
+
+Program Size: data=10.0 xdata=0 code=63
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

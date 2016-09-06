@@ -1,0 +1,220 @@
+C51 COMPILER V7.50   MAIN                                                                  05/26/2006 08:29:44 PAGE 1   
+
+
+C51 COMPILER V7.50, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE src\main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\main.lst) OBJECT(main.obj)
+
+line level    source
+
+   1          #include <intrins.h>
+   2          #include <string.h>
+   3          #include "at89x52.H"
+   4          #include "experiment.h"
+   5          #include "main.h"
+   6          #define LEDNULL 1
+   7          #define LEDADD 1
+   8          /*************************************************************
+   9          *  FUNCTION NAME:Main(void)
+  10          *  PARAMETERS:
+  11          *  DESCRIPTION:main function
+  12          *  RETURNS:
+  13          *  CREATED: XiongHui 2006-3-18 
+  14          *  HISTORY OF CHANGE: 
+  15          *************************************************************/
+  16          void main(void)
+  17          {
+  18   1              EA = 0;
+  19   1              MCUInit();                              //initialize the SFR of MCU 
+  20   1              SYSInit();                              //read the Variables of system
+  21   1              EA = 1;                                 //enable the global interrupt flag
+  22   1              UartProFlag = TRUEFLAG;
+  23   1              while(1)
+  24   1              {
+  25   2                      Time500ms();
+  26   2                      KeyPro();
+  27   2                      UartRecePro();
+  28   2                      UartPro();
+  29   2              }
+  30   1      }
+  31          /********************************************************************************
+  32          *  FUNCTION NAME:Time500ms(void)
+  33          *  PARAMETERS:key
+  34          *  DESCRIPTION:time delay                 
+  35          *  RETURNS:
+  36          *  CREATED: XiongHui 2006-3-18 
+  37          *  HISTORY OF CHANGE: 
+  38          *********************************************************************************/
+  39          void Time500ms(void)
+  40          {
+  41   1              
+  42   1              if(Timer10msFlag == TRUEFLAG)
+  43   1              {
+  44   2                      Timer10msFlag = FALSEFLAG;
+  45   2                      if(++counter >= 50)
+  46   2                      {
+  47   3                              LED = !LED;
+  48   3                              counter = 0;  
+  49   3                      
+  50   3                      }
+  51   2                      
+  52   2              }
+  53   1      }
+  54          /********************************************************************************
+  55          *  FUNCTION NAME:KeyPro(void)
+C51 COMPILER V7.50   MAIN                                                                  05/26/2006 08:29:44 PAGE 2   
+
+  56          *  PARAMETERS:key
+  57          *  DESCRIPTION:time delay                 
+  58          *  RETURNS:
+  59          *  CREATED: XiongHui 2006-3-18 
+  60          *  HISTORY OF CHANGE: 
+  61          *********************************************************************************/
+  62          void KeyPro(void)
+  63          {
+  64   1              if(Keyflag == TRUEFLAG)
+  65   1              {
+  66   2                      Keyflag = FALSEFLAG;
+  67   2                      #ifndef LEDADD
+                              if(++Leddata[0] >= 10)
+                              {
+                                      Leddata[0] = 0x0;       
+                              }
+                              if(++Leddata[1] >= 10)
+                              {
+                                      Leddata[1] = 0x0;       
+                              }
+                              #else
+  77   2                      
+  78   2                      if(++Leddata[5] >= 10)
+  79   2                      {
+  80   3                              Leddata[5] = 0x0;
+  81   3                              if(++Leddata[4] >= 10)
+  82   3                              {
+  83   4                                      Leddata[4] = 0x0;
+  84   4                                      if(++Leddata[3] >= 10)
+  85   4                                      {
+  86   5                                              Leddata[3] = 0x0;
+  87   5                                              if(++Leddata[2] >= 10)
+  88   5                                              {
+  89   6                                                      Leddata[2] = 0x0;
+  90   6                                                      if(++Leddata[1] >= 10)
+  91   6                                                      {
+  92   7                                                              Leddata[1] = 0x0;
+  93   7                                                              if(++Leddata[0] >= 10)
+  94   7                                                              {
+  95   8                                                                      Leddata[0] = 0x0;
+  96   8                                                                      
+  97   8                                                                              
+  98   8                                                              }       
+  99   7                                                      }
+ 100   6                                                              
+ 101   6                                              }       
+ 102   5                                      }
+ 103   4                                              
+ 104   4                              }       
+ 105   3                      }
+ 106   2      
+ 107   2                      #endif
+ 108   2              }
+ 109   1      }
+ 110          /********************************************************************************
+ 111          *  FUNCTION NAME:UartRecePro(void)
+ 112          *  PARAMETERS:key
+ 113          *  DESCRIPTION:time delay                 
+ 114          *  RETURNS:
+ 115          *  CREATED: XiongHui 2006-3-18 
+ 116          *  HISTORY OF CHANGE: 
+ 117          *********************************************************************************/
+C51 COMPILER V7.50   MAIN                                                                  05/26/2006 08:29:44 PAGE 3   
+
+ 118          void UartRecePro(void)
+ 119          {
+ 120   1              unsigned char data *codeptr;
+ 121   1              unsigned char data *dataptr;
+ 122   1              unsigned char data i,buf[6];
+ 123   1              codeptr = &UartReceBuf[0];
+ 124   1              dataptr = &buf[0];
+ 125   1              if(UartReceFlag == TRUEFLAG)
+ 126   1              {
+ 127   2                      UartReceFlag = FALSEFLAG;
+ 128   2                      switch(screenno)
+ 129   2                      {
+ 130   3                              case 0:
+ 131   3                                      UartSendPtr = 0;
+ 132   3                                      //UartSendBuf[UartSendPtr++] = 'O';
+ 133   3                                      //UartSendBuf[UartSendPtr++] = 'K';
+ 134   3                                      UartSendBuf[UartSendPtr++] = '\r';
+ 135   3                                      UartSendBuf[UartSendPtr++] = '\n';
+ 136   3                                      strcpy(dataptr,codeptr);
+ 137   3                                      for(i=0;i<6;i++)
+ 138   3                                      {
+ 139   4                                              Leddata[i]= buf[i]-0x30;
+ 140   4                                      }
+ 141   3      
+ 142   3                                      UartSendTempPtr = 0x00;
+ 143   3                                      UartSendFlag = TRUEFLAG; 
+ 144   3                                      screenno=0;
+ 145   3                                      while(TI==0);
+ 146   3                                      SBUF = UartSendBuf[UartSendTempPtr++];                                          //intiates the sending
+ 147   3                                      break;
+ 148   3                              case 1:
+ 149   3                                      UartSendPtr = 0;
+ 150   3                                      UartSendBuf[UartSendPtr++] = 'g';
+ 151   3                                      UartSendBuf[UartSendPtr++] = 'o';
+ 152   3                                      UartSendBuf[UartSendPtr++] = 'o';
+ 153   3                                      UartSendBuf[UartSendPtr++] = 'd';
+ 154   3                                      UartSendBuf[UartSendPtr++] = '\r';
+ 155   3                                      UartSendBuf[UartSendPtr++] = '\n';
+ 156   3                                      UartSendTempPtr = 0x00;
+ 157   3                                      UartSendFlag = TRUEFLAG;
+ 158   3                                      screenno=0;
+ 159   3                                      TI = 1;                                         //intiates the sending
+ 160   3                                      break;
+ 161   3                               default:
+ 162   3                                      ;
+ 163   3              
+ 164   3                      }
+ 165   2                      UartRecePtr =0x00;
+ 166   2              }
+ 167   1      }
+ 168          /********************************************************************************
+ 169          *  FUNCTION NAME:UartRecePro(void)
+ 170          *  PARAMETERS:key
+ 171          *  DESCRIPTION:time delay                 
+ 172          *  RETURNS:
+ 173          *  CREATED: XiongHui 2006-3-18 
+ 174          *  HISTORY OF CHANGE: 
+ 175          *********************************************************************************/
+ 176          void UartPro(void)
+ 177          {
+ 178   1          unsigned char code *codeptr;
+ 179   1              unsigned char data *dataptr;
+C51 COMPILER V7.50   MAIN                                                                  05/26/2006 08:29:44 PAGE 4   
+
+ 180   1              if(UartProFlag == TRUEFLAG)
+ 181   1              {
+ 182   2                      UartProFlag = FALSEFLAG;
+ 183   2                      codeptr = &welcome[0];
+ 184   2                      dataptr = &UartSendBuf[0];
+ 185   2                      strcpy(dataptr,codeptr);
+ 186   2                      UartSendTempPtr = 0x00;
+ 187   2                      UartSendFlag = TRUEFLAG;
+ 188   2                      screenno = 0;
+ 189   2                      TI = 1;                                         //intiates the sending
+ 190   2              }
+ 191   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    357    ----
+   CONSTANT SIZE    =     77    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

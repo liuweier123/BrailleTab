@@ -1,0 +1,74 @@
+C51 COMPILER V6.12  PWM                                                                    08/06/2008 16:07:18 PAGE 1   
+
+
+C51 COMPILER V6.12, COMPILATION OF MODULE PWM
+OBJECT MODULE PLACED IN PWM.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE PWM.C BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include "reg51.h"
+   2          unsigned int cd,dd;
+   3          unsigned char cc,ee;
+   4          
+   5          
+   6          sbit LED=P2^0;
+   7          void led_int() interrupt 1 using 0
+   8          {
+   9   1      	TH0=0xf1;
+  10   1      	TL0=0xf1;
+  11   1      	TR0=1;
+  12   1      	dd++;
+  13   1      	if(dd==11)
+  14   1      	{
+  15   2      		if((cc==0x50)&&(ee==0)){cd=0;}
+  16   2      		if((cc==0)&&(ee==0x50)){cd=1;}
+  17   2      		if(cd){cc++;ee--;}
+  18   2      		else {cc--;ee++;}
+  19   2      		dd=0;
+  20   2      	}
+  21   1      }
+  22          void delay(unsigned int i)
+  23          {
+  24   1      	unsigned int j;
+  25   1      	while(i--)
+  26   1      	{
+  27   2      		for(j=0;j<0x20;j++);
+  28   2      	}
+  29   1      }
+  30          
+  31          void main()
+  32          {
+  33   1      	cc=0;
+  34   1      	ee=0x50;
+  35   1      	TMOD=0x01;
+  36   1      	TH0=0xf0;
+  37   1      	TL0=0xf0 ;
+  38   1      	EA=1;
+  39   1      	ET0=1;
+  40   1      	TR0=1;
+  41   1      	while(1)
+  42   1      	{
+  43   2      		LED=0;
+  44   2      		delay(ee);
+  45   2      		LED=1;
+  46   2      		delay(cc);
+  47   2      	}
+  48   1      }
+  49          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    152    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+C51 COMPILER V6.12  PWM                                                                    08/06/2008 16:07:18 PAGE 2   
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

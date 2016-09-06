@@ -1,0 +1,1 @@
+"sources\TimeProcess.c" BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\TimeProcess.lst) OBJECT(TimeProcess.obj)

@@ -1,0 +1,2 @@
+Ucos_ii.o: ../test/includes.h C:/AVR/ICC/include/iom8v.h ../test/OS_CPU.H C:/AVR/ICC/include/macros.h ../test/OS_CFG.H D:\job\avrtest\光盘\开发板\iccavr\source/UCOS_II.H C:/AVR/ICC/include/eeprom.h D:\job\avrtest\光盘\开发板\iccavr\source/os_core.c\
+ D:\job\avrtest\光盘\开发板\iccavr\source/os_task.c D:\job\avrtest\光盘\开发板\iccavr\source/os_time.c D:\job\avrtest\光盘\开发板\iccavr\source/74164.c

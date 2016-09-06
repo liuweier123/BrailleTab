@@ -1,0 +1,161 @@
+
+#define Test1_GLOBALS
+#include "includes.h"
+
+//******************************************************************************
+// Constants
+#define TaskStartPrio	10		// Task-Prioritaeten
+//*****************************************************************************
+// Variablen
+INT8U    display[5];
+INT8U    h,m,s,state;
+OS_STK	Task1Stack[OS_TASK_DEF_STK_SIZE];		// startup task stack
+OS_STK	Task2Stack[OS_TASK_DEF_STK_SIZE];
+//ICC-AVR application builder : 2003-12-28 21:52:56
+// Target : M8
+// Crystal: 8.0000Mhz
+
+#include <iom8v.h>
+#include <macros.h>
+#include <stdio.h>
+
+
+//UART0 initialisation
+// desired baud rate: 9600
+// actual: baud rate:9615 (0.2%)
+// char size: 8 bit
+// parity: Disabled
+void uart0_init(void)
+{
+ UCSRB = 0x00; //disable while setting baud rate
+ UCSRA = 0x00;
+ UCSRC = 0x86;
+ UBRRL = 0x33; //set baud rate lo
+ UBRRH = 0x00; //set baud rate hi
+ UCSRB = 0x08;
+}
+
+//*****************************************************************************
+// Prototypes
+
+//*****************************************************************************
+//			TickISR
+//*****************************************************************************
+// Init Timer/Counter2 fuer Takterzeugung
+void TC2_Init (void){	
+	/* Only uses TIMER2 overflow for tick interrupt. Timer compare
+     * can also be used.
+     */
+	TIMSK &= ~(BIT(TOIE2)/* | BIT(OCIE2) */);	//disable TC2 interrupts
+	TCCR2 = 0x00;		// interner Takt, /1024
+	TCNT2 = 0; 	// Counter ruecksetzen, 2ms @ 8MHz
+    TCCR2 = 0x04;   // 64
+	// OCR2 = 180;			// OutputCompareRegister
+	TIMSK |= BIT(TOIE2);	// enable OVF-interrupt
+	                                                                                                                                //TIMSK |= OCIE2;		// enable COMP-interrupt
+	
+    SEI();	// enable global interrupt     
+}
+
+//*****************************************************************************
+// Interrupt Timer/Counter0 Overflow
+// OVF_Takt:  4MHz / 1024 / 39 = 10ms
+#pragma interrupt_handler OSTickISR:5
+
+void Task1(void *pdata);
+void Task2(void *pdata);
+
+//*****************************************************************************
+// Start
+void main(void){	
+	OSInit();		// OS init
+	uart0_init();
+	puts("ATmega8 uc/os-II Test!");
+	putchar(0x0d);
+	putchar(0x0a);
+	
+	OSTaskCreate(Task1,	(void *)0, &Task1Stack[OS_TASK_DEF_STK_SIZE-1],	7);
+	
+	OSTaskCreate(Task2,	(void *)0, &Task2Stack[OS_TASK_DEF_STK_SIZE-1],	8); 
+	// init und start tick
+    TC2_Init();			// Timer/Counter#2 Overflow and Comp init   
+    OSStart();		// start multitasking
+}
+
+//*****************************************************************************
+void Task1(void *data){
+    unsigned char i,key1,key2;
+	data = data;
+	PORTD |= 0x1C;    //  key
+	DDRD  &= ~0x1C;
+	PORTD |= 0x20;    //  bell
+	DDRD  |= 0x20;
+	init164();        //  ÏÔÊ¾  ³õÊ¼»¯
+	state = 1;
+	for (;;){
+//  key
+        key1 = PIND & 0x1C;
+		if(key1 == 0x1C){
+		    PORTD &= ~0x20;
+			if(key2 == 0x0C){
+				state ^= 0x01;
+			}
+			if(state == 0){
+			    if(key2 == 0x18){
+			        if(++s == 60) s = 0;
+			    }
+			    if(key2 == 0x14){
+				    if(++m == 60) m = 0;
+			    }
+			}
+		}
+		else{
+			PORTD |= 0x20;
+		}
+		key2 = key1;
+//  end  key
+
+//  display
+        display[0] = s%10;
+		display[1] = s/10;
+		display[2] = m%10;
+		display[3] = m/10;
+		switch(i){
+		    case  0:  write164(display[i] | 0x70);  break;
+		    case  1:  write164(display[i] | 0xB0);  break;
+		    case  2:  write164(display[i] | 0xD0);  break;
+		    case  3:  write164(display[i] | 0xE0);  break;
+		}
+		if(++i > 3) i = 0;
+//end  display		
+		OSTimeDly (2);
+	}
+}
+void Task2(void *data){
+    data = data;
+	OSTimeDly(5);
+	s = EEPROMread(1);
+	m = EEPROMread(2);
+	for (;;){
+	    if(state == 1){
+	        if(++s == 60){
+		        s = 0;
+			    if(++m == 60){
+			        m = 0;
+				    if(++h == 24) h=0;
+			    }
+		    }
+			EEPROMwrite(1,s);
+			EEPROMwrite(2,m);
+		}
+		putchar('\n');
+		putchar(display[3]+'0');
+		putchar(display[2]+'0');
+		putchar(':');
+		putchar(display[1]+'0');
+		putchar(display[0]+'0');
+		putchar(0x0d);
+		putchar(0x0a);
+		OSTimeDly (500);
+	}
+}

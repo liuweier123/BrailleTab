@@ -1,0 +1,1 @@
+"sources\Show.c" BROWSE INCDIR(.\include) DEBUG OBJECTEXTEND PRINT(.\Show.lst) OBJECT(Show.obj)

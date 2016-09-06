@@ -1,0 +1,202 @@
+
+main.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000e4  00000000  00000000  00000094  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  000000e4  00000178  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000000  00800060  000000e4  00000178  2**0
+                  ALLOC
+  3 .noinit       00000000  00800060  00800060  00000178  2**0
+                  CONTENTS
+  4 .eeprom       00000000  00810000  00810000  00000178  2**0
+                  CONTENTS
+  5 .debug_aranges 00000014  00000000  00000000  00000178  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_pubnames 00000045  00000000  00000000  0000018c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_info   000000af  00000000  00000000  000001d1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_abbrev 00000052  00000000  00000000  00000280  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_line   00000104  00000000  00000000  000002d2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    00000070  00000000  00000000  000003d6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26
+   2:	2b c0       	rjmp	.+86     	; 0x5a
+   4:	5a c0       	rjmp	.+180    	; 0xba
+   6:	29 c0       	rjmp	.+82     	; 0x5a
+   8:	28 c0       	rjmp	.+80     	; 0x5a
+   a:	27 c0       	rjmp	.+78     	; 0x5a
+   c:	26 c0       	rjmp	.+76     	; 0x5a
+   e:	25 c0       	rjmp	.+74     	; 0x5a
+  10:	24 c0       	rjmp	.+72     	; 0x5a
+  12:	23 c0       	rjmp	.+70     	; 0x5a
+  14:	22 c0       	rjmp	.+68     	; 0x5a
+  16:	21 c0       	rjmp	.+66     	; 0x5a
+  18:	20 c0       	rjmp	.+64     	; 0x5a
+  1a:	1f c0       	rjmp	.+62     	; 0x5a
+  1c:	1e c0       	rjmp	.+60     	; 0x5a
+  1e:	1d c0       	rjmp	.+58     	; 0x5a
+  20:	1c c0       	rjmp	.+56     	; 0x5a
+  22:	1b c0       	rjmp	.+54     	; 0x5a
+  24:	1a c0       	rjmp	.+52     	; 0x5a
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+
+00000032 <__do_copy_data>:
+  32:	10 e0       	ldi	r17, 0x00	; 0
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	e4 ee       	ldi	r30, 0xE4	; 228
+  3a:	f0 e0       	ldi	r31, 0x00	; 0
+  3c:	02 c0       	rjmp	.+4      	; 0x42
+
+0000003e <.do_copy_data_loop>:
+  3e:	05 90       	lpm	r0, Z+
+  40:	0d 92       	st	X+, r0
+
+00000042 <.do_copy_data_start>:
+  42:	a0 36       	cpi	r26, 0x60	; 96
+  44:	b1 07       	cpc	r27, r17
+  46:	d9 f7       	brne	.-10     	; 0x3e
+
+00000048 <__do_clear_bss>:
+  48:	10 e0       	ldi	r17, 0x00	; 0
+  4a:	a0 e6       	ldi	r26, 0x60	; 96
+  4c:	b0 e0       	ldi	r27, 0x00	; 0
+  4e:	01 c0       	rjmp	.+2      	; 0x52
+
+00000050 <.do_clear_bss_loop>:
+  50:	1d 92       	st	X+, r1
+
+00000052 <.do_clear_bss_start>:
+  52:	a0 36       	cpi	r26, 0x60	; 96
+  54:	b1 07       	cpc	r27, r17
+  56:	e1 f7       	brne	.-8      	; 0x50
+  58:	28 c0       	rjmp	.+80     	; 0xaa
+
+0000005a <__bad_interrupt>:
+  5a:	d2 cf       	rjmp	.-92     	; 0x0
+
+0000005c <int1_init>:
+#include <avr/signal.h>
+
+void int1_init()
+	{
+	DDRD&=0x0f;
+  5c:	81 b3       	in	r24, 0x11	; 17
+  5e:	8f 70       	andi	r24, 0x0F	; 15
+  60:	81 bb       	out	0x11, r24	; 17
+	PORTD|=0xf8;
+  62:	82 b3       	in	r24, 0x12	; 18
+  64:	88 6f       	ori	r24, 0xF8	; 248
+  66:	82 bb       	out	0x12, r24	; 18
+	MCUCR|=(1<<ISC11);//上升沿触发
+  68:	85 b7       	in	r24, 0x35	; 53
+  6a:	88 60       	ori	r24, 0x08	; 8
+  6c:	85 bf       	out	0x35, r24	; 53
+	MCUCR|=(1<<ISC10);
+  6e:	85 b7       	in	r24, 0x35	; 53
+  70:	84 60       	ori	r24, 0x04	; 4
+  72:	85 bf       	out	0x35, r24	; 53
+	GIFR|=(1<<INTF1);
+  74:	8a b7       	in	r24, 0x3a	; 58
+  76:	80 68       	ori	r24, 0x80	; 128
+  78:	8a bf       	out	0x3a, r24	; 58
+	GICR|=(1<<INT1);	//int1开中断
+  7a:	8b b7       	in	r24, 0x3b	; 59
+  7c:	80 68       	ori	r24, 0x80	; 128
+  7e:	8b bf       	out	0x3b, r24	; 59
+  80:	08 95       	ret
+
+00000082 <pwm_init>:
+	}
+	
+void pwm_init()
+	{
+	DDRB|=0b00000110;
+  82:	87 b3       	in	r24, 0x17	; 23
+  84:	86 60       	ori	r24, 0x06	; 6
+  86:	87 bb       	out	0x17, r24	; 23
+	TCCR1A|=0b10100010;
+  88:	8f b5       	in	r24, 0x2f	; 47
+  8a:	82 6a       	ori	r24, 0xA2	; 162
+  8c:	8f bd       	out	0x2f, r24	; 47
+	TCCR1B|=0b00011001;
+  8e:	8e b5       	in	r24, 0x2e	; 46
+  90:	89 61       	ori	r24, 0x19	; 25
+  92:	8e bd       	out	0x2e, r24	; 46
+	ICR1=0x7ff;
+  94:	8f ef       	ldi	r24, 0xFF	; 255
+  96:	97 e0       	ldi	r25, 0x07	; 7
+  98:	97 bd       	out	0x27, r25	; 39
+  9a:	86 bd       	out	0x26, r24	; 38
+	OCR1A=0x7ff;
+  9c:	9b bd       	out	0x2b, r25	; 43
+  9e:	8a bd       	out	0x2a, r24	; 42
+	OCR1B=0x400;
+  a0:	80 e0       	ldi	r24, 0x00	; 0
+  a2:	94 e0       	ldi	r25, 0x04	; 4
+  a4:	99 bd       	out	0x29, r25	; 41
+  a6:	88 bd       	out	0x28, r24	; 40
+  a8:	08 95       	ret
+
+000000aa <main>:
+	}
+
+void main()
+	{
+  aa:	cf e5       	ldi	r28, 0x5F	; 95
+  ac:	d4 e0       	ldi	r29, 0x04	; 4
+  ae:	de bf       	out	0x3e, r29	; 62
+  b0:	cd bf       	out	0x3d, r28	; 61
+	int1_init();
+  b2:	d4 df       	rcall	.-88     	; 0x5c
+	pwm_init();
+  b4:	e6 df       	rcall	.-52     	; 0x82
+	sei();
+  b6:	78 94       	sei
+  b8:	14 c0       	rjmp	.+40     	; 0xe2
+
+000000ba <__vector_2>:
+	}
+	
+INTERRUPT(SIG_INTERRUPT1)
+	{
+  ba:	78 94       	sei
+  bc:	1f 92       	push	r1
+  be:	0f 92       	push	r0
+  c0:	0f b6       	in	r0, 0x3f	; 63
+  c2:	0f 92       	push	r0
+  c4:	11 24       	eor	r1, r1
+  c6:	8f 93       	push	r24
+  c8:	9f 93       	push	r25
+	OCR1A+=10;
+  ca:	8a b5       	in	r24, 0x2a	; 42
+  cc:	9b b5       	in	r25, 0x2b	; 43
+  ce:	0a 96       	adiw	r24, 0x0a	; 10
+  d0:	9b bd       	out	0x2b, r25	; 43
+  d2:	8a bd       	out	0x2a, r24	; 42
+  d4:	9f 91       	pop	r25
+  d6:	8f 91       	pop	r24
+  d8:	0f 90       	pop	r0
+  da:	0f be       	out	0x3f, r0	; 63
+  dc:	0f 90       	pop	r0
+  de:	1f 90       	pop	r1
+  e0:	18 95       	reti
+
+000000e2 <_exit>:
+  e2:	ff cf       	rjmp	.-2      	; 0xe2
